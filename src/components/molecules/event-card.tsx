@@ -1,5 +1,6 @@
 import { Calendar, Image as ImageIcon, MapPin } from "lucide-react";
-import { Badge, BadgeTone, Button, Icon } from "@/components/atoms";
+import NextLink from "next/link";
+import { Badge, BadgeTone, Button, ButtonLink, Icon } from "@/components/atoms";
 import { AvatarGroup, AvatarGroupItem } from "./avatar-group";
 
 export interface EventCardTag {
@@ -14,6 +15,7 @@ export interface EventCardProps {
   headerLabel?: string;
   tags: EventCardTag[];
   title: string;
+  href?: string;
   date: string;
   location?: string;
   attendees?: AvatarGroupItem[];
@@ -38,6 +40,17 @@ function EventCardMedia({ src, alt }: { src?: string; alt: string }) {
   );
 }
 
+function EventCardTitle({ title, href, className }: { title: string; href?: string; className: string }) {
+  if (href) {
+    return (
+      <NextLink href={href} className={`${className} hover:underline`}>
+        {title}
+      </NextLink>
+    );
+  }
+  return <h4 className={className}>{title}</h4>;
+}
+
 export function EventCard({
   variant = "compact",
   imageSrc,
@@ -45,6 +58,7 @@ export function EventCard({
   headerLabel,
   tags,
   title,
+  href,
   date,
   location,
   attendees,
@@ -53,6 +67,16 @@ export function EventCard({
   actionLabel = "Register",
   onAction,
 }: EventCardProps) {
+  const action = href ? (
+    <ButtonLink href={href} variant="primary">
+      {actionLabel} →
+    </ButtonLink>
+  ) : (
+    <Button variant="primary" onClick={onAction}>
+      {actionLabel} →
+    </Button>
+  );
+
   if (variant === "featured") {
     return (
       <div className="flex h-full flex-col overflow-hidden rounded-md border border-border-light bg-surface-light transition-shadow hover:shadow-md">
@@ -74,7 +98,7 @@ export function EventCard({
               </Badge>
             ))}
           </div>
-          <h4 className="text-large font-semibold text-text-primary">{title}</h4>
+          <EventCardTitle title={title} href={href} className="text-large font-semibold text-text-primary" />
           <div className="space-y-1">
             <p className="flex items-center gap-2 text-small text-text-secondary">
               <Icon icon={Calendar} size="sm" />
@@ -94,9 +118,7 @@ export function EventCard({
             {urgencyLabel && (
               <span className="text-small font-medium text-warning">{urgencyLabel}</span>
             )}
-            <Button variant="primary" onClick={onAction} className="ml-auto">
-              {actionLabel} →
-            </Button>
+            <span className="ml-auto">{action}</span>
           </div>
         </div>
       </div>
@@ -116,14 +138,12 @@ export function EventCard({
             </Badge>
           ))}
         </div>
-        <h4 className="text-body font-semibold text-text-primary">{title}</h4>
+        <EventCardTitle title={title} href={href} className="text-body font-semibold text-text-primary" />
         <p className="flex items-center gap-2 text-small text-text-secondary">
           <Icon icon={Calendar} size="sm" />
           {date}
         </p>
-        <Button variant="primary" onClick={onAction} className="mt-auto w-full">
-          {actionLabel}
-        </Button>
+        <div className="mt-auto [&>a]:w-full [&>button]:w-full">{action}</div>
       </div>
     </div>
   );

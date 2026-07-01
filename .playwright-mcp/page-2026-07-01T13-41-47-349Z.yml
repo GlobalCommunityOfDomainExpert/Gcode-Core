@@ -1,0 +1,194 @@
+- generic [active] [ref=f38e1]:
+  - navigation [ref=f38e2]:
+    - link "GCODE" [ref=f38e3] [cursor=pointer]:
+      - /url: explore.html
+    - generic [ref=f38e4]:
+      - link "Explore" [ref=f38e5] [cursor=pointer]:
+        - /url: explore.html
+      - link "Events" [ref=f38e6] [cursor=pointer]:
+        - /url: events.html
+      - button "Resources ▾" [ref=f38e8] [cursor=pointer]:
+        - text: Resources
+        - generic [ref=f38e9]: ▾
+    - generic [ref=f38e10]:
+      - link "Problem Feed" [ref=f38e11] [cursor=pointer]:
+        - /url: dashboard.html
+      - button "Notifications" [ref=f38e12] [cursor=pointer]:
+        - img [ref=f38e13]
+  - generic [ref=f38e16]:
+    - complementary [ref=f38e17]:
+      - generic [ref=f38e18]:
+        - generic [ref=f38e19]:
+          - paragraph [ref=f38e20]: Main
+          - generic [ref=f38e21]:
+            - link "⬡ Dashboard 12" [ref=f38e22] [cursor=pointer]:
+              - /url: dashboard.html
+              - generic [ref=f38e23]: ⬡
+              - text: Dashboard
+              - generic [ref=f38e24]: "12"
+            - link "◷ My Bookings" [ref=f38e25] [cursor=pointer]:
+              - /url: my-bookings.html
+              - generic [ref=f38e26]: ◷
+              - text: My Bookings
+            - button "📅 My Events ▸" [ref=f38e27] [cursor=pointer]:
+              - generic [ref=f38e28]: 📅
+              - text: My Events
+              - generic [ref=f38e29]: ▸
+            - link "₹ Payouts" [ref=f38e30] [cursor=pointer]:
+              - /url: payouts.html
+              - generic [ref=f38e31]: ₹
+              - text: Payouts
+        - generic [ref=f38e32]:
+          - paragraph [ref=f38e33]: Account
+          - generic [ref=f38e34]:
+            - link "◇ Settings" [ref=f38e35] [cursor=pointer]:
+              - /url: settings.html
+              - generic [ref=f38e36]: ◇
+              - text: Settings
+            - link "↗ Refer" [ref=f38e37] [cursor=pointer]:
+              - /url: "#"
+              - generic [ref=f38e38]: ↗
+              - text: Refer
+      - generic [ref=f38e39]:
+        - link "Profile complete 40%" [ref=f38e40] [cursor=pointer]:
+          - /url: my-profile.html
+          - generic [ref=f38e41]:
+            - generic [ref=f38e42]: Profile complete
+            - generic [ref=f38e43]: 40%
+        - button "Arjun Sharma expert ▴" [ref=f38e47] [cursor=pointer]:
+          - generic [ref=f38e49]:
+            - paragraph [ref=f38e50]: Arjun Sharma
+            - paragraph [ref=f38e51]: expert
+          - generic [ref=f38e52]: ▴
+    - main [ref=f38e53]:
+      - paragraph [ref=f38e54]:
+        - link "Organized Events" [ref=f38e55] [cursor=pointer]:
+          - /url: my-organized-events.html
+        - text: / GCODE Build Sprint · Summer 2026
+      - generic [ref=f38e57]:
+        - generic [ref=f38e58]:
+          - generic [ref=f38e59]:
+            - generic [ref=f38e60]: ● Live
+            - generic [ref=f38e61]: Hackathon
+            - generic [ref=f38e62]: Online
+            - generic [ref=f38e63]: Free
+          - heading "GCODE Build Sprint · Summer 2026" [level=1] [ref=f38e64]
+          - paragraph [ref=f38e65]: 📅 15 Jul 2026 · 10:00 AM – 6:00 PM IST · Online · event-manage · Organizer view
+        - generic [ref=f38e66]:
+          - generic [ref=f38e67]:
+            - paragraph [ref=f38e68]: "148"
+            - paragraph [ref=f38e69]: Registered
+          - generic [ref=f38e71]:
+            - paragraph [ref=f38e72]: "200"
+            - paragraph [ref=f38e73]: Capacity
+          - generic [ref=f38e75]:
+            - paragraph [ref=f38e76]: "15"
+            - paragraph [ref=f38e77]: Days Left
+      - generic [ref=f38e78]:
+        - generic [ref=f38e79]:
+          - button "Overview" [ref=f38e80] [cursor=pointer]
+          - button "Attendees 148" [ref=f38e81] [cursor=pointer]
+          - button "Communication" [ref=f38e82] [cursor=pointer]
+          - button "Settings" [ref=f38e83] [cursor=pointer]
+          - button "Community 4" [ref=f38e84] [cursor=pointer]
+        - generic [ref=f38e85]:
+          - generic [ref=f38e86]:
+            - generic [ref=f38e87]:
+              - paragraph [ref=f38e88]: Registered
+              - paragraph [ref=f38e89]: "148"
+              - paragraph [ref=f38e90]: +12 this week
+            - generic [ref=f38e91]:
+              - paragraph [ref=f38e92]: Revenue
+              - paragraph [ref=f38e93]: ₹0
+              - paragraph [ref=f38e94]: Free event
+            - generic [ref=f38e95]:
+              - paragraph [ref=f38e96]: Capacity
+              - paragraph [ref=f38e97]: 74%
+            - generic [ref=f38e100]:
+              - paragraph [ref=f38e101]: Days Left
+              - paragraph [ref=f38e102]: "15"
+              - paragraph [ref=f38e103]: Closes 14 Jul
+          - generic [ref=f38e104]:
+            - paragraph [ref=f38e105]: Registration Trend
+            - generic [ref=f38e107]:
+              - generic [ref=f38e109]: Jun 25
+              - generic [ref=f38e111]: Jun 26
+              - generic [ref=f38e113]: Jun 27
+              - generic [ref=f38e115]: Jun 28
+              - generic [ref=f38e117]: Jun 29
+              - generic [ref=f38e119]: Jun 30
+              - generic [ref=f38e121]: Today
+          - generic [ref=f38e122]:
+            - paragraph [ref=f38e123]: Quick Actions
+            - generic [ref=f38e125]:
+              - button "📢 Send Announcement" [ref=f38e126] [cursor=pointer]
+              - button "⬇ Export CSV" [ref=f38e127] [cursor=pointer]
+              - button "✏ Edit Event" [ref=f38e128] [cursor=pointer]
+              - link "↗ View Public Page" [ref=f38e129] [cursor=pointer]:
+                - /url: event-detail.html
+                - button "↗ View Public Page" [ref=f38e130]
+  - contentinfo [ref=f38e132]:
+    - generic [ref=f38e133]:
+      - generic [ref=f38e134]:
+        - paragraph [ref=f38e135]: Quick Links
+        - generic [ref=f38e136]:
+          - link "Explore" [ref=f38e137] [cursor=pointer]:
+            - /url: explore.html
+          - link "Events" [ref=f38e138] [cursor=pointer]:
+            - /url: events.html
+          - link "Ask AI" [ref=f38e139] [cursor=pointer]:
+            - /url: "#"
+      - generic [ref=f38e140]:
+        - paragraph [ref=f38e141]: Platform
+        - generic [ref=f38e142]:
+          - link "For Startups" [ref=f38e143] [cursor=pointer]:
+            - /url: for-startups.html
+          - link "For Experts" [ref=f38e144] [cursor=pointer]:
+            - /url: for-experts.html
+          - link "For Freshers" [ref=f38e145] [cursor=pointer]:
+            - /url: for-freshers.html
+          - link "For Institutions" [ref=f38e146] [cursor=pointer]:
+            - /url: for-institutions.html
+          - link "For Partners" [ref=f38e147] [cursor=pointer]:
+            - /url: for-partners.html
+      - generic [ref=f38e148]:
+        - paragraph [ref=f38e149]: Legal
+        - generic [ref=f38e150]:
+          - link "Privacy Policy" [ref=f38e151] [cursor=pointer]:
+            - /url: privacy-policy.html
+          - link "Terms of Service" [ref=f38e152] [cursor=pointer]:
+            - /url: terms-of-service.html
+          - link "Cancellation & Refunds" [ref=f38e153] [cursor=pointer]:
+            - /url: "#"
+          - link "Shipping & Delivery" [ref=f38e154] [cursor=pointer]:
+            - /url: "#"
+      - generic [ref=f38e155]:
+        - paragraph [ref=f38e156]: Social
+        - generic [ref=f38e157]:
+          - link "Facebook" [ref=f38e158] [cursor=pointer]:
+            - /url: "#"
+          - link "LinkedIn" [ref=f38e159] [cursor=pointer]:
+            - /url: "#"
+          - link "YouTube" [ref=f38e160] [cursor=pointer]:
+            - /url: "#"
+    - paragraph [ref=f38e162]: GCODE.IN · 1st Floor, SPD Plaza, Koramangala, Bengaluru · © 2024 GCODE — Global Community of Domain Experts
+  - button "AI" [ref=f38e163] [cursor=pointer]
+  - generic [ref=f38e165]:
+    - generic [ref=f38e166]:
+      - paragraph [ref=f38e167]: Wireframe Debug
+      - generic [ref=f38e168]:
+        - generic [ref=f38e169]: View as
+        - combobox [ref=f38e170] [cursor=pointer]:
+          - option "Guest"
+          - option "Expert" [selected]
+          - option "Fresher"
+          - option "Startup"
+          - option "Institution"
+      - generic [ref=f38e171]:
+        - generic [ref=f38e172]: Profile
+        - combobox [ref=f38e173] [cursor=pointer]:
+          - option "Incomplete (40%)" [selected]
+          - option "Complete (100%)"
+    - button "⚙ Debug" [ref=f38e174] [cursor=pointer]:
+      - generic [ref=f38e175]: ⚙
+      - text: Debug

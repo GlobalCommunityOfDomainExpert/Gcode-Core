@@ -2,6 +2,7 @@ export * from "./accordion";
 export * from "./avatar-group";
 export * from "./banner";
 export * from "./breadcrumb";
+export * from "./carousel";
 export * from "./certification-card";
 export * from "./checklist-item";
 export * from "./checkout-summary";

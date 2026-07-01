@@ -1,0 +1,211 @@
+- generic [active] [ref=f32e1]:
+  - navigation [ref=f32e2]:
+    - link "GCODE" [ref=f32e3] [cursor=pointer]:
+      - /url: index.html
+    - generic [ref=f32e4]:
+      - link "Explore" [ref=f32e5] [cursor=pointer]:
+        - /url: explore.html
+      - link "Events" [ref=f32e6] [cursor=pointer]:
+        - /url: events.html
+      - button "Resources ▾" [ref=f32e8] [cursor=pointer]:
+        - text: Resources
+        - generic [ref=f32e9]: ▾
+      - button "I Am A ▾" [ref=f32e11] [cursor=pointer]:
+        - text: I Am A
+        - generic [ref=f32e12]: ▾
+    - generic [ref=f32e13]:
+      - link "Register" [ref=f32e14] [cursor=pointer]:
+        - /url: sign-up.html
+      - link "Sign In" [ref=f32e15] [cursor=pointer]:
+        - /url: sign-in.html
+  - main [ref=f32e17]:
+    - generic [ref=f32e18]:
+      - paragraph [ref=f32e19]:
+        - link "Events" [ref=f32e20] [cursor=pointer]:
+          - /url: events.html
+        - text: / Hackathon / GCODE Build Sprint · Summer 2026
+      - paragraph [ref=f32e21]: /events/:id · Public
+    - generic [ref=f32e22]:
+      - generic [ref=f32e23]:
+        - generic [ref=f32e26]:
+          - generic [ref=f32e27]:
+            - generic [ref=f32e28]: Hackathon
+            - generic [ref=f32e29]: Online
+            - generic [ref=f32e30]: Free
+          - generic [ref=f32e31]: ⭐ Featured
+        - generic [ref=f32e32]:
+          - heading "GCODE Build Sprint · Summer 2026" [level=1] [ref=f32e33]
+          - generic [ref=f32e34]:
+            - generic [ref=f32e35]: Hackathon
+            - generic [ref=f32e36]: Online
+            - generic [ref=f32e37]: Free
+            - generic [ref=f32e38]: Tech · Product · Growth
+          - paragraph [ref=f32e39]: About this event
+        - generic [ref=f32e48]:
+          - paragraph [ref=f32e49]: Event Details
+          - generic [ref=f32e51]:
+            - generic [ref=f32e52]:
+              - generic [ref=f32e53]: 📅
+              - generic [ref=f32e54]:
+                - paragraph [ref=f32e55]: Date & Time
+                - paragraph [ref=f32e56]: 15 Jul 2026
+                - paragraph [ref=f32e57]: 10:00 AM – 6:00 PM IST
+            - generic [ref=f32e58]:
+              - generic [ref=f32e59]: ⏱
+              - generic [ref=f32e60]:
+                - paragraph [ref=f32e61]: Duration
+                - paragraph [ref=f32e62]: 8 hours
+                - paragraph [ref=f32e63]: Full-day event
+            - generic [ref=f32e64]:
+              - generic [ref=f32e65]: 📍
+              - generic [ref=f32e66]:
+                - paragraph [ref=f32e67]: Mode
+                - paragraph [ref=f32e68]: Online
+                - paragraph [ref=f32e69]: Link shared after registration
+            - generic [ref=f32e70]:
+              - generic [ref=f32e71]: 👥
+              - generic [ref=f32e72]:
+                - paragraph [ref=f32e73]: Team Size
+                - paragraph [ref=f32e74]: 1–4 members
+                - paragraph [ref=f32e75]: Solo or team participation
+        - generic [ref=f32e76]:
+          - paragraph [ref=f32e77]: Agenda
+          - generic [ref=f32e79]:
+            - generic [ref=f32e84]:
+              - paragraph [ref=f32e85]: 10:00 AM — Kickoff & Problem Statement
+              - paragraph [ref=f32e86]: Opening session, team registration, problem brief
+            - generic [ref=f32e91]:
+              - paragraph [ref=f32e92]: 12:00 PM — Expert Office Hours
+              - paragraph [ref=f32e93]: 30-min live Q&A with domain experts
+            - generic [ref=f32e98]:
+              - paragraph [ref=f32e99]: 4:00 PM — Submissions Close
+              - paragraph [ref=f32e100]: Final project submission deadline
+            - generic [ref=f32e104]:
+              - paragraph [ref=f32e105]: 5:00 PM — Winners Announced
+              - paragraph [ref=f32e106]: Live judging + prize distribution
+        - generic [ref=f32e107]:
+          - paragraph [ref=f32e108]: Organized By
+          - generic [ref=f32e110]:
+            - generic [ref=f32e112]:
+              - generic [ref=f32e113]:
+                - generic [ref=f32e114]: ██████████
+                - generic [ref=f32e115]: ✓ Verified
+              - paragraph [ref=f32e116]: 8 events hosted · 1,240 attendees · GCODE Expert
+            - link "View Profile →" [ref=f32e117] [cursor=pointer]:
+              - /url: expert-profile.html
+        - generic [ref=f32e118]:
+          - paragraph [ref=f32e119]: Terms & Eligibility
+          - generic [ref=f32e121]:
+            - generic [ref=f32e122]:
+              - generic [ref=f32e123]: •
+              - generic [ref=f32e124]: Open to all GCODE members — freshers, startup founders, and domain experts.
+            - generic [ref=f32e125]:
+              - generic [ref=f32e126]: •
+              - generic [ref=f32e127]: Free event — no registration fee. Spot is confirmed on sign-up.
+            - generic [ref=f32e128]:
+              - generic [ref=f32e129]: •
+              - generic [ref=f32e130]: Certificate issued to all participants who complete the full event.
+            - generic [ref=f32e131]:
+              - generic [ref=f32e132]: •
+              - generic [ref=f32e133]: GCODE reserves the right to disqualify participants for code-of-conduct violations.
+      - generic [ref=f32e134]:
+        - generic [ref=f32e135]:
+          - generic [ref=f32e136]:
+            - generic [ref=f32e137]: Free
+            - generic [ref=f32e138]: 52 spots left
+          - paragraph [ref=f32e139]: Registration closes 14 Jul 2026
+          - generic [ref=f32e146]: +148 already registered
+          - link "Register Now →" [ref=f32e147] [cursor=pointer]:
+            - /url: event-registered.html
+            - button "Register Now →" [ref=f32e148]
+          - button "📅 Add to Calendar" [ref=f32e149] [cursor=pointer]
+          - paragraph [ref=f32e151]: 200 total capacity · 148 registered · 52 open
+        - generic [ref=f32e152]:
+          - paragraph [ref=f32e153]: Event Info
+          - generic [ref=f32e155]:
+            - generic [ref=f32e156]:
+              - generic [ref=f32e157]: 📅
+              - generic [ref=f32e158]:
+                - paragraph [ref=f32e159]: 15 Jul 2026 · 10:00 AM IST
+                - paragraph [ref=f32e160]: Full-day · 8 hours
+            - generic [ref=f32e161]:
+              - generic [ref=f32e162]: 📍
+              - generic [ref=f32e163]:
+                - paragraph [ref=f32e164]: Online
+                - paragraph [ref=f32e165]: Link shared after registration
+            - generic [ref=f32e166]:
+              - generic [ref=f32e167]: 🏷
+              - generic [ref=f32e168]:
+                - paragraph [ref=f32e169]: Hackathon
+                - paragraph [ref=f32e170]: Tech · Product · Growth
+            - generic [ref=f32e171]:
+              - generic [ref=f32e172]: 🎓
+              - generic [ref=f32e173]:
+                - paragraph [ref=f32e174]: Certificate
+                - paragraph [ref=f32e175]: Issued on completion
+        - generic [ref=f32e176]:
+          - paragraph [ref=f32e177]: Share Event
+          - generic [ref=f32e179]:
+            - button "Twitter / X" [ref=f32e180] [cursor=pointer]
+            - button "LinkedIn" [ref=f32e181] [cursor=pointer]
+            - button "Copy Link" [ref=f32e182] [cursor=pointer]
+  - contentinfo [ref=f32e184]:
+    - generic [ref=f32e185]:
+      - generic [ref=f32e186]:
+        - paragraph [ref=f32e187]: Quick Links
+        - generic [ref=f32e188]:
+          - link "Explore" [ref=f32e189] [cursor=pointer]:
+            - /url: explore.html
+          - link "Events" [ref=f32e190] [cursor=pointer]:
+            - /url: events.html
+          - link "Ask AI" [ref=f32e191] [cursor=pointer]:
+            - /url: "#"
+      - generic [ref=f32e192]:
+        - paragraph [ref=f32e193]: Platform
+        - generic [ref=f32e194]:
+          - link "For Startups" [ref=f32e195] [cursor=pointer]:
+            - /url: for-startups.html
+          - link "For Experts" [ref=f32e196] [cursor=pointer]:
+            - /url: for-experts.html
+          - link "For Freshers" [ref=f32e197] [cursor=pointer]:
+            - /url: for-freshers.html
+          - link "For Institutions" [ref=f32e198] [cursor=pointer]:
+            - /url: for-institutions.html
+          - link "For Partners" [ref=f32e199] [cursor=pointer]:
+            - /url: for-partners.html
+      - generic [ref=f32e200]:
+        - paragraph [ref=f32e201]: Legal
+        - generic [ref=f32e202]:
+          - link "Privacy Policy" [ref=f32e203] [cursor=pointer]:
+            - /url: privacy-policy.html
+          - link "Terms of Service" [ref=f32e204] [cursor=pointer]:
+            - /url: terms-of-service.html
+          - link "Cancellation & Refunds" [ref=f32e205] [cursor=pointer]:
+            - /url: "#"
+          - link "Shipping & Delivery" [ref=f32e206] [cursor=pointer]:
+            - /url: "#"
+      - generic [ref=f32e207]:
+        - paragraph [ref=f32e208]: Social
+        - generic [ref=f32e209]:
+          - link "Facebook" [ref=f32e210] [cursor=pointer]:
+            - /url: "#"
+          - link "LinkedIn" [ref=f32e211] [cursor=pointer]:
+            - /url: "#"
+          - link "YouTube" [ref=f32e212] [cursor=pointer]:
+            - /url: "#"
+    - paragraph [ref=f32e214]: GCODE.IN · 1st Floor, SPD Plaza, Koramangala, Bengaluru · © 2024 GCODE — Global Community of Domain Experts
+  - button "AI" [ref=f32e215] [cursor=pointer]
+  - generic [ref=f32e217]:
+    - generic [ref=f32e218]:
+      - paragraph [ref=f32e219]: Wireframe Debug
+      - generic [ref=f32e220]:
+        - generic [ref=f32e221]: View as
+        - combobox [ref=f32e222] [cursor=pointer]:
+          - option "Guest" [selected]
+          - option "Expert"
+          - option "Fresher"
+          - option "Startup"
+          - option "Institution"
+    - button "⚙ Debug" [ref=f32e223] [cursor=pointer]:
+      - generic [ref=f32e224]: ⚙
+      - text: Debug

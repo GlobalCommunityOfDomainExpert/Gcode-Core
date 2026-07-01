@@ -3,6 +3,7 @@ export * from "./badge";
 export * from "./blurred";
 export * from "./booking-ref";
 export * from "./button";
+export * from "./button-link";
 export * from "./checkbox";
 export * from "./divider";
 export * from "./icon";

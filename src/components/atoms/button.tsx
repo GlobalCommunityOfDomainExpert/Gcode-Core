@@ -46,6 +46,14 @@ const sizeClasses: Record<ButtonSize, string> = {
   xl: "min-h-11 px-8 text-large",
 };
 
+export function buttonClasses(
+  variant: ButtonVariant = "primary",
+  size: ButtonSize = "md",
+  className = ""
+) {
+  return `${base} ${variantClasses[variant]} ${sizeClasses[size]} ${className}`;
+}
+
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   (
     {
@@ -64,7 +72,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         ref={ref}
         disabled={disabled || loading}
         aria-busy={loading || undefined}
-        className={`${base} ${variantClasses[variant]} ${sizeClasses[size]} ${className}`}
+        className={buttonClasses(variant, size, className)}
         {...props}
       >
         {loading && <Spinner size="sm" className="text-current" />}

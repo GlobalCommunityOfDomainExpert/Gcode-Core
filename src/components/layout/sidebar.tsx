@@ -3,13 +3,17 @@
 import { ReactNode, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { CalendarCheck, ChevronRight, LayoutDashboard, LogOut, LucideIcon, User } from "lucide-react";
+import { CalendarCheck, ChevronDown, ChevronRight, LayoutDashboard, LogOut, LucideIcon, User } from "lucide-react";
 import { Avatar, Icon, Progress } from "@/components/atoms";
 
 export interface SidebarLink {
   label: string;
-  href: string;
+  href?: string;
   icon?: LucideIcon;
+  badge?: string;
+  children?: { label: string; href: string }[];
+  /** Renders a small uppercase section heading above this link, starting a new group. */
+  groupLabel?: string;
 }
 
 export interface SidebarUser {
@@ -117,6 +121,61 @@ function ProfileMenu({ user, onViewProfile, onLogout }: Pick<SidebarProps, "user
   );
 }
 
+function SidebarGroup({
+  link,
+  pathname,
+  onNavigate,
+}: {
+  link: SidebarLink;
+  pathname: string;
+  onNavigate?: () => void;
+}) {
+  const children = link.children ?? [];
+  const hasActiveChild = children.some((child) => child.href === pathname);
+  const [open, setOpen] = useState(hasActiveChild);
+
+  return (
+    <div>
+      <button
+        type="button"
+        onClick={() => setOpen((prev) => !prev)}
+        aria-expanded={open}
+        className={`flex w-full items-center gap-3 rounded-sm px-3 py-2 text-left text-body font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 ${
+          hasActiveChild
+            ? "bg-primary-light text-primary"
+            : "text-text-secondary hover:bg-bg-light hover:text-text-primary"
+        }`}
+      >
+        {link.icon && <Icon icon={link.icon} size="sm" />}
+        <span className="flex-1">{link.label}</span>
+        <Icon icon={ChevronDown} size="sm" className={`transition-transform ${open ? "rotate-180" : ""}`} />
+      </button>
+      {open && (
+        <div className="mt-1 flex flex-col gap-1 border-l border-border-light pl-6">
+          {children.map((child) => {
+            const isActive = child.href === pathname;
+            return (
+              <Link
+                key={child.href}
+                href={child.href}
+                onClick={onNavigate}
+                aria-current={isActive ? "page" : undefined}
+                className={`rounded-sm px-3 py-1.5 text-small font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 ${
+                  isActive
+                    ? "bg-primary text-white"
+                    : "text-text-secondary hover:bg-bg-light hover:text-text-primary"
+                }`}
+              >
+                {child.label}
+              </Link>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
+}
+
 export function Sidebar({
   logo,
   links = defaultLinks,
@@ -134,25 +193,37 @@ export function Sidebar({
       {logo && <div className="flex h-16 items-center px-4">{logo}</div>}
 
       <nav aria-label="Sidebar" className="flex-1 space-y-1 px-3 pt-3">
-        {links.map((link) => {
-          const isActive = pathname === link.href;
-          return (
-            <Link
-              key={link.href}
-              href={link.href}
-              onClick={onNavigate}
-              aria-current={isActive ? "page" : undefined}
-              className={`flex items-center gap-3 rounded-sm px-3 py-2 text-body font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 ${
-                isActive
-                  ? "bg-primary-light text-primary"
-                  : "text-text-secondary hover:bg-bg-light hover:text-text-primary"
-              }`}
-            >
-              {link.icon && <Icon icon={link.icon} size="sm" />}
-              {link.label}
-            </Link>
-          );
-        })}
+        {links.map((link) => (
+          <div key={link.label}>
+            {link.groupLabel && (
+              <p className="mb-1 mt-4 px-3 text-small font-bold uppercase tracking-widest text-text-secondary first:mt-0">
+                {link.groupLabel}
+              </p>
+            )}
+            {link.children ? (
+              <SidebarGroup link={link} pathname={pathname} onNavigate={onNavigate} />
+            ) : (
+              <Link
+                href={link.href ?? "#"}
+                onClick={onNavigate}
+                aria-current={pathname === link.href ? "page" : undefined}
+                className={`flex items-center gap-3 rounded-sm px-3 py-2 text-body font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 ${
+                  pathname === link.href
+                    ? "bg-primary-light text-primary"
+                    : "text-text-secondary hover:bg-bg-light hover:text-text-primary"
+                }`}
+              >
+                {link.icon && <Icon icon={link.icon} size="sm" />}
+                <span className="flex-1">{link.label}</span>
+                {link.badge && (
+                  <span className="rounded-full bg-primary-light px-1.5 py-0.5 text-small font-semibold text-primary">
+                    {link.badge}
+                  </span>
+                )}
+              </Link>
+            )}
+          </div>
+        ))}
       </nav>
 
       <div className="space-y-3 border-t border-border-light p-3">

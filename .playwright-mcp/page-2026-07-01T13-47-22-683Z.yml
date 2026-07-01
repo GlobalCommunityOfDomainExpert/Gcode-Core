@@ -1,0 +1,346 @@
+- generic [active] [ref=f40e1]:
+  - navigation [ref=f40e2]:
+    - link "GCODE" [ref=f40e3] [cursor=pointer]:
+      - /url: explore.html
+    - generic [ref=f40e4]:
+      - link "Explore" [ref=f40e5] [cursor=pointer]:
+        - /url: explore.html
+      - link "Events" [ref=f40e6] [cursor=pointer]:
+        - /url: events.html
+      - button "Resources ▾" [ref=f40e8] [cursor=pointer]:
+        - text: Resources
+        - generic [ref=f40e9]: ▾
+    - generic [ref=f40e10]:
+      - link "Problem Feed" [ref=f40e11] [cursor=pointer]:
+        - /url: dashboard.html
+      - button "Notifications" [ref=f40e12] [cursor=pointer]:
+        - img [ref=f40e13]
+  - generic [ref=f40e16]:
+    - complementary [ref=f40e17]:
+      - generic [ref=f40e18]:
+        - generic [ref=f40e19]:
+          - paragraph [ref=f40e20]: Main
+          - generic [ref=f40e21]:
+            - link "⬡ Dashboard 12" [ref=f40e22] [cursor=pointer]:
+              - /url: dashboard.html
+              - generic [ref=f40e23]: ⬡
+              - text: Dashboard
+              - generic [ref=f40e24]: "12"
+            - link "◷ My Bookings" [ref=f40e25] [cursor=pointer]:
+              - /url: my-bookings.html
+              - generic [ref=f40e26]: ◷
+              - text: My Bookings
+            - button "📅 My Events ▸" [ref=f40e27] [cursor=pointer]:
+              - generic [ref=f40e28]: 📅
+              - text: My Events
+              - generic [ref=f40e29]: ▸
+            - link "₹ Payouts" [ref=f40e30] [cursor=pointer]:
+              - /url: payouts.html
+              - generic [ref=f40e31]: ₹
+              - text: Payouts
+        - generic [ref=f40e32]:
+          - paragraph [ref=f40e33]: Account
+          - generic [ref=f40e34]:
+            - link "◇ Settings" [ref=f40e35] [cursor=pointer]:
+              - /url: settings.html
+              - generic [ref=f40e36]: ◇
+              - text: Settings
+            - link "↗ Refer" [ref=f40e37] [cursor=pointer]:
+              - /url: "#"
+              - generic [ref=f40e38]: ↗
+              - text: Refer
+      - button "Arjun Sharma expert ▴" [ref=f40e41] [cursor=pointer]:
+        - generic [ref=f40e43]:
+          - paragraph [ref=f40e44]: Arjun Sharma
+          - paragraph [ref=f40e45]: expert
+        - generic [ref=f40e46]: ▴
+    - main [ref=f40e47]:
+      - generic [ref=f40e49]:
+        - generic [ref=f40e50]:
+          - heading "Discover Events & Webinars" [level=1] [ref=f40e51]
+          - paragraph [ref=f40e52]: Hackathons, Ideathons, Expert AMAs, Live Webinars — all in one place.
+        - link "＋ Host / Submit Event" [ref=f40e55] [cursor=pointer]:
+          - /url: host-event.html
+          - button "＋ Host / Submit Event" [ref=f40e56]
+      - generic [ref=f40e57]:
+        - generic [ref=f40e58]:
+          - button "All" [ref=f40e59] [cursor=pointer]
+          - button "Events" [ref=f40e60] [cursor=pointer]
+          - button "Webinars" [ref=f40e61] [cursor=pointer]
+          - button "Hackathons" [ref=f40e62] [cursor=pointer]
+          - button "Ideathons" [ref=f40e63] [cursor=pointer]
+          - button "Meetups" [ref=f40e64] [cursor=pointer]
+          - button "⭐ Expert AMAs" [ref=f40e65] [cursor=pointer]
+        - generic [ref=f40e66]:
+          - generic [ref=f40e67]: Filter by
+          - generic [ref=f40e68] [cursor=pointer]: Upcoming
+          - generic [ref=f40e69] [cursor=pointer]: Past
+          - generic [ref=f40e71] [cursor=pointer]: Free
+          - generic [ref=f40e72] [cursor=pointer]: Paid
+          - generic [ref=f40e74] [cursor=pointer]: Online
+          - generic [ref=f40e75] [cursor=pointer]: In-Person
+      - generic [ref=f40e76]:
+        - paragraph [ref=f40e77]: ⭐ Featured
+        - generic [ref=f40e79]:
+          - button "‹" [ref=f40e80] [cursor=pointer]
+          - generic [ref=f40e81]:
+            - generic [ref=f40e82]:
+              - generic [ref=f40e84]: Hackathon
+              - generic [ref=f40e85]:
+                - generic [ref=f40e86]:
+                  - generic [ref=f40e87]: Hackathon
+                  - generic [ref=f40e88]: Online
+                  - generic [ref=f40e89]: Free
+                - paragraph [ref=f40e90]: GCODE Build Sprint · Summer 2026
+                - generic [ref=f40e91]:
+                  - paragraph [ref=f40e92]: 📅 15 Jul 2026 · 10:00 AM IST
+                  - paragraph [ref=f40e93]: 📍 Online
+                - generic [ref=f40e99]: +148 registered
+                - generic [ref=f40e100]:
+                  - generic [ref=f40e101]: 52 spots left
+                  - link "Register →" [ref=f40e102] [cursor=pointer]:
+                    - /url: event-detail.html
+                    - button "Register →" [ref=f40e103]
+            - generic [ref=f40e104]:
+              - generic [ref=f40e106]: ⭐ Expert AMA
+              - generic [ref=f40e107]:
+                - generic [ref=f40e108]:
+                  - generic [ref=f40e109]: ⭐ Expert AMA
+                  - generic [ref=f40e110]: Online
+                  - generic [ref=f40e111]: Free
+                - paragraph [ref=f40e112]: "Ask Me Anything: Fundraising for Deep-Tech Startups"
+                - generic [ref=f40e113]:
+                  - paragraph [ref=f40e114]: 📅 18 Jul 2026 · 6:00 PM IST
+                  - paragraph [ref=f40e115]: 📍 Online · GCODE Live
+                - generic [ref=f40e121]: +94 registered
+                - generic [ref=f40e122]:
+                  - generic [ref=f40e123]: Open
+                  - link "Register →" [ref=f40e124] [cursor=pointer]:
+                    - /url: event-detail.html
+                    - button "Register →" [ref=f40e125]
+            - generic [ref=f40e126]:
+              - generic [ref=f40e128]: Webinar
+              - generic [ref=f40e129]:
+                - generic [ref=f40e130]:
+                  - generic [ref=f40e131]: Webinar · Finance
+                  - generic [ref=f40e132]: ₹499
+                - paragraph [ref=f40e133]: "Fundraising readiness: what investors check first"
+                - generic [ref=f40e134]:
+                  - paragraph [ref=f40e135]: 📅 5 Jul 2026 · 5:00 PM IST
+                  - paragraph [ref=f40e136]: 📍 Online · Live + Recording
+                - generic [ref=f40e142]: +17 registered
+                - generic [ref=f40e143]:
+                  - generic [ref=f40e144]: Open
+                  - link "Register →" [ref=f40e145] [cursor=pointer]:
+                    - /url: event-detail.html
+                    - button "Register →" [ref=f40e146]
+          - button "›" [ref=f40e147] [cursor=pointer]
+      - generic [ref=f40e152]:
+        - paragraph [ref=f40e153]: Upcoming Events
+        - generic [ref=f40e155]:
+          - generic [ref=f40e156]:
+            - generic [ref=f40e158]: Hackathon
+            - generic [ref=f40e159]:
+              - generic [ref=f40e160]:
+                - generic [ref=f40e161]: Online
+                - generic [ref=f40e162]: Free
+              - paragraph [ref=f40e163]: GCODE Build Sprint · Summer 2026
+              - generic [ref=f40e164]:
+                - paragraph [ref=f40e165]: 📅 15 Jul · 10:00 AM IST
+                - paragraph [ref=f40e166]: 📍 Online
+              - generic [ref=f40e172]: +148 interested
+              - generic [ref=f40e173]:
+                - generic [ref=f40e174]: 52 spots left
+                - link "Register" [ref=f40e175] [cursor=pointer]:
+                  - /url: event-detail.html
+                  - button "Register" [ref=f40e176]
+          - generic [ref=f40e177]:
+            - generic [ref=f40e179]: ⭐ Expert AMA
+            - generic [ref=f40e180]:
+              - generic [ref=f40e181]:
+                - generic [ref=f40e182]: Online
+                - generic [ref=f40e183]: Free
+              - paragraph [ref=f40e184]: "Ask Me Anything: Fundraising for Deep-Tech"
+              - generic [ref=f40e185]:
+                - paragraph [ref=f40e186]: 📅 18 Jul · 6:00 PM IST
+                - paragraph [ref=f40e187]: 📍 GCODE Live
+              - generic [ref=f40e193]: +94 interested
+              - generic [ref=f40e194]:
+                - generic [ref=f40e195]: Open
+                - link "Register" [ref=f40e196] [cursor=pointer]:
+                  - /url: event-detail.html
+                  - button "Register" [ref=f40e197]
+          - generic [ref=f40e198]:
+            - generic [ref=f40e200]: Ideathon
+            - generic [ref=f40e201]:
+              - generic [ref=f40e202]:
+                - generic [ref=f40e203]: In-Person
+                - generic [ref=f40e204]: Free
+              - paragraph [ref=f40e205]: ClimaTech Ideathon 2026
+              - generic [ref=f40e206]:
+                - paragraph [ref=f40e207]: 📅 20 Jul · 9:00 AM IST
+                - paragraph [ref=f40e208]: 📍 Bangalore, India
+              - generic [ref=f40e214]: +67 interested
+              - generic [ref=f40e215]:
+                - generic [ref=f40e216]: 8 spots left
+                - link "Register" [ref=f40e217] [cursor=pointer]:
+                  - /url: event-detail.html
+                  - button "Register" [ref=f40e218]
+          - generic [ref=f40e219]:
+            - generic [ref=f40e221]: Community Meetup
+            - generic [ref=f40e222]:
+              - generic [ref=f40e223]:
+                - generic [ref=f40e224]: In-Person
+                - generic [ref=f40e225]: Free
+              - paragraph [ref=f40e226]: GCODE Founders Meetup · Mumbai
+              - generic [ref=f40e227]:
+                - paragraph [ref=f40e228]: 📅 22 Jul · 5:30 PM IST
+                - paragraph [ref=f40e229]: 📍 Mumbai, India
+              - generic [ref=f40e235]: +113 interested
+              - generic [ref=f40e236]:
+                - generic [ref=f40e237]: Open
+                - link "Register" [ref=f40e238] [cursor=pointer]:
+                  - /url: event-detail.html
+                  - button "Register" [ref=f40e239]
+          - generic [ref=f40e240]:
+            - generic [ref=f40e242]: Institution Event
+            - generic [ref=f40e243]:
+              - generic [ref=f40e244]:
+                - generic [ref=f40e245]: In-Person
+                - generic [ref=f40e246]: ₹200
+              - paragraph [ref=f40e247]: National Tech Symposium 2026 — IIT Delhi
+              - generic [ref=f40e248]:
+                - paragraph [ref=f40e249]: 📅 25 Jul · 9:00 AM IST
+                - paragraph [ref=f40e250]: 📍 New Delhi, India
+              - generic [ref=f40e256]: +204 interested
+              - generic [ref=f40e257]:
+                - generic [ref=f40e258]: Open
+                - link "Register" [ref=f40e259] [cursor=pointer]:
+                  - /url: event-detail.html
+                  - button "Register" [ref=f40e260]
+          - generic [ref=f40e261]:
+            - generic [ref=f40e263]: Expert AMA · Past
+            - generic [ref=f40e264]:
+              - generic [ref=f40e265]:
+                - generic [ref=f40e266]: Online
+                - generic [ref=f40e267]: Free · Past
+              - paragraph [ref=f40e268]: "IP Protection for Startups: Common Pitfalls"
+              - generic [ref=f40e269]:
+                - paragraph [ref=f40e270]: 📅 10 Jun · 7:00 PM IST
+                - paragraph [ref=f40e271]: 📍 Online
+              - generic [ref=f40e277]: 176 attended
+              - generic [ref=f40e278]:
+                - generic [ref=f40e279]: Completed
+                - button "Watch Recording" [ref=f40e280] [cursor=pointer]
+      - generic [ref=f40e281]:
+        - generic [ref=f40e282]:
+          - paragraph [ref=f40e283]: 🎥 Webinars
+          - button "View All Webinars →" [ref=f40e285] [cursor=pointer]
+        - generic [ref=f40e286]:
+          - generic [ref=f40e287]:
+            - generic [ref=f40e288]:
+              - generic [ref=f40e289]: Legal/CA
+              - generic [ref=f40e290]: Free
+            - paragraph [ref=f40e291]: How to structure a co-founder agreement
+            - paragraph [ref=f40e294]: By ████████
+            - generic [ref=f40e295]:
+              - paragraph [ref=f40e296]: 📅 28 Jun 2026 · 7:00 PM IST
+              - paragraph [ref=f40e297]: ⏱ 45 minutes · 62 registered
+            - generic [ref=f40e298]:
+              - generic [ref=f40e299]: 14 spots left
+              - link "Register" [ref=f40e300] [cursor=pointer]:
+                - /url: event-detail.html
+                - button "Register" [ref=f40e301]
+          - generic [ref=f40e302]:
+            - generic [ref=f40e303]:
+              - generic [ref=f40e304]: Growth
+              - generic [ref=f40e305]: ₹299
+            - paragraph [ref=f40e306]: GTM strategy for B2B SaaS in India
+            - paragraph [ref=f40e309]: By ████████
+            - generic [ref=f40e310]:
+              - paragraph [ref=f40e311]: 📅 30 Jun 2026 · 6:00 PM IST
+              - paragraph [ref=f40e312]: ⏱ 60 minutes · 38 registered
+            - generic [ref=f40e313]:
+              - generic [ref=f40e314]: 22 spots left
+              - link "Register" [ref=f40e315] [cursor=pointer]:
+                - /url: event-detail.html
+                - button "Register" [ref=f40e316]
+          - generic [ref=f40e317]:
+            - generic [ref=f40e318]:
+              - generic [ref=f40e319]: Tech
+              - generic [ref=f40e320]: Free
+            - paragraph [ref=f40e321]: Building secure auth systems for early-stage startups
+            - paragraph [ref=f40e324]: By ████████
+            - generic [ref=f40e325]:
+              - paragraph [ref=f40e326]: 📅 10 Jul 2026 · 8:00 PM IST
+              - paragraph [ref=f40e327]: ⏱ 60 minutes · 91 registered
+            - generic [ref=f40e328]:
+              - generic [ref=f40e329]: 5 spots left
+              - link "Register" [ref=f40e330] [cursor=pointer]:
+                - /url: event-detail.html
+                - button "Register" [ref=f40e331]
+  - contentinfo [ref=f40e333]:
+    - generic [ref=f40e334]:
+      - generic [ref=f40e335]:
+        - paragraph [ref=f40e336]: Quick Links
+        - generic [ref=f40e337]:
+          - link "Explore" [ref=f40e338] [cursor=pointer]:
+            - /url: explore.html
+          - link "Events" [ref=f40e339] [cursor=pointer]:
+            - /url: events.html
+          - link "Ask AI" [ref=f40e340] [cursor=pointer]:
+            - /url: "#"
+      - generic [ref=f40e341]:
+        - paragraph [ref=f40e342]: Platform
+        - generic [ref=f40e343]:
+          - link "For Startups" [ref=f40e344] [cursor=pointer]:
+            - /url: for-startups.html
+          - link "For Experts" [ref=f40e345] [cursor=pointer]:
+            - /url: for-experts.html
+          - link "For Freshers" [ref=f40e346] [cursor=pointer]:
+            - /url: for-freshers.html
+          - link "For Institutions" [ref=f40e347] [cursor=pointer]:
+            - /url: for-institutions.html
+          - link "For Partners" [ref=f40e348] [cursor=pointer]:
+            - /url: for-partners.html
+      - generic [ref=f40e349]:
+        - paragraph [ref=f40e350]: Legal
+        - generic [ref=f40e351]:
+          - link "Privacy Policy" [ref=f40e352] [cursor=pointer]:
+            - /url: privacy-policy.html
+          - link "Terms of Service" [ref=f40e353] [cursor=pointer]:
+            - /url: terms-of-service.html
+          - link "Cancellation & Refunds" [ref=f40e354] [cursor=pointer]:
+            - /url: "#"
+          - link "Shipping & Delivery" [ref=f40e355] [cursor=pointer]:
+            - /url: "#"
+      - generic [ref=f40e356]:
+        - paragraph [ref=f40e357]: Social
+        - generic [ref=f40e358]:
+          - link "Facebook" [ref=f40e359] [cursor=pointer]:
+            - /url: "#"
+          - link "LinkedIn" [ref=f40e360] [cursor=pointer]:
+            - /url: "#"
+          - link "YouTube" [ref=f40e361] [cursor=pointer]:
+            - /url: "#"
+    - paragraph [ref=f40e363]: GCODE.IN · 1st Floor, SPD Plaza, Koramangala, Bengaluru · © 2024 GCODE — Global Community of Domain Experts
+  - button "AI" [ref=f40e364] [cursor=pointer]
+  - generic [ref=f40e366]:
+    - generic [ref=f40e367]:
+      - paragraph [ref=f40e368]: Wireframe Debug
+      - generic [ref=f40e369]:
+        - generic [ref=f40e370]: View as
+        - combobox [ref=f40e371] [cursor=pointer]:
+          - option "Guest"
+          - option "Expert" [selected]
+          - option "Fresher"
+          - option "Startup"
+          - option "Institution"
+      - generic [ref=f40e372]:
+        - generic [ref=f40e373]: Profile
+        - combobox [ref=f40e374] [cursor=pointer]:
+          - option "Incomplete (40%)"
+          - option "Complete (100%)" [selected]
+    - button "⚙ Debug" [ref=f40e375] [cursor=pointer]:
+      - generic [ref=f40e376]: ⚙
+      - text: Debug

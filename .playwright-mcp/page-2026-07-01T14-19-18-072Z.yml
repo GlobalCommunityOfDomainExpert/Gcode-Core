@@ -1,0 +1,126 @@
+- generic [active] [ref=f49e1]:
+  - generic [ref=f49e2]:
+    - banner [ref=f49e3]:
+      - generic [ref=f49e4]:
+        - generic [ref=f49e5]:
+          - link "GCODE" [ref=f49e6] [cursor=pointer]:
+            - /url: /
+          - navigation "Primary" [ref=f49e7]:
+            - link "Explore" [ref=f49e8] [cursor=pointer]:
+              - /url: /explore
+            - link "Events" [ref=f49e9] [cursor=pointer]:
+              - /url: /events
+            - generic [ref=f49e12] [cursor=pointer]: Resources ▾
+        - generic [ref=f49e13]:
+          - button "Notifications" [ref=f49e14]:
+            - img [ref=f49e15]
+          - button "Problem Feed" [ref=f49e19]
+    - generic [ref=f49e20]:
+      - complementary [ref=f49e21]:
+        - navigation "Sidebar" [ref=f49e22]:
+          - generic [ref=f49e23]:
+            - paragraph [ref=f49e24]: Main
+            - link "Dashboard 12" [ref=f49e25] [cursor=pointer]:
+              - /url: /dashboard
+              - img [ref=f49e26]
+              - generic [ref=f49e31]: Dashboard
+              - generic [ref=f49e32]: "12"
+          - link "My Bookings" [ref=f49e34] [cursor=pointer]:
+            - /url: /my-bookings
+            - img [ref=f49e35]
+            - generic [ref=f49e39]: My Bookings
+          - generic [ref=f49e41]:
+            - button "My Events" [expanded] [ref=f49e42]:
+              - img [ref=f49e43]
+              - generic [ref=f49e46]: My Events
+              - img [ref=f49e47]
+            - generic [ref=f49e49]:
+              - link "Attending" [ref=f49e50] [cursor=pointer]:
+                - /url: /my-events
+              - link "Organizing" [ref=f49e51] [cursor=pointer]:
+                - /url: /my-organized-events
+          - link "Payouts" [ref=f49e53] [cursor=pointer]:
+            - /url: /payouts
+            - img [ref=f49e54]
+            - generic [ref=f49e57]: Payouts
+          - generic [ref=f49e58]:
+            - paragraph [ref=f49e59]: Account
+            - link "Settings" [ref=f49e60] [cursor=pointer]:
+              - /url: /settings
+              - img [ref=f49e61]
+              - generic [ref=f49e64]: Settings
+          - link "Refer" [ref=f49e66] [cursor=pointer]:
+            - /url: /refer
+            - img [ref=f49e67]
+            - generic [ref=f49e73]: Refer
+        - button "Arjun Sharma Expert" [ref=f49e76]:
+          - generic [ref=f49e79]: AS
+          - generic [ref=f49e80]:
+            - generic [ref=f49e81]: Arjun Sharma
+            - generic [ref=f49e82]: Expert
+          - img [ref=f49e83]
+      - main [ref=f49e85]:
+        - generic [ref=f49e87]:
+          - generic [ref=f49e88]:
+            - heading "My Events" [level=1] [ref=f49e89]
+            - paragraph [ref=f49e90]: Registered events, history & purchases
+          - generic [ref=f49e91]:
+            - tablist [ref=f49e92]:
+              - tab "Upcoming" [selected] [ref=f49e93]
+              - tab "Past" [ref=f49e94]
+              - tab "Purchase History" [ref=f49e95]
+              - tab "Refund Requests" [ref=f49e96]
+            - radiogroup [ref=f49e97]:
+              - radio "This Week" [checked] [ref=f49e98]
+              - radio "This Month" [ref=f49e99]
+              - radio "All Upcoming" [ref=f49e100]
+            - generic [ref=f49e101]:
+              - generic [ref=f49e102]:
+                - generic [ref=f49e103]:
+                  - paragraph [ref=f49e104]: JUL
+                  - paragraph [ref=f49e105]: "15"
+                - generic [ref=f49e106]:
+                  - generic [ref=f49e107]:
+                    - generic [ref=f49e108]: Hackathon
+                    - generic [ref=f49e109]: Online
+                    - generic [ref=f49e110]: Free
+                  - paragraph [ref=f49e111]: GCODE Build Sprint · Summer 2026
+                  - paragraph [ref=f49e112]:
+                    - img [ref=f49e113]
+                    - text: 10:00 AM – 6:00 PM IST · 148 registered
+                - link "View Event →" [ref=f49e115] [cursor=pointer]:
+                  - /url: /events/gcode-build-sprint-2026
+              - generic [ref=f49e116]:
+                - generic [ref=f49e117]:
+                  - paragraph [ref=f49e118]: JUL
+                  - paragraph [ref=f49e119]: "18"
+                - generic [ref=f49e120]:
+                  - generic [ref=f49e121]:
+                    - generic [ref=f49e122]: Expert AMA
+                    - generic [ref=f49e123]: Online
+                    - generic [ref=f49e124]: Free
+                  - paragraph [ref=f49e125]: "Ask Me Anything: Fundraising for Deep-Tech Startups"
+                  - paragraph [ref=f49e126]:
+                    - img [ref=f49e127]
+                    - text: 6:00 PM IST · 94 registered
+                - link "View Event →" [ref=f49e129] [cursor=pointer]:
+                  - /url: /events/ask-me-anything-fundraising
+              - generic [ref=f49e130]:
+                - generic [ref=f49e131]:
+                  - paragraph [ref=f49e132]: JUL
+                  - paragraph [ref=f49e133]: "5"
+                - generic [ref=f49e134]:
+                  - generic [ref=f49e135]:
+                    - generic [ref=f49e136]: Webinar
+                    - generic [ref=f49e137]: Online
+                    - generic [ref=f49e138]: ₹299
+                  - paragraph [ref=f49e139]: "Fundraising readiness: what investors check first"
+                  - paragraph [ref=f49e140]:
+                    - img [ref=f49e141]
+                    - text: 5:00 PM IST · 17 registered
+                - link "View Event →" [ref=f49e143] [cursor=pointer]:
+                  - /url: /events/fundraising-readiness-webinar
+    - button "Ask GCODE AI" [ref=f49e144]:
+      - img [ref=f49e145]
+  - button "Open Next.js Dev Tools" [ref=f49e153] [cursor=pointer]:
+    - img [ref=f49e154]
