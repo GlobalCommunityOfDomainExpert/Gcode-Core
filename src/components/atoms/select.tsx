@@ -1,0 +1,58 @@
+import { SelectHTMLAttributes, forwardRef } from "react";
+
+export type SelectVariant = "default" | "outline";
+export type SelectSize = "sm" | "md";
+
+export interface SelectProps
+  extends Omit<SelectHTMLAttributes<HTMLSelectElement>, "size"> {
+  variant?: SelectVariant;
+  size?: SelectSize;
+  error?: boolean;
+}
+
+const sizeClasses: Record<SelectSize, string> = {
+  sm: "h-9 px-2 text-small",
+  md: "h-11 px-4 text-body",
+};
+
+const variantClasses: Record<SelectVariant, string> = {
+  default: "bg-surface-light border-border-light hover:border-border-hover",
+  outline: "bg-transparent border-border-light hover:border-border-hover",
+};
+
+export const Select = forwardRef<HTMLSelectElement, SelectProps>(
+  (
+    {
+      variant = "default",
+      size = "md",
+      error = false,
+      disabled,
+      className = "",
+      children,
+      ...props
+    },
+    ref
+  ) => {
+    return (
+      <select
+        ref={ref}
+        disabled={disabled}
+        aria-invalid={error || undefined}
+        className={
+          `w-full rounded-sm border text-text-primary transition-colors ` +
+          `focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 ` +
+          `disabled:cursor-not-allowed disabled:bg-bg-light disabled:opacity-50 ` +
+          (error
+            ? "border-danger focus-visible:ring-danger "
+            : `${variantClasses[variant]} focus-visible:border-primary focus-visible:ring-primary `) +
+          `${sizeClasses[size]} ${className}`
+        }
+        {...props}
+      >
+        {children}
+      </select>
+    );
+  }
+);
+
+Select.displayName = "Select";

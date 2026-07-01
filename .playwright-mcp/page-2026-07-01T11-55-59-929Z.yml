@@ -1,0 +1,125 @@
+- generic [active] [ref=f4e1]:
+  - main [ref=f4e2]:
+    - generic [ref=f4e3]:
+      - paragraph [ref=f4e4]: GCODE Design System
+      - heading "Atom Showcase" [level=1] [ref=f4e5]
+    - generic [ref=f4e6]:
+      - heading "Button" [level=2] [ref=f4e7]
+      - generic [ref=f4e8]:
+        - generic [ref=f4e9]:
+          - button "primary" [ref=f4e10]
+          - button "secondary" [ref=f4e11]
+          - button "outline" [ref=f4e12]
+          - button "ghost" [ref=f4e13]
+          - button "accent" [ref=f4e14]
+          - button "success" [ref=f4e15]
+          - button "warning" [ref=f4e16]
+          - button "danger" [ref=f4e17]
+          - button "danger-ghost" [ref=f4e18]
+        - generic [ref=f4e19]:
+          - button "XS" [ref=f4e20]
+          - button "SM" [ref=f4e21]
+          - button "MD" [ref=f4e22]
+          - button "LG" [ref=f4e23]
+          - button "XL" [ref=f4e24]
+        - generic [ref=f4e25]:
+          - button "Loading" [disabled] [ref=f4e26]:
+            - status [ref=f4e27]:
+              - generic [ref=f4e29]: Loading...
+            - text: Loading
+          - button "Disabled" [disabled] [ref=f4e30]
+    - generic [ref=f4e31]:
+      - heading "Input" [level=2] [ref=f4e32]
+      - generic [ref=f4e34]:
+        - textbox "Small" [ref=f4e35]
+        - textbox "Medium" [ref=f4e36]
+        - textbox "Large" [ref=f4e37]
+        - textbox "Error state" [invalid] [ref=f4e38]
+        - textbox "Disabled" [disabled] [ref=f4e39]
+    - generic [ref=f4e40]:
+      - heading "Badge" [level=2] [ref=f4e41]
+      - generic [ref=f4e43]:
+        - generic [ref=f4e44]:
+          - generic [ref=f4e45]: solid
+          - generic [ref=f4e46]: neutral
+          - generic [ref=f4e47]: primary
+          - generic [ref=f4e48]: success
+          - generic [ref=f4e49]: warning
+          - generic [ref=f4e50]: danger
+        - generic [ref=f4e51]:
+          - generic [ref=f4e52]: outline
+          - generic [ref=f4e53]: neutral
+          - generic [ref=f4e54]: primary
+          - generic [ref=f4e55]: success
+          - generic [ref=f4e56]: warning
+          - generic [ref=f4e57]: danger
+        - generic [ref=f4e58]:
+          - generic [ref=f4e59]: muted
+          - generic [ref=f4e60]: neutral
+          - generic [ref=f4e61]: primary
+          - generic [ref=f4e62]: success
+          - generic [ref=f4e63]: warning
+          - generic [ref=f4e64]: danger
+    - generic [ref=f4e65]:
+      - heading "Avatar" [level=2] [ref=f4e66]
+      - generic [ref=f4e68]:
+        - generic [ref=f4e71]: AL
+        - generic [ref=f4e74]: AL
+        - generic [ref=f4e75]:
+          - generic [ref=f4e77]: AL
+          - img "Online" [ref=f4e78]
+        - generic [ref=f4e79]:
+          - generic [ref=f4e81]: GH
+          - img "Away" [ref=f4e82]
+    - generic [ref=f4e83]:
+      - heading "Checkbox & Radio" [level=2] [ref=f4e84]
+      - generic [ref=f4e85]:
+        - generic [ref=f4e86]:
+          - generic [ref=f4e87] [cursor=pointer]:
+            - checkbox "Unchecked" [ref=f4e88]
+            - text: Unchecked
+          - generic [ref=f4e89] [cursor=pointer]:
+            - checkbox "Checked" [checked] [ref=f4e90]
+            - text: Checked
+          - generic [ref=f4e91]:
+            - checkbox "Disabled" [disabled] [ref=f4e92]
+            - text: Disabled
+        - generic [ref=f4e93]:
+          - generic [ref=f4e94] [cursor=pointer]:
+            - radio "Option A" [checked] [ref=f4e95]
+            - text: Option A
+          - generic [ref=f4e96] [cursor=pointer]:
+            - radio "Option B" [ref=f4e97]
+            - text: Option B
+          - generic [ref=f4e98]:
+            - radio "Disabled" [disabled] [ref=f4e99]
+            - text: Disabled
+    - generic [ref=f4e100]:
+      - heading "Select" [level=2] [ref=f4e101]
+      - combobox [ref=f4e103]:
+        - option "Choose an option" [disabled] [selected]
+        - option "Option 1"
+        - option "Option 2"
+    - generic [ref=f4e104]:
+      - heading "Spinner" [level=2] [ref=f4e105]
+      - generic [ref=f4e107]:
+        - status [ref=f4e108]:
+          - generic [ref=f4e110]: Loading...
+        - status [ref=f4e111]:
+          - generic [ref=f4e113]: Loading...
+        - status [ref=f4e114]:
+          - generic [ref=f4e116]: Loading...
+        - status [ref=f4e117]:
+          - generic [ref=f4e122]: Loading...
+    - generic [ref=f4e123]:
+      - heading "Tooltip" [level=2] [ref=f4e124]
+      - generic [ref=f4e126]:
+        - generic [ref=f4e127]:
+          - button "Hover me" [ref=f4e128]
+          - tooltip "Saves your changes"
+        - generic [ref=f4e129]:
+          - button "Bottom" [ref=f4e130]
+          - tooltip "Bottom placement"
+  - button "Open Next.js Dev Tools" [ref=f4e136] [cursor=pointer]:
+    - img [ref=f4e137]
+  - alert [ref=f4e140]

@@ -3,13 +3,109 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+
+  /* GCODE tokens — colors (tokens/colors.md) */
+  --g-color-primary: hsl(206, 42%, 18%);
+  --g-color-primary-hover: hsl(206, 42%, 24%);
+  --g-color-primary-light: hsla(206, 42%, 18%, 0.08);
+
+  --g-color-secondary: hsl(0, 100%, 45%);
+  --g-color-secondary-hover: hsl(0, 100%, 38%);
+  --g-color-secondary-light: hsla(0, 100%, 45%, 0.08);
+
+  --g-color-success: hsl(142, 60%, 40%);
+  --g-color-success-light: hsla(142, 60%, 40%, 0.1);
+
+  /* Warning/Danger values undocumented in tokens/colors.md — placeholder pending design confirmation */
+  --g-color-warning: hsl(38, 92%, 50%);
+  --g-color-warning-light: hsla(38, 92%, 50%, 0.1);
+  --g-color-danger: hsl(0, 72%, 45%);
+  --g-color-danger-light: hsla(0, 72%, 45%, 0.1);
+
+  --g-color-bg-light: hsl(30, 10%, 96%);
+  --g-color-bg-subtle: hsl(30, 10%, 98%);
+  --g-color-surface-light: hsl(0, 0%, 100%);
+
+  --g-color-text-primary: hsl(30, 8%, 12%);
+  --g-color-text-secondary: hsl(210, 12%, 40%);
+
+  --g-color-border-light: rgba(26, 47, 63, 0.08);
+  --g-color-border-hover: rgba(26, 47, 63, 0.16);
+
+  /* GCODE tokens — radius (tokens/radius.md) */
+  --g-radius-sm: 6px;
+  --g-radius-md: 12px;
+  --g-radius-lg: 18px;
+  --g-radius-full: 9999px;
+
+  /* GCODE tokens — shadows (tokens/shadows.md) */
+  --g-shadow-inner: inset 0 2px 4px rgba(26, 47, 63, 0.02);
+  --g-shadow-sm: 0 1px 4px rgba(26, 47, 63, 0.02);
+  --g-shadow-md: 0 4px 16px rgba(26, 47, 63, 0.04);
+  --g-shadow-lg: 0 16px 40px rgba(26, 47, 63, 0.08);
+
+  /* GCODE tokens — spacing (tokens/spacing.md) */
+  --g-space-xs: 0.25rem;
+  --g-space-sm: 0.5rem;
+  --g-space-md: 1rem;
+  --g-space-lg: 1.5rem;
+  --g-space-xl: 2rem;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-inter);
+  --font-mono: var(--font-jetbrains-mono);
+
+  /* Brand */
+  --color-primary: var(--g-color-primary);
+  --color-primary-hover: var(--g-color-primary-hover);
+  --color-primary-light: var(--g-color-primary-light);
+  --color-secondary: var(--g-color-secondary);
+  --color-secondary-hover: var(--g-color-secondary-hover);
+  --color-secondary-light: var(--g-color-secondary-light);
+
+  /* Semantic */
+  --color-success: var(--g-color-success);
+  --color-success-light: var(--g-color-success-light);
+  --color-warning: var(--g-color-warning);
+  --color-warning-light: var(--g-color-warning-light);
+  --color-danger: var(--g-color-danger);
+  --color-danger-light: var(--g-color-danger-light);
+
+  /* Neutral */
+  --color-bg-light: var(--g-color-bg-light);
+  --color-bg-subtle: var(--g-color-bg-subtle);
+  --color-surface-light: var(--g-color-surface-light);
+  --color-text-primary: var(--g-color-text-primary);
+  --color-text-secondary: var(--g-color-text-secondary);
+  --color-border-light: var(--g-color-border-light);
+  --color-border-hover: var(--g-color-border-hover);
+
+  /* Radius — overrides Tailwind defaults so rounded-* always resolves to a token */
+  --radius-sm: var(--g-radius-sm);
+  --radius-md: var(--g-radius-md);
+  --radius-lg: var(--g-radius-lg);
+  --radius-full: var(--g-radius-full);
+
+  /* Shadows — overrides Tailwind defaults so shadow-* always resolves to a token */
+  --shadow-inner: var(--g-shadow-inner);
+  --shadow-sm: var(--g-shadow-sm);
+  --shadow-md: var(--g-shadow-md);
+  --shadow-lg: var(--g-shadow-lg);
+
+  /* Typography scale (foundations/typography.md names, Tailwind default sizes — no rem values documented) */
+  --text-small: 0.875rem;
+  --text-small--line-height: 1.25rem;
+  --text-body: 1rem;
+  --text-body--line-height: 1.5rem;
+  --text-large: 1.125rem;
+  --text-large--line-height: 1.75rem;
+  --text-heading: 1.5rem;
+  --text-heading--line-height: 2rem;
+  --text-display: 2.25rem;
+  --text-display--line-height: 2.5rem;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -22,5 +118,5 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
 }

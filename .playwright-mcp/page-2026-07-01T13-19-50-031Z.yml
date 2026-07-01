@@ -1,0 +1,65 @@
+- generic [ref=f27e1]:
+  - generic [ref=f27e2]:
+    - banner [ref=f27e3]:
+      - generic [ref=f27e4]:
+        - link "GCODE" [ref=f27e6] [cursor=pointer]:
+          - /url: /
+        - generic [ref=f27e7]:
+          - button "Notifications" [ref=f27e8]:
+            - img [ref=f27e9]
+          - button "Get Started" [ref=f27e13]
+          - button "Close menu" [expanded] [active] [ref=f27e48]:
+            - img [ref=f27e49]
+      - generic [ref=f27e52]:
+        - navigation "Primary" [ref=f27e53]:
+          - link "Explore" [ref=f27e54] [cursor=pointer]:
+            - /url: /explore
+          - link "Events" [ref=f27e55] [cursor=pointer]:
+            - /url: /events
+          - link "Blogs" [ref=f27e56] [cursor=pointer]:
+            - /url: /blogs
+          - link "Terms & Conditions" [ref=f27e57] [cursor=pointer]:
+            - /url: /terms
+          - link "Refund Policy" [ref=f27e58] [cursor=pointer]:
+            - /url: /refund-policy
+        - generic [ref=f27e60]:
+          - navigation "Sidebar" [ref=f27e61]:
+            - link "Dashboard" [ref=f27e62] [cursor=pointer]:
+              - /url: /dashboard
+              - img [ref=f27e63]
+              - text: Dashboard
+            - link "Bookings" [ref=f27e68] [cursor=pointer]:
+              - /url: /bookings
+              - img [ref=f27e69]
+              - text: Bookings
+          - generic [ref=f27e72]:
+            - generic [ref=f27e73]:
+              - paragraph [ref=f27e74]: Profile 60% complete
+              - progressbar "Profile completion" [ref=f27e75]
+            - button "Shashwat Singh Founder" [ref=f27e78]:
+              - generic [ref=f27e81]: SS
+              - generic [ref=f27e82]:
+                - generic [ref=f27e83]: Shashwat Singh
+                - generic [ref=f27e84]: Founder
+              - img [ref=f27e85]
+    - main [ref=f27e17]:
+      - generic [ref=f27e19]:
+        - generic [ref=f27e20]:
+          - heading "Dashboard" [level=1] [ref=f27e21]
+          - paragraph [ref=f27e22]: Welcome back, here's your overview.
+        - generic [ref=f27e23]:
+          - generic [ref=f27e24]:
+            - paragraph [ref=f27e25]: Total Registrations
+            - generic [ref=f27e27]: "148"
+            - paragraph [ref=f27e28]: +12 this week
+          - generic [ref=f27e29]:
+            - paragraph [ref=f27e30]: Total Earned
+            - generic [ref=f27e31]:
+              - generic [ref=f27e32]: ₹48,500
+              - generic [ref=f27e33]: +12%
+          - generic [ref=f27e34]:
+            - paragraph [ref=f27e35]: Upcoming Events
+            - generic [ref=f27e37]: "3"
+  - button "Open Next.js Dev Tools" [ref=f27e43] [cursor=pointer]:
+    - img [ref=f27e44]
+  - alert [ref=f27e47]

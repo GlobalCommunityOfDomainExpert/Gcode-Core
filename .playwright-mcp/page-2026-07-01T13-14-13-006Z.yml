@@ -1,0 +1,35 @@
+- generic [active] [ref=f26e1]:
+  - generic [ref=f26e2]:
+    - banner [ref=f26e3]:
+      - generic [ref=f26e4]:
+        - link "GCODE" [ref=f26e6] [cursor=pointer]:
+          - /url: /
+        - generic [ref=f26e7]:
+          - button "Notifications" [ref=f26e8]:
+            - img [ref=f26e9]
+          - button "Get Started" [ref=f26e13]
+          - button "Open menu" [ref=f26e14]:
+            - img [ref=f26e15]
+    - generic [ref=f26e16]:
+      - button "Open sidebar menu" [ref=f26e17]:
+        - img [ref=f26e18]
+      - main [ref=f26e20]:
+        - generic [ref=f26e22]:
+          - generic [ref=f26e23]:
+            - heading "Dashboard" [level=1] [ref=f26e24]
+            - paragraph [ref=f26e25]: Welcome back, here's your overview.
+          - generic [ref=f26e26]:
+            - generic [ref=f26e27]:
+              - paragraph [ref=f26e28]: Total Registrations
+              - generic [ref=f26e30]: "148"
+              - paragraph [ref=f26e31]: +12 this week
+            - generic [ref=f26e32]:
+              - paragraph [ref=f26e33]: Total Earned
+              - generic [ref=f26e34]:
+                - generic [ref=f26e35]: ₹48,500
+                - generic [ref=f26e36]: +12%
+            - generic [ref=f26e37]:
+              - paragraph [ref=f26e38]: Upcoming Events
+              - generic [ref=f26e40]: "3"
+  - button "Open Next.js Dev Tools" [ref=f26e46] [cursor=pointer]:
+    - img [ref=f26e47]

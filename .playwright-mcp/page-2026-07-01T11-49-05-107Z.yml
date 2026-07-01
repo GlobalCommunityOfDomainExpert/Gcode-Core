@@ -1,0 +1,121 @@
+- main [ref=e2]:
+  - generic [ref=e3]:
+    - paragraph [ref=e4]: GCODE Design System
+    - heading "Atom Showcase" [level=1] [ref=e5]
+  - generic [ref=e6]:
+    - heading "Button" [level=2] [ref=e7]
+    - generic [ref=e8]:
+      - generic [ref=e9]:
+        - button "primary" [ref=e10]
+        - button "secondary" [ref=e11]
+        - button "outline" [ref=e12]
+        - button "ghost" [ref=e13]
+        - button "accent" [ref=e14]
+        - button "success" [ref=e15]
+        - button "warning" [ref=e16]
+        - button "danger" [ref=e17]
+        - button "danger-ghost" [ref=e18]
+      - generic [ref=e19]:
+        - button "XS" [ref=e20]
+        - button "SM" [ref=e21]
+        - button "MD" [ref=e22]
+        - button "LG" [ref=e23]
+        - button "XL" [ref=e24]
+      - generic [ref=e25]:
+        - button "Loading" [disabled] [ref=e26]:
+          - status [ref=e27]:
+            - generic [ref=e29]: Loading...
+          - text: Loading
+        - button "Disabled" [disabled] [ref=e30]
+  - generic [ref=e31]:
+    - heading "Input" [level=2] [ref=e32]
+    - generic [ref=e34]:
+      - textbox "Small" [ref=e35]
+      - textbox "Medium" [ref=e36]
+      - textbox "Large" [ref=e37]
+      - textbox "Error state" [invalid] [ref=e38]
+      - textbox "Disabled" [disabled] [ref=e39]
+  - generic [ref=e40]:
+    - heading "Badge" [level=2] [ref=e41]
+    - generic [ref=e43]:
+      - generic [ref=e44]:
+        - generic [ref=e45]: solid
+        - generic [ref=e46]: neutral
+        - generic [ref=e47]: primary
+        - generic [ref=e48]: success
+        - generic [ref=e49]: warning
+        - generic [ref=e50]: danger
+      - generic [ref=e51]:
+        - generic [ref=e52]: outline
+        - generic [ref=e53]: neutral
+        - generic [ref=e54]: primary
+        - generic [ref=e55]: success
+        - generic [ref=e56]: warning
+        - generic [ref=e57]: danger
+      - generic [ref=e58]:
+        - generic [ref=e59]: muted
+        - generic [ref=e60]: neutral
+        - generic [ref=e61]: primary
+        - generic [ref=e62]: success
+        - generic [ref=e63]: warning
+        - generic [ref=e64]: danger
+  - generic [ref=e65]:
+    - heading "Avatar" [level=2] [ref=e66]
+    - generic [ref=e68]:
+      - generic [ref=e71]: AL
+      - generic [ref=e74]: AL
+      - generic [ref=e75]:
+        - generic [ref=e77]: AL
+        - img "Online" [ref=e78]
+      - generic [ref=e79]:
+        - generic [ref=e81]: GH
+        - img "Away" [ref=e82]
+  - generic [ref=e83]:
+    - heading "Checkbox & Radio" [level=2] [ref=e84]
+    - generic [ref=e85]:
+      - generic [ref=e86]:
+        - generic [ref=e87] [cursor=pointer]:
+          - checkbox "Unchecked" [ref=e88]
+          - text: Unchecked
+        - generic [ref=e89] [cursor=pointer]:
+          - checkbox "Checked" [checked] [ref=e90]
+          - text: Checked
+        - generic [ref=e91]:
+          - checkbox "Disabled" [disabled] [ref=e92]
+          - text: Disabled
+      - generic [ref=e93]:
+        - generic [ref=e94] [cursor=pointer]:
+          - radio "Option A" [checked] [ref=e95]
+          - text: Option A
+        - generic [ref=e96] [cursor=pointer]:
+          - radio "Option B" [ref=e97]
+          - text: Option B
+        - generic [ref=e98]:
+          - radio "Disabled" [disabled] [ref=e99]
+          - text: Disabled
+  - generic [ref=e100]:
+    - heading "Select" [level=2] [ref=e101]
+    - combobox [ref=e103]:
+      - option "Choose an option" [disabled] [selected]
+      - option "Option 1"
+      - option "Option 2"
+  - generic [ref=e104]:
+    - heading "Spinner" [level=2] [ref=e105]
+    - generic [ref=e107]:
+      - status [ref=e108]:
+        - generic [ref=e110]: Loading...
+      - status [ref=e111]:
+        - generic [ref=e113]: Loading...
+      - status [ref=e114]:
+        - generic [ref=e116]: Loading...
+      - status [ref=e117]:
+        - generic [ref=e122]: Loading...
+  - generic [ref=e123]:
+    - heading "Tooltip" [level=2] [ref=e124]
+    - generic [ref=e126]:
+      - generic [ref=e127]:
+        - button "Hover me" [ref=e128]
+        - tooltip "Saves your changes"
+      - generic [ref=e129]:
+        - button "Bottom" [ref=e130]
+        - tooltip "Bottom placement"

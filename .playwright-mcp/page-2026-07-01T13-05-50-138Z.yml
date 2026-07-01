@@ -1,0 +1,58 @@
+- generic [active] [ref=f24e1]:
+  - generic [ref=f24e2]:
+    - banner [ref=f24e3]:
+      - generic [ref=f24e4]:
+        - generic [ref=f24e5]:
+          - link "GCODE" [ref=f24e6] [cursor=pointer]:
+            - /url: /
+          - navigation "Primary" [ref=f24e7]:
+            - link "Explore" [ref=f24e8] [cursor=pointer]:
+              - /url: /explore
+            - link "Events" [ref=f24e9] [cursor=pointer]:
+              - /url: /events
+            - generic [ref=f24e12] [cursor=pointer]: Resources ▾
+        - generic [ref=f24e13]:
+          - button "Notifications" [ref=f24e14]:
+            - img [ref=f24e15]
+          - button "Get Started" [ref=f24e19]
+    - generic [ref=f24e20]:
+      - complementary [ref=f24e21]:
+        - navigation "Sidebar" [ref=f24e22]:
+          - link "Dashboard" [ref=f24e23] [cursor=pointer]:
+            - /url: /dashboard
+            - img [ref=f24e24]
+            - text: Dashboard
+          - link "Bookings" [ref=f24e29] [cursor=pointer]:
+            - /url: /bookings
+            - img [ref=f24e30]
+            - text: Bookings
+        - generic [ref=f24e33]:
+          - generic [ref=f24e34]:
+            - paragraph [ref=f24e35]: Profile 60% complete
+            - progressbar "Profile completion" [ref=f24e36]
+          - button "Shashwat Singh Founder" [ref=f24e39]:
+            - generic [ref=f24e42]: SS
+            - generic [ref=f24e43]:
+              - generic [ref=f24e44]: Shashwat Singh
+              - generic [ref=f24e45]: Founder
+            - img [ref=f24e46]
+      - main [ref=f24e48]:
+        - generic [ref=f24e50]:
+          - generic [ref=f24e51]:
+            - heading "Dashboard" [level=1] [ref=f24e52]
+            - paragraph [ref=f24e53]: Welcome back, here's your overview.
+          - generic [ref=f24e54]:
+            - generic [ref=f24e55]:
+              - paragraph [ref=f24e56]: Total Registrations
+              - generic [ref=f24e58]: "148"
+              - paragraph [ref=f24e59]: +12 this week
+            - generic [ref=f24e60]:
+              - paragraph [ref=f24e61]: Total Earned
+              - generic [ref=f24e62]:
+                - generic [ref=f24e63]: ₹48,500
+                - generic [ref=f24e64]: +12%
+            - generic [ref=f24e65]:
+              - paragraph [ref=f24e66]: Upcoming Events
+              - generic [ref=f24e68]: "3"
+  - button "Open Next.js Dev Tools" [ref=f24e74] [cursor=pointer]:
+    - img [ref=f24e75]
