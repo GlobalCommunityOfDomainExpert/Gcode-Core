@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f5f5f5;
+  /* --foreground: #171717; */
 
   /* GCODE tokens — colors (tokens/colors.md) */
   --g-color-primary: hsl(206, 42%, 18%);
@@ -22,7 +22,7 @@
   --g-color-danger: hsl(0, 72%, 45%);
   --g-color-danger-light: hsla(0, 72%, 45%, 0.1);
 
-  --g-color-bg-light: hsl(30, 10%, 96%);
+  --g-color-bg-light: hsl(0, 0%, 91%);
   --g-color-bg-subtle: hsl(30, 10%, 98%);
   --g-color-surface-light: hsl(0, 0%, 100%);
 

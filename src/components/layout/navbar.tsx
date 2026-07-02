@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { Bell, Menu, X } from "lucide-react";
 import { Button, Icon } from "@/components/atoms";
 import { Dropdown, DropdownItem } from "@/components/molecules";
+import Image from "next/image";
 
 export interface NavLink {
   label: string;
@@ -26,18 +27,18 @@ export interface NavbarProps {
 }
 
 const defaultLinks: NavLink[] = [
-  { label: "Explore", href: "/explore" },
+  // { label: "Explore", href: "/explore" },
   { label: "Events", href: "/events" },
 ];
 
 const defaultResourcesItems: DropdownItem[] = [
-  { label: "Blogs", href: "/blogs" },
-  { label: "Terms & Conditions", href: "/terms" },
-  { label: "Refund Policy", href: "/refund-policy" },
+  // { label: "Blogs", href: "/blogs" },
+  // { label: "Terms & Conditions", href: "/terms" },
+  // { label: "Refund Policy", href: "/refund-policy" },
 ];
 
 export function Navbar({
-  logo = <span className="text-body font-extrabold text-white">GCODE</span>,
+  logo = <Image src={"/Logo.png"} width={120} height={50} alt="logo" className="mt-2 " />,
   links = defaultLinks,
   resourcesLabel = "Resources",
   resourcesItems = defaultResourcesItems,
@@ -52,9 +53,9 @@ export function Navbar({
 
   return (
     <header className="bg-primary relative">
-      <div className="mx-auto flex h-16 items-center justify-between gap-4 px-7">
+      <div className="mx-auto flex h-16 items-center justify-between gap-4 ">
         <div className="flex items-center gap-8">
-          <Link href="/" className="shrink-0">
+          <Link href="/" >
             {logo}
           </Link>
           <nav
@@ -76,19 +77,19 @@ export function Navbar({
                 </Link>
               );
             })}
-            <Dropdown
+            {/* <Dropdown
               trigger={
                 <span className="text-body cursor-pointer font-medium text-white/70 hover:text-white">
                   {resourcesLabel} ▾
                 </span>
               }
               items={resourcesItems}
-            />
+            /> */}
           </nav>
         </div>
 
         <div className="hidden items-center gap-3 md:flex">
-          <button
+          {/* <button
             type="button"
             onClick={onNotificationClick}
             aria-label="Notifications"
@@ -101,7 +102,7 @@ export function Navbar({
           </button>
           <Button variant="accent" size="sm" onClick={onCtaClick}>
             {ctaLabel}
-          </Button>
+          </Button> */}
         </div>
 
         <div className="flex items-center gap-2 md:hidden">

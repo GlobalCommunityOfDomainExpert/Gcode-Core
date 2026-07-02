@@ -12,14 +12,14 @@ import {
 import { AppShell, Navbar, Sidebar, SidebarLink } from "@/components/layout";
 
 const sidebarLinks: SidebarLink[] = [
-  {
-    label: "Dashboard",
-    groupLabel: "Main",
-    href: "/dashboard",
-    icon: LayoutDashboard,
-    badge: "12",
-  },
-  { label: "My Bookings", href: "/my-bookings", icon: CalendarClock },
+  // {
+  //   label: "Dashboard",
+  //   groupLabel: "Main",
+  //   href: "/dashboard",
+  //   icon: LayoutDashboard,
+  //   badge: "12",
+  // },
+  // { label: "My Bookings", href: "/my-bookings", icon: CalendarClock },
   {
     label: "My Events",
     icon: CalendarCheck,
@@ -28,14 +28,14 @@ const sidebarLinks: SidebarLink[] = [
       { label: "Organizing", href: "/my-organized-events" },
     ],
   },
-  { label: "Payouts", href: "/payouts", icon: Wallet },
-  {
-    label: "Settings",
-    groupLabel: "Account",
-    href: "/settings",
-    icon: Settings,
-  },
-  { label: "Refer", href: "/refer", icon: Share2 },
+  // { label: "Payouts", href: "/payouts", icon: Wallet },
+  // {
+  //   label: "Settings",
+  //   groupLabel: "Account",
+  //   href: "/settings",
+  //   icon: Settings,
+  // },
+  // { label: "Refer", href: "/refer", icon: Share2 },
 ];
 
 const sidebarUser = {
