@@ -1,36 +1,91 @@
-import { notFound } from "next/navigation";
-import { Calendar, Coins, Mic, Clock } from "lucide-react";
+"use client";
+
+import { useState } from "react";
+import { useParams } from "next/navigation";
+import { Calendar, Clock, Mic } from "lucide-react";
 import { Avatar, Badge, ButtonLink, Icon } from "@/components/atoms";
-import { Breadcrumb } from "@/components/molecules";
+import { Breadcrumb, EmptyState } from "@/components/molecules";
 import { AuthenticatedShell } from "@/app/_components/authenticated-shell";
-import { getEventById, mockEvents } from "@/lib/mock-events";
-import { ResponseForm } from "./_components/response-form";
+import { getAnyEventById } from "@/lib/organized-events";
+import {
+  getCommunityRequestById,
+  getStakeholderById,
+  stakeholderCategoryLabel,
+  StakeholderCategory,
+} from "@/lib/community-requests";
+import { ResponseForm } from "../_components/response-form";
 
-export default async function CommunityRequestPage({
-  params,
+const categoryIntro: Record<StakeholderCategory, string> = {
+  "Venue Partner": "Provide or coordinate a venue for the event.",
+  "Sponsorship Partner":
+    "Provide sponsorship support — funding, credits, or prizes — for the event.",
+  "Guest Speaker": "Attend the event and present or speak on a relevant topic.",
+  Volunteer: "Help with on-ground or remote event logistics.",
+};
+
+export default function CommunityRequestPage() {
+  const params = useParams<{ id: string; requestId: string }>();
+  const event = getAnyEventById(params.id);
+  const request = getCommunityRequestById(params.requestId);
+  const stakeholder = request
+    ? getStakeholderById(request.stakeholderId)
+    : undefined;
+
+  if (!event || !request || !stakeholder) {
+    return (
+      <AuthenticatedShell>
+        <div className="mx-auto max-w-md">
+          <EmptyState
+            title="Request not found"
+            description="This request may not exist, or in-memory data was reset by a full page refresh."
+            action={
+              <ButtonLink href="/events" variant="primary">
+                Browse Events
+              </ButtonLink>
+            }
+          />
+        </div>
+      </AuthenticatedShell>
+    );
+  }
+
+  return (
+    <CommunityRequestView
+      event={event}
+      request={request}
+      stakeholder={stakeholder}
+    />
+  );
+}
+
+function CommunityRequestView({
+  event,
+  request,
+  stakeholder,
 }: {
-  params: Promise<{ id: string }>;
+  event: NonNullable<ReturnType<typeof getAnyEventById>>;
+  request: NonNullable<ReturnType<typeof getCommunityRequestById>>;
+  stakeholder: NonNullable<ReturnType<typeof getStakeholderById>>;
 }) {
-  const { id } = await params;
-  const event = getEventById(id);
+  const [status, setStatus] = useState(request.status);
+  const [respondedAt, setRespondedAt] = useState(request.respondedAt);
+  const categoryLabel = stakeholderCategoryLabel[request.category];
 
-  if (!event) {
-    notFound();
+  function handleRespond(nextStatus: typeof status, nextRespondedAt: string) {
+    setStatus(nextStatus);
+    setRespondedAt(nextRespondedAt);
   }
 
   return (
     <AuthenticatedShell>
       <div className="mx-auto max-w-2xl space-y-6">
         <Breadcrumb
-          items={[
-            { label: "Community Request" },
-            { label: "GCODE Community Help" },
-          ]}
+          items={[{ label: "Community Request" }, { label: categoryLabel }]}
         />
 
         <div className="bg-primary space-y-3 rounded-md p-6">
           <Badge variant="solid" tone="neutral">
-            Domain Expert · Guest Speaker
+            {categoryLabel}
           </Badge>
           <div className="flex items-start gap-3">
             <Icon icon={Mic} size="lg" className="mt-1 text-white" />
@@ -39,7 +94,8 @@ export default async function CommunityRequestPage({
                 You&apos;ve been invited to help with an event
               </h1>
               <p className="text-body text-white/70">
-                An organizer in the GCODE community needs your expertise.
+                An organizer in the GCODE community needs your help,{" "}
+                {stakeholder.name}.
               </p>
             </div>
           </div>
@@ -88,9 +144,6 @@ export default async function CommunityRequestPage({
                 </p>
               </div>
             </div>
-            <span className="text-small text-text-secondary">
-              6 others interested
-            </span>
           </div>
         </div>
 
@@ -102,22 +155,17 @@ export default async function CommunityRequestPage({
             <Icon icon={Mic} size="md" className="text-text-secondary mt-0.5" />
             <div>
               <p className="text-body text-text-primary font-semibold">
-                Domain Expert — Guest Speaker
+                {categoryLabel}
               </p>
               <p className="text-body text-text-secondary">
-                Attend the event and present or speak on a relevant topic.
-                Coordinate with the organizer on topic, slot, and duration
-                beforehand.
+                {categoryIntro[request.category]}
               </p>
             </div>
           </div>
           <blockquote className="bg-bg-light text-body text-text-secondary rounded-md p-4 italic">
-            &ldquo;We&apos;re looking for experts with experience in deep-tech,
-            AI/ML, or hardware startups to speak at our hackathon kickoff
-            session on {event.date}. Slot is 30 minutes including Q&amp;A.
-            We&apos;d love someone who can inspire builders!&rdquo;
+            &ldquo;{request.message}&rdquo;
           </blockquote>
-          <div className="border-border-light grid gap-4 border-t pt-4 sm:grid-cols-3">
+          <div className="border-border-light grid gap-4 border-t pt-4 sm:grid-cols-2">
             <div className="flex items-start gap-2">
               <Icon
                 icon={Calendar}
@@ -140,36 +188,23 @@ export default async function CommunityRequestPage({
                 className="text-text-secondary mt-0.5"
               />
               <div>
-                <p className="text-small text-text-secondary">
-                  Time commitment
-                </p>
-                <p className="text-body text-text-primary font-semibold">
-                  ~30 min on event day
-                </p>
-              </div>
-            </div>
-            <div className="flex items-start gap-2">
-              <Icon
-                icon={Coins}
-                size="sm"
-                className="text-text-secondary mt-0.5"
-              />
-              <div>
-                <p className="text-small text-text-secondary">Compensation</p>
-                <p className="text-body text-text-primary font-semibold">
-                  Voluntary · GCODE recognition
+                <p className="text-small text-text-secondary">Status</p>
+                <p className="text-body text-text-primary font-semibold capitalize">
+                  {status}
                 </p>
               </div>
             </div>
           </div>
         </div>
 
-        <ResponseForm />
+        <ResponseForm
+          requestId={request.id}
+          status={status}
+          respondedAt={respondedAt}
+          responseMessage={request.responseMessage}
+          onRespond={handleRespond}
+        />
       </div>
     </AuthenticatedShell>
   );
-}
-
-export function generateStaticParams() {
-  return mockEvents.map((event) => ({ id: event.id }));
 }

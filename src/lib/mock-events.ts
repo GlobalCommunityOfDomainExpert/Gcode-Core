@@ -50,8 +50,10 @@ export interface MockEvent {
   id: string;
   title: string;
   type: EventType;
-  mode: "Online" | "In-Person";
+  mode: "Online" | "In-Person" | "Hybrid";
+  status?: "published" | "cancelled";
   price: "Free" | string;
+  priceAmount?: number;
   date: string;
   time: string;
   location: string;
@@ -68,6 +70,7 @@ export interface MockEvent {
   agenda: EventAgendaItem[];
   organizer: EventOrganizer;
   terms: string[];
+  tags?: string[];
 }
 
 export const mockEvents: MockEvent[] = [
@@ -84,6 +87,7 @@ export const mockEvents: MockEvent[] = [
     spotsLeft: 52,
     capacity: 200,
     featured: true,
+    tags: ["Hackathon", "Beginner Friendly"],
     registrationCloses: "14 Jul 2026",
     duration: "8 hours · Full-day event",
     teamSize: "1–4 members · Solo or team participation",
@@ -177,6 +181,7 @@ export const mockEvents: MockEvent[] = [
     type: "Webinar",
     mode: "Online",
     price: "₹299",
+    priceAmount: 299,
     date: "5 Jul 2026",
     time: "5:00 PM IST",
     location: "Online · Live + Recording",
@@ -283,6 +288,7 @@ export const mockEvents: MockEvent[] = [
     type: "Institution Event",
     mode: "In-Person",
     price: "₹200",
+    priceAmount: 200,
     date: "25 Jul 2026",
     time: "9:00 AM IST",
     location: "New Delhi, India",
