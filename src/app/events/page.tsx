@@ -62,7 +62,7 @@ export default function EventsPage() {
             </p>
           </div>
           <ButtonLink
-            href="/host-event"
+            href="/my-organized-events/new"
             variant="secondary"
             className="shrink-0"
           >

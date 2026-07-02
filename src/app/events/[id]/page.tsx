@@ -1,17 +1,18 @@
-import { notFound } from "next/navigation";
-import {
-  Calendar,
-  Clock,
-  MapPin,
-  Award,
-  Users,
-  ArrowRight,
-} from "lucide-react";
+"use client";
+
+import { useParams } from "next/navigation";
+import { Calendar, Clock, MapPin, Award, Users, Compass } from "lucide-react";
 import { Avatar, Badge, Button, ButtonLink, Icon } from "@/components/atoms";
-import { AvatarGroup, Breadcrumb } from "@/components/molecules";
+import {
+  AvatarGroup,
+  Banner,
+  Breadcrumb,
+  EmptyState,
+} from "@/components/molecules";
 import { Timeline } from "@/components/molecules";
 import { AuthenticatedShell } from "@/app/_components/authenticated-shell";
-import { eventTypeTone, getEventById, mockEvents } from "@/lib/mock-events";
+import { eventTypeTone } from "@/lib/mock-events";
+import { getAnyEventById } from "@/lib/organized-events";
 import { ShareEventCard } from "./_components/share-event-card";
 
 const placeholderAttendees = [
@@ -43,16 +44,27 @@ function DetailItem({
   );
 }
 
-export default async function EventDetailPage({
-  params,
-}: {
-  params: Promise<{ id: string }>;
-}) {
-  const { id } = await params;
-  const event = getEventById(id);
+export default function EventDetailPage() {
+  const params = useParams<{ id: string }>();
+  const event = getAnyEventById(params.id);
 
   if (!event) {
-    notFound();
+    return (
+      <AuthenticatedShell>
+        <div className="mx-auto max-w-md">
+          <EmptyState
+            icon={Compass}
+            title="Event not found"
+            description="This event may not exist, or in-memory data was reset by a full page refresh."
+            action={
+              <ButtonLink href="/events" variant="primary">
+                Browse Events
+              </ButtonLink>
+            }
+          />
+        </div>
+      </AuthenticatedShell>
+    );
   }
 
   return (
@@ -65,6 +77,12 @@ export default async function EventDetailPage({
             { label: event.title },
           ]}
         />
+
+        {event.status === "cancelled" && (
+          <Banner tone="danger">
+            This event has been cancelled by the organizer.
+          </Banner>
+        )}
 
         <div className="grid gap-6 lg:grid-cols-[1fr_320px]">
           <div className="space-y-6">
@@ -191,14 +209,8 @@ export default async function EventDetailPage({
                     </p>
                   </div>
                 </div>
-                <ButtonLink
-                  href="/dashboard"
-                  variant="ghost"
-                  size="sm"
-                  className="inline-flex items-center gap-1"
-                >
-                  View Profile
-                  <Icon icon={ArrowRight} size="sm" />
+                <ButtonLink href="/dashboard" variant="ghost" size="sm">
+                  View Profile →
                 </ButtonLink>
               </div>
             </div>
@@ -234,16 +246,25 @@ export default async function EventDetailPage({
                 items={placeholderAttendees}
                 overflowLabel={`+${event.registeredCount} already registered`}
               />
-              <ButtonLink
-                href={`/events/${event.id}/registered`}
-                variant="primary"
-                className="w-full"
+              {event.status === "cancelled" ? (
+                <Button variant="secondary" className="w-full" disabled>
+                  Event Cancelled
+                </Button>
+              ) : (
+                <ButtonLink
+                  href={`/events/${event.id}/registered`}
+                  variant="primary"
+                  className="w-full"
+                >
+                  Register Now →
+                </ButtonLink>
+              )}
+              <button
+                type="button"
+                className="border-border-light text-body text-text-primary hover:bg-bg-light w-full rounded-sm border py-2 text-center font-medium"
               >
-                Register Now <Icon icon={ArrowRight} size="sm" />
-              </ButtonLink>
-              <Button variant="secondary" className="w-full">
                 📅 Add to Calendar
-              </Button>
+              </button>
               {event.capacity && (
                 <p className="text-small text-text-secondary text-center">
                   {event.capacity} total capacity · {event.registeredCount}{" "}
@@ -286,8 +307,4 @@ export default async function EventDetailPage({
       </div>
     </AuthenticatedShell>
   );
-}
-
-export function generateStaticParams() {
-  return mockEvents.map((event) => ({ id: event.id }));
 }
