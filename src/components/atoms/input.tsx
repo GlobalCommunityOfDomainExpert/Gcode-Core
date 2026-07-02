@@ -2,8 +2,10 @@ import { InputHTMLAttributes, forwardRef } from "react";
 
 export type InputSize = "sm" | "md" | "lg";
 
-export interface InputProps
-  extends Omit<InputHTMLAttributes<HTMLInputElement>, "size"> {
+export interface InputProps extends Omit<
+  InputHTMLAttributes<HTMLInputElement>,
+  "size"
+> {
   size?: InputSize;
   error?: boolean;
 }
@@ -22,10 +24,10 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
         disabled={disabled}
         aria-invalid={error || undefined}
         className={
-          `w-full rounded-sm border bg-surface-light text-text-primary shadow-inner ` +
+          `bg-surface-light text-text-primary w-full rounded-sm border shadow-inner ` +
           `placeholder:text-text-secondary transition-colors ` +
-          `focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 ` +
-          `disabled:cursor-not-allowed disabled:bg-bg-light disabled:opacity-50 ` +
+          `focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none ` +
+          `disabled:bg-bg-light disabled:cursor-not-allowed disabled:opacity-50 ` +
           (error
             ? "border-danger focus-visible:ring-danger "
             : "border-border-light hover:border-border-hover focus-visible:border-primary focus-visible:ring-primary ") +
@@ -34,7 +36,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
         {...props}
       />
     );
-  }
+  },
 );
 
 Input.displayName = "Input";

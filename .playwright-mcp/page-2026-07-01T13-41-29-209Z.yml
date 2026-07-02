@@ -1,157 +1,157 @@
 - generic [active] [ref=f36e1]:
-  - navigation [ref=f36e2]:
-    - link "GCODE" [ref=f36e3] [cursor=pointer]:
-      - /url: index.html
-    - generic [ref=f36e4]:
-      - link "Explore" [ref=f36e5] [cursor=pointer]:
-        - /url: explore.html
-      - link "Events" [ref=f36e6] [cursor=pointer]:
-        - /url: events.html
-      - button "Resources ▾" [ref=f36e8] [cursor=pointer]:
-        - text: Resources
-        - generic [ref=f36e9]: ▾
-      - button "I Am A ▾" [ref=f36e11] [cursor=pointer]:
-        - text: I Am A
-        - generic [ref=f36e12]: ▾
-    - generic [ref=f36e13]:
-      - link "Register" [ref=f36e14] [cursor=pointer]:
-        - /url: sign-up.html
-      - link "Sign In" [ref=f36e15] [cursor=pointer]:
-        - /url: sign-in.html
-  - main [ref=f36e17]:
-    - generic [ref=f36e18]:
-      - generic [ref=f36e19]:
-        - heading "Organized Events" [level=1] [ref=f36e20]
-        - paragraph [ref=f36e21]: /my-organized-events · Events you host & manage
-      - link "＋ Host New Event" [ref=f36e22] [cursor=pointer]:
-        - /url: host-event.html
-        - button "＋ Host New Event" [ref=f36e23]
-    - generic [ref=f36e24]:
-      - generic [ref=f36e25]:
-        - paragraph [ref=f36e26]: Total Events
-        - paragraph [ref=f36e27]: "3"
-        - paragraph [ref=f36e28]: 1 live · 1 completed · 1 draft
-      - generic [ref=f36e29]:
-        - paragraph [ref=f36e30]: Total Registrations
-        - paragraph [ref=f36e31]: "186"
-        - paragraph [ref=f36e32]: across all events
-      - generic [ref=f36e33]:
-        - paragraph [ref=f36e34]: Revenue Earned
-        - paragraph [ref=f36e35]: ₹11,400
-        - paragraph [ref=f36e36]: net after platform fee
-    - generic [ref=f36e37]:
-      - generic [ref=f36e42]:
-        - generic [ref=f36e43]:
-          - generic [ref=f36e44]:
-            - generic [ref=f36e45]: ● Live
-            - generic [ref=f36e46]: Hackathon
-            - generic [ref=f36e47]: Online
-            - generic [ref=f36e48]: Free
-          - heading "GCODE Build Sprint · Summer 2026" [level=2] [ref=f36e49]
-          - paragraph [ref=f36e50]: 📅 15 Jul 2026 · 10:00 AM – 6:00 PM IST · Online
-          - generic [ref=f36e51]:
-            - generic [ref=f36e52]: 148 / 200 registered
-            - generic [ref=f36e54]: 74% capacity
-            - generic [ref=f36e56]: Free event · ₹0 revenue
-        - generic [ref=f36e59]:
-          - link "Manage →" [ref=f36e60] [cursor=pointer]:
-            - /url: event-manage.html
-            - button "Manage →" [ref=f36e61]
-          - link "View Public →" [ref=f36e62] [cursor=pointer]:
-            - /url: event-detail.html
-            - button "View Public →" [ref=f36e63]
-      - generic [ref=f36e68]:
-        - generic [ref=f36e69]:
-          - generic [ref=f36e70]:
-            - generic [ref=f36e71]: ✓ Completed
-            - generic [ref=f36e72]: Webinar · Growth
-            - generic [ref=f36e73]: Online
-            - generic [ref=f36e74]: ₹299
-          - heading "GTM Strategy for B2B SaaS in India" [level=2] [ref=f36e75]
-          - paragraph [ref=f36e76]: 📅 30 Jun 2026 · 6:00 PM IST · Online
-          - generic [ref=f36e77]:
-            - generic [ref=f36e78]: 38 / 60 attended
-            - generic [ref=f36e80]: 63% attendance rate
-            - generic [ref=f36e82]: ₹11,400 earned
-        - generic [ref=f36e83]:
-          - link "Manage →" [ref=f36e84] [cursor=pointer]:
-            - /url: event-manage.html
-            - button "Manage →" [ref=f36e85]
-          - link "View Public →" [ref=f36e86] [cursor=pointer]:
-            - /url: event-detail.html
-            - button "View Public →" [ref=f36e87]
-      - generic [ref=f36e92]:
-        - generic [ref=f36e93]:
-          - generic [ref=f36e94]:
-            - generic [ref=f36e95]: ◌ Draft
-            - generic [ref=f36e96]: ⭐ Expert AMA
-            - generic [ref=f36e97]: Online
-            - generic [ref=f36e98]: Free
-          - 'heading "Scaling Deep-Tech Startups: Lessons from the Field" [level=2] [ref=f36e99]'
-          - paragraph [ref=f36e100]: 📅 Not scheduled · Pending review
-          - paragraph [ref=f36e103]: ⚠ Incomplete — 2 required fields missing
-        - generic [ref=f36e104]:
-          - link "Continue Draft →" [ref=f36e105] [cursor=pointer]:
-            - /url: host-event.html
-            - button "Continue Draft →" [ref=f36e106]
-          - button "Discard" [ref=f36e107] [cursor=pointer]
-  - contentinfo [ref=f36e109]:
-    - generic [ref=f36e110]:
-      - generic [ref=f36e111]:
-        - paragraph [ref=f36e112]: Quick Links
-        - generic [ref=f36e113]:
-          - link "Explore" [ref=f36e114] [cursor=pointer]:
-            - /url: explore.html
-          - link "Events" [ref=f36e115] [cursor=pointer]:
-            - /url: events.html
-          - link "Ask AI" [ref=f36e116] [cursor=pointer]:
-            - /url: "#"
-      - generic [ref=f36e117]:
-        - paragraph [ref=f36e118]: Platform
-        - generic [ref=f36e119]:
-          - link "For Startups" [ref=f36e120] [cursor=pointer]:
-            - /url: for-startups.html
-          - link "For Experts" [ref=f36e121] [cursor=pointer]:
-            - /url: for-experts.html
-          - link "For Freshers" [ref=f36e122] [cursor=pointer]:
-            - /url: for-freshers.html
-          - link "For Institutions" [ref=f36e123] [cursor=pointer]:
-            - /url: for-institutions.html
-          - link "For Partners" [ref=f36e124] [cursor=pointer]:
-            - /url: for-partners.html
-      - generic [ref=f36e125]:
-        - paragraph [ref=f36e126]: Legal
-        - generic [ref=f36e127]:
-          - link "Privacy Policy" [ref=f36e128] [cursor=pointer]:
-            - /url: privacy-policy.html
-          - link "Terms of Service" [ref=f36e129] [cursor=pointer]:
-            - /url: terms-of-service.html
-          - link "Cancellation & Refunds" [ref=f36e130] [cursor=pointer]:
-            - /url: "#"
-          - link "Shipping & Delivery" [ref=f36e131] [cursor=pointer]:
-            - /url: "#"
-      - generic [ref=f36e132]:
-        - paragraph [ref=f36e133]: Social
-        - generic [ref=f36e134]:
-          - link "Facebook" [ref=f36e135] [cursor=pointer]:
-            - /url: "#"
-          - link "LinkedIn" [ref=f36e136] [cursor=pointer]:
-            - /url: "#"
-          - link "YouTube" [ref=f36e137] [cursor=pointer]:
-            - /url: "#"
-    - paragraph [ref=f36e139]: GCODE.IN · 1st Floor, SPD Plaza, Koramangala, Bengaluru · © 2024 GCODE — Global Community of Domain Experts
-  - button "AI" [ref=f36e140] [cursor=pointer]
-  - generic [ref=f36e142]:
-    - generic [ref=f36e143]:
-      - paragraph [ref=f36e144]: Wireframe Debug
-      - generic [ref=f36e145]:
-        - generic [ref=f36e146]: View as
-        - combobox [ref=f36e147] [cursor=pointer]:
-          - option "Guest" [selected]
-          - option "Expert"
-          - option "Fresher"
-          - option "Startup"
-          - option "Institution"
-    - button "⚙ Debug" [ref=f36e148] [cursor=pointer]:
-      - generic [ref=f36e149]: ⚙
-      - text: Debug
+    - navigation [ref=f36e2]:
+        - link "GCODE" [ref=f36e3] [cursor=pointer]:
+            - /url: index.html
+        - generic [ref=f36e4]:
+            - link "Explore" [ref=f36e5] [cursor=pointer]:
+                - /url: explore.html
+            - link "Events" [ref=f36e6] [cursor=pointer]:
+                - /url: events.html
+            - button "Resources ▾" [ref=f36e8] [cursor=pointer]:
+                - text: Resources
+                - generic [ref=f36e9]: ▾
+            - button "I Am A ▾" [ref=f36e11] [cursor=pointer]:
+                - text: I Am A
+                - generic [ref=f36e12]: ▾
+        - generic [ref=f36e13]:
+            - link "Register" [ref=f36e14] [cursor=pointer]:
+                - /url: sign-up.html
+            - link "Sign In" [ref=f36e15] [cursor=pointer]:
+                - /url: sign-in.html
+    - main [ref=f36e17]:
+        - generic [ref=f36e18]:
+            - generic [ref=f36e19]:
+                - heading "Organized Events" [level=1] [ref=f36e20]
+                - paragraph [ref=f36e21]: /my-organized-events · Events you host & manage
+            - link "＋ Host New Event" [ref=f36e22] [cursor=pointer]:
+                - /url: host-event.html
+                - button "＋ Host New Event" [ref=f36e23]
+        - generic [ref=f36e24]:
+            - generic [ref=f36e25]:
+                - paragraph [ref=f36e26]: Total Events
+                - paragraph [ref=f36e27]: "3"
+                - paragraph [ref=f36e28]: 1 live · 1 completed · 1 draft
+            - generic [ref=f36e29]:
+                - paragraph [ref=f36e30]: Total Registrations
+                - paragraph [ref=f36e31]: "186"
+                - paragraph [ref=f36e32]: across all events
+            - generic [ref=f36e33]:
+                - paragraph [ref=f36e34]: Revenue Earned
+                - paragraph [ref=f36e35]: ₹11,400
+                - paragraph [ref=f36e36]: net after platform fee
+        - generic [ref=f36e37]:
+            - generic [ref=f36e42]:
+                - generic [ref=f36e43]:
+                    - generic [ref=f36e44]:
+                        - generic [ref=f36e45]: ● Live
+                        - generic [ref=f36e46]: Hackathon
+                        - generic [ref=f36e47]: Online
+                        - generic [ref=f36e48]: Free
+                    - heading "GCODE Build Sprint · Summer 2026" [level=2] [ref=f36e49]
+                    - paragraph [ref=f36e50]: 📅 15 Jul 2026 · 10:00 AM – 6:00 PM IST · Online
+                    - generic [ref=f36e51]:
+                        - generic [ref=f36e52]: 148 / 200 registered
+                        - generic [ref=f36e54]: 74% capacity
+                        - generic [ref=f36e56]: Free event · ₹0 revenue
+                - generic [ref=f36e59]:
+                    - link "Manage →" [ref=f36e60] [cursor=pointer]:
+                        - /url: event-manage.html
+                        - button "Manage →" [ref=f36e61]
+                    - link "View Public →" [ref=f36e62] [cursor=pointer]:
+                        - /url: event-detail.html
+                        - button "View Public →" [ref=f36e63]
+            - generic [ref=f36e68]:
+                - generic [ref=f36e69]:
+                    - generic [ref=f36e70]:
+                        - generic [ref=f36e71]: ✓ Completed
+                        - generic [ref=f36e72]: Webinar · Growth
+                        - generic [ref=f36e73]: Online
+                        - generic [ref=f36e74]: ₹299
+                    - heading "GTM Strategy for B2B SaaS in India" [level=2] [ref=f36e75]
+                    - paragraph [ref=f36e76]: 📅 30 Jun 2026 · 6:00 PM IST · Online
+                    - generic [ref=f36e77]:
+                        - generic [ref=f36e78]: 38 / 60 attended
+                        - generic [ref=f36e80]: 63% attendance rate
+                        - generic [ref=f36e82]: ₹11,400 earned
+                - generic [ref=f36e83]:
+                    - link "Manage →" [ref=f36e84] [cursor=pointer]:
+                        - /url: event-manage.html
+                        - button "Manage →" [ref=f36e85]
+                    - link "View Public →" [ref=f36e86] [cursor=pointer]:
+                        - /url: event-detail.html
+                        - button "View Public →" [ref=f36e87]
+            - generic [ref=f36e92]:
+                - generic [ref=f36e93]:
+                    - generic [ref=f36e94]:
+                        - generic [ref=f36e95]: ◌ Draft
+                        - generic [ref=f36e96]: ⭐ Expert AMA
+                        - generic [ref=f36e97]: Online
+                        - generic [ref=f36e98]: Free
+                    - 'heading "Scaling Deep-Tech Startups: Lessons from the Field" [level=2] [ref=f36e99]'
+                    - paragraph [ref=f36e100]: 📅 Not scheduled · Pending review
+                    - paragraph [ref=f36e103]: ⚠ Incomplete — 2 required fields missing
+                - generic [ref=f36e104]:
+                    - link "Continue Draft →" [ref=f36e105] [cursor=pointer]:
+                        - /url: host-event.html
+                        - button "Continue Draft →" [ref=f36e106]
+                    - button "Discard" [ref=f36e107] [cursor=pointer]
+    - contentinfo [ref=f36e109]:
+        - generic [ref=f36e110]:
+            - generic [ref=f36e111]:
+                - paragraph [ref=f36e112]: Quick Links
+                - generic [ref=f36e113]:
+                    - link "Explore" [ref=f36e114] [cursor=pointer]:
+                        - /url: explore.html
+                    - link "Events" [ref=f36e115] [cursor=pointer]:
+                        - /url: events.html
+                    - link "Ask AI" [ref=f36e116] [cursor=pointer]:
+                        - /url: "#"
+            - generic [ref=f36e117]:
+                - paragraph [ref=f36e118]: Platform
+                - generic [ref=f36e119]:
+                    - link "For Startups" [ref=f36e120] [cursor=pointer]:
+                        - /url: for-startups.html
+                    - link "For Experts" [ref=f36e121] [cursor=pointer]:
+                        - /url: for-experts.html
+                    - link "For Freshers" [ref=f36e122] [cursor=pointer]:
+                        - /url: for-freshers.html
+                    - link "For Institutions" [ref=f36e123] [cursor=pointer]:
+                        - /url: for-institutions.html
+                    - link "For Partners" [ref=f36e124] [cursor=pointer]:
+                        - /url: for-partners.html
+            - generic [ref=f36e125]:
+                - paragraph [ref=f36e126]: Legal
+                - generic [ref=f36e127]:
+                    - link "Privacy Policy" [ref=f36e128] [cursor=pointer]:
+                        - /url: privacy-policy.html
+                    - link "Terms of Service" [ref=f36e129] [cursor=pointer]:
+                        - /url: terms-of-service.html
+                    - link "Cancellation & Refunds" [ref=f36e130] [cursor=pointer]:
+                        - /url: "#"
+                    - link "Shipping & Delivery" [ref=f36e131] [cursor=pointer]:
+                        - /url: "#"
+            - generic [ref=f36e132]:
+                - paragraph [ref=f36e133]: Social
+                - generic [ref=f36e134]:
+                    - link "Facebook" [ref=f36e135] [cursor=pointer]:
+                        - /url: "#"
+                    - link "LinkedIn" [ref=f36e136] [cursor=pointer]:
+                        - /url: "#"
+                    - link "YouTube" [ref=f36e137] [cursor=pointer]:
+                        - /url: "#"
+        - paragraph [ref=f36e139]: GCODE.IN · 1st Floor, SPD Plaza, Koramangala, Bengaluru · © 2024 GCODE — Global Community of Domain Experts
+    - button "AI" [ref=f36e140] [cursor=pointer]
+    - generic [ref=f36e142]:
+        - generic [ref=f36e143]:
+            - paragraph [ref=f36e144]: Wireframe Debug
+            - generic [ref=f36e145]:
+                - generic [ref=f36e146]: View as
+                - combobox [ref=f36e147] [cursor=pointer]:
+                    - option "Guest" [selected]
+                    - option "Expert"
+                    - option "Fresher"
+                    - option "Startup"
+                    - option "Institution"
+        - button "⚙ Debug" [ref=f36e148] [cursor=pointer]:
+            - generic [ref=f36e149]: ⚙
+            - text: Debug

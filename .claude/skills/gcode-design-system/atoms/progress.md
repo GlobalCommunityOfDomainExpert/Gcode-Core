@@ -55,7 +55,10 @@ Visible
 
 ```html
 <div class="g-progress">
-  <div class="g-progress__bar g-progress__bar--success" style="width: 75%;"></div>
+  <div
+    class="g-progress__bar g-progress__bar--success"
+    style="width: 75%;"
+  ></div>
 </div>
 ```
 

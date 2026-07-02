@@ -27,7 +27,7 @@ export function Modal({ open, onClose, title, children, footer }: ModalProps) {
 
   return createPortal(
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-primary/40 px-4"
+      className="bg-primary/40 fixed inset-0 z-50 flex items-center justify-center px-4"
       onClick={onClose}
     >
       <div
@@ -35,29 +35,32 @@ export function Modal({ open, onClose, title, children, footer }: ModalProps) {
         aria-modal="true"
         aria-labelledby="modal-title"
         onClick={(event) => event.stopPropagation()}
-        className="w-full max-w-md rounded-md bg-surface-light shadow-lg"
+        className="bg-surface-light w-full max-w-md rounded-md shadow-lg"
       >
-        <div className="flex items-center justify-between border-b border-border-light px-6 py-4">
-          <h3 id="modal-title" className="text-large font-semibold text-text-primary">
+        <div className="border-border-light flex items-center justify-between border-b px-6 py-4">
+          <h3
+            id="modal-title"
+            className="text-large text-text-primary font-semibold"
+          >
             {title}
           </h3>
           <button
             type="button"
             onClick={onClose}
             aria-label="Close"
-            className="rounded-sm text-text-secondary hover:text-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+            className="text-text-secondary hover:text-text-primary focus-visible:ring-primary rounded-sm focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
           >
             <Icon icon={X} size="sm" />
           </button>
         </div>
-        <div className="px-6 py-4 text-body text-text-primary">{children}</div>
+        <div className="text-body text-text-primary px-6 py-4">{children}</div>
         {footer && (
-          <div className="flex justify-end gap-2 border-t border-border-light px-6 py-4">
+          <div className="border-border-light flex justify-end gap-2 border-t px-6 py-4">
             {footer}
           </div>
         )}
       </div>
     </div>,
-    document.body
+    document.body,
   );
 }

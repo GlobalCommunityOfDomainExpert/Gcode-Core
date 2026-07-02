@@ -39,12 +39,24 @@ const buttonVariants: ButtonVariant[] = [
 ];
 
 const badgeVariants: BadgeVariant[] = ["solid", "outline", "muted"];
-const badgeTones: BadgeTone[] = ["neutral", "primary", "success", "warning", "danger"];
+const badgeTones: BadgeTone[] = [
+  "neutral",
+  "primary",
+  "success",
+  "warning",
+  "danger",
+];
 
-function Section({ title, children }: { title: string; children: React.ReactNode }) {
+function Section({
+  title,
+  children,
+}: {
+  title: string;
+  children: React.ReactNode;
+}) {
   return (
-    <section className="space-y-4 border-b border-border-light pb-8">
-      <h2 className="text-heading font-extrabold text-text-primary">{title}</h2>
+    <section className="border-border-light space-y-4 border-b pb-8">
+      <h2 className="text-heading text-text-primary font-extrabold">{title}</h2>
       <div className="space-y-4">{children}</div>
     </section>
   );
@@ -54,10 +66,12 @@ export default function ShowcasePage() {
   return (
     <main className="mx-auto max-w-3xl space-y-8 px-4 py-8">
       <header className="space-y-1">
-        <p className="text-small font-semibold uppercase tracking-wide text-text-secondary">
+        <p className="text-small text-text-secondary font-semibold tracking-wide uppercase">
           GCODE Design System
         </p>
-        <h1 className="text-display font-extrabold text-text-primary">Atom Showcase</h1>
+        <h1 className="text-display text-text-primary font-extrabold">
+          Atom Showcase
+        </h1>
       </header>
 
       <Section title="Button">
@@ -119,7 +133,9 @@ export default function ShowcasePage() {
         <div className="space-y-2">
           {badgeVariants.map((variant) => (
             <div key={variant} className="flex flex-wrap items-center gap-2">
-              <span className="w-16 text-small text-text-secondary">{variant}</span>
+              <span className="text-small text-text-secondary w-16">
+                {variant}
+              </span>
               {badgeTones.map((tone) => (
                 <Badge key={tone} variant={variant} tone={tone}>
                   {tone}
@@ -135,7 +151,13 @@ export default function ShowcasePage() {
           <Avatar alt="Ada Lovelace" initials="AL" size="sm" />
           <Avatar alt="Ada Lovelace" initials="AL" size="md" />
           <Avatar alt="Ada Lovelace" initials="AL" size="lg" status="online" />
-          <Avatar alt="Grace Hopper" initials="GH" variant="square" size="lg" status="away" />
+          <Avatar
+            alt="Grace Hopper"
+            initials="GH"
+            variant="square"
+            size="lg"
+            status="away"
+          />
         </div>
       </Section>
 
@@ -171,7 +193,7 @@ export default function ShowcasePage() {
       </Section>
 
       <Section title="Spinner">
-        <div className="flex flex-wrap items-center gap-6 text-primary">
+        <div className="text-primary flex flex-wrap items-center gap-6">
           <Spinner size="sm" />
           <Spinner size="md" />
           <Spinner size="lg" />
@@ -229,7 +251,7 @@ export default function ShowcasePage() {
       </Section>
 
       <Section title="Icon">
-        <div className="flex flex-wrap items-center gap-4 text-text-primary">
+        <div className="text-text-primary flex flex-wrap items-center gap-4">
           <Icon icon={Search} size="sm" label="Search" />
           <Icon icon={Bell} size="md" label="Notifications" />
           <Icon icon={Settings} size="lg" label="Settings" />
@@ -253,7 +275,8 @@ export default function ShowcasePage() {
 
       <Section title="Blurred">
         <p className="text-body text-text-primary">
-          Attendee: <Blurred label="Attendee name hidden">Shashwat Singh</Blurred>
+          Attendee:{" "}
+          <Blurred label="Attendee name hidden">Shashwat Singh</Blurred>
         </p>
       </Section>
     </main>

@@ -51,13 +51,16 @@ export function Navbar({
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
-    <header className="relative bg-primary">
+    <header className="bg-primary relative">
       <div className="mx-auto flex h-16 items-center justify-between gap-4 px-7">
         <div className="flex items-center gap-8">
           <Link href="/" className="shrink-0">
             {logo}
           </Link>
-          <nav aria-label="Primary" className="hidden items-center gap-6 md:flex">
+          <nav
+            aria-label="Primary"
+            className="hidden items-center gap-6 md:flex"
+          >
             {links.map((link) => {
               const isActive = pathname === link.href;
               return (
@@ -65,7 +68,7 @@ export function Navbar({
                   key={link.href}
                   href={link.href}
                   aria-current={isActive ? "page" : undefined}
-                  className={`text-body font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-primary ${
+                  className={`text-body focus-visible:ring-offset-primary font-medium transition-colors focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:outline-none ${
                     isActive ? "text-white" : "text-white/70 hover:text-white"
                   }`}
                 >
@@ -75,7 +78,7 @@ export function Navbar({
             })}
             <Dropdown
               trigger={
-                <span className="cursor-pointer text-body font-medium text-white/70 hover:text-white">
+                <span className="text-body cursor-pointer font-medium text-white/70 hover:text-white">
                   {resourcesLabel} ▾
                 </span>
               }
@@ -89,11 +92,11 @@ export function Navbar({
             type="button"
             onClick={onNotificationClick}
             aria-label="Notifications"
-            className="relative rounded-sm p-2 text-white/80 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-primary"
+            className="focus-visible:ring-offset-primary relative rounded-sm p-2 text-white/80 hover:text-white focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:outline-none"
           >
-            <Icon icon={Bell} size="sm" />
+            <Icon icon={Bell} size="md" />
             {hasUnreadNotifications && (
-              <span className="absolute right-1.5 top-1.5 size-2 rounded-full bg-danger" />
+              <span className="bg-danger absolute top-1.5 right-1.5 size-2 rounded-full" />
             )}
           </button>
           <Button variant="accent" size="sm" onClick={onCtaClick}>
@@ -106,11 +109,11 @@ export function Navbar({
             type="button"
             onClick={onNotificationClick}
             aria-label="Notifications"
-            className="relative rounded-sm p-2 text-white/80 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-primary"
+            className="focus-visible:ring-offset-primary relative rounded-sm p-2 text-white/80 hover:text-white focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:outline-none"
           >
             <Icon icon={Bell} size="sm" />
             {hasUnreadNotifications && (
-              <span className="absolute right-1.5 top-1.5 size-2 rounded-full bg-danger" />
+              <span className="bg-danger absolute top-1.5 right-1.5 size-2 rounded-full" />
             )}
           </button>
           <Button variant="accent" size="sm" onClick={onCtaClick}>
@@ -121,7 +124,7 @@ export function Navbar({
             onClick={() => setMobileOpen((prev) => !prev)}
             aria-label={mobileOpen ? "Close menu" : "Open menu"}
             aria-expanded={mobileOpen}
-            className="rounded-sm p-2 text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-primary"
+            className="focus-visible:ring-offset-primary rounded-sm p-2 text-white focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:outline-none"
           >
             <Icon icon={mobileOpen ? X : Menu} size="md" />
           </button>
@@ -131,37 +134,42 @@ export function Navbar({
       {mobileOpen && (
         <>
           <div
-            className="fixed inset-x-0 bottom-0 top-16 z-30 bg-primary/40 md:hidden"
+            className="bg-primary/40 fixed inset-x-0 top-16 bottom-0 z-30 md:hidden"
             onClick={() => setMobileOpen(false)}
             aria-hidden="true"
           />
-          <div className="absolute inset-x-0 top-full z-40 max-h-[calc(100vh-4rem)] overflow-y-auto border-t border-white/10 bg-primary shadow-lg md:hidden">
+          <div className="bg-primary absolute inset-x-0 top-full z-40 max-h-[calc(100vh-4rem)] overflow-y-auto border-t border-white/10 shadow-lg md:hidden">
             <nav aria-label="Primary" className="space-y-1 px-4 py-3">
               {links.map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}
                   onClick={() => setMobileOpen(false)}
-                  className="block rounded-sm px-2 py-2 text-body font-medium text-white/80 hover:bg-white/10 hover:text-white"
+                  className="text-body block rounded-sm px-2 py-2 font-medium text-white/80 hover:bg-white/10 hover:text-white"
                 >
                   {link.label}
                 </Link>
               ))}
               {resourcesItems
-                .filter((item): item is DropdownItem & { href: string } => !item.divider && !!item.href)
+                .filter(
+                  (item): item is DropdownItem & { href: string } =>
+                    !item.divider && !!item.href,
+                )
                 .map((item) => (
                   <Link
                     key={item.label}
                     href={item.href}
                     onClick={() => setMobileOpen(false)}
-                    className="block rounded-sm px-2 py-2 text-body font-medium text-white/80 hover:bg-white/10 hover:text-white"
+                    className="text-body block rounded-sm px-2 py-2 font-medium text-white/80 hover:bg-white/10 hover:text-white"
                   >
                     {item.label}
                   </Link>
                 ))}
             </nav>
             {mobileFooter && (
-              <div className="border-t border-white/10 bg-bg-light">{mobileFooter}</div>
+              <div className="bg-bg-light border-t border-white/10">
+                {mobileFooter}
+              </div>
             )}
           </div>
         </>

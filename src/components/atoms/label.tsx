@@ -26,7 +26,11 @@ export function Label({
   return (
     <label
       className={`font-medium ${sizeClasses[size]} ${
-        disabled ? "text-text-secondary opacity-50" : error ? "text-danger" : "text-text-primary"
+        disabled
+          ? "text-text-secondary opacity-50"
+          : error
+            ? "text-danger"
+            : "text-text-primary"
       } ${className}`}
       {...props}
     >

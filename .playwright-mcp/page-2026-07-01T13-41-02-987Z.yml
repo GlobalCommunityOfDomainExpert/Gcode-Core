@@ -1,133 +1,133 @@
 - generic [active] [ref=f35e1]:
-  - navigation [ref=f35e2]:
-    - link "GCODE" [ref=f35e3] [cursor=pointer]:
-      - /url: index.html
-    - generic [ref=f35e4]:
-      - link "Explore" [ref=f35e5] [cursor=pointer]:
-        - /url: explore.html
-      - link "Events" [ref=f35e6] [cursor=pointer]:
-        - /url: events.html
-      - button "Resources ▾" [ref=f35e8] [cursor=pointer]:
-        - text: Resources
-        - generic [ref=f35e9]: ▾
-      - button "I Am A ▾" [ref=f35e11] [cursor=pointer]:
-        - text: I Am A
-        - generic [ref=f35e12]: ▾
-    - generic [ref=f35e13]:
-      - link "Register" [ref=f35e14] [cursor=pointer]:
-        - /url: sign-up.html
-      - link "Sign In" [ref=f35e15] [cursor=pointer]:
-        - /url: sign-in.html
-  - main [ref=f35e17]:
-    - generic [ref=f35e18]:
-      - heading "My Events" [level=1] [ref=f35e19]
-      - paragraph [ref=f35e20]: /my-events · Registered events, history & purchases
-    - generic [ref=f35e21]:
-      - generic [ref=f35e22]:
-        - button "Upcoming" [ref=f35e23] [cursor=pointer]
-        - button "Past" [ref=f35e24] [cursor=pointer]
-        - button "Purchase History" [ref=f35e25] [cursor=pointer]
-        - button "Refund Requests" [ref=f35e26] [cursor=pointer]
-      - generic [ref=f35e27]:
-        - generic [ref=f35e28]:
-          - button "This Week" [ref=f35e29] [cursor=pointer]
-          - button "This Month" [ref=f35e30] [cursor=pointer]
-          - button "All Upcoming" [ref=f35e31] [cursor=pointer]
-        - generic [ref=f35e32]:
-          - generic [ref=f35e33]:
-            - paragraph [ref=f35e34]: Jul
-            - paragraph [ref=f35e35]: "15"
-          - generic [ref=f35e36]:
-            - generic [ref=f35e37]:
-              - generic [ref=f35e38]: Hackathon
-              - generic [ref=f35e39]: Online
-              - generic [ref=f35e40]: Free
-            - paragraph [ref=f35e41]: GCODE Build Sprint · Summer 2026
-            - paragraph [ref=f35e42]: 10:00 AM – 6:00 PM IST · 148 registered
-          - link "View Event →" [ref=f35e44] [cursor=pointer]:
-            - /url: event-detail.html
-        - generic [ref=f35e45]:
-          - generic [ref=f35e46]:
-            - paragraph [ref=f35e47]: Jul
-            - paragraph [ref=f35e48]: "18"
-          - generic [ref=f35e49]:
-            - generic [ref=f35e50]:
-              - generic [ref=f35e51]: ⭐ Expert AMA
-              - generic [ref=f35e52]: Online
-              - generic [ref=f35e53]: Free
-            - paragraph [ref=f35e54]: "Ask Me Anything: Fundraising for Deep-Tech Startups"
-            - paragraph [ref=f35e55]: 6:00 PM IST · 94 registered
-          - link "View Event →" [ref=f35e57] [cursor=pointer]:
-            - /url: event-detail.html
-        - generic [ref=f35e58]:
-          - generic [ref=f35e59]:
-            - paragraph [ref=f35e60]: Jul
-            - paragraph [ref=f35e61]: "30"
-          - generic [ref=f35e62]:
-            - generic [ref=f35e63]:
-              - generic [ref=f35e64]: Webinar · Growth
-              - generic [ref=f35e65]: ₹299 paid
-            - paragraph [ref=f35e66]: GTM strategy for B2B SaaS in India
-            - paragraph [ref=f35e67]: 6:00 PM IST · 38 registered
-          - link "View Event →" [ref=f35e69] [cursor=pointer]:
-            - /url: event-detail.html
-  - contentinfo [ref=f35e71]:
-    - generic [ref=f35e72]:
-      - generic [ref=f35e73]:
-        - paragraph [ref=f35e74]: Quick Links
-        - generic [ref=f35e75]:
-          - link "Explore" [ref=f35e76] [cursor=pointer]:
-            - /url: explore.html
-          - link "Events" [ref=f35e77] [cursor=pointer]:
-            - /url: events.html
-          - link "Ask AI" [ref=f35e78] [cursor=pointer]:
-            - /url: "#"
-      - generic [ref=f35e79]:
-        - paragraph [ref=f35e80]: Platform
-        - generic [ref=f35e81]:
-          - link "For Startups" [ref=f35e82] [cursor=pointer]:
-            - /url: for-startups.html
-          - link "For Experts" [ref=f35e83] [cursor=pointer]:
-            - /url: for-experts.html
-          - link "For Freshers" [ref=f35e84] [cursor=pointer]:
-            - /url: for-freshers.html
-          - link "For Institutions" [ref=f35e85] [cursor=pointer]:
-            - /url: for-institutions.html
-          - link "For Partners" [ref=f35e86] [cursor=pointer]:
-            - /url: for-partners.html
-      - generic [ref=f35e87]:
-        - paragraph [ref=f35e88]: Legal
-        - generic [ref=f35e89]:
-          - link "Privacy Policy" [ref=f35e90] [cursor=pointer]:
-            - /url: privacy-policy.html
-          - link "Terms of Service" [ref=f35e91] [cursor=pointer]:
-            - /url: terms-of-service.html
-          - link "Cancellation & Refunds" [ref=f35e92] [cursor=pointer]:
-            - /url: "#"
-          - link "Shipping & Delivery" [ref=f35e93] [cursor=pointer]:
-            - /url: "#"
-      - generic [ref=f35e94]:
-        - paragraph [ref=f35e95]: Social
-        - generic [ref=f35e96]:
-          - link "Facebook" [ref=f35e97] [cursor=pointer]:
-            - /url: "#"
-          - link "LinkedIn" [ref=f35e98] [cursor=pointer]:
-            - /url: "#"
-          - link "YouTube" [ref=f35e99] [cursor=pointer]:
-            - /url: "#"
-    - paragraph [ref=f35e101]: GCODE.IN · 1st Floor, SPD Plaza, Koramangala, Bengaluru · © 2024 GCODE — Global Community of Domain Experts
-  - button "AI" [ref=f35e102] [cursor=pointer]
-  - generic [ref=f35e104]:
-    - generic [ref=f35e105]:
-      - paragraph [ref=f35e106]: Wireframe Debug
-      - generic [ref=f35e107]:
-        - generic [ref=f35e108]: View as
-        - combobox [ref=f35e109] [cursor=pointer]:
-          - option "Guest" [selected]
-          - option "Expert"
-          - option "Fresher"
-          - option "Startup"
-          - option "Institution"
-    - button "⚙ Debug" [ref=f35e110] [cursor=pointer]:
-      - generic [ref=f35e111]: ⚙
-      - text: Debug
+    - navigation [ref=f35e2]:
+        - link "GCODE" [ref=f35e3] [cursor=pointer]:
+            - /url: index.html
+        - generic [ref=f35e4]:
+            - link "Explore" [ref=f35e5] [cursor=pointer]:
+                - /url: explore.html
+            - link "Events" [ref=f35e6] [cursor=pointer]:
+                - /url: events.html
+            - button "Resources ▾" [ref=f35e8] [cursor=pointer]:
+                - text: Resources
+                - generic [ref=f35e9]: ▾
+            - button "I Am A ▾" [ref=f35e11] [cursor=pointer]:
+                - text: I Am A
+                - generic [ref=f35e12]: ▾
+        - generic [ref=f35e13]:
+            - link "Register" [ref=f35e14] [cursor=pointer]:
+                - /url: sign-up.html
+            - link "Sign In" [ref=f35e15] [cursor=pointer]:
+                - /url: sign-in.html
+    - main [ref=f35e17]:
+        - generic [ref=f35e18]:
+            - heading "My Events" [level=1] [ref=f35e19]
+            - paragraph [ref=f35e20]: /my-events · Registered events, history & purchases
+        - generic [ref=f35e21]:
+            - generic [ref=f35e22]:
+                - button "Upcoming" [ref=f35e23] [cursor=pointer]
+                - button "Past" [ref=f35e24] [cursor=pointer]
+                - button "Purchase History" [ref=f35e25] [cursor=pointer]
+                - button "Refund Requests" [ref=f35e26] [cursor=pointer]
+            - generic [ref=f35e27]:
+                - generic [ref=f35e28]:
+                    - button "This Week" [ref=f35e29] [cursor=pointer]
+                    - button "This Month" [ref=f35e30] [cursor=pointer]
+                    - button "All Upcoming" [ref=f35e31] [cursor=pointer]
+                - generic [ref=f35e32]:
+                    - generic [ref=f35e33]:
+                        - paragraph [ref=f35e34]: Jul
+                        - paragraph [ref=f35e35]: "15"
+                    - generic [ref=f35e36]:
+                        - generic [ref=f35e37]:
+                            - generic [ref=f35e38]: Hackathon
+                            - generic [ref=f35e39]: Online
+                            - generic [ref=f35e40]: Free
+                        - paragraph [ref=f35e41]: GCODE Build Sprint · Summer 2026
+                        - paragraph [ref=f35e42]: 10:00 AM – 6:00 PM IST · 148 registered
+                    - link "View Event →" [ref=f35e44] [cursor=pointer]:
+                        - /url: event-detail.html
+                - generic [ref=f35e45]:
+                    - generic [ref=f35e46]:
+                        - paragraph [ref=f35e47]: Jul
+                        - paragraph [ref=f35e48]: "18"
+                    - generic [ref=f35e49]:
+                        - generic [ref=f35e50]:
+                            - generic [ref=f35e51]: ⭐ Expert AMA
+                            - generic [ref=f35e52]: Online
+                            - generic [ref=f35e53]: Free
+                        - paragraph [ref=f35e54]: "Ask Me Anything: Fundraising for Deep-Tech Startups"
+                        - paragraph [ref=f35e55]: 6:00 PM IST · 94 registered
+                    - link "View Event →" [ref=f35e57] [cursor=pointer]:
+                        - /url: event-detail.html
+                - generic [ref=f35e58]:
+                    - generic [ref=f35e59]:
+                        - paragraph [ref=f35e60]: Jul
+                        - paragraph [ref=f35e61]: "30"
+                    - generic [ref=f35e62]:
+                        - generic [ref=f35e63]:
+                            - generic [ref=f35e64]: Webinar · Growth
+                            - generic [ref=f35e65]: ₹299 paid
+                        - paragraph [ref=f35e66]: GTM strategy for B2B SaaS in India
+                        - paragraph [ref=f35e67]: 6:00 PM IST · 38 registered
+                    - link "View Event →" [ref=f35e69] [cursor=pointer]:
+                        - /url: event-detail.html
+    - contentinfo [ref=f35e71]:
+        - generic [ref=f35e72]:
+            - generic [ref=f35e73]:
+                - paragraph [ref=f35e74]: Quick Links
+                - generic [ref=f35e75]:
+                    - link "Explore" [ref=f35e76] [cursor=pointer]:
+                        - /url: explore.html
+                    - link "Events" [ref=f35e77] [cursor=pointer]:
+                        - /url: events.html
+                    - link "Ask AI" [ref=f35e78] [cursor=pointer]:
+                        - /url: "#"
+            - generic [ref=f35e79]:
+                - paragraph [ref=f35e80]: Platform
+                - generic [ref=f35e81]:
+                    - link "For Startups" [ref=f35e82] [cursor=pointer]:
+                        - /url: for-startups.html
+                    - link "For Experts" [ref=f35e83] [cursor=pointer]:
+                        - /url: for-experts.html
+                    - link "For Freshers" [ref=f35e84] [cursor=pointer]:
+                        - /url: for-freshers.html
+                    - link "For Institutions" [ref=f35e85] [cursor=pointer]:
+                        - /url: for-institutions.html
+                    - link "For Partners" [ref=f35e86] [cursor=pointer]:
+                        - /url: for-partners.html
+            - generic [ref=f35e87]:
+                - paragraph [ref=f35e88]: Legal
+                - generic [ref=f35e89]:
+                    - link "Privacy Policy" [ref=f35e90] [cursor=pointer]:
+                        - /url: privacy-policy.html
+                    - link "Terms of Service" [ref=f35e91] [cursor=pointer]:
+                        - /url: terms-of-service.html
+                    - link "Cancellation & Refunds" [ref=f35e92] [cursor=pointer]:
+                        - /url: "#"
+                    - link "Shipping & Delivery" [ref=f35e93] [cursor=pointer]:
+                        - /url: "#"
+            - generic [ref=f35e94]:
+                - paragraph [ref=f35e95]: Social
+                - generic [ref=f35e96]:
+                    - link "Facebook" [ref=f35e97] [cursor=pointer]:
+                        - /url: "#"
+                    - link "LinkedIn" [ref=f35e98] [cursor=pointer]:
+                        - /url: "#"
+                    - link "YouTube" [ref=f35e99] [cursor=pointer]:
+                        - /url: "#"
+        - paragraph [ref=f35e101]: GCODE.IN · 1st Floor, SPD Plaza, Koramangala, Bengaluru · © 2024 GCODE — Global Community of Domain Experts
+    - button "AI" [ref=f35e102] [cursor=pointer]
+    - generic [ref=f35e104]:
+        - generic [ref=f35e105]:
+            - paragraph [ref=f35e106]: Wireframe Debug
+            - generic [ref=f35e107]:
+                - generic [ref=f35e108]: View as
+                - combobox [ref=f35e109] [cursor=pointer]:
+                    - option "Guest" [selected]
+                    - option "Expert"
+                    - option "Fresher"
+                    - option "Startup"
+                    - option "Institution"
+        - button "⚙ Debug" [ref=f35e110] [cursor=pointer]:
+            - generic [ref=f35e111]: ⚙
+            - text: Debug

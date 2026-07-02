@@ -60,7 +60,6 @@ High contrast text to background color ratios.
 <span class="g-badge">New</span>
 ```
 
-
 ## Responsive
 
 Adjusts to fit container width. Grids collapse to 1-column on mobile screens (max-width: 768px).

@@ -10,10 +10,9 @@ Spans top screen dashboard navigation layout.
 
 use primiary colors for the top nav and use accent color for cta make it sleek
 
-
 ## Structure
 
-Logo + Menu Links + CTA Button + Notfication 
+Logo + Menu Links + CTA Button + Notfication
 
 ---
 
@@ -27,7 +26,7 @@ LOGO   Explore   Events   Resources [ drop down, contains -  Blogs,  Terms & Con
 
 ## Mobile
 
-LOGO  [Hamburger Menu] CTA Button Notfication button 
+LOGO [Hamburger Menu] CTA Button Notfication button
 
 ---
 

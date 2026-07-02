@@ -45,10 +45,14 @@ Radius
 ## Example
 
 ```html
-<div class="g-qr-placeholder">QR<br>Code</div>
+<div class="g-qr-placeholder">QR<br />Code</div>
 
 <!-- At runtime, replace with: -->
-<img class="g-qr-placeholder" src="/api/qr/GCODE-2026-48291" alt="QR code for GCODE-2026-48291">
+<img
+  class="g-qr-placeholder"
+  src="/api/qr/GCODE-2026-48291"
+  alt="QR code for GCODE-2026-48291"
+/>
 ```
 
 ## Responsive

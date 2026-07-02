@@ -23,11 +23,11 @@ export const Link = forwardRef<HTMLAnchorElement, LinkProps>(
     return (
       <a
         ref={ref}
-        className={`font-medium underline-offset-2 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 ${variantClasses[variant]} ${sizeClasses[size]} ${className}`}
+        className={`focus-visible:ring-primary font-medium underline-offset-2 hover:underline focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none ${variantClasses[variant]} ${sizeClasses[size]} ${className}`}
         {...props}
       />
     );
-  }
+  },
 );
 
 Link.displayName = "Link";

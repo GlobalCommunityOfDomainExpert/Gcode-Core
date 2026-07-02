@@ -1,7 +1,8 @@
 import { HTMLAttributes } from "react";
 
 export type BadgeVariant = "solid" | "outline" | "muted";
-export type BadgeTone = "neutral" | "primary" | "success" | "warning" | "danger";
+export type BadgeTone =
+  "neutral" | "primary" | "success" | "warning" | "danger";
 export type BadgeSize = "sm" | "md";
 
 export interface BadgeProps extends HTMLAttributes<HTMLSpanElement> {
@@ -49,7 +50,7 @@ export function Badge({
 }: BadgeProps) {
   return (
     <span
-      className={`inline-flex items-center justify-center rounded-sm font-medium leading-none ${toneClasses[variant][tone]} ${sizeClasses[size]} ${className}`}
+      className={`inline-flex items-center justify-center rounded-sm leading-none font-medium ${toneClasses[variant][tone]} ${sizeClasses[size]} ${className}`}
       {...props}
     >
       {children}

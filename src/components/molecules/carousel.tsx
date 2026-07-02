@@ -43,7 +43,7 @@ export function Carousel({ children, className = "" }: CarouselProps) {
       <div
         ref={trackRef}
         onScroll={handleScroll}
-        className="flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+        className="flex snap-x snap-mandatory [scrollbar-width:none] gap-4 overflow-x-auto scroll-smooth pb-1 [&::-webkit-scrollbar]:hidden"
       >
         {items.map((item, index) => (
           <div
@@ -62,16 +62,18 @@ export function Carousel({ children, className = "" }: CarouselProps) {
             onClick={() => scrollToIndex(Math.max(0, activeIndex - 1))}
             aria-label="Previous"
             disabled={activeIndex === 0}
-            className="absolute left-0 top-1/2 flex size-8 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-border-light bg-surface-light text-text-secondary shadow-sm hover:text-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 disabled:opacity-40"
+            className="border-border-light bg-surface-light text-text-secondary hover:text-text-primary focus-visible:ring-primary absolute top-1/2 left-0 flex size-8 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border shadow-sm focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:opacity-40"
           >
             <Icon icon={ChevronLeft} size="sm" />
           </button>
           <button
             type="button"
-            onClick={() => scrollToIndex(Math.min(items.length - 1, activeIndex + 1))}
+            onClick={() =>
+              scrollToIndex(Math.min(items.length - 1, activeIndex + 1))
+            }
             aria-label="Next"
             disabled={activeIndex === items.length - 1}
-            className="absolute right-0 top-1/2 flex size-8 translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-border-light bg-surface-light text-text-secondary shadow-sm hover:text-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 disabled:opacity-40"
+            className="border-border-light bg-surface-light text-text-secondary hover:text-text-primary focus-visible:ring-primary absolute top-1/2 right-0 flex size-8 translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border shadow-sm focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:opacity-40"
           >
             <Icon icon={ChevronRight} size="sm" />
           </button>

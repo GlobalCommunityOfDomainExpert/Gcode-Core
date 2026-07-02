@@ -72,7 +72,6 @@ Keyboard focus ring is mandatory. Form fields must be paired with labels.
 <input type="text" class="g-input" placeholder="Enter text..." />
 ```
 
-
 ## Responsive
 
 Adjusts to fit container width. Grids collapse to 1-column on mobile screens (max-width: 768px).

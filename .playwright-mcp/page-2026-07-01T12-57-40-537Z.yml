@@ -1,44 +1,44 @@
 - generic [ref=f17e1]:
-  - generic [ref=f17e2]:
-    - banner [ref=f17e3]:
-      - generic [ref=f17e4]:
-        - link "GCODE" [ref=f17e6] [cursor=pointer]:
-          - /url: /
-        - generic [ref=f17e7]:
-          - button "Notifications" [ref=f17e8]:
-            - img [ref=f17e9]
-          - button "Get Started" [ref=f17e13]
-          - button "Close menu" [expanded] [active] [ref=f17e48]:
-            - img [ref=f17e49]
-      - navigation "Primary" [ref=f17e52]:
-        - link "Explore" [ref=f17e53] [cursor=pointer]:
-          - /url: /explore
-        - link "Events" [ref=f17e54] [cursor=pointer]:
-          - /url: /events
-        - link "Blogs" [ref=f17e55] [cursor=pointer]:
-          - /url: /blogs
-        - link "Terms & Conditions" [ref=f17e56] [cursor=pointer]:
-          - /url: /terms
-        - link "Refund Policy" [ref=f17e57] [cursor=pointer]:
-          - /url: /refund-policy
-    - main [ref=f17e17]:
-      - generic [ref=f17e19]:
-        - generic [ref=f17e20]:
-          - heading "Dashboard" [level=1] [ref=f17e21]
-          - paragraph [ref=f17e22]: Welcome back, here's your overview.
-        - generic [ref=f17e23]:
-          - generic [ref=f17e24]:
-            - paragraph [ref=f17e25]: Total Registrations
-            - generic [ref=f17e27]: "148"
-            - paragraph [ref=f17e28]: +12 this week
-          - generic [ref=f17e29]:
-            - paragraph [ref=f17e30]: Total Earned
-            - generic [ref=f17e31]:
-              - generic [ref=f17e32]: ₹48,500
-              - generic [ref=f17e33]: +12%
-          - generic [ref=f17e34]:
-            - paragraph [ref=f17e35]: Upcoming Events
-            - generic [ref=f17e37]: "3"
-  - button "Open Next.js Dev Tools" [ref=f17e43] [cursor=pointer]:
-    - img [ref=f17e44]
-  - alert [ref=f17e47]
+    - generic [ref=f17e2]:
+        - banner [ref=f17e3]:
+            - generic [ref=f17e4]:
+                - link "GCODE" [ref=f17e6] [cursor=pointer]:
+                    - /url: /
+                - generic [ref=f17e7]:
+                    - button "Notifications" [ref=f17e8]:
+                        - img [ref=f17e9]
+                    - button "Get Started" [ref=f17e13]
+                    - button "Close menu" [expanded] [active] [ref=f17e48]:
+                        - img [ref=f17e49]
+            - navigation "Primary" [ref=f17e52]:
+                - link "Explore" [ref=f17e53] [cursor=pointer]:
+                    - /url: /explore
+                - link "Events" [ref=f17e54] [cursor=pointer]:
+                    - /url: /events
+                - link "Blogs" [ref=f17e55] [cursor=pointer]:
+                    - /url: /blogs
+                - link "Terms & Conditions" [ref=f17e56] [cursor=pointer]:
+                    - /url: /terms
+                - link "Refund Policy" [ref=f17e57] [cursor=pointer]:
+                    - /url: /refund-policy
+        - main [ref=f17e17]:
+            - generic [ref=f17e19]:
+                - generic [ref=f17e20]:
+                    - heading "Dashboard" [level=1] [ref=f17e21]
+                    - paragraph [ref=f17e22]: Welcome back, here's your overview.
+                - generic [ref=f17e23]:
+                    - generic [ref=f17e24]:
+                        - paragraph [ref=f17e25]: Total Registrations
+                        - generic [ref=f17e27]: "148"
+                        - paragraph [ref=f17e28]: +12 this week
+                    - generic [ref=f17e29]:
+                        - paragraph [ref=f17e30]: Total Earned
+                        - generic [ref=f17e31]:
+                            - generic [ref=f17e32]: ₹48,500
+                            - generic [ref=f17e33]: +12%
+                    - generic [ref=f17e34]:
+                        - paragraph [ref=f17e35]: Upcoming Events
+                        - generic [ref=f17e37]: "3"
+    - button "Open Next.js Dev Tools" [ref=f17e43] [cursor=pointer]:
+        - img [ref=f17e44]
+    - alert [ref=f17e47]

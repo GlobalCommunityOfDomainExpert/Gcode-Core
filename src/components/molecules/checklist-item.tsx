@@ -6,7 +6,11 @@ export interface ChecklistItemProps {
   completed?: boolean;
 }
 
-export function ChecklistItem({ label, subtext, completed = false }: ChecklistItemProps) {
+export function ChecklistItem({
+  label,
+  subtext,
+  completed = false,
+}: ChecklistItemProps) {
   return (
     <div className="flex items-start gap-3">
       <Checkbox

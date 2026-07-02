@@ -52,7 +52,7 @@ export function Avatar({
       {...props}
     >
       <div
-        className={`flex h-full w-full items-center justify-center overflow-hidden bg-bg-light font-medium text-text-secondary ${variantClasses[variant]}`}
+        className={`bg-bg-light text-text-secondary flex h-full w-full items-center justify-center overflow-hidden font-medium ${variantClasses[variant]}`}
       >
         {src ? (
           // eslint-disable-next-line @next/next/no-img-element
@@ -65,7 +65,7 @@ export function Avatar({
         <span
           role="img"
           aria-label={statusLabel[status]}
-          className={`absolute bottom-0 right-0 size-2.5 rounded-full ring-2 ring-surface-light ${statusClasses[status]}`}
+          className={`ring-surface-light absolute right-0 bottom-0 size-2.5 rounded-full ring-2 ${statusClasses[status]}`}
         />
       )}
     </div>

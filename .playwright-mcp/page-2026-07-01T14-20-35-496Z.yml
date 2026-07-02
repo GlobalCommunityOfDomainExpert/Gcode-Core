@@ -1,14 +1,14 @@
 - generic [active] [ref=f52e1]:
-  - button "Open Next.js Dev Tools" [ref=f52e7] [cursor=pointer]:
-    - img [ref=f52e8]
-  - main [ref=f52e11]:
-    - generic [ref=f52e12]:
-      - paragraph [ref=f52e13]: "404"
-      - generic [ref=f52e14]:
-        - img [ref=f52e16]
-        - generic [ref=f52e19]:
-          - heading "Page not found" [level=3] [ref=f52e20]
-          - paragraph [ref=f52e21]: The page you're looking for doesn't exist or may have moved.
-        - link "Browse Events" [ref=f52e22] [cursor=pointer]:
-          - /url: /events
-  - alert [ref=f52e23]
+    - button "Open Next.js Dev Tools" [ref=f52e7] [cursor=pointer]:
+        - img [ref=f52e8]
+    - main [ref=f52e11]:
+        - generic [ref=f52e12]:
+            - paragraph [ref=f52e13]: "404"
+            - generic [ref=f52e14]:
+                - img [ref=f52e16]
+                - generic [ref=f52e19]:
+                    - heading "Page not found" [level=3] [ref=f52e20]
+                    - paragraph [ref=f52e21]: The page you're looking for doesn't exist or may have moved.
+                - link "Browse Events" [ref=f52e22] [cursor=pointer]:
+                    - /url: /events
+    - alert [ref=f52e23]

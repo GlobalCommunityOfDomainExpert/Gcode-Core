@@ -1,59 +1,59 @@
 - generic [active] [ref=f22e1]:
-  - generic [ref=f22e2]:
-    - banner [ref=f22e3]:
-      - generic [ref=f22e4]:
-        - generic [ref=f22e5]:
-          - link "GCODE" [ref=f22e6] [cursor=pointer]:
-            - /url: /
-          - navigation "Primary" [ref=f22e7]:
-            - link "Explore" [ref=f22e8] [cursor=pointer]:
-              - /url: /explore
-            - link "Events" [ref=f22e9] [cursor=pointer]:
-              - /url: /events
-            - generic [ref=f22e12] [cursor=pointer]: Resources ▾
-        - generic [ref=f22e13]:
-          - button "Notifications" [ref=f22e14]:
-            - img [ref=f22e15]
-          - button "Get Started" [ref=f22e19]
-    - generic [ref=f22e20]:
-      - complementary [ref=f22e21]:
-        - generic [ref=f22e23]: GCODE
-        - navigation "Sidebar" [ref=f22e24]:
-          - link "Dashboard" [ref=f22e25] [cursor=pointer]:
-            - /url: /dashboard
-            - img [ref=f22e26]
-            - text: Dashboard
-          - link "Bookings" [ref=f22e31] [cursor=pointer]:
-            - /url: /bookings
-            - img [ref=f22e32]
-            - text: Bookings
-        - generic [ref=f22e35]:
-          - generic [ref=f22e36]:
-            - paragraph [ref=f22e37]: Profile 60% complete
-            - progressbar "Profile completion" [ref=f22e38]
-          - button "Shashwat Singh Founder" [ref=f22e41]:
-            - generic [ref=f22e44]: SS
-            - generic [ref=f22e45]:
-              - generic [ref=f22e46]: Shashwat Singh
-              - generic [ref=f22e47]: Founder
-            - img [ref=f22e48]
-      - main [ref=f22e50]:
-        - generic [ref=f22e52]:
-          - generic [ref=f22e53]:
-            - heading "Dashboard" [level=1] [ref=f22e54]
-            - paragraph [ref=f22e55]: Welcome back, here's your overview.
-          - generic [ref=f22e56]:
-            - generic [ref=f22e57]:
-              - paragraph [ref=f22e58]: Total Registrations
-              - generic [ref=f22e60]: "148"
-              - paragraph [ref=f22e61]: +12 this week
-            - generic [ref=f22e62]:
-              - paragraph [ref=f22e63]: Total Earned
-              - generic [ref=f22e64]:
-                - generic [ref=f22e65]: ₹48,500
-                - generic [ref=f22e66]: +12%
-            - generic [ref=f22e67]:
-              - paragraph [ref=f22e68]: Upcoming Events
-              - generic [ref=f22e70]: "3"
-  - button "Open Next.js Dev Tools" [ref=f22e76] [cursor=pointer]:
-    - img [ref=f22e77]
+    - generic [ref=f22e2]:
+        - banner [ref=f22e3]:
+            - generic [ref=f22e4]:
+                - generic [ref=f22e5]:
+                    - link "GCODE" [ref=f22e6] [cursor=pointer]:
+                        - /url: /
+                    - navigation "Primary" [ref=f22e7]:
+                        - link "Explore" [ref=f22e8] [cursor=pointer]:
+                            - /url: /explore
+                        - link "Events" [ref=f22e9] [cursor=pointer]:
+                            - /url: /events
+                        - generic [ref=f22e12] [cursor=pointer]: Resources ▾
+                - generic [ref=f22e13]:
+                    - button "Notifications" [ref=f22e14]:
+                        - img [ref=f22e15]
+                    - button "Get Started" [ref=f22e19]
+        - generic [ref=f22e20]:
+            - complementary [ref=f22e21]:
+                - generic [ref=f22e23]: GCODE
+                - navigation "Sidebar" [ref=f22e24]:
+                    - link "Dashboard" [ref=f22e25] [cursor=pointer]:
+                        - /url: /dashboard
+                        - img [ref=f22e26]
+                        - text: Dashboard
+                    - link "Bookings" [ref=f22e31] [cursor=pointer]:
+                        - /url: /bookings
+                        - img [ref=f22e32]
+                        - text: Bookings
+                - generic [ref=f22e35]:
+                    - generic [ref=f22e36]:
+                        - paragraph [ref=f22e37]: Profile 60% complete
+                        - progressbar "Profile completion" [ref=f22e38]
+                    - button "Shashwat Singh Founder" [ref=f22e41]:
+                        - generic [ref=f22e44]: SS
+                        - generic [ref=f22e45]:
+                            - generic [ref=f22e46]: Shashwat Singh
+                            - generic [ref=f22e47]: Founder
+                        - img [ref=f22e48]
+            - main [ref=f22e50]:
+                - generic [ref=f22e52]:
+                    - generic [ref=f22e53]:
+                        - heading "Dashboard" [level=1] [ref=f22e54]
+                        - paragraph [ref=f22e55]: Welcome back, here's your overview.
+                    - generic [ref=f22e56]:
+                        - generic [ref=f22e57]:
+                            - paragraph [ref=f22e58]: Total Registrations
+                            - generic [ref=f22e60]: "148"
+                            - paragraph [ref=f22e61]: +12 this week
+                        - generic [ref=f22e62]:
+                            - paragraph [ref=f22e63]: Total Earned
+                            - generic [ref=f22e64]:
+                                - generic [ref=f22e65]: ₹48,500
+                                - generic [ref=f22e66]: +12%
+                        - generic [ref=f22e67]:
+                            - paragraph [ref=f22e68]: Upcoming Events
+                            - generic [ref=f22e70]: "3"
+    - button "Open Next.js Dev Tools" [ref=f22e76] [cursor=pointer]:
+        - img [ref=f22e77]

@@ -63,7 +63,6 @@ Aria-role="switch". Keyboard toggle via Space.
 </label>
 ```
 
-
 ## Responsive
 
 Adjusts to fit container width. Grids collapse to 1-column on mobile screens (max-width: 768px).

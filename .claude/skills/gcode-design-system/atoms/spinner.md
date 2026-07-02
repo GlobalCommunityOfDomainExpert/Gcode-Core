@@ -55,9 +55,10 @@ Aria-live="polite".
 ## Example
 
 ```html
-<div class="g-spinner" role="status"><span class="sr-only">Loading...</span></div>
+<div class="g-spinner" role="status">
+  <span class="sr-only">Loading...</span>
+</div>
 ```
-
 
 ## Responsive
 

@@ -70,15 +70,21 @@ Spans full width of its container. Stack inside grid columns for multi-column la
 ```html
 <!-- Text input -->
 <div class="g-form-field">
-  <label class="g-label">Event Title <span class="g-label__required">*</span></label>
-  <input class="g-input" type="text" placeholder="e.g. GCODE Build Sprint">
+  <label class="g-label"
+    >Event Title <span class="g-label__required">*</span></label
+  >
+  <input class="g-input" type="text" placeholder="e.g. GCODE Build Sprint" />
   <div class="g-hint">Minimum 10 characters</div>
 </div>
 
 <!-- Textarea -->
 <div class="g-form-field">
   <label class="g-label">Description</label>
-  <textarea class="g-textarea" rows="4" placeholder="Describe the event…"></textarea>
+  <textarea
+    class="g-textarea"
+    rows="4"
+    placeholder="Describe the event…"
+  ></textarea>
 </div>
 
 <!-- Select -->

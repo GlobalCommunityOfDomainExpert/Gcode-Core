@@ -23,13 +23,18 @@ export function NotificationItem({
       <Avatar alt="" initials={avatarInitials} src={avatarSrc} size="sm" />
       <div className="min-w-0 flex-1">
         <p
-          className={`text-body ${unread ? "font-semibold text-text-primary" : "text-text-primary"}`}
+          className={`text-body ${unread ? "text-text-primary font-semibold" : "text-text-primary"}`}
         >
           {description}
         </p>
         <p className="text-small text-text-secondary">{timestamp}</p>
       </div>
-      {unread && <span className="mt-1 size-2 shrink-0 rounded-full bg-primary" aria-hidden="true" />}
+      {unread && (
+        <span
+          className="bg-primary mt-1 size-2 shrink-0 rounded-full"
+          aria-hidden="true"
+        />
+      )}
     </div>
   );
 }

@@ -36,7 +36,9 @@ Can stack or wrap on very small screens, usually placed in a grid.
 
 ```html
 <div class="g-toggle-group">
-  <button class="g-toggle-group__btn g-toggle-group__btn--active">Online</button>
+  <button class="g-toggle-group__btn g-toggle-group__btn--active">
+    Online
+  </button>
   <button class="g-toggle-group__btn">In-Person</button>
   <button class="g-toggle-group__btn">Hybrid</button>
 </div>

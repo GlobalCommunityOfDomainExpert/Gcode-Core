@@ -15,7 +15,7 @@ Always prioritize consistency over creativity.
 
 Never invent a new visual language when an existing solution already exists.
 
-Make sure the design is consitent and Not to large 
+Make sure the design is consitent and Not to large
 
 ---
 
@@ -180,7 +180,6 @@ Includes:
 - Colors
 - Typography
 
-
 ---
 
 ## Tokens
@@ -287,7 +286,6 @@ You MUST read the markdown files in these folders before writing code:
 3. `atoms/`
 4. `molecules/`
 5. `layout/`
-
 
 Reuse existing components whenever possible.
 
@@ -534,7 +532,6 @@ Do not make assumptions.
 
 ---
 
-
 ## Visual Rules
 
 Use:
@@ -563,8 +560,7 @@ Prefer compact layouts that maximize usable space without feeling crowded.
 
 Maintain a consistent visual rhythm across all pages.
 
-
-----
+---
 
 # Final Rule
 

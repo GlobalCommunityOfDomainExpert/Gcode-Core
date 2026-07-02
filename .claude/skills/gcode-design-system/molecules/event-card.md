@@ -15,10 +15,12 @@ Card + Header (optional) + Tags + Title + Details List + Avatar Group (optional)
 ## Variants
 
 Compact
+
 - Used in sidebars or small widgets ("Suggested Webinars").
 - Minimal metadata (Category tag, Price tag, Title, Date, Register CTA).
 
 Featured
+
 - Used in main event feeds.
 - Includes a colored top header.
 - Detailed tags (Event Type, Mode, Price).
@@ -61,7 +63,12 @@ Adjusts to container width. In grids, switches to 1-column on mobile screens.
   </div>
   <h4 class="g-event-card__title">Building secure auth systems</h4>
   <p class="g-event-card__date">
-    <i data-lucide="calendar" class="g-icon" style="width: 12px; height: 12px;"></i> 10 Jul 2026
+    <i
+      data-lucide="calendar"
+      class="g-icon"
+      style="width: 12px; height: 12px;"
+    ></i>
+    10 Jul 2026
   </p>
   <button class="g-btn g-btn--primary" style="width: 100%;">Register</button>
 </div>
@@ -81,10 +88,12 @@ Adjusts to container width. In grids, switches to 1-column on mobile screens.
     </div>
     <h4 class="g-event-card__title">GCODE Build Sprint · Summer 2026</h4>
     <div class="g-event-card__details">
-      <p><i data-lucide="calendar" class="g-icon"></i> 15 Jul 2026 · 10:00 AM IST</p>
+      <p>
+        <i data-lucide="calendar" class="g-icon"></i> 15 Jul 2026 · 10:00 AM IST
+      </p>
       <p><i data-lucide="map-pin" class="g-icon"></i> Online</p>
     </div>
-    
+
     <div class="g-event-card__attendees">
       <div class="g-avatar-group">
         <div class="g-avatar">A</div>
@@ -93,7 +102,7 @@ Adjusts to container width. In grids, switches to 1-column on mobile screens.
         <span class="g-avatar-group__overflow">+148 registered</span>
       </div>
     </div>
-    
+
     <div class="g-event-card__footer">
       <span class="g-event-card__urgency">52 spots left</span>
       <button class="g-btn g-btn--primary">Register →</button>

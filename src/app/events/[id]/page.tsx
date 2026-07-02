@@ -1,6 +1,13 @@
 import { notFound } from "next/navigation";
-import { Calendar, Clock, MapPin, Award, Users } from "lucide-react";
-import { Avatar, Badge, ButtonLink, Icon } from "@/components/atoms";
+import {
+  Calendar,
+  Clock,
+  MapPin,
+  Award,
+  Users,
+  ArrowRight,
+} from "lucide-react";
+import { Avatar, Badge, Button, ButtonLink, Icon } from "@/components/atoms";
 import { AvatarGroup, Breadcrumb } from "@/components/molecules";
 import { Timeline } from "@/components/molecules";
 import { AuthenticatedShell } from "@/app/_components/authenticated-shell";
@@ -26,17 +33,21 @@ function DetailItem({
 }) {
   return (
     <div className="flex items-start gap-3">
-      <Icon icon={icon} size="sm" className="mt-0.5 text-text-secondary" />
+      <Icon icon={icon} size="sm" className="text-text-secondary mt-0.5" />
       <div>
         <p className="text-small text-text-secondary">{label}</p>
-        <p className="text-body font-semibold text-text-primary">{value}</p>
+        <p className="text-body text-text-primary font-semibold">{value}</p>
         <p className="text-small text-text-secondary">{description}</p>
       </div>
     </div>
   );
 }
 
-export default async function EventDetailPage({ params }: { params: Promise<{ id: string }> }) {
+export default async function EventDetailPage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
   const { id } = await params;
   const event = getEventById(id);
 
@@ -57,7 +68,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
 
         <div className="grid gap-6 lg:grid-cols-[1fr_320px]">
           <div className="space-y-6">
-            <div className="relative flex aspect-[3/1] items-end rounded-md bg-primary p-4">
+            <div className="bg-primary relative flex aspect-[3/1] items-end rounded-md p-4">
               <div className="flex flex-wrap gap-2">
                 <Badge variant="solid" tone="neutral">
                   {event.type}
@@ -70,14 +81,20 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
                 </Badge>
               </div>
               {event.featured && (
-                <Badge variant="solid" tone="warning" className="absolute right-4 top-4">
+                <Badge
+                  variant="solid"
+                  tone="warning"
+                  className="absolute top-4 right-4"
+                >
                   Featured
                 </Badge>
               )}
             </div>
 
-            <div className="space-y-3 rounded-md border border-border-light bg-surface-light p-6">
-              <h1 className="text-heading font-extrabold text-text-primary">{event.title}</h1>
+            <div className="border-border-light bg-surface-light space-y-3 rounded-md border p-6">
+              <h1 className="text-heading text-text-primary font-extrabold">
+                {event.title}
+              </h1>
               <div className="flex flex-wrap gap-2">
                 <Badge tone={eventTypeTone[event.type]} size="sm">
                   {event.type}
@@ -85,12 +102,15 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
                 <Badge tone="neutral" size="sm">
                   {event.mode}
                 </Badge>
-                <Badge tone={event.price === "Free" ? "success" : "neutral"} size="sm">
+                <Badge
+                  tone={event.price === "Free" ? "success" : "neutral"}
+                  size="sm"
+                >
                   {event.price}
                 </Badge>
               </div>
-              <div className="space-y-2 border-t border-border-light pt-4">
-                <p className="text-small font-bold uppercase tracking-widest text-text-secondary">
+              <div className="border-border-light space-y-2 border-t pt-4">
+                <p className="text-small text-text-secondary font-bold tracking-widest uppercase">
                   About this event
                 </p>
                 {event.description.map((paragraph, index) => (
@@ -101,20 +121,42 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
               </div>
             </div>
 
-            <div className="space-y-4 rounded-md border border-border-light bg-surface-light p-6">
-              <p className="text-small font-bold uppercase tracking-widest text-text-secondary">
+            <div className="border-border-light bg-surface-light space-y-4 rounded-md border p-6">
+              <p className="text-small text-text-secondary font-bold tracking-widest uppercase">
                 Event Details
               </p>
               <div className="grid gap-4 sm:grid-cols-2">
-                <DetailItem icon={Calendar} label="Date & Time" value={event.date} description={event.time} />
-                <DetailItem icon={Clock} label="Duration" value={event.duration} description="" />
-                <DetailItem icon={MapPin} label="Mode" value={event.mode} description={event.location} />
-                <DetailItem icon={Users} label="Team Size" value={event.teamSize} description="" />
+                <DetailItem
+                  icon={Calendar}
+                  label="Date & Time"
+                  value={event.date}
+                  description={event.time}
+                />
+                <DetailItem
+                  icon={Clock}
+                  label="Duration"
+                  value={event.duration}
+                  description=""
+                />
+                <DetailItem
+                  icon={MapPin}
+                  label="Mode"
+                  value={event.mode}
+                  description={event.location}
+                />
+                <DetailItem
+                  icon={Users}
+                  label="Team Size"
+                  value={event.teamSize}
+                  description=""
+                />
               </div>
             </div>
 
-            <div className="space-y-4 rounded-md border border-border-light bg-surface-light p-6">
-              <p className="text-small font-bold uppercase tracking-widest text-text-secondary">Agenda</p>
+            <div className="border-border-light bg-surface-light space-y-4 rounded-md border p-6">
+              <p className="text-small text-text-secondary font-bold tracking-widest uppercase">
+                Agenda
+              </p>
               <Timeline
                 items={event.agenda.map((item, index) => ({
                   title: `${item.time} — ${item.title}`,
@@ -124,8 +166,8 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
               />
             </div>
 
-            <div className="space-y-3 rounded-md border border-border-light bg-surface-light p-6">
-              <p className="text-small font-bold uppercase tracking-widest text-text-secondary">
+            <div className="border-border-light bg-surface-light space-y-3 rounded-md border p-6">
+              <p className="text-small text-text-secondary font-bold tracking-widest uppercase">
                 Organized By
               </p>
               <div className="flex items-center justify-between gap-4">
@@ -133,7 +175,9 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
                   <Avatar alt={event.organizer.name} initials="GC" size="md" />
                   <div>
                     <div className="flex items-center gap-2">
-                      <p className="text-body font-semibold text-text-primary">{event.organizer.name}</p>
+                      <p className="text-body text-text-primary font-semibold">
+                        {event.organizer.name}
+                      </p>
                       {event.organizer.verified && (
                         <Badge tone="success" variant="muted" size="sm">
                           Verified
@@ -141,22 +185,29 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
                       )}
                     </div>
                     <p className="text-small text-text-secondary">
-                      {event.organizer.eventsHosted} events hosted · {event.organizer.attendees.toLocaleString()}{" "}
-                      attendees · {event.organizer.title}
+                      {event.organizer.eventsHosted} events hosted ·{" "}
+                      {event.organizer.attendees.toLocaleString()} attendees ·{" "}
+                      {event.organizer.title}
                     </p>
                   </div>
                 </div>
-                <ButtonLink href="/dashboard" variant="ghost" size="sm">
-                  View Profile →
+                <ButtonLink
+                  href="/dashboard"
+                  variant="ghost"
+                  size="sm"
+                  className="inline-flex items-center gap-1"
+                >
+                  View Profile
+                  <Icon icon={ArrowRight} size="sm" />
                 </ButtonLink>
               </div>
             </div>
 
-            <div className="space-y-3 rounded-md border border-border-light bg-surface-light p-6">
-              <p className="text-small font-bold uppercase tracking-widest text-text-secondary">
+            <div className="border-border-light bg-surface-light space-y-3 rounded-md border p-6">
+              <p className="text-small text-text-secondary font-bold tracking-widest uppercase">
                 Terms &amp; Eligibility
               </p>
-              <ul className="list-disc space-y-1.5 pl-5 text-body text-text-secondary">
+              <ul className="text-body text-text-secondary list-disc space-y-1.5 pl-5">
                 {event.terms.map((term) => (
                   <li key={term}>{term}</li>
                 ))}
@@ -165,42 +216,66 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
           </div>
 
           <div className="space-y-6 lg:sticky lg:top-6 lg:self-start">
-            <div className="space-y-4 rounded-md border border-border-light bg-surface-light p-4">
+            <div className="border-border-light bg-surface-light space-y-4 rounded-md border p-4">
               <div className="flex items-center justify-between">
-                <span className="text-heading font-extrabold text-text-primary">{event.price}</span>
+                <span className="text-heading text-text-primary font-extrabold">
+                  {event.price}
+                </span>
                 {event.spotsLeft !== undefined && (
-                  <span className="text-small font-semibold text-warning">{event.spotsLeft} spots left</span>
+                  <span className="text-small text-warning font-semibold">
+                    {event.spotsLeft} spots left
+                  </span>
                 )}
               </div>
-              <p className="text-small text-text-secondary">Registration closes {event.registrationCloses}</p>
+              <p className="text-small text-text-secondary">
+                Registration closes {event.registrationCloses}
+              </p>
               <AvatarGroup
                 items={placeholderAttendees}
                 overflowLabel={`+${event.registeredCount} already registered`}
               />
-              <ButtonLink href={`/events/${event.id}/registered`} variant="primary" className="w-full">
-                Register Now →
-              </ButtonLink>
-              <button
-                type="button"
-                className="w-full rounded-sm border border-border-light py-2 text-center text-body font-medium text-text-primary hover:bg-bg-light"
+              <ButtonLink
+                href={`/events/${event.id}/registered`}
+                variant="primary"
+                className="w-full"
               >
+                Register Now <Icon icon={ArrowRight} size="sm" />
+              </ButtonLink>
+              <Button variant="secondary" className="w-full">
                 📅 Add to Calendar
-              </button>
+              </Button>
               {event.capacity && (
-                <p className="text-center text-small text-text-secondary">
-                  {event.capacity} total capacity · {event.registeredCount} registered ·{" "}
-                  {event.spotsLeft} open
+                <p className="text-small text-text-secondary text-center">
+                  {event.capacity} total capacity · {event.registeredCount}{" "}
+                  registered · {event.spotsLeft} open
                 </p>
               )}
             </div>
 
-            <div className="space-y-3 rounded-md border border-border-light bg-surface-light p-4">
-              <p className="text-small font-bold uppercase tracking-widest text-text-secondary">Event Info</p>
+            <div className="border-border-light bg-surface-light space-y-3 rounded-md border p-4">
+              <p className="text-small text-text-secondary font-bold tracking-widest uppercase">
+                Event Info
+              </p>
               <div className="space-y-3">
-                <DetailItem icon={Calendar} label="" value={event.date} description={event.time} />
-                <DetailItem icon={MapPin} label="" value={event.mode} description={event.location} />
+                <DetailItem
+                  icon={Calendar}
+                  label=""
+                  value={event.date}
+                  description={event.time}
+                />
+                <DetailItem
+                  icon={MapPin}
+                  label=""
+                  value={event.mode}
+                  description={event.location}
+                />
                 {event.certificate && (
-                  <DetailItem icon={Award} label="" value="Certificate" description="Issued on completion" />
+                  <DetailItem
+                    icon={Award}
+                    label=""
+                    value="Certificate"
+                    description="Issued on completion"
+                  />
                 )}
               </div>
             </div>

@@ -13,7 +13,12 @@ export interface AvatarGroupProps {
   overflowLabel?: string;
 }
 
-export function AvatarGroup({ items, max = 3, size = "md", overflowLabel }: AvatarGroupProps) {
+export function AvatarGroup({
+  items,
+  max = 3,
+  size = "md",
+  overflowLabel,
+}: AvatarGroupProps) {
   const visible = items.slice(0, max);
   const overflow = items.length - visible.length;
 
@@ -27,12 +32,12 @@ export function AvatarGroup({ items, max = 3, size = "md", overflowLabel }: Avat
             src={item.src}
             initials={item.initials}
             size={size}
-            className="ring-2 ring-border-hover rounded-full"
+            className="ring-border-hover rounded-full ring-2"
           />
         ))}
       </div>
       {overflow > 0 && (
-        <span className="ml-3 text-small text-text-secondary">
+        <span className="text-small text-text-secondary ml-3">
           {overflowLabel ?? `+${overflow}`}
         </span>
       )}

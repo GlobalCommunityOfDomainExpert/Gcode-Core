@@ -25,8 +25,12 @@ export function SearchBar({
   }
 
   return (
-    <form role="search" onSubmit={handleSubmit} className={`relative flex items-center ${className}`}>
-      <span className="pointer-events-none absolute left-3 text-text-secondary">
+    <form
+      role="search"
+      onSubmit={handleSubmit}
+      className={`relative flex items-center ${className}`}
+    >
+      <span className="text-text-secondary pointer-events-none absolute left-3">
         <Icon icon={Search} size="sm" />
       </span>
       <Input
@@ -35,10 +39,10 @@ export function SearchBar({
         onChange={(event) => onChange(event.target.value)}
         placeholder={placeholder}
         aria-label={placeholder}
-        className="!pl-9 !pr-9"
+        className="!pr-9 !pl-9"
       />
       {loading ? (
-        <span className="absolute right-3 text-text-secondary">
+        <span className="text-text-secondary absolute right-3">
           <Spinner size="sm" />
         </span>
       ) : (
@@ -47,7 +51,7 @@ export function SearchBar({
             type="button"
             onClick={() => onChange("")}
             aria-label="Clear search"
-            className="absolute right-3 rounded-full text-text-secondary hover:text-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+            className="text-text-secondary hover:text-text-primary focus-visible:ring-primary absolute right-3 rounded-full focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
           >
             <Icon icon={X} size="sm" />
           </button>

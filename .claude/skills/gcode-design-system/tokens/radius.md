@@ -8,11 +8,11 @@ Consistent corner rounding across all components.
 
 ## Scale
 
-| Token | Value | Use |
-|---|---|---|
-| `--g-radius-sm` | `6px` | Buttons, inputs, chips, small badges |
-| `--g-radius-md` | `12px` | Cards, modals, panels, table wrapper |
-| `--g-radius-lg` | `18px` | Large cards, event banners, hero sections |
+| Token             | Value    | Use                                         |
+| ----------------- | -------- | ------------------------------------------- |
+| `--g-radius-sm`   | `6px`    | Buttons, inputs, chips, small badges        |
+| `--g-radius-md`   | `12px`   | Cards, modals, panels, table wrapper        |
+| `--g-radius-lg`   | `18px`   | Large cards, event banners, hero sections   |
 | `--g-radius-full` | `9999px` | Pills, avatars, progress bars, filter chips |
 
 ---
@@ -21,9 +21,9 @@ Consistent corner rounding across all components.
 
 ```css
 :root {
-  --g-radius-sm:   6px;
-  --g-radius-md:   12px;
-  --g-radius-lg:   18px;
+  --g-radius-sm: 6px;
+  --g-radius-md: 12px;
+  --g-radius-lg: 18px;
   --g-radius-full: 9999px;
 }
 ```

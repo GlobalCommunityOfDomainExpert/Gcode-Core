@@ -9,17 +9,24 @@ export interface EmptyStateProps {
   action?: ReactNode;
 }
 
-export function EmptyState({ icon, title, description, action }: EmptyStateProps) {
+export function EmptyState({
+  icon,
+  title,
+  description,
+  action,
+}: EmptyStateProps) {
   return (
-    <div className="flex flex-col items-center gap-3 rounded-md border border-border-light bg-surface-light px-6 py-12 text-center">
+    <div className="border-border-light bg-surface-light flex flex-col items-center gap-3 rounded-md border px-6 py-12 text-center">
       {icon && (
-        <div className="flex size-12 items-center justify-center rounded-full bg-bg-light text-text-secondary">
+        <div className="bg-bg-light text-text-secondary flex size-12 items-center justify-center rounded-full">
           <Icon icon={icon} size="lg" />
         </div>
       )}
       <div className="space-y-1">
-        <h3 className="text-large font-semibold text-text-primary">{title}</h3>
-        {description && <p className="text-body text-text-secondary">{description}</p>}
+        <h3 className="text-large text-text-primary font-semibold">{title}</h3>
+        {description && (
+          <p className="text-body text-text-secondary">{description}</p>
+        )}
       </div>
       {action}
     </div>

@@ -50,20 +50,20 @@ Choose the size that matches the surrounding component.
 
 ## Common Icons
 
-| Action | Icon |
-|---------|------|
-| Search | Search |
-| Filter | Sliders |
-| Add | Plus |
-| Edit | Pencil |
-| Delete | Trash2 |
-| Download | Download |
-| Upload | Upload |
-| Calendar | Calendar |
-| User | User |
-| Settings | Settings |
-| Notifications | Bell |
-| Help | CircleHelp |
+| Action        | Icon       |
+| ------------- | ---------- |
+| Search        | Search     |
+| Filter        | Sliders    |
+| Add           | Plus       |
+| Edit          | Pencil     |
+| Delete        | Trash2     |
+| Download      | Download   |
+| Upload        | Upload     |
+| Calendar      | Calendar   |
+| User          | User       |
+| Settings      | Settings   |
+| Notifications | Bell       |
+| Help          | CircleHelp |
 
 ---
 

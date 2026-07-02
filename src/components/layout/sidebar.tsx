@@ -3,7 +3,15 @@
 import { ReactNode, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { CalendarCheck, ChevronDown, ChevronRight, LayoutDashboard, LogOut, LucideIcon, User } from "lucide-react";
+import {
+  CalendarCheck,
+  ChevronDown,
+  ChevronRight,
+  LayoutDashboard,
+  LogOut,
+  LucideIcon,
+  User,
+} from "lucide-react";
 import { Avatar, Icon, Progress } from "@/components/atoms";
 
 export interface SidebarLink {
@@ -40,7 +48,11 @@ const defaultLinks: SidebarLink[] = [
   { label: "Bookings", href: "/bookings", icon: CalendarCheck },
 ];
 
-function ProfileMenu({ user, onViewProfile, onLogout }: Pick<SidebarProps, "user" | "onViewProfile" | "onLogout">) {
+function ProfileMenu({
+  user,
+  onViewProfile,
+  onLogout,
+}: Pick<SidebarProps, "user" | "onViewProfile" | "onLogout">) {
   const [open, setOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
 
@@ -69,7 +81,7 @@ function ProfileMenu({ user, onViewProfile, onLogout }: Pick<SidebarProps, "user
       {open && (
         <div
           role="menu"
-          className="absolute bottom-full left-0 mb-2 w-full min-w-48 rounded-md border border-border-light bg-surface-light py-1 shadow-md"
+          className="border-border-light bg-surface-light absolute bottom-full left-0 mb-2 w-full min-w-48 rounded-md border py-1 shadow-md"
         >
           <button
             type="button"
@@ -78,7 +90,7 @@ function ProfileMenu({ user, onViewProfile, onLogout }: Pick<SidebarProps, "user
               onViewProfile?.();
               setOpen(false);
             }}
-            className="flex w-full items-center gap-2 px-3 py-2 text-left text-body text-text-primary hover:bg-bg-light"
+            className="text-body text-text-primary hover:bg-bg-light flex w-full items-center gap-2 px-3 py-2 text-left"
           >
             <Icon icon={User} size="sm" />
             View Profile
@@ -90,7 +102,7 @@ function ProfileMenu({ user, onViewProfile, onLogout }: Pick<SidebarProps, "user
               onLogout?.();
               setOpen(false);
             }}
-            className="flex w-full items-center gap-2 px-3 py-2 text-left text-body text-danger hover:bg-danger-light"
+            className="text-body text-danger hover:bg-danger-light flex w-full items-center gap-2 px-3 py-2 text-left"
           >
             <Icon icon={LogOut} size="sm" />
             Logout
@@ -102,19 +114,26 @@ function ProfileMenu({ user, onViewProfile, onLogout }: Pick<SidebarProps, "user
         onClick={() => setOpen((prev) => !prev)}
         aria-expanded={open}
         aria-haspopup="menu"
-        className="flex w-full items-center gap-3 rounded-md p-2 text-left hover:bg-bg-light focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+        className="hover:bg-bg-light focus-visible:ring-primary flex w-full items-center gap-3 rounded-md p-2 text-left focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
       >
-        <Avatar alt={user.name} src={user.avatarSrc} initials={user.avatarInitials} size="sm" />
+        <Avatar
+          alt={user.name}
+          src={user.avatarSrc}
+          initials={user.avatarInitials}
+          size="sm"
+        />
         <span className="min-w-0 flex-1">
-          <span className="block truncate text-small font-semibold text-text-primary">
+          <span className="text-small text-text-primary block truncate font-semibold">
             {user.name}
           </span>
-          <span className="block truncate text-small text-text-secondary">{user.role}</span>
+          <span className="text-small text-text-secondary block truncate">
+            {user.role}
+          </span>
         </span>
         <Icon
           icon={ChevronRight}
           size="sm"
-          className={`shrink-0 text-text-secondary transition-transform ${open ? "-rotate-90" : "rotate-90"}`}
+          className={`text-text-secondary shrink-0 transition-transform ${open ? "-rotate-90" : "rotate-90"}`}
         />
       </button>
     </div>
@@ -140,7 +159,7 @@ function SidebarGroup({
         type="button"
         onClick={() => setOpen((prev) => !prev)}
         aria-expanded={open}
-        className={`flex w-full items-center gap-3 rounded-sm px-3 py-2 text-left text-body font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 ${
+        className={`text-body focus-visible:ring-primary flex w-full items-center gap-3 rounded-sm px-3 py-2 text-left font-medium transition-colors hover:cursor-pointer focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none ${
           hasActiveChild
             ? "bg-primary-light text-primary"
             : "text-text-secondary hover:bg-bg-light hover:text-text-primary"
@@ -148,10 +167,14 @@ function SidebarGroup({
       >
         {link.icon && <Icon icon={link.icon} size="sm" />}
         <span className="flex-1">{link.label}</span>
-        <Icon icon={ChevronDown} size="sm" className={`transition-transform ${open ? "rotate-180" : ""}`} />
+        <Icon
+          icon={ChevronDown}
+          size="sm"
+          className={`transition-transform ${open ? "rotate-180" : ""}`}
+        />
       </button>
       {open && (
-        <div className="mt-1 flex flex-col gap-1 border-l border-border-light pl-6">
+        <div className="border-border-light mt-1 flex flex-col gap-1 border-l pl-6">
           {children.map((child) => {
             const isActive = child.href === pathname;
             return (
@@ -160,7 +183,7 @@ function SidebarGroup({
                 href={child.href}
                 onClick={onNavigate}
                 aria-current={isActive ? "page" : undefined}
-                className={`rounded-sm px-3 py-1.5 text-small font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 ${
+                className={`text-small focus-visible:ring-primary rounded-sm px-3 py-1.5 font-medium transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none ${
                   isActive
                     ? "bg-primary text-white"
                     : "text-text-secondary hover:bg-bg-light hover:text-text-primary"
@@ -194,20 +217,25 @@ export function Sidebar({
 
       <nav aria-label="Sidebar" className="flex-1 space-y-1 px-3 pt-3">
         {links.map((link) => (
+          // [PROBLEM]:  Grouped Navigation Layout needs re-work
           <div key={link.label}>
             {link.groupLabel && (
-              <p className="mb-1 mt-4 px-3 text-small font-bold uppercase tracking-widest text-text-secondary first:mt-0">
+              <p className="text-small text-text-secondary mt-5 mb-1 px-3 font-bold tracking-widest uppercase">
                 {link.groupLabel}
               </p>
             )}
             {link.children ? (
-              <SidebarGroup link={link} pathname={pathname} onNavigate={onNavigate} />
+              <SidebarGroup
+                link={link}
+                pathname={pathname}
+                onNavigate={onNavigate}
+              />
             ) : (
               <Link
                 href={link.href ?? "#"}
                 onClick={onNavigate}
                 aria-current={pathname === link.href ? "page" : undefined}
-                className={`flex items-center gap-3 rounded-sm px-3 py-2 text-body font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 ${
+                className={`text-body focus-visible:ring-primary flex items-center gap-3 rounded-sm px-3 py-2 font-medium transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none ${
                   pathname === link.href
                     ? "bg-primary-light text-primary"
                     : "text-text-secondary hover:bg-bg-light hover:text-text-primary"
@@ -216,7 +244,7 @@ export function Sidebar({
                 {link.icon && <Icon icon={link.icon} size="sm" />}
                 <span className="flex-1">{link.label}</span>
                 {link.badge && (
-                  <span className="rounded-full bg-primary-light px-1.5 py-0.5 text-small font-semibold text-primary">
+                  <span className="bg-primary-light text-small text-primary rounded-full px-1.5 py-0.5 font-semibold">
                     {link.badge}
                   </span>
                 )}
@@ -226,14 +254,20 @@ export function Sidebar({
         ))}
       </nav>
 
-      <div className="space-y-3 border-t border-border-light p-3">
+      <div className="border-border-light space-y-3 border-t p-3">
         {profileCompletion !== undefined && profileCompletion < 100 && (
           <div className="space-y-1 px-2">
-            <p className="text-small text-text-secondary">Profile {profileCompletion}% complete</p>
+            <p className="text-small text-text-secondary">
+              Profile {profileCompletion}% complete
+            </p>
             <Progress value={profileCompletion} label="Profile completion" />
           </div>
         )}
-        <ProfileMenu user={user} onViewProfile={onViewProfile} onLogout={onLogout} />
+        <ProfileMenu
+          user={user}
+          onViewProfile={onViewProfile}
+          onLogout={onLogout}
+        />
       </div>
     </>
   );
@@ -243,7 +277,7 @@ export function Sidebar({
   }
 
   return (
-    <aside className="hidden w-64 shrink-0 flex-col border-r border-border-light bg-surface-light lg:flex">
+    <aside className="border-border-light bg-surface-light hidden w-64 shrink-0 flex-col border-r lg:flex">
       {body}
     </aside>
   );

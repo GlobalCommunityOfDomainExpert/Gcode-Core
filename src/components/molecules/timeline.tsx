@@ -19,15 +19,23 @@ export function Timeline({ items }: TimelineProps) {
             <div className="flex flex-col items-center">
               <span
                 className={`mt-1 size-2.5 shrink-0 rounded-full ${
-                  item.active ? "bg-primary" : item.past ? "bg-border-hover" : "bg-border-light"
+                  item.active
+                    ? "bg-primary"
+                    : item.past
+                      ? "bg-border-hover"
+                      : "bg-border-light"
                 }`}
               />
-              {!isLast && <span className="w-px flex-1 bg-border-light" />}
+              {!isLast && <span className="bg-border-light w-px flex-1" />}
             </div>
             <div className={`pb-6 ${item.past ? "opacity-60" : ""}`}>
-              <h4 className="text-body font-semibold text-text-primary">{item.title}</h4>
+              <h4 className="text-body text-text-primary font-semibold">
+                {item.title}
+              </h4>
               {item.description && (
-                <p className="text-small text-text-secondary">{item.description}</p>
+                <p className="text-small text-text-secondary">
+                  {item.description}
+                </p>
               )}
             </div>
           </li>

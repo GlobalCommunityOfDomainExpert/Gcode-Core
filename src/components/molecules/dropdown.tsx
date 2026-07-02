@@ -45,13 +45,17 @@ export function Dropdown({ trigger, items, align = "left" }: DropdownProps) {
       {open && (
         <div
           role="menu"
-          className={`absolute z-10 mt-1 min-w-40 rounded-md border border-border-light bg-surface-light py-1 shadow-md ${
+          className={`border-border-light bg-surface-light absolute z-10 mt-1 min-w-40 rounded-md border py-1 shadow-md ${
             align === "right" ? "right-0" : "left-0"
           }`}
         >
           {items.map((item, index) =>
             item.divider ? (
-              <div key={index} role="separator" className="my-1 h-px bg-border-light" />
+              <div
+                key={index}
+                role="separator"
+                className="bg-border-light my-1 h-px"
+              />
             ) : (
               <a
                 key={item.label}
@@ -62,11 +66,11 @@ export function Dropdown({ trigger, items, align = "left" }: DropdownProps) {
                   item.onSelect?.();
                   setOpen(false);
                 }}
-                className="block px-3 py-2 text-body text-text-primary hover:bg-bg-light focus-visible:bg-bg-light focus-visible:outline-none"
+                className="text-body text-text-primary hover:bg-bg-light focus-visible:bg-bg-light block px-3 py-2 focus-visible:outline-none"
               >
                 {item.label}
               </a>
-            )
+            ),
           )}
         </div>
       )}
