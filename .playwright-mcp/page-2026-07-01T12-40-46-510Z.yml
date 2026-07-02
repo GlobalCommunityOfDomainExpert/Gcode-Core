@@ -1,319 +1,319 @@
 - generic [active] [ref=f14e1]:
-  - main [ref=f14e2]:
-    - generic [ref=f14e3]:
-      - paragraph [ref=f14e4]: GCODE Design System
-      - heading "Molecule Showcase" [level=1] [ref=f14e5]
-    - generic [ref=f14e6]:
-      - heading "Breadcrumb" [level=2] [ref=f14e7]
-      - navigation "Breadcrumb" [ref=f14e9]:
-        - list [ref=f14e10]:
-          - listitem [ref=f14e11]:
-            - link "Home" [ref=f14e12] [cursor=pointer]:
-              - /url: "#"
-          - listitem [ref=f14e13]:
-            - link "Dashboard" [ref=f14e14] [cursor=pointer]:
-              - /url: "#"
-          - listitem [ref=f14e15]: Profile
-    - generic [ref=f14e16]:
-      - heading "Search Bar" [level=2] [ref=f14e17]
-      - search [ref=f14e19]:
-        - generic:
-          - img
-        - searchbox "Search experts..." [ref=f14e20]
-    - generic [ref=f14e21]:
-      - heading "Tabs" [level=2] [ref=f14e22]
-      - generic [ref=f14e23]:
-        - tablist [ref=f14e24]:
-          - tab "All" [selected] [ref=f14e25]
-          - tab "Events" [ref=f14e26]
-          - tab "Webinars" [ref=f14e27]
-        - paragraph [ref=f14e28]: "Active tab: all"
-    - generic [ref=f14e29]:
-      - heading "Chip" [level=2] [ref=f14e30]
-      - generic [ref=f14e32]:
-        - checkbox "Tech" [checked] [ref=f14e33]
-        - checkbox "Legal/CA" [ref=f14e34]
-        - checkbox "Growth" [ref=f14e35]
-        - checkbox "Design" [ref=f14e36]
-    - generic [ref=f14e37]:
-      - heading "Dropdown" [level=2] [ref=f14e38]
-      - button "Actions ▾" [ref=f14e42]
-    - generic [ref=f14e43]:
-      - heading "Pagination" [level=2] [ref=f14e44]
-      - navigation "Pagination" [ref=f14e46]:
-        - button "Previous page" [ref=f14e47]:
-          - img [ref=f14e48]
-        - button "1" [ref=f14e50]
-        - button "2" [ref=f14e51]
-        - button "3" [ref=f14e52]
-        - button "4" [ref=f14e53]
-        - button "5" [ref=f14e54]
-        - button "Next page" [ref=f14e55]:
-          - img [ref=f14e56]
-    - generic [ref=f14e58]:
-      - heading "Accordion" [level=2] [ref=f14e59]
-      - generic [ref=f14e61]:
-        - generic [ref=f14e62]:
-          - button "What is GCODE?" [expanded] [ref=f14e63]:
-            - text: What is GCODE?
-            - img [ref=f14e64]
-          - generic [ref=f14e66]: A professional collaboration platform.
-        - button "How do I join an event?" [ref=f14e68]:
-          - text: How do I join an event?
-          - img [ref=f14e69]
-        - button "Can I cancel a booking?" [ref=f14e72]:
-          - text: Can I cancel a booking?
-          - img [ref=f14e73]
-    - generic [ref=f14e75]:
-      - heading "Form Field" [level=2] [ref=f14e76]
-      - generic [ref=f14e78]:
-        - generic [ref=f14e79]:
-          - generic [ref=f14e80]:
-            - text: Event Title
-            - generic [ref=f14e81]: "*"
-          - textbox "Event Title" [ref=f14e82]:
-            - /placeholder: e.g. GCODE Build Sprint
-          - paragraph [ref=f14e83]: Minimum 10 characters
-        - generic [ref=f14e84]:
-          - generic [ref=f14e85]: Description
-          - textbox "Description" [ref=f14e86]:
-            - /placeholder: Describe the event...
-        - generic [ref=f14e87]:
-          - generic [ref=f14e88]: Duration
-          - combobox "Duration" [invalid] [ref=f14e89]:
-            - option "Choose duration" [disabled] [selected]
-            - option "1 hour"
-            - option "2 hours"
-          - paragraph [ref=f14e90]: Please select a duration
-    - generic [ref=f14e91]:
-      - heading "Empty State" [level=2] [ref=f14e92]
-      - generic [ref=f14e94]:
-        - img [ref=f14e96]
-        - generic [ref=f14e98]:
-          - heading "No Upcoming Events" [level=3] [ref=f14e99]
-          - paragraph [ref=f14e100]: You haven't registered for any events yet.
-        - button "Browse Events" [ref=f14e101]
-    - generic [ref=f14e102]:
-      - heading "Modal" [level=2] [ref=f14e103]
-      - button "Open Modal" [ref=f14e105]
-    - generic [ref=f14e106]:
-      - heading "Avatar Group" [level=2] [ref=f14e107]
-      - generic [ref=f14e110]:
-        - generic [ref=f14e113]: AL
-        - generic [ref=f14e116]: GH
-        - generic [ref=f14e119]: KJ
-    - generic [ref=f14e120]:
-      - heading "Banner" [level=2] [ref=f14e121]
-      - generic [ref=f14e123]:
-        - status [ref=f14e124]:
-          - img [ref=f14e125]
-          - generic [ref=f14e127]: "New feature: expert booking is now live."
-        - status [ref=f14e128]:
-          - img [ref=f14e129]
-          - generic [ref=f14e132]: Registration confirmed!
-        - status [ref=f14e133]:
-          - img [ref=f14e134]
-          - generic [ref=f14e136]: Your session starts in 10 minutes.
-        - status [ref=f14e137]:
-          - img [ref=f14e138]
-          - generic [ref=f14e140]: Payment failed. Please retry.
-          - button "Dismiss" [ref=f14e141]:
-            - img [ref=f14e142]
-    - generic [ref=f14e145]:
-      - heading "Certification Card" [level=2] [ref=f14e146]
-      - generic [ref=f14e148]:
-        - img [ref=f14e150]
-        - generic [ref=f14e153]:
-          - heading "Domain Expert" [level=4] [ref=f14e154]
-          - paragraph [ref=f14e155]: Complete 3 webinars to earn
-        - button "Earn" [ref=f14e156]
-    - generic [ref=f14e157]:
-      - heading "Checklist Item" [level=2] [ref=f14e158]
-      - generic [ref=f14e160]:
-        - generic [ref=f14e161]:
-          - generic [ref=f14e162] [cursor=pointer]:
-            - checkbox "Registration complete" [checked]
-          - paragraph [ref=f14e164]: Registration complete
-        - generic [ref=f14e165]:
-          - generic [ref=f14e166] [cursor=pointer]:
-            - checkbox "Save the date"
-          - generic [ref=f14e167]:
-            - paragraph [ref=f14e168]: Save the date
-            - paragraph [ref=f14e169]: Add to your calendar
-    - generic [ref=f14e170]:
-      - heading "Checkout Summary" [level=2] [ref=f14e171]
-      - generic [ref=f14e174]:
-        - generic [ref=f14e175]:
-          - generic [ref=f14e176]: Subtotal
-          - generic [ref=f14e177]: ₹4,500
-        - generic [ref=f14e178]:
-          - generic [ref=f14e179]: Fees
-          - generic [ref=f14e180]: ₹150
-        - separator [ref=f14e181]
-        - generic [ref=f14e182]:
-          - generic [ref=f14e183]: Total
-          - generic [ref=f14e184]: ₹4,650
-        - button "Register" [ref=f14e185]
-    - generic [ref=f14e186]:
-      - heading "Event Card" [level=2] [ref=f14e187]
-      - generic [ref=f14e189]:
-        - generic [ref=f14e190]:
-          - img [ref=f14e193]
-          - generic [ref=f14e197]:
-            - generic [ref=f14e198]:
-              - generic [ref=f14e199]: Tech
-              - generic [ref=f14e200]: Free
-            - heading "Building secure auth systems" [level=4] [ref=f14e201]
-            - paragraph [ref=f14e202]:
-              - img [ref=f14e203]
-              - text: 10 Jul 2026
-            - button "Register" [ref=f14e205]
-        - generic [ref=f14e206]:
-          - generic [ref=f14e207]:
-            - img "GCODE Build Sprint · Summer 2026" [ref=f14e208]
-            - generic [ref=f14e210]: Hackathon
-          - generic [ref=f14e211]:
-            - generic [ref=f14e212]:
-              - generic [ref=f14e213]: Online
-              - generic [ref=f14e214]: Free
-            - heading "GCODE Build Sprint · Summer 2026" [level=4] [ref=f14e215]
-            - generic [ref=f14e216]:
-              - paragraph [ref=f14e217]:
-                - img [ref=f14e218]
-                - text: 15 Jul 2026 · 10:00 AM IST
-              - paragraph [ref=f14e220]:
-                - img [ref=f14e221]
-                - text: Online
-            - generic [ref=f14e225]:
-              - generic [ref=f14e228]: AL
-              - generic [ref=f14e231]: GH
-            - generic [ref=f14e232]:
-              - generic [ref=f14e233]: 52 spots left
-              - button "Register →" [ref=f14e234]
-    - generic [ref=f14e235]:
-      - heading "Expert Card" [level=2] [ref=f14e236]
-      - generic [ref=f14e239]:
-        - generic [ref=f14e240]:
-          - generic [ref=f14e243]: JD
-          - generic [ref=f14e244]:
-            - heading "Jane Doe" [level=4] [ref=f14e245]
-            - paragraph [ref=f14e246]: Corporate Law & Finance
-            - generic [ref=f14e247]:
-              - img [ref=f14e248]
-              - generic [ref=f14e250]: "4.9"
-              - generic [ref=f14e251]: (42)
-        - paragraph [ref=f14e252]: Saved a startup's co-founder agreement with a reverse-vesting clause.
-        - generic [ref=f14e253]:
-          - generic [ref=f14e254]: Legal
-          - generic [ref=f14e255]: Fundraising
-        - generic [ref=f14e256]:
-          - paragraph [ref=f14e257]:
-            - img [ref=f14e258]
-            - text: Available Today
-          - paragraph [ref=f14e260]:
-            - img [ref=f14e261]
-            - text: ₹1,500/hr - 5,000/hr
-        - button "Book Engagement" [ref=f14e263]
-    - generic [ref=f14e264]:
-      - heading "Notification Item" [level=2] [ref=f14e265]
-      - generic [ref=f14e267]:
-        - generic [ref=f14e268]:
-          - generic [ref=f14e271]: SS
-          - generic [ref=f14e272]:
-            - paragraph [ref=f14e273]: Shashwat commented on your post.
-            - paragraph [ref=f14e274]: 2m ago
-        - generic [ref=f14e276]:
-          - generic [ref=f14e279]: AL
-          - generic [ref=f14e280]:
-            - paragraph [ref=f14e281]: Ada Lovelace booked your session.
-            - paragraph [ref=f14e282]: 1h ago
-    - generic [ref=f14e283]:
-      - heading "Problem Card" [level=2] [ref=f14e284]
-      - generic [ref=f14e286]:
-        - generic [ref=f14e287]:
-          - generic [ref=f14e288]:
-            - generic [ref=f14e289]: Legal/CA
-            - generic [ref=f14e290]: Urgent
-          - generic [ref=f14e291]: "Why matched: Legal expertise"
-        - heading "Need help with CA compliance for fundraising" [level=4] [ref=f14e292]
-        - paragraph [ref=f14e293]:
-          - strong [ref=f14e294]: "What I've tried:"
-          - text: We incorporated 2 months ago and angels are asking for our cap table and compliance certificates.
-        - generic [ref=f14e295]:
-          - button "Comment insight" [ref=f14e296]:
-            - img [ref=f14e297]
-            - text: Comment insight
-          - button "Request call" [ref=f14e299]:
-            - img [ref=f14e300]
-            - text: Request call
-          - button "→ Pass" [ref=f14e302]
-    - generic [ref=f14e303]:
-      - heading "Role CTA" [level=2] [ref=f14e304]
-      - generic [ref=f14e306]:
-        - generic [ref=f14e307]:
-          - heading "Ready to share skills?" [level=4] [ref=f14e308]
-          - paragraph [ref=f14e309]: Join as an expert and start mentoring founders.
-        - button "Join as Expert" [ref=f14e310]
-    - generic [ref=f14e311]:
-      - heading "Selectable Card" [level=2] [ref=f14e312]
-      - generic [ref=f14e314]:
-        - radio "Hackathon Build sprints" [checked] [ref=f14e315]:
-          - img [ref=f14e316]
-          - generic [ref=f14e318]: Hackathon
-          - generic [ref=f14e319]: Build sprints
-        - radio "Expert AMA Live Q&A" [ref=f14e320]:
-          - img [ref=f14e321]
-          - generic [ref=f14e324]: Expert AMA
-          - generic [ref=f14e325]: Live Q&A
-    - generic [ref=f14e326]:
-      - heading "Stat Card" [level=2] [ref=f14e327]
-      - generic [ref=f14e329]:
-        - generic [ref=f14e330]:
-          - paragraph [ref=f14e331]: Total Registrations
-          - generic [ref=f14e333]: "148"
-          - paragraph [ref=f14e334]: +12 this week
-        - generic [ref=f14e335]:
-          - paragraph [ref=f14e336]: Total Earned
-          - generic [ref=f14e337]:
-            - generic [ref=f14e338]: ₹48,500
-            - generic [ref=f14e339]: +12%
-    - generic [ref=f14e340]:
-      - heading "Step Indicator" [level=2] [ref=f14e341]
-      - list [ref=f14e343]:
-        - listitem [ref=f14e344]:
-          - generic [ref=f14e345]:
-            - img [ref=f14e347]
-            - generic [ref=f14e349]: Type
-          - separator [ref=f14e351]
-        - listitem [ref=f14e352]:
-          - generic [ref=f14e353]:
-            - generic [ref=f14e354]: "2"
-            - generic [ref=f14e355]: Details
-          - separator [ref=f14e357]
-        - listitem [ref=f14e358]:
-          - generic [ref=f14e359]:
-            - generic [ref=f14e360]: "3"
-            - generic [ref=f14e361]: Review
-    - generic [ref=f14e362]:
-      - heading "Timeline" [level=2] [ref=f14e363]
-      - list [ref=f14e365]:
-        - listitem [ref=f14e366]:
-          - generic [ref=f14e370]:
-            - heading "10:00 AM — Kickoff" [level=4] [ref=f14e371]
-            - paragraph [ref=f14e372]: Opening session and brief.
-        - listitem [ref=f14e373]:
-          - generic [ref=f14e377]:
-            - heading "12:00 PM — Office Hours" [level=4] [ref=f14e378]
-            - paragraph [ref=f14e379]: Q&A session.
-        - listitem [ref=f14e380]:
-          - generic [ref=f14e383]:
-            - heading "2:00 PM — Wrap-up" [level=4] [ref=f14e384]
-            - paragraph [ref=f14e385]: Closing remarks.
-    - generic [ref=f14e386]:
-      - heading "Toggle Group" [level=2] [ref=f14e387]
-      - radiogroup [ref=f14e389]:
-        - radio "Online" [checked] [ref=f14e390]
-        - radio "In-Person" [ref=f14e391]
-        - radio "Hybrid" [ref=f14e392]
-  - button "Open Next.js Dev Tools" [ref=f14e398] [cursor=pointer]:
-    - img [ref=f14e399]
+    - main [ref=f14e2]:
+        - generic [ref=f14e3]:
+            - paragraph [ref=f14e4]: GCODE Design System
+            - heading "Molecule Showcase" [level=1] [ref=f14e5]
+        - generic [ref=f14e6]:
+            - heading "Breadcrumb" [level=2] [ref=f14e7]
+            - navigation "Breadcrumb" [ref=f14e9]:
+                - list [ref=f14e10]:
+                    - listitem [ref=f14e11]:
+                        - link "Home" [ref=f14e12] [cursor=pointer]:
+                            - /url: "#"
+                    - listitem [ref=f14e13]:
+                        - link "Dashboard" [ref=f14e14] [cursor=pointer]:
+                            - /url: "#"
+                    - listitem [ref=f14e15]: Profile
+        - generic [ref=f14e16]:
+            - heading "Search Bar" [level=2] [ref=f14e17]
+            - search [ref=f14e19]:
+                - generic:
+                    - img
+                - searchbox "Search experts..." [ref=f14e20]
+        - generic [ref=f14e21]:
+            - heading "Tabs" [level=2] [ref=f14e22]
+            - generic [ref=f14e23]:
+                - tablist [ref=f14e24]:
+                    - tab "All" [selected] [ref=f14e25]
+                    - tab "Events" [ref=f14e26]
+                    - tab "Webinars" [ref=f14e27]
+                - paragraph [ref=f14e28]: "Active tab: all"
+        - generic [ref=f14e29]:
+            - heading "Chip" [level=2] [ref=f14e30]
+            - generic [ref=f14e32]:
+                - checkbox "Tech" [checked] [ref=f14e33]
+                - checkbox "Legal/CA" [ref=f14e34]
+                - checkbox "Growth" [ref=f14e35]
+                - checkbox "Design" [ref=f14e36]
+        - generic [ref=f14e37]:
+            - heading "Dropdown" [level=2] [ref=f14e38]
+            - button "Actions ▾" [ref=f14e42]
+        - generic [ref=f14e43]:
+            - heading "Pagination" [level=2] [ref=f14e44]
+            - navigation "Pagination" [ref=f14e46]:
+                - button "Previous page" [ref=f14e47]:
+                    - img [ref=f14e48]
+                - button "1" [ref=f14e50]
+                - button "2" [ref=f14e51]
+                - button "3" [ref=f14e52]
+                - button "4" [ref=f14e53]
+                - button "5" [ref=f14e54]
+                - button "Next page" [ref=f14e55]:
+                    - img [ref=f14e56]
+        - generic [ref=f14e58]:
+            - heading "Accordion" [level=2] [ref=f14e59]
+            - generic [ref=f14e61]:
+                - generic [ref=f14e62]:
+                    - button "What is GCODE?" [expanded] [ref=f14e63]:
+                        - text: What is GCODE?
+                        - img [ref=f14e64]
+                    - generic [ref=f14e66]: A professional collaboration platform.
+                - button "How do I join an event?" [ref=f14e68]:
+                    - text: How do I join an event?
+                    - img [ref=f14e69]
+                - button "Can I cancel a booking?" [ref=f14e72]:
+                    - text: Can I cancel a booking?
+                    - img [ref=f14e73]
+        - generic [ref=f14e75]:
+            - heading "Form Field" [level=2] [ref=f14e76]
+            - generic [ref=f14e78]:
+                - generic [ref=f14e79]:
+                    - generic [ref=f14e80]:
+                        - text: Event Title
+                        - generic [ref=f14e81]: "*"
+                    - textbox "Event Title" [ref=f14e82]:
+                        - /placeholder: e.g. GCODE Build Sprint
+                    - paragraph [ref=f14e83]: Minimum 10 characters
+                - generic [ref=f14e84]:
+                    - generic [ref=f14e85]: Description
+                    - textbox "Description" [ref=f14e86]:
+                        - /placeholder: Describe the event...
+                - generic [ref=f14e87]:
+                    - generic [ref=f14e88]: Duration
+                    - combobox "Duration" [invalid] [ref=f14e89]:
+                        - option "Choose duration" [disabled] [selected]
+                        - option "1 hour"
+                        - option "2 hours"
+                    - paragraph [ref=f14e90]: Please select a duration
+        - generic [ref=f14e91]:
+            - heading "Empty State" [level=2] [ref=f14e92]
+            - generic [ref=f14e94]:
+                - img [ref=f14e96]
+                - generic [ref=f14e98]:
+                    - heading "No Upcoming Events" [level=3] [ref=f14e99]
+                    - paragraph [ref=f14e100]: You haven't registered for any events yet.
+                - button "Browse Events" [ref=f14e101]
+        - generic [ref=f14e102]:
+            - heading "Modal" [level=2] [ref=f14e103]
+            - button "Open Modal" [ref=f14e105]
+        - generic [ref=f14e106]:
+            - heading "Avatar Group" [level=2] [ref=f14e107]
+            - generic [ref=f14e110]:
+                - generic [ref=f14e113]: AL
+                - generic [ref=f14e116]: GH
+                - generic [ref=f14e119]: KJ
+        - generic [ref=f14e120]:
+            - heading "Banner" [level=2] [ref=f14e121]
+            - generic [ref=f14e123]:
+                - status [ref=f14e124]:
+                    - img [ref=f14e125]
+                    - generic [ref=f14e127]: "New feature: expert booking is now live."
+                - status [ref=f14e128]:
+                    - img [ref=f14e129]
+                    - generic [ref=f14e132]: Registration confirmed!
+                - status [ref=f14e133]:
+                    - img [ref=f14e134]
+                    - generic [ref=f14e136]: Your session starts in 10 minutes.
+                - status [ref=f14e137]:
+                    - img [ref=f14e138]
+                    - generic [ref=f14e140]: Payment failed. Please retry.
+                    - button "Dismiss" [ref=f14e141]:
+                        - img [ref=f14e142]
+        - generic [ref=f14e145]:
+            - heading "Certification Card" [level=2] [ref=f14e146]
+            - generic [ref=f14e148]:
+                - img [ref=f14e150]
+                - generic [ref=f14e153]:
+                    - heading "Domain Expert" [level=4] [ref=f14e154]
+                    - paragraph [ref=f14e155]: Complete 3 webinars to earn
+                - button "Earn" [ref=f14e156]
+        - generic [ref=f14e157]:
+            - heading "Checklist Item" [level=2] [ref=f14e158]
+            - generic [ref=f14e160]:
+                - generic [ref=f14e161]:
+                    - generic [ref=f14e162] [cursor=pointer]:
+                        - checkbox "Registration complete" [checked]
+                    - paragraph [ref=f14e164]: Registration complete
+                - generic [ref=f14e165]:
+                    - generic [ref=f14e166] [cursor=pointer]:
+                        - checkbox "Save the date"
+                    - generic [ref=f14e167]:
+                        - paragraph [ref=f14e168]: Save the date
+                        - paragraph [ref=f14e169]: Add to your calendar
+        - generic [ref=f14e170]:
+            - heading "Checkout Summary" [level=2] [ref=f14e171]
+            - generic [ref=f14e174]:
+                - generic [ref=f14e175]:
+                    - generic [ref=f14e176]: Subtotal
+                    - generic [ref=f14e177]: ₹4,500
+                - generic [ref=f14e178]:
+                    - generic [ref=f14e179]: Fees
+                    - generic [ref=f14e180]: ₹150
+                - separator [ref=f14e181]
+                - generic [ref=f14e182]:
+                    - generic [ref=f14e183]: Total
+                    - generic [ref=f14e184]: ₹4,650
+                - button "Register" [ref=f14e185]
+        - generic [ref=f14e186]:
+            - heading "Event Card" [level=2] [ref=f14e187]
+            - generic [ref=f14e189]:
+                - generic [ref=f14e190]:
+                    - img [ref=f14e193]
+                    - generic [ref=f14e197]:
+                        - generic [ref=f14e198]:
+                            - generic [ref=f14e199]: Tech
+                            - generic [ref=f14e200]: Free
+                        - heading "Building secure auth systems" [level=4] [ref=f14e201]
+                        - paragraph [ref=f14e202]:
+                            - img [ref=f14e203]
+                            - text: 10 Jul 2026
+                        - button "Register" [ref=f14e205]
+                - generic [ref=f14e206]:
+                    - generic [ref=f14e207]:
+                        - img "GCODE Build Sprint · Summer 2026" [ref=f14e208]
+                        - generic [ref=f14e210]: Hackathon
+                    - generic [ref=f14e211]:
+                        - generic [ref=f14e212]:
+                            - generic [ref=f14e213]: Online
+                            - generic [ref=f14e214]: Free
+                        - heading "GCODE Build Sprint · Summer 2026" [level=4] [ref=f14e215]
+                        - generic [ref=f14e216]:
+                            - paragraph [ref=f14e217]:
+                                - img [ref=f14e218]
+                                - text: 15 Jul 2026 · 10:00 AM IST
+                            - paragraph [ref=f14e220]:
+                                - img [ref=f14e221]
+                                - text: Online
+                        - generic [ref=f14e225]:
+                            - generic [ref=f14e228]: AL
+                            - generic [ref=f14e231]: GH
+                        - generic [ref=f14e232]:
+                            - generic [ref=f14e233]: 52 spots left
+                            - button "Register →" [ref=f14e234]
+        - generic [ref=f14e235]:
+            - heading "Expert Card" [level=2] [ref=f14e236]
+            - generic [ref=f14e239]:
+                - generic [ref=f14e240]:
+                    - generic [ref=f14e243]: JD
+                    - generic [ref=f14e244]:
+                        - heading "Jane Doe" [level=4] [ref=f14e245]
+                        - paragraph [ref=f14e246]: Corporate Law & Finance
+                        - generic [ref=f14e247]:
+                            - img [ref=f14e248]
+                            - generic [ref=f14e250]: "4.9"
+                            - generic [ref=f14e251]: (42)
+                - paragraph [ref=f14e252]: Saved a startup's co-founder agreement with a reverse-vesting clause.
+                - generic [ref=f14e253]:
+                    - generic [ref=f14e254]: Legal
+                    - generic [ref=f14e255]: Fundraising
+                - generic [ref=f14e256]:
+                    - paragraph [ref=f14e257]:
+                        - img [ref=f14e258]
+                        - text: Available Today
+                    - paragraph [ref=f14e260]:
+                        - img [ref=f14e261]
+                        - text: ₹1,500/hr - 5,000/hr
+                - button "Book Engagement" [ref=f14e263]
+        - generic [ref=f14e264]:
+            - heading "Notification Item" [level=2] [ref=f14e265]
+            - generic [ref=f14e267]:
+                - generic [ref=f14e268]:
+                    - generic [ref=f14e271]: SS
+                    - generic [ref=f14e272]:
+                        - paragraph [ref=f14e273]: Shashwat commented on your post.
+                        - paragraph [ref=f14e274]: 2m ago
+                - generic [ref=f14e276]:
+                    - generic [ref=f14e279]: AL
+                    - generic [ref=f14e280]:
+                        - paragraph [ref=f14e281]: Ada Lovelace booked your session.
+                        - paragraph [ref=f14e282]: 1h ago
+        - generic [ref=f14e283]:
+            - heading "Problem Card" [level=2] [ref=f14e284]
+            - generic [ref=f14e286]:
+                - generic [ref=f14e287]:
+                    - generic [ref=f14e288]:
+                        - generic [ref=f14e289]: Legal/CA
+                        - generic [ref=f14e290]: Urgent
+                    - generic [ref=f14e291]: "Why matched: Legal expertise"
+                - heading "Need help with CA compliance for fundraising" [level=4] [ref=f14e292]
+                - paragraph [ref=f14e293]:
+                    - strong [ref=f14e294]: "What I've tried:"
+                    - text: We incorporated 2 months ago and angels are asking for our cap table and compliance certificates.
+                - generic [ref=f14e295]:
+                    - button "Comment insight" [ref=f14e296]:
+                        - img [ref=f14e297]
+                        - text: Comment insight
+                    - button "Request call" [ref=f14e299]:
+                        - img [ref=f14e300]
+                        - text: Request call
+                    - button "→ Pass" [ref=f14e302]
+        - generic [ref=f14e303]:
+            - heading "Role CTA" [level=2] [ref=f14e304]
+            - generic [ref=f14e306]:
+                - generic [ref=f14e307]:
+                    - heading "Ready to share skills?" [level=4] [ref=f14e308]
+                    - paragraph [ref=f14e309]: Join as an expert and start mentoring founders.
+                - button "Join as Expert" [ref=f14e310]
+        - generic [ref=f14e311]:
+            - heading "Selectable Card" [level=2] [ref=f14e312]
+            - generic [ref=f14e314]:
+                - radio "Hackathon Build sprints" [checked] [ref=f14e315]:
+                    - img [ref=f14e316]
+                    - generic [ref=f14e318]: Hackathon
+                    - generic [ref=f14e319]: Build sprints
+                - radio "Expert AMA Live Q&A" [ref=f14e320]:
+                    - img [ref=f14e321]
+                    - generic [ref=f14e324]: Expert AMA
+                    - generic [ref=f14e325]: Live Q&A
+        - generic [ref=f14e326]:
+            - heading "Stat Card" [level=2] [ref=f14e327]
+            - generic [ref=f14e329]:
+                - generic [ref=f14e330]:
+                    - paragraph [ref=f14e331]: Total Registrations
+                    - generic [ref=f14e333]: "148"
+                    - paragraph [ref=f14e334]: +12 this week
+                - generic [ref=f14e335]:
+                    - paragraph [ref=f14e336]: Total Earned
+                    - generic [ref=f14e337]:
+                        - generic [ref=f14e338]: ₹48,500
+                        - generic [ref=f14e339]: +12%
+        - generic [ref=f14e340]:
+            - heading "Step Indicator" [level=2] [ref=f14e341]
+            - list [ref=f14e343]:
+                - listitem [ref=f14e344]:
+                    - generic [ref=f14e345]:
+                        - img [ref=f14e347]
+                        - generic [ref=f14e349]: Type
+                    - separator [ref=f14e351]
+                - listitem [ref=f14e352]:
+                    - generic [ref=f14e353]:
+                        - generic [ref=f14e354]: "2"
+                        - generic [ref=f14e355]: Details
+                    - separator [ref=f14e357]
+                - listitem [ref=f14e358]:
+                    - generic [ref=f14e359]:
+                        - generic [ref=f14e360]: "3"
+                        - generic [ref=f14e361]: Review
+        - generic [ref=f14e362]:
+            - heading "Timeline" [level=2] [ref=f14e363]
+            - list [ref=f14e365]:
+                - listitem [ref=f14e366]:
+                    - generic [ref=f14e370]:
+                        - heading "10:00 AM — Kickoff" [level=4] [ref=f14e371]
+                        - paragraph [ref=f14e372]: Opening session and brief.
+                - listitem [ref=f14e373]:
+                    - generic [ref=f14e377]:
+                        - heading "12:00 PM — Office Hours" [level=4] [ref=f14e378]
+                        - paragraph [ref=f14e379]: Q&A session.
+                - listitem [ref=f14e380]:
+                    - generic [ref=f14e383]:
+                        - heading "2:00 PM — Wrap-up" [level=4] [ref=f14e384]
+                        - paragraph [ref=f14e385]: Closing remarks.
+        - generic [ref=f14e386]:
+            - heading "Toggle Group" [level=2] [ref=f14e387]
+            - radiogroup [ref=f14e389]:
+                - radio "Online" [checked] [ref=f14e390]
+                - radio "In-Person" [ref=f14e391]
+                - radio "Hybrid" [ref=f14e392]
+    - button "Open Next.js Dev Tools" [ref=f14e398] [cursor=pointer]:
+        - img [ref=f14e399]

@@ -22,7 +22,12 @@ export function FormField({
 }: FormFieldProps) {
   return (
     <div className="flex flex-col gap-1">
-      <Label htmlFor={htmlFor} required={required} error={!!error} disabled={disabled}>
+      <Label
+        htmlFor={htmlFor}
+        required={required}
+        error={!!error}
+        disabled={disabled}
+      >
         {label}
       </Label>
       {children}

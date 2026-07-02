@@ -37,25 +37,25 @@ Used only for:
 
 ## Typography Scale
 
-| Style | Use |
-|--------|-----|
-| Small | Captions, helper text, badges |
-| Body | Paragraphs, inputs, buttons |
-| Large | Card titles, dialogs |
-| Heading | Section headings |
+| Style   | Use                              |
+| ------- | -------------------------------- |
+| Small   | Captions, helper text, badges    |
+| Body    | Paragraphs, inputs, buttons      |
+| Large   | Card titles, dialogs             |
+| Heading | Section headings                 |
 | Display | Hero titles, major page headings |
 
 ---
 
 ## Weight Guidelines
 
-| Weight | Use |
-|---------|-----|
-| Regular | Body text |
-| Medium | Labels |
-| Semibold | Navigation |
-| Bold | Buttons |
-| Extra Bold | Titles |
+| Weight     | Use        |
+| ---------- | ---------- |
+| Regular    | Body text  |
+| Medium     | Labels     |
+| Semibold   | Navigation |
+| Bold       | Buttons    |
+| Extra Bold | Titles     |
 
 ---
 

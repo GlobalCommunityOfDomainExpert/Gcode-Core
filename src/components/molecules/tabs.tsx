@@ -24,7 +24,10 @@ export function Tabs({ items, value, defaultValue, onChange }: TabsProps) {
   }
 
   return (
-    <div role="tablist" className="flex gap-1 overflow-x-auto border-b border-border-light">
+    <div
+      role="tablist"
+      className="border-border-light flex gap-1 overflow-x-auto border-b"
+    >
       {items.map((item) => {
         const isActive = item.value === active;
         return (
@@ -34,10 +37,10 @@ export function Tabs({ items, value, defaultValue, onChange }: TabsProps) {
             role="tab"
             aria-selected={isActive}
             onClick={() => select(item.value)}
-            className={`shrink-0 whitespace-nowrap border-b-2 px-4 py-2 text-body font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 ${
+            className={`text-body focus-visible:ring-primary shrink-0 border-b-2 px-4 py-2 font-medium whitespace-nowrap transition-colors hover:cursor-pointer focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none ${
               isActive
                 ? "border-primary text-primary"
-                : "border-transparent text-text-secondary hover:text-text-primary"
+                : "text-text-secondary hover:text-text-primary border-transparent"
             }`}
           >
             {item.label}

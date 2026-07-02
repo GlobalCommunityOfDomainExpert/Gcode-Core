@@ -15,7 +15,11 @@ function getPageNumbers(page: number, totalPages: number): number[] {
   return pages;
 }
 
-export function Pagination({ page, totalPages, onPageChange }: PaginationProps) {
+export function Pagination({
+  page,
+  totalPages,
+  onPageChange,
+}: PaginationProps) {
   const pages = getPageNumbers(page, totalPages);
 
   return (
@@ -25,7 +29,7 @@ export function Pagination({ page, totalPages, onPageChange }: PaginationProps) 
         onClick={() => onPageChange(page - 1)}
         disabled={page <= 1}
         aria-label="Previous page"
-        className="flex size-9 items-center justify-center rounded-sm text-text-secondary hover:bg-bg-light focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-transparent"
+        className="text-text-secondary hover:bg-bg-light focus-visible:ring-primary flex size-9 items-center justify-center rounded-sm focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-transparent"
       >
         <Icon icon={ChevronLeft} size="sm" />
       </button>
@@ -35,7 +39,7 @@ export function Pagination({ page, totalPages, onPageChange }: PaginationProps) 
           type="button"
           onClick={() => onPageChange(p)}
           aria-current={p === page ? "page" : undefined}
-          className={`flex size-9 items-center justify-center rounded-sm text-small font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 ${
+          className={`text-small focus-visible:ring-primary flex size-9 items-center justify-center rounded-sm font-medium focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none ${
             p === page
               ? "bg-primary text-white"
               : "text-text-primary hover:bg-bg-light"
@@ -49,7 +53,7 @@ export function Pagination({ page, totalPages, onPageChange }: PaginationProps) 
         onClick={() => onPageChange(page + 1)}
         disabled={page >= totalPages}
         aria-label="Next page"
-        className="flex size-9 items-center justify-center rounded-sm text-text-secondary hover:bg-bg-light focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-transparent"
+        className="text-text-secondary hover:bg-bg-light focus-visible:ring-primary flex size-9 items-center justify-center rounded-sm focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-transparent"
       >
         <Icon icon={ChevronRight} size="sm" />
       </button>

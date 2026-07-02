@@ -6,7 +6,10 @@ export type EventType =
   | "Community Meetup"
   | "Institution Event";
 
-export const eventTypeTone: Record<EventType, "primary" | "success" | "warning" | "danger" | "neutral"> = {
+export const eventTypeTone: Record<
+  EventType,
+  "primary" | "success" | "warning" | "danger" | "neutral"
+> = {
   Hackathon: "primary",
   "Expert AMA": "warning",
   Webinar: "success",
@@ -90,10 +93,26 @@ export const mockEvents: MockEvent[] = [
       "Teams of up to 4 pick a track, get 30 minutes of live expert office hours at noon, and demo their build for judging at 5 PM.",
     ],
     agenda: [
-      { time: "10:00 AM", title: "Kickoff & Problem Statement", description: "Opening session, team registration, problem brief" },
-      { time: "12:00 PM", title: "Expert Office Hours", description: "30-min live Q&A with domain experts" },
-      { time: "4:00 PM", title: "Submissions Close", description: "Final project submission deadline" },
-      { time: "5:00 PM", title: "Winners Announced", description: "Live judging + prize distribution" },
+      {
+        time: "10:00 AM",
+        title: "Kickoff & Problem Statement",
+        description: "Opening session, team registration, problem brief",
+      },
+      {
+        time: "12:00 PM",
+        title: "Expert Office Hours",
+        description: "30-min live Q&A with domain experts",
+      },
+      {
+        time: "4:00 PM",
+        title: "Submissions Close",
+        description: "Final project submission deadline",
+      },
+      {
+        time: "5:00 PM",
+        title: "Winners Announced",
+        description: "Live judging + prize distribution",
+      },
     ],
     organizer: {
       name: "GCODE Team",
@@ -128,8 +147,16 @@ export const mockEvents: MockEvent[] = [
       "A live, unscripted AMA with a deep-tech investor covering what it actually takes to raise a seed round in 2026.",
     ],
     agenda: [
-      { time: "6:00 PM", title: "Opening remarks", description: "Host introduction and format" },
-      { time: "6:10 PM", title: "Live Q&A", description: "Audience questions, moderated" },
+      {
+        time: "6:00 PM",
+        title: "Opening remarks",
+        description: "Host introduction and format",
+      },
+      {
+        time: "6:10 PM",
+        title: "Live Q&A",
+        description: "Audience questions, moderated",
+      },
     ],
     organizer: {
       name: "GCODE Team",
@@ -162,7 +189,13 @@ export const mockEvents: MockEvent[] = [
     description: [
       "A practical walkthrough of the diligence checklist investors run before writing a term sheet.",
     ],
-    agenda: [{ time: "5:00 PM", title: "Session", description: "Live walkthrough + Q&A" }],
+    agenda: [
+      {
+        time: "5:00 PM",
+        title: "Session",
+        description: "Live walkthrough + Q&A",
+      },
+    ],
     organizer: {
       name: "GCODE Team",
       title: "GCODE Expert",
@@ -170,7 +203,10 @@ export const mockEvents: MockEvent[] = [
       eventsHosted: 8,
       attendees: 1240,
     },
-    terms: ["Paid event — ₹299 per seat.", "Recording available for 30 days after the session."],
+    terms: [
+      "Paid event — ₹299 per seat.",
+      "Recording available for 30 days after the session.",
+    ],
   },
   {
     id: "climatech-ideathon-2026",
@@ -188,8 +224,16 @@ export const mockEvents: MockEvent[] = [
     duration: "6 hours",
     teamSize: "2–5 members",
     certificate: true,
-    description: ["A single-day ideathon for climate-tech concepts, judged by domain experts and VCs."],
-    agenda: [{ time: "9:00 AM", title: "Kickoff", description: "Track briefing and team formation" }],
+    description: [
+      "A single-day ideathon for climate-tech concepts, judged by domain experts and VCs.",
+    ],
+    agenda: [
+      {
+        time: "9:00 AM",
+        title: "Kickoff",
+        description: "Track briefing and team formation",
+      },
+    ],
     organizer: {
       name: "GCODE Team",
       title: "GCODE Expert",
@@ -214,8 +258,16 @@ export const mockEvents: MockEvent[] = [
     duration: "2 hours",
     teamSize: "Individual attendance",
     certificate: false,
-    description: ["An informal founder meetup — no talks, just networking over coffee."],
-    agenda: [{ time: "5:30 PM", title: "Doors open", description: "Networking begins" }],
+    description: [
+      "An informal founder meetup — no talks, just networking over coffee.",
+    ],
+    agenda: [
+      {
+        time: "5:30 PM",
+        title: "Doors open",
+        description: "Networking begins",
+      },
+    ],
     organizer: {
       name: "GCODE Team",
       title: "GCODE Expert",
@@ -240,8 +292,16 @@ export const mockEvents: MockEvent[] = [
     duration: "Full day",
     teamSize: "Individual attendance",
     certificate: true,
-    description: ["A full-day symposium on emerging technology, hosted by IIT Delhi in partnership with GCODE."],
-    agenda: [{ time: "9:00 AM", title: "Inauguration", description: "Opening keynote" }],
+    description: [
+      "A full-day symposium on emerging technology, hosted by IIT Delhi in partnership with GCODE.",
+    ],
+    agenda: [
+      {
+        time: "9:00 AM",
+        title: "Inauguration",
+        description: "Opening keynote",
+      },
+    ],
     organizer: {
       name: "GCODE Team",
       title: "GCODE Expert",

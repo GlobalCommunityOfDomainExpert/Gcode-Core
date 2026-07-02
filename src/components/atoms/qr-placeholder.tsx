@@ -19,7 +19,7 @@ export function QrPlaceholder({
       <img
         src={src}
         alt={alt}
-        className={`size-24 rounded-sm border border-border-light object-contain ${className}`}
+        className={`border-border-light size-24 rounded-sm border object-contain ${className}`}
       />
     );
   }
@@ -28,7 +28,7 @@ export function QrPlaceholder({
     <div
       role={loading ? "status" : "img"}
       aria-label={loading ? "Loading QR code" : "QR code placeholder"}
-      className={`flex size-24 flex-col items-center justify-center gap-0.5 rounded-sm border border-border-light bg-bg-light text-small text-text-secondary ${className}`}
+      className={`border-border-light bg-bg-light text-small text-text-secondary flex size-24 flex-col items-center justify-center gap-0.5 rounded-sm border ${className}`}
     >
       {loading ? (
         <Spinner size="sm" />

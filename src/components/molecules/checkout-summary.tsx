@@ -21,19 +21,27 @@ export function CheckoutSummary({
   processing = false,
 }: CheckoutSummaryProps) {
   return (
-    <div className="flex flex-col gap-3 rounded-md border border-border-light bg-surface-light p-4">
+    <div className="border-border-light bg-surface-light flex flex-col gap-3 rounded-md border p-4">
       {items.map((item) => (
-        <div key={item.label} className="flex items-center justify-between text-body text-text-secondary">
+        <div
+          key={item.label}
+          className="text-body text-text-secondary flex items-center justify-between"
+        >
           <span>{item.label}</span>
           <span>{item.value}</span>
         </div>
       ))}
       <Divider />
-      <div className="flex items-center justify-between text-large font-semibold text-text-primary">
+      <div className="text-large text-text-primary flex items-center justify-between font-semibold">
         <span>Total</span>
         <span>{total}</span>
       </div>
-      <Button variant="primary" onClick={onAction} loading={processing} className="w-full">
+      <Button
+        variant="primary"
+        onClick={onAction}
+        loading={processing}
+        className="w-full"
+      >
         {actionLabel}
       </Button>
     </div>

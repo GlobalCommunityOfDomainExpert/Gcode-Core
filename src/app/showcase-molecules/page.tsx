@@ -1,7 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import { Award, Calendar, MessageSquare, Monitor, Phone, Sparkles } from "lucide-react";
+import {
+  Award,
+  Calendar,
+  MessageSquare,
+  Monitor,
+  Phone,
+  Sparkles,
+} from "lucide-react";
 import { Button, Input, Select, Textarea } from "@/components/atoms";
 import {
   Accordion,
@@ -33,10 +40,16 @@ import {
 
 const topics = ["Tech", "Legal/CA", "Growth", "Design"];
 
-function Section({ title, children }: { title: string; children: React.ReactNode }) {
+function Section({
+  title,
+  children,
+}: {
+  title: string;
+  children: React.ReactNode;
+}) {
   return (
-    <section className="space-y-4 border-b border-border-light pb-8">
-      <h2 className="text-heading font-extrabold text-text-primary">{title}</h2>
+    <section className="border-border-light space-y-4 border-b pb-8">
+      <h2 className="text-heading text-text-primary font-extrabold">{title}</h2>
       <div className="space-y-4">{children}</div>
     </section>
   );
@@ -53,17 +66,19 @@ export default function MoleculesShowcasePage() {
 
   function toggleTopic(topic: string) {
     setSelectedTopics((prev) =>
-      prev.includes(topic) ? prev.filter((t) => t !== topic) : [...prev, topic]
+      prev.includes(topic) ? prev.filter((t) => t !== topic) : [...prev, topic],
     );
   }
 
   return (
     <main className="mx-auto max-w-3xl space-y-8 px-4 py-8">
       <header className="space-y-1">
-        <p className="text-small font-semibold uppercase tracking-wide text-text-secondary">
+        <p className="text-small text-text-secondary font-semibold tracking-wide uppercase">
           GCODE Design System
         </p>
-        <h1 className="text-display font-extrabold text-text-primary">Molecule Showcase</h1>
+        <h1 className="text-display text-text-primary font-extrabold">
+          Molecule Showcase
+        </h1>
       </header>
 
       <Section title="Breadcrumb">
@@ -95,7 +110,9 @@ export default function MoleculesShowcasePage() {
           value={activeTab}
           onChange={setActiveTab}
         />
-        <p className="text-small text-text-secondary">Active tab: {activeTab}</p>
+        <p className="text-small text-text-secondary">
+          Active tab: {activeTab}
+        </p>
       </Section>
 
       <Section title="Chip">
@@ -131,9 +148,18 @@ export default function MoleculesShowcasePage() {
       <Section title="Accordion">
         <Accordion
           items={[
-            { title: "What is GCODE?", content: "A professional collaboration platform." },
-            { title: "How do I join an event?", content: "Register from the event page." },
-            { title: "Can I cancel a booking?", content: "Yes, up to 24 hours before start." },
+            {
+              title: "What is GCODE?",
+              content: "A professional collaboration platform.",
+            },
+            {
+              title: "How do I join an event?",
+              content: "Register from the event page.",
+            },
+            {
+              title: "Can I cancel a booking?",
+              content: "Yes, up to 24 hours before start.",
+            },
           ]}
           defaultOpen={0}
         />
@@ -141,13 +167,22 @@ export default function MoleculesShowcasePage() {
 
       <Section title="Form Field">
         <div className="flex max-w-sm flex-col gap-4">
-          <FormField label="Event Title" htmlFor="ff-title" required hint="Minimum 10 characters">
+          <FormField
+            label="Event Title"
+            htmlFor="ff-title"
+            required
+            hint="Minimum 10 characters"
+          >
             <Input id="ff-title" placeholder="e.g. GCODE Build Sprint" />
           </FormField>
           <FormField label="Description" htmlFor="ff-desc">
             <Textarea id="ff-desc" placeholder="Describe the event..." />
           </FormField>
-          <FormField label="Duration" htmlFor="ff-duration" error="Please select a duration">
+          <FormField
+            label="Duration"
+            htmlFor="ff-duration"
+            error="Please select a duration"
+          >
             <Select id="ff-duration" error defaultValue="">
               <option value="" disabled>
                 Choose duration
@@ -351,8 +386,16 @@ export default function MoleculesShowcasePage() {
 
       <Section title="Stat Card">
         <div className="grid grid-cols-2 gap-4 sm:max-w-sm">
-          <StatCard label="Total Registrations" value="148" sub="+12 this week" />
-          <StatCard label="Total Earned" value="₹48,500" trend={{ value: "+12%" }} />
+          <StatCard
+            label="Total Registrations"
+            value="148"
+            sub="+12 this week"
+          />
+          <StatCard
+            label="Total Earned"
+            value="₹48,500"
+            trend={{ value: "+12%" }}
+          />
         </div>
       </Section>
 
@@ -369,9 +412,17 @@ export default function MoleculesShowcasePage() {
       <Section title="Timeline">
         <Timeline
           items={[
-            { title: "10:00 AM — Kickoff", description: "Opening session and brief.", active: true },
+            {
+              title: "10:00 AM — Kickoff",
+              description: "Opening session and brief.",
+              active: true,
+            },
             { title: "12:00 PM — Office Hours", description: "Q&A session." },
-            { title: "2:00 PM — Wrap-up", description: "Closing remarks.", past: true },
+            {
+              title: "2:00 PM — Wrap-up",
+              description: "Closing remarks.",
+              past: true,
+            },
           ]}
         />
       </Section>

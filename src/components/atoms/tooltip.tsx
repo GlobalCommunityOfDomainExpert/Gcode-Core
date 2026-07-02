@@ -33,7 +33,7 @@ export function Tooltip({ content, children, position = "top" }: TooltipProps) {
         <span
           tabIndex={0}
           aria-describedby={id}
-          className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+          className="focus-visible:ring-primary focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
         >
           {children}
         </span>
@@ -43,7 +43,7 @@ export function Tooltip({ content, children, position = "top" }: TooltipProps) {
       <span
         role="tooltip"
         id={id}
-        className={`pointer-events-none absolute z-10 whitespace-nowrap rounded-sm bg-primary px-2 py-1 text-small text-white shadow-lg transition-opacity ${
+        className={`bg-primary text-small pointer-events-none absolute z-10 rounded-sm px-2 py-1 whitespace-nowrap text-white shadow-lg transition-opacity ${
           positionClasses[position]
         } ${visible ? "opacity-100" : "opacity-0"}`}
       >

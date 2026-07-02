@@ -14,7 +14,12 @@ export interface ToggleGroupProps {
   onChange?: (value: string) => void;
 }
 
-export function ToggleGroup({ options, value, defaultValue, onChange }: ToggleGroupProps) {
+export function ToggleGroup({
+  options,
+  value,
+  defaultValue,
+  onChange,
+}: ToggleGroupProps) {
   const [internal, setInternal] = useState(defaultValue ?? options[0]?.value);
   const active = value ?? internal;
 
@@ -24,7 +29,10 @@ export function ToggleGroup({ options, value, defaultValue, onChange }: ToggleGr
   }
 
   return (
-    <div role="radiogroup" className="inline-flex rounded-sm border border-border-light bg-bg-light p-1">
+    <div
+      role="radiogroup"
+      className="border-border-light bg-bg-light inline-flex rounded-sm border p-1"
+    >
       {options.map((option) => {
         const isActive = option.value === active;
         return (
@@ -34,7 +42,7 @@ export function ToggleGroup({ options, value, defaultValue, onChange }: ToggleGr
             role="radio"
             aria-checked={isActive}
             onClick={() => select(option.value)}
-            className={`rounded-sm px-3 py-1.5 text-small font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 ${
+            className={`text-small focus-visible:ring-primary rounded-sm px-3 py-1.5 font-medium transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none ${
               isActive
                 ? "bg-surface-light text-text-primary shadow-sm"
                 : "text-text-secondary hover:text-text-primary"

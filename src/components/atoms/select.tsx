@@ -3,8 +3,10 @@ import { SelectHTMLAttributes, forwardRef } from "react";
 export type SelectVariant = "default" | "outline";
 export type SelectSize = "sm" | "md";
 
-export interface SelectProps
-  extends Omit<SelectHTMLAttributes<HTMLSelectElement>, "size"> {
+export interface SelectProps extends Omit<
+  SelectHTMLAttributes<HTMLSelectElement>,
+  "size"
+> {
   variant?: SelectVariant;
   size?: SelectSize;
   error?: boolean;
@@ -31,7 +33,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
       children,
       ...props
     },
-    ref
+    ref,
   ) => {
     return (
       <select
@@ -39,9 +41,9 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
         disabled={disabled}
         aria-invalid={error || undefined}
         className={
-          `w-full rounded-sm border text-text-primary transition-colors ` +
-          `focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 ` +
-          `disabled:cursor-not-allowed disabled:bg-bg-light disabled:opacity-50 ` +
+          `text-text-primary w-full rounded-sm border transition-colors ` +
+          `focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none ` +
+          `disabled:bg-bg-light disabled:cursor-not-allowed disabled:opacity-50 ` +
           (error
             ? "border-danger focus-visible:ring-danger "
             : `${variantClasses[variant]} focus-visible:border-primary focus-visible:ring-primary `) +
@@ -52,7 +54,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
         {children}
       </select>
     );
-  }
+  },
 );
 
 Select.displayName = "Select";

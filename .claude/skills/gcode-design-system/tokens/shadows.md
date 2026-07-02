@@ -8,12 +8,12 @@ Shadows create visual elevation. GCODE shadows are tinted with the brand primary
 
 ## Scale
 
-| Token | Value | Use |
-|---|---|---|
-| `--g-shadow-inner` | `inset 0 2px 4px rgba(26, 47, 63, 0.02)` | Input fields, pressed states |
-| `--g-shadow-sm` | `0 1px 4px rgba(26, 47, 63, 0.02)` | Cards at rest, dropdowns, subtle lift |
-| `--g-shadow-md` | `0 4px 16px rgba(26, 47, 63, 0.04)` | Hovered cards, modals, panels |
-| `--g-shadow-lg` | `0 16px 40px rgba(26, 47, 63, 0.08)` | Floating elements (FAB, bottom sheets, tooltips) |
+| Token              | Value                                    | Use                                              |
+| ------------------ | ---------------------------------------- | ------------------------------------------------ |
+| `--g-shadow-inner` | `inset 0 2px 4px rgba(26, 47, 63, 0.02)` | Input fields, pressed states                     |
+| `--g-shadow-sm`    | `0 1px 4px rgba(26, 47, 63, 0.02)`       | Cards at rest, dropdowns, subtle lift            |
+| `--g-shadow-md`    | `0 4px 16px rgba(26, 47, 63, 0.04)`      | Hovered cards, modals, panels                    |
+| `--g-shadow-lg`    | `0 16px 40px rgba(26, 47, 63, 0.08)`     | Floating elements (FAB, bottom sheets, tooltips) |
 
 ---
 
@@ -22,9 +22,9 @@ Shadows create visual elevation. GCODE shadows are tinted with the brand primary
 ```css
 :root {
   --g-shadow-inner: inset 0 2px 4px rgba(26, 47, 63, 0.02);
-  --g-shadow-sm:    0 1px 4px rgba(26, 47, 63, 0.02);
-  --g-shadow-md:    0 4px 16px rgba(26, 47, 63, 0.04);
-  --g-shadow-lg:    0 16px 40px rgba(26, 47, 63, 0.08);
+  --g-shadow-sm: 0 1px 4px rgba(26, 47, 63, 0.02);
+  --g-shadow-md: 0 4px 16px rgba(26, 47, 63, 0.04);
+  --g-shadow-lg: 0 16px 40px rgba(26, 47, 63, 0.08);
 }
 ```
 

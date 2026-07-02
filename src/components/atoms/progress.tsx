@@ -31,7 +31,7 @@ export function Progress({
       aria-valuenow={value}
       aria-valuemin={0}
       aria-valuemax={max}
-      className={`h-2 w-full overflow-hidden rounded-full bg-bg-light ${className}`}
+      className={`bg-bg-light h-2 w-full overflow-hidden rounded-full ${className}`}
     >
       <div
         className={`h-full rounded-full transition-[width] ${toneClasses[tone]}`}

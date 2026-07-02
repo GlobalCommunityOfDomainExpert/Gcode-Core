@@ -13,7 +13,8 @@ Colors define the visual identity of GCODE and create a consistent, trustworthy 
 Used for structure.
 
 Examples:
-- 
+-
+
 - Navigation
 - Headers
 - Active navigation

@@ -31,15 +31,24 @@ export function ExpertCard({
   onAction,
 }: ExpertCardProps) {
   return (
-    <div className="flex flex-col gap-5 rounded-md border border-border-light bg-surface-light p-5 transition-shadow hover:shadow-md">
+    <div className="border-border-light bg-surface-light flex flex-col gap-5 rounded-md border p-5 transition-shadow hover:shadow-md">
       <div className="flex items-center gap-4">
-        <Avatar alt={name} src={avatarSrc} initials={avatarInitials} size="lg" />
+        <Avatar
+          alt={name}
+          src={avatarSrc}
+          initials={avatarInitials}
+          size="lg"
+        />
         <div className="min-w-0">
-          <h4 className="truncate text-body font-semibold text-text-primary">{name}</h4>
-          <p className="truncate text-small text-text-secondary">{title}</p>
-          <div className="mt-1 flex items-center gap-1 text-small text-text-secondary">
-            <Icon icon={Star} size="sm" className="fill-current text-warning" />
-            <span className="font-medium text-text-primary">{rating.toFixed(1)}</span>
+          <h4 className="text-body text-text-primary truncate font-semibold">
+            {name}
+          </h4>
+          <p className="text-small text-text-secondary truncate">{title}</p>
+          <div className="text-small text-text-secondary mt-1 flex items-center gap-1">
+            <Icon icon={Star} size="sm" className="text-warning fill-current" />
+            <span className="text-text-primary font-medium">
+              {rating.toFixed(1)}
+            </span>
             <span>({ratingCount})</span>
           </div>
         </div>
@@ -56,11 +65,11 @@ export function ExpertCard({
       </div>
 
       <div className="space-y-2">
-        <p className="flex items-center gap-2 text-small text-text-secondary">
+        <p className="text-small text-text-secondary flex items-center gap-2">
           <Icon icon={Calendar} size="sm" />
           {availability}
         </p>
-        <p className="flex items-center gap-2 text-small text-text-secondary">
+        <p className="text-small text-text-secondary flex items-center gap-2">
           <Icon icon={CreditCard} size="sm" />
           {rateRange}
         </p>

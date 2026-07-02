@@ -12,7 +12,7 @@ export function AskAiButton({ onClick }: AskAiButtonProps) {
       onClick={onClick}
       aria-label="Ask GCODE AI"
       title="Ask GCODE AI"
-      className="fixed bottom-6 right-6 z-30 flex size-12 items-center justify-center rounded-full bg-primary text-white shadow-lg hover:bg-primary-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+      className="bg-primary hover:bg-primary-hover focus-visible:ring-primary fixed right-6 bottom-6 z-30 flex size-12 items-center justify-center rounded-full text-white shadow-lg focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
     >
       <Icon icon={Sparkles} size="md" />
     </button>

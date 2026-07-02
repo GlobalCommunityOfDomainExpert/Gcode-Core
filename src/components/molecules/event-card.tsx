@@ -1,4 +1,4 @@
-import { Calendar, Image as ImageIcon, MapPin } from "lucide-react";
+import { ArrowRight, Calendar, Image as ImageIcon, MapPin } from "lucide-react";
 import NextLink from "next/link";
 import { Badge, BadgeTone, Button, ButtonLink, Icon } from "@/components/atoms";
 import { AvatarGroup, AvatarGroupItem } from "./avatar-group";
@@ -34,13 +34,21 @@ function EventCardMedia({ src, alt }: { src?: string; alt: string }) {
   }
 
   return (
-    <div className="flex h-full w-full items-center justify-center bg-bg-light text-text-secondary">
+    <div className="bg-bg-light text-text-secondary flex h-full w-full items-center justify-center">
       <Icon icon={ImageIcon} size="lg" />
     </div>
   );
 }
 
-function EventCardTitle({ title, href, className }: { title: string; href?: string; className: string }) {
+function EventCardTitle({
+  title,
+  href,
+  className,
+}: {
+  title: string;
+  href?: string;
+  className: string;
+}) {
   if (href) {
     return (
       <NextLink href={href} className={`${className} hover:underline`}>
@@ -69,21 +77,21 @@ export function EventCard({
 }: EventCardProps) {
   const action = href ? (
     <ButtonLink href={href} variant="primary">
-      {actionLabel} →
+      {actionLabel} <Icon size="sm" icon={ArrowRight} />{" "}
     </ButtonLink>
   ) : (
     <Button variant="primary" onClick={onAction}>
-      {actionLabel} →
+      {actionLabel} <Icon size="sm" icon={ArrowRight} />
     </Button>
   );
 
   if (variant === "featured") {
     return (
-      <div className="flex h-full flex-col overflow-hidden rounded-md border border-border-light bg-surface-light transition-shadow hover:shadow-md">
+      <div className="border-border-light bg-surface-light flex h-full flex-col overflow-hidden rounded-md border transition-shadow hover:shadow-md">
         <div className="relative aspect-video shrink-0">
           <EventCardMedia src={imageSrc} alt={imageAlt ?? title} />
           {headerLabel && (
-            <div className="absolute left-3 top-3">
+            <div className="absolute top-3 left-3">
               <Badge variant="solid" tone="neutral">
                 {headerLabel}
               </Badge>
@@ -93,30 +101,45 @@ export function EventCard({
         <div className="flex flex-1 flex-col gap-3 p-4">
           <div className="flex flex-wrap gap-2">
             {tags.map((tag) => (
-              <Badge key={tag.label} variant="outline" tone={tag.tone ?? "neutral"} size="sm">
+              <Badge
+                key={tag.label}
+                variant="outline"
+                tone={tag.tone ?? "neutral"}
+                size="sm"
+              >
                 {tag.label}
               </Badge>
             ))}
           </div>
-          <EventCardTitle title={title} href={href} className="text-large font-semibold text-text-primary" />
+          <EventCardTitle
+            title={title}
+            href={href}
+            className="text-large text-text-primary font-semibold"
+          />
           <div className="space-y-1">
-            <p className="flex items-center gap-2 text-small text-text-secondary">
+            <p className="text-small text-text-secondary flex items-center gap-2">
               <Icon icon={Calendar} size="sm" />
               {date}
             </p>
             {location && (
-              <p className="flex items-center gap-2 text-small text-text-secondary">
+              <p className="text-small text-text-secondary flex items-center gap-2">
                 <Icon icon={MapPin} size="sm" />
                 {location}
               </p>
             )}
           </div>
           {attendees && attendees.length > 0 && (
-            <AvatarGroup items={attendees} size="sm" overflowLabel={attendeesLabel} />
+            <AvatarGroup
+              items={attendees}
+              size="sm"
+              overflowLabel={attendeesLabel}
+            />
           )}
           <div className="mt-auto flex items-center justify-between gap-2 pt-1">
             {urgencyLabel && (
-              <span className="text-small font-medium text-warning">{urgencyLabel}</span>
+              <span className="text-small text-warning font-medium">
+                {urgencyLabel}
+              </span>
             )}
             <span className="ml-auto">{action}</span>
           </div>
@@ -126,20 +149,29 @@ export function EventCard({
   }
 
   return (
-    <div className="flex h-full flex-col overflow-hidden rounded-md border border-border-light bg-surface-light transition-shadow hover:shadow-md">
+    <div className="border-border-light bg-surface-light flex h-full flex-col overflow-hidden rounded-md border transition-shadow hover:shadow-md">
       <div className="aspect-video shrink-0">
         <EventCardMedia src={imageSrc} alt={imageAlt ?? title} />
       </div>
       <div className="flex flex-1 flex-col gap-2 p-4">
         <div className="flex flex-wrap gap-2">
           {tags.map((tag) => (
-            <Badge key={tag.label} variant="solid" tone={tag.tone ?? "neutral"} size="sm">
+            <Badge
+              key={tag.label}
+              variant="solid"
+              tone={tag.tone ?? "neutral"}
+              size="sm"
+            >
               {tag.label}
             </Badge>
           ))}
         </div>
-        <EventCardTitle title={title} href={href} className="text-body font-semibold text-text-primary" />
-        <p className="flex items-center gap-2 text-small text-text-secondary">
+        <EventCardTitle
+          title={title}
+          href={href}
+          className="text-body text-text-primary font-semibold"
+        />
+        <p className="text-small text-text-secondary flex items-center gap-2">
           <Icon icon={Calendar} size="sm" />
           {date}
         </p>

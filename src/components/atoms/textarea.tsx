@@ -15,8 +15,15 @@ const variantClasses: Record<TextareaVariant, string> = {
 
 export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
   (
-    { variant = "default", error = false, disabled, rows = 4, className = "", ...props },
-    ref
+    {
+      variant = "default",
+      error = false,
+      disabled,
+      rows = 4,
+      className = "",
+      ...props
+    },
+    ref,
   ) => {
     return (
       <textarea
@@ -25,10 +32,10 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
         disabled={disabled}
         aria-invalid={error || undefined}
         className={
-          `w-full rounded-sm border px-4 py-2 text-body text-text-primary shadow-inner ` +
+          `text-body text-text-primary w-full rounded-sm border px-4 py-2 shadow-inner ` +
           `placeholder:text-text-secondary transition-colors ` +
-          `focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 ` +
-          `disabled:cursor-not-allowed disabled:bg-bg-light disabled:opacity-50 ` +
+          `focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none ` +
+          `disabled:bg-bg-light disabled:cursor-not-allowed disabled:opacity-50 ` +
           (error
             ? "border-danger focus-visible:ring-danger "
             : `${variantClasses[variant]} focus-visible:border-primary focus-visible:ring-primary `) +
@@ -37,7 +44,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
         {...props}
       />
     );
-  }
+  },
 );
 
 Textarea.displayName = "Textarea";

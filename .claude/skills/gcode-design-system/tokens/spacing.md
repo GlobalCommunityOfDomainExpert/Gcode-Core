@@ -8,13 +8,13 @@ A small, consistent spacing scale used for padding, gap, and margin throughout a
 
 ## Scale
 
-| Token | Value | px equiv | Use |
-|---|---|---|---|
-| `--g-space-xs` | `0.25rem` | 4px | Tight gaps, icon-to-label, badge padding |
-| `--g-space-sm` | `0.5rem` | 8px | Input padding, avatar gap, list item gap |
-| `--g-space-md` | `1rem` | 16px | Card padding (compact), section gaps |
-| `--g-space-lg` | `1.5rem` | 24px | Card padding (default), grid gaps |
-| `--g-space-xl` | `2rem` | 32px | Page padding, large section gaps |
+| Token          | Value     | px equiv | Use                                      |
+| -------------- | --------- | -------- | ---------------------------------------- |
+| `--g-space-xs` | `0.25rem` | 4px      | Tight gaps, icon-to-label, badge padding |
+| `--g-space-sm` | `0.5rem`  | 8px      | Input padding, avatar gap, list item gap |
+| `--g-space-md` | `1rem`    | 16px     | Card padding (compact), section gaps     |
+| `--g-space-lg` | `1.5rem`  | 24px     | Card padding (default), grid gaps        |
+| `--g-space-xl` | `2rem`    | 32px     | Page padding, large section gaps         |
 
 ---
 

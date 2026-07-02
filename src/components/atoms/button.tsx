@@ -29,7 +29,8 @@ const variantClasses: Record<ButtonVariant, string> = {
   primary: "bg-primary text-white hover:bg-primary-hover",
   secondary:
     "bg-surface-light text-text-primary border border-border-light hover:bg-bg-light",
-  outline: "bg-transparent text-primary border border-primary hover:bg-primary-light",
+  outline:
+    "bg-transparent text-primary border border-primary hover:bg-primary-light",
   ghost: "bg-transparent text-primary hover:bg-primary-light",
   danger: "bg-danger text-white hover:bg-danger/90",
   "danger-ghost": "bg-transparent text-danger hover:bg-danger-light",
@@ -49,7 +50,7 @@ const sizeClasses: Record<ButtonSize, string> = {
 export function buttonClasses(
   variant: ButtonVariant = "primary",
   size: ButtonSize = "md",
-  className = ""
+  className = "",
 ) {
   return `${base} ${variantClasses[variant]} ${sizeClasses[size]} ${className}`;
 }
@@ -65,7 +66,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       children,
       ...props
     },
-    ref
+    ref,
   ) => {
     return (
       <button
@@ -79,7 +80,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         {children}
       </button>
     );
-  }
+  },
 );
 
 Button.displayName = "Button";

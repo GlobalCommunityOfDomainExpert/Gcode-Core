@@ -7,8 +7,10 @@ export function ResponseForm() {
   const [note, setNote] = useState("");
 
   return (
-    <div className="space-y-3 rounded-md border border-border-light bg-surface-light p-6">
-      <p className="text-small font-bold uppercase tracking-widest text-text-secondary">Your Response</p>
+    <div className="border-border-light bg-surface-light space-y-3 rounded-md border p-6">
+      <p className="text-small text-text-secondary font-bold tracking-widest uppercase">
+        Your Response
+      </p>
       <Textarea
         value={note}
         onChange={(event) => setNote(event.target.value)}
@@ -18,13 +20,16 @@ export function ResponseForm() {
         <Button variant="primary" className="flex-1">
           ✓ I&apos;m Interested — Accept
         </Button>
-        <Button variant="danger-ghost" className="flex-1 border border-danger/30">
+        <Button
+          variant="danger-ghost"
+          className="border-danger/30 flex-1 border"
+        >
           ✗ Decline
         </Button>
       </div>
-      <p className="text-center text-small text-text-secondary">
-        Accepting means you&apos;re interested — the organizer still confirms your role before it&apos;s
-        finalised.
+      <p className="text-small text-text-secondary text-center">
+        Accepting means you&apos;re interested — the organizer still confirms
+        your role before it&apos;s finalised.
       </p>
     </div>
   );

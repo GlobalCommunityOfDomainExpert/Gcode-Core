@@ -56,7 +56,6 @@ Aria-role="separator".
 <hr class="g-divider" />
 ```
 
-
 ## Responsive
 
 Adjusts to fit container width. Grids collapse to 1-column on mobile screens (max-width: 768px).

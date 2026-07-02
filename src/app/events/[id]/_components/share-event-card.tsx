@@ -17,14 +17,19 @@ export function ShareEventCard({ url }: { url: string }) {
   }
 
   return (
-    <div className="space-y-3 rounded-md border border-border-light bg-surface-light p-4">
-      <p className="text-small font-bold uppercase tracking-widest text-text-secondary">Share Event</p>
+    <div className="border-border-light bg-surface-light space-y-3 rounded-md border p-4">
+      <p className="text-small text-text-secondary font-bold tracking-widest uppercase">
+        Share Event
+      </p>
       <div className="flex flex-wrap gap-2">
         <Button
           variant="secondary"
           size="sm"
           onClick={() =>
-            window.open(`https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}`, "_blank")
+            window.open(
+              `https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}`,
+              "_blank",
+            )
           }
         >
           Twitter / X
@@ -35,7 +40,7 @@ export function ShareEventCard({ url }: { url: string }) {
           onClick={() =>
             window.open(
               `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`,
-              "_blank"
+              "_blank",
             )
           }
         >

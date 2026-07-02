@@ -58,7 +58,9 @@ Visible
 ```html
 <div class="g-accordion">
   <div class="g-accordion__item g-accordion__item--open">
-    <button class="g-accordion__header">Title <i data-lucide="chevron-down" class="g-icon g-accordion__icon"></i></button>
+    <button class="g-accordion__header">
+      Title <i data-lucide="chevron-down" class="g-icon g-accordion__icon"></i>
+    </button>
     <div class="g-accordion__body">Content</div>
   </div>
 </div>

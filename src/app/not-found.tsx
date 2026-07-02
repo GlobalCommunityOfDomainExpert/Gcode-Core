@@ -6,7 +6,9 @@ export default function NotFound() {
   return (
     <main className="flex min-h-screen items-center justify-center px-4 py-16">
       <div className="w-full max-w-md space-y-4">
-        <p className="text-center text-display font-extrabold text-primary">404</p>
+        <p className="text-display text-primary text-center font-extrabold">
+          404
+        </p>
         <EmptyState
           icon={Compass}
           title="Page not found"

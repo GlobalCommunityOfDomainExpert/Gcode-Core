@@ -19,7 +19,7 @@ export function Divider({
       <div
         role="separator"
         aria-orientation="vertical"
-        className={`h-full self-stretch bg-border-light ${
+        className={`bg-border-light h-full self-stretch ${
           thickness === "thick" ? "w-0.5" : "w-px"
         } ${className}`}
         {...props}
@@ -30,7 +30,7 @@ export function Divider({
   return (
     <hr
       role="separator"
-      className={`w-full border-0 border-t border-border-light ${
+      className={`border-border-light w-full border-0 border-t ${
         thickness === "thick" ? "border-t-2" : "border-t"
       } ${className}`}
       {...props}

@@ -1,65 +1,65 @@
 - generic [ref=f30e1]:
-  - generic [ref=f30e2]:
-    - banner [ref=f30e3]:
-      - generic [ref=f30e4]:
-        - link "GCODE" [ref=f30e6] [cursor=pointer]:
-          - /url: /
-        - generic [ref=f30e7]:
-          - button "Notifications" [ref=f30e8]:
-            - img [ref=f30e9]
-          - button "Get Started" [ref=f30e13]
-          - button "Close menu" [expanded] [active] [ref=f30e47]:
-            - img [ref=f30e48]
-      - generic [ref=f30e52]:
-        - navigation "Primary" [ref=f30e53]:
-          - link "Explore" [ref=f30e54] [cursor=pointer]:
-            - /url: /explore
-          - link "Events" [ref=f30e55] [cursor=pointer]:
-            - /url: /events
-          - link "Blogs" [ref=f30e56] [cursor=pointer]:
-            - /url: /blogs
-          - link "Terms & Conditions" [ref=f30e57] [cursor=pointer]:
-            - /url: /terms
-          - link "Refund Policy" [ref=f30e58] [cursor=pointer]:
-            - /url: /refund-policy
-        - generic [ref=f30e60]:
-          - navigation "Sidebar" [ref=f30e61]:
-            - link "Dashboard" [ref=f30e62] [cursor=pointer]:
-              - /url: /dashboard
-              - img [ref=f30e63]
-              - text: Dashboard
-            - link "Bookings" [ref=f30e68] [cursor=pointer]:
-              - /url: /bookings
-              - img [ref=f30e69]
-              - text: Bookings
-          - generic [ref=f30e72]:
-            - generic [ref=f30e73]:
-              - paragraph [ref=f30e74]: Profile 60% complete
-              - progressbar "Profile completion" [ref=f30e75]
-            - button "Shashwat Singh Founder" [ref=f30e78]:
-              - generic [ref=f30e81]: SS
-              - generic [ref=f30e82]:
-                - generic [ref=f30e83]: Shashwat Singh
-                - generic [ref=f30e84]: Founder
-              - img [ref=f30e85]
-    - main [ref=f30e17]:
-      - generic [ref=f30e19]:
-        - generic [ref=f30e20]:
-          - heading "Dashboard" [level=1] [ref=f30e21]
-          - paragraph [ref=f30e22]: Welcome back, here's your overview.
-        - generic [ref=f30e23]:
-          - generic [ref=f30e24]:
-            - paragraph [ref=f30e25]: Total Registrations
-            - generic [ref=f30e27]: "148"
-            - paragraph [ref=f30e28]: +12 this week
-          - generic [ref=f30e29]:
-            - paragraph [ref=f30e30]: Total Earned
-            - generic [ref=f30e31]:
-              - generic [ref=f30e32]: ₹48,500
-              - generic [ref=f30e33]: +12%
-          - generic [ref=f30e34]:
-            - paragraph [ref=f30e35]: Upcoming Events
-            - generic [ref=f30e37]: "3"
-  - button "Open Next.js Dev Tools" [ref=f30e43] [cursor=pointer]:
-    - img [ref=f30e44]
-  - alert [ref=f30e87]
+    - generic [ref=f30e2]:
+        - banner [ref=f30e3]:
+            - generic [ref=f30e4]:
+                - link "GCODE" [ref=f30e6] [cursor=pointer]:
+                    - /url: /
+                - generic [ref=f30e7]:
+                    - button "Notifications" [ref=f30e8]:
+                        - img [ref=f30e9]
+                    - button "Get Started" [ref=f30e13]
+                    - button "Close menu" [expanded] [active] [ref=f30e47]:
+                        - img [ref=f30e48]
+            - generic [ref=f30e52]:
+                - navigation "Primary" [ref=f30e53]:
+                    - link "Explore" [ref=f30e54] [cursor=pointer]:
+                        - /url: /explore
+                    - link "Events" [ref=f30e55] [cursor=pointer]:
+                        - /url: /events
+                    - link "Blogs" [ref=f30e56] [cursor=pointer]:
+                        - /url: /blogs
+                    - link "Terms & Conditions" [ref=f30e57] [cursor=pointer]:
+                        - /url: /terms
+                    - link "Refund Policy" [ref=f30e58] [cursor=pointer]:
+                        - /url: /refund-policy
+                - generic [ref=f30e60]:
+                    - navigation "Sidebar" [ref=f30e61]:
+                        - link "Dashboard" [ref=f30e62] [cursor=pointer]:
+                            - /url: /dashboard
+                            - img [ref=f30e63]
+                            - text: Dashboard
+                        - link "Bookings" [ref=f30e68] [cursor=pointer]:
+                            - /url: /bookings
+                            - img [ref=f30e69]
+                            - text: Bookings
+                    - generic [ref=f30e72]:
+                        - generic [ref=f30e73]:
+                            - paragraph [ref=f30e74]: Profile 60% complete
+                            - progressbar "Profile completion" [ref=f30e75]
+                        - button "Shashwat Singh Founder" [ref=f30e78]:
+                            - generic [ref=f30e81]: SS
+                            - generic [ref=f30e82]:
+                                - generic [ref=f30e83]: Shashwat Singh
+                                - generic [ref=f30e84]: Founder
+                            - img [ref=f30e85]
+        - main [ref=f30e17]:
+            - generic [ref=f30e19]:
+                - generic [ref=f30e20]:
+                    - heading "Dashboard" [level=1] [ref=f30e21]
+                    - paragraph [ref=f30e22]: Welcome back, here's your overview.
+                - generic [ref=f30e23]:
+                    - generic [ref=f30e24]:
+                        - paragraph [ref=f30e25]: Total Registrations
+                        - generic [ref=f30e27]: "148"
+                        - paragraph [ref=f30e28]: +12 this week
+                    - generic [ref=f30e29]:
+                        - paragraph [ref=f30e30]: Total Earned
+                        - generic [ref=f30e31]:
+                            - generic [ref=f30e32]: ₹48,500
+                            - generic [ref=f30e33]: +12%
+                    - generic [ref=f30e34]:
+                        - paragraph [ref=f30e35]: Upcoming Events
+                        - generic [ref=f30e37]: "3"
+    - button "Open Next.js Dev Tools" [ref=f30e43] [cursor=pointer]:
+        - img [ref=f30e44]
+    - alert [ref=f30e87]

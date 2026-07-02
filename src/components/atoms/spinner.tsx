@@ -36,9 +36,15 @@ export function Spinner({
         />
       ) : (
         <div className="flex items-center gap-1">
-          <span className={`${dotSizeClasses[size]} animate-bounce rounded-full bg-current [animation-delay:-0.3s]`} />
-          <span className={`${dotSizeClasses[size]} animate-bounce rounded-full bg-current [animation-delay:-0.15s]`} />
-          <span className={`${dotSizeClasses[size]} animate-bounce rounded-full bg-current`} />
+          <span
+            className={`${dotSizeClasses[size]} animate-bounce rounded-full bg-current [animation-delay:-0.3s]`}
+          />
+          <span
+            className={`${dotSizeClasses[size]} animate-bounce rounded-full bg-current [animation-delay:-0.15s]`}
+          />
+          <span
+            className={`${dotSizeClasses[size]} animate-bounce rounded-full bg-current`}
+          />
         </div>
       )}
       <span className="sr-only">{label}</span>

@@ -6,12 +6,9 @@ Spans left vertical navigation layout.
 
 ---
 
-
 ## Style
 
 use primary color for navlinks when highlighted
-
-
 
 ## Structure
 
@@ -26,7 +23,7 @@ LOGO
 - Dashboard
 - Bookings2
      progress bar
-(Ss) {Name of teh user} > | Logout  
+(Ss) {Name of teh user} > | Logout
      role                 | View profile |
 ```
 

@@ -15,7 +15,12 @@ const sizeClasses: Record<IconSize, string> = {
   lg: "size-6",
 };
 
-export function Icon({ icon: LucideIconComponent, size = "md", label, className = "" }: IconProps) {
+export function Icon({
+  icon: LucideIconComponent,
+  size = "md",
+  label,
+  className = "",
+}: IconProps) {
   return (
     <LucideIconComponent
       aria-hidden={label ? undefined : true}

@@ -109,11 +109,8 @@ Visible
 ## Example
 
 ```html
-<button class="g-btn g-btn--primary">
-  Create Project
-</button>
+<button class="g-btn g-btn--primary">Create Project</button>
 ```
-
 
 ## Responsive
 

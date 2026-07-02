@@ -64,7 +64,6 @@ Required Alt tags for images. Status badge should have aria-label.
 </div>
 ```
 
-
 ## Responsive
 
 Adjusts to fit container width. Grids collapse to 1-column on mobile screens (max-width: 768px).
