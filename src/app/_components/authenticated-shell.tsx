@@ -3,11 +3,11 @@
 import { ReactNode } from "react";
 import {
   CalendarCheck,
-  CalendarClock,
-  LayoutDashboard,
-  Share2,
-  Settings,
-  Wallet,
+  // CalendarClock,
+  // LayoutDashboard,
+  // Share2,
+  // Settings,
+  // Wallet,
 } from "lucide-react";
 import { AppShell, Navbar, Sidebar, SidebarLink } from "@/components/layout";
 

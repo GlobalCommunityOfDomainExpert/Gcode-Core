@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Bell, Menu, X } from "lucide-react";
 import { Button, Icon } from "@/components/atoms";
-import { Dropdown, DropdownItem } from "@/components/molecules";
+import { DropdownItem } from "@/components/molecules";
 import Image from "next/image";
 
 export interface NavLink {
@@ -38,9 +38,17 @@ const defaultResourcesItems: DropdownItem[] = [
 ];
 
 export function Navbar({
-  logo = <Image src={"/Logo.png"} width={120} height={50} alt="logo" className="mt-2 " />,
+  logo = (
+    <Image
+      src={"/Logo.png"}
+      width={120}
+      height={50}
+      alt="logo"
+      className="mt-2"
+    />
+  ),
   links = defaultLinks,
-  resourcesLabel = "Resources",
+  resourcesLabel = "",
   resourcesItems = defaultResourcesItems,
   ctaLabel = "Get Started",
   onCtaClick,
@@ -50,14 +58,12 @@ export function Navbar({
 }: NavbarProps) {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
-
+  console.log(resourcesLabel);
   return (
     <header className="bg-primary relative">
-      <div className="mx-auto flex h-16 items-center justify-between gap-4 ">
+      <div className="mx-auto flex h-16 items-center justify-between gap-4">
         <div className="flex items-center gap-8">
-          <Link href="/" >
-            {logo}
-          </Link>
+          <Link href="/">{logo}</Link>
           <nav
             aria-label="Primary"
             className="hidden items-center gap-6 md:flex"

@@ -161,9 +161,12 @@ export function SettingsTab({
           </p>
           <div className="bg-danger-light border-danger/30 flex items-center justify-between gap-4 rounded-md border p-4">
             <div>
-              <p className="text-body text-danger font-bold">Cancel this event</p>
+              <p className="text-body text-danger font-bold">
+                Cancel this event
+              </p>
               <p className="text-small text-danger/80 mt-0.5">
-                All registered attendees will be notified. This cannot be undone.
+                All registered attendees will be notified. This cannot be
+                undone.
               </p>
             </div>
             <Button
