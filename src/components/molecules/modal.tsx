@@ -53,7 +53,9 @@ export function Modal({ open, onClose, title, children, footer }: ModalProps) {
             <Icon icon={X} size="sm" />
           </button>
         </div>
-        <div className="text-body text-text-primary px-6 py-4">{children}</div>
+        <div className="text-body text-text-primary max-h-[70vh] overflow-y-auto px-6 py-4">
+          {children}
+        </div>
         {footer && (
           <div className="border-border-light flex justify-end gap-2 border-t px-6 py-4">
             {footer}

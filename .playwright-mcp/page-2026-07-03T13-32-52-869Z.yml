@@ -1,0 +1,128 @@
+- generic [active] [ref=f23e1]:
+  - generic [ref=f23e2]:
+    - banner [ref=f23e3]:
+      - generic [ref=f23e5]:
+        - link "logo" [ref=f23e6] [cursor=pointer]:
+          - /url: /
+          - img "logo" [ref=f23e7]
+        - navigation "Primary" [ref=f23e8]:
+          - link "Events" [ref=f23e9] [cursor=pointer]:
+            - /url: /events
+    - main [ref=f23e11]:
+      - generic [ref=f23e13]:
+        - generic [ref=f23e14]:
+          - generic [ref=f23e15]:
+            - heading "Organizing" [level=1] [ref=f23e16]
+            - paragraph [ref=f23e17]: Events you're hosting on GCODE.
+          - link "+ Host Event" [ref=f23e18] [cursor=pointer]:
+            - /url: /my-organized-events/new
+        - generic [ref=f23e19]:
+          - generic [ref=f23e20]:
+            - img [ref=f23e23]
+            - generic [ref=f23e27]:
+              - generic [ref=f23e28]:
+                - generic [ref=f23e29]: Hackathon
+                - generic [ref=f23e30]: Free
+              - link "GCODE Build Sprint · Summer 2026" [ref=f23e31] [cursor=pointer]:
+                - /url: /my-organized-events/gcode-build-sprint-2026
+              - paragraph [ref=f23e32]:
+                - img [ref=f23e33]
+                - text: 15 Jul 2026
+              - link "Manage" [ref=f23e36] [cursor=pointer]:
+                - /url: /my-organized-events/gcode-build-sprint-2026
+                - text: Manage
+                - img [ref=f23e37]
+          - generic [ref=f23e39]:
+            - img [ref=f23e42]
+            - generic [ref=f23e46]:
+              - generic [ref=f23e47]:
+                - generic [ref=f23e48]: Hackathon
+                - generic [ref=f23e49]: Free
+              - link "GCODE Build Sprint · Winter 2026" [ref=f23e50] [cursor=pointer]:
+                - /url: /my-organized-events/gcode-build-sprint-2026-winter
+              - paragraph [ref=f23e51]:
+                - img [ref=f23e52]
+                - text: 15 Jul 2026
+              - link "Manage" [ref=f23e55] [cursor=pointer]:
+                - /url: /my-organized-events/gcode-build-sprint-2026-winter
+                - text: Manage
+                - img [ref=f23e56]
+          - generic [ref=f23e58]:
+            - img [ref=f23e61]
+            - generic [ref=f23e65]:
+              - generic [ref=f23e66]:
+                - generic [ref=f23e67]: Expert AMA
+                - generic [ref=f23e68]: Free
+              - 'link "Ask Me Anything: Fundraising for Deep-Tech Startups" [ref=f23e69] [cursor=pointer]':
+                - /url: /my-organized-events/ask-me-anything-fundraising
+              - paragraph [ref=f23e70]:
+                - img [ref=f23e71]
+                - text: 18 Jul 2026
+              - link "Manage" [ref=f23e74] [cursor=pointer]:
+                - /url: /my-organized-events/ask-me-anything-fundraising
+                - text: Manage
+                - img [ref=f23e75]
+          - generic [ref=f23e77]:
+            - img [ref=f23e80]
+            - generic [ref=f23e84]:
+              - generic [ref=f23e85]:
+                - generic [ref=f23e86]: Webinar
+                - generic [ref=f23e87]: ₹299
+              - 'link "Fundraising readiness: what investors check first" [ref=f23e88] [cursor=pointer]':
+                - /url: /my-organized-events/fundraising-readiness-webinar
+              - paragraph [ref=f23e89]:
+                - img [ref=f23e90]
+                - text: 5 Jul 2026
+              - link "Manage" [ref=f23e93] [cursor=pointer]:
+                - /url: /my-organized-events/fundraising-readiness-webinar
+                - text: Manage
+                - img [ref=f23e94]
+          - generic [ref=f23e96]:
+            - img [ref=f23e99]
+            - generic [ref=f23e103]:
+              - generic [ref=f23e104]:
+                - generic [ref=f23e105]: Ideathon
+                - generic [ref=f23e106]: Free
+              - link "ClimaTech Ideathon 2026" [ref=f23e107] [cursor=pointer]:
+                - /url: /my-organized-events/climatech-ideathon-2026
+              - paragraph [ref=f23e108]:
+                - img [ref=f23e109]
+                - text: 20 Jul 2026
+              - link "Manage" [ref=f23e112] [cursor=pointer]:
+                - /url: /my-organized-events/climatech-ideathon-2026
+                - text: Manage
+                - img [ref=f23e113]
+          - generic [ref=f23e115]:
+            - img [ref=f23e118]
+            - generic [ref=f23e122]:
+              - generic [ref=f23e123]:
+                - generic [ref=f23e124]: Community Meetup
+                - generic [ref=f23e125]: Free
+              - link "GCODE Founders Meetup · Mumbai" [ref=f23e126] [cursor=pointer]:
+                - /url: /my-organized-events/gcode-founders-meetup-mumbai
+              - paragraph [ref=f23e127]:
+                - img [ref=f23e128]
+                - text: 22 Jul 2026
+              - link "Manage" [ref=f23e131] [cursor=pointer]:
+                - /url: /my-organized-events/gcode-founders-meetup-mumbai
+                - text: Manage
+                - img [ref=f23e132]
+          - generic [ref=f23e134]:
+            - img [ref=f23e137]
+            - generic [ref=f23e141]:
+              - generic [ref=f23e142]:
+                - generic [ref=f23e143]: Institution Event
+                - generic [ref=f23e144]: ₹200
+              - link "National Tech Symposium 2026 — IIT Delhi" [ref=f23e145] [cursor=pointer]:
+                - /url: /my-organized-events/national-tech-symposium-2026
+              - paragraph [ref=f23e146]:
+                - img [ref=f23e147]
+                - text: 25 Jul 2026
+              - link "Manage" [ref=f23e150] [cursor=pointer]:
+                - /url: /my-organized-events/national-tech-symposium-2026
+                - text: Manage
+                - img [ref=f23e151]
+    - button "Ask GCODE AI" [ref=f23e153]:
+      - img [ref=f23e154]
+  - button "Open Next.js Dev Tools" [ref=f23e162] [cursor=pointer]:
+    - img [ref=f23e163]

@@ -1,0 +1,105 @@
+- generic [ref=f24e1]:
+  - generic [ref=f24e2]:
+    - banner [ref=f24e3]:
+      - generic [ref=f24e5]:
+        - link "logo" [ref=f24e6] [cursor=pointer]:
+          - /url: /
+          - img "logo" [ref=f24e7]
+        - navigation "Primary" [ref=f24e8]:
+          - link "Events" [ref=f24e9] [cursor=pointer]:
+            - /url: /events
+    - main [ref=f24e11]:
+      - generic [ref=f24e13]:
+        - generic [ref=f24e14]:
+          - heading "Host an Event" [level=1] [ref=f24e15]
+          - paragraph [ref=f24e16]: Set up your event and optionally request help from the community.
+        - generic [ref=f24e18]:
+          - generic [ref=f24e19]:
+            - img [ref=f24e120]
+            - separator [ref=f24e23]
+          - generic [ref=f24e24]:
+            - separator [ref=f24e26]
+            - img [ref=f24e160]
+            - separator [ref=f24e29]
+          - generic [ref=f24e30]:
+            - separator [ref=f24e32]
+            - img [ref=f24e191]
+            - separator [ref=f24e35]
+          - generic [ref=f24e36]:
+            - separator [ref=f24e38]
+            - img [ref=f24e206]
+            - separator [ref=f24e41]
+          - generic [ref=f24e42]:
+            - separator [ref=f24e44]
+            - generic [ref=f24e45]: "5"
+            - separator [ref=f24e47]
+          - generic [ref=f24e48]:
+            - separator [ref=f24e50]
+            - generic [ref=f24e51]: "6"
+          - paragraph [ref=f24e53]: Type
+          - paragraph [ref=f24e54]: Details
+          - paragraph [ref=f24e55]: Schedule & Mode
+          - paragraph [ref=f24e56]: Agenda & Media
+          - paragraph [ref=f24e57]: Community
+          - paragraph [ref=f24e58]: Review
+        - generic [ref=f24e208]:
+          - generic [ref=f24e209]:
+            - heading "Request community help" [level=2] [ref=f24e210]
+            - paragraph [ref=f24e211]: Optional — ask venue partners, sponsors, guest speakers, or volunteers to help with this event. Skip this if you don't need help yet.
+          - generic [ref=f24e212]:
+            - tablist [ref=f24e213]:
+              - tab "Venue Partner" [selected] [ref=f24e214]
+              - tab "Sponsorship Partner" [ref=f24e215]
+              - tab "Guest Speaker" [ref=f24e216]
+              - tab "Volunteer" [ref=f24e217]
+            - search [ref=f24e218]:
+              - generic:
+                - img
+              - searchbox "Search venue partners by name..." [ref=f24e219]
+            - generic [ref=f24e220]:
+              - generic [ref=f24e221]:
+                - generic [ref=f24e222]:
+                  - generic [ref=f24e225]: ID
+                  - generic [ref=f24e226]:
+                    - heading "IIT Delhi Innovation Hub" [level=4] [ref=f24e227]
+                    - paragraph [ref=f24e228]: IIT Delhi
+                    - generic [ref=f24e229]: Venue Partner
+                - paragraph [ref=f24e230]: Campus auditoriums and labs available for hackathons and symposiums.
+                - generic [ref=f24e231]:
+                  - generic [ref=f24e232]: Auditorium
+                  - generic [ref=f24e233]: Up to 500 seats
+                - button "Select" [ref=f24e234]
+              - generic [ref=f24e235]:
+                - generic [ref=f24e236]:
+                  - generic [ref=f24e239]: WK
+                  - generic [ref=f24e240]:
+                    - heading "WeWork Koramangala" [level=4] [ref=f24e241]
+                    - paragraph [ref=f24e242]: WeWork India
+                    - generic [ref=f24e243]: Venue Partner
+                - paragraph [ref=f24e244]: Flexible event spaces in Bangalore, ideal for meetups and workshops.
+                - generic [ref=f24e245]:
+                  - generic [ref=f24e246]: Meetup Space
+                  - generic [ref=f24e247]: Up to 120 seats
+                - button "Select" [ref=f24e248]
+              - generic [ref=f24e249]:
+                - generic [ref=f24e250]:
+                  - generic [ref=f24e253]: NC
+                  - generic [ref=f24e254]:
+                    - heading "NASSCOM CoE" [level=4] [ref=f24e255]
+                    - paragraph [ref=f24e256]: NASSCOM Center of Excellence
+                    - generic [ref=f24e257]: Venue Partner
+                - paragraph [ref=f24e258]: Deep-tech focused venue with demo labs and breakout rooms.
+                - generic [ref=f24e259]:
+                  - generic [ref=f24e260]: Demo Labs
+                  - generic [ref=f24e261]: Up to 200 seats
+                - button "Select" [ref=f24e262]
+        - generic [ref=f24e102]:
+          - button "← Back" [ref=f24e103]
+          - generic [ref=f24e104]:
+            - button "Skip this step" [ref=f24e263]
+            - button "Next →" [active] [ref=f24e105]
+    - button "Ask GCODE AI" [ref=f24e106]:
+      - img [ref=f24e107]
+  - button "Open Next.js Dev Tools" [ref=f24e115] [cursor=pointer]:
+    - img [ref=f24e116]
+  - alert [ref=f24e119]

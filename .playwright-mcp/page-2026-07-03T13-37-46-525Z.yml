@@ -1,0 +1,87 @@
+- generic [active] [ref=f26e1]:
+  - generic [ref=f26e2]:
+    - banner [ref=f26e3]:
+      - generic [ref=f26e5]:
+        - link "logo" [ref=f26e6] [cursor=pointer]:
+          - /url: /
+          - img "logo" [ref=f26e7]
+        - navigation "Primary" [ref=f26e8]:
+          - link "Events" [ref=f26e9] [cursor=pointer]:
+            - /url: /events
+    - main [ref=f26e11]:
+      - generic [ref=f26e13]:
+        - generic [ref=f26e14]:
+          - heading "Host an Event" [level=1] [ref=f26e15]
+          - paragraph [ref=f26e16]: Set up your event and optionally request help from the community.
+        - generic [ref=f26e18]:
+          - generic [ref=f26e19]:
+            - img [ref=f26e120]
+            - separator [ref=f26e23]
+          - generic [ref=f26e24]:
+            - separator [ref=f26e26]
+            - img [ref=f26e160]
+            - separator [ref=f26e29]
+          - generic [ref=f26e30]:
+            - separator [ref=f26e32]
+            - img [ref=f26e191]
+            - separator [ref=f26e35]
+          - generic [ref=f26e36]:
+            - separator [ref=f26e38]
+            - img [ref=f26e206]
+            - separator [ref=f26e41]
+          - generic [ref=f26e42]:
+            - separator [ref=f26e44]
+            - img [ref=f26e264]
+            - separator [ref=f26e47]
+          - generic [ref=f26e48]:
+            - separator [ref=f26e50]
+            - generic [ref=f26e51]: "6"
+          - paragraph [ref=f26e53]: Type
+          - paragraph [ref=f26e54]: Details
+          - paragraph [ref=f26e55]: Schedule & Mode
+          - paragraph [ref=f26e56]: Agenda & Media
+          - paragraph [ref=f26e57]: Community
+          - paragraph [ref=f26e58]: Review
+        - generic [ref=f26e266]:
+          - generic [ref=f26e267]:
+            - heading "Review & publish" [level=2] [ref=f26e268]
+            - paragraph [ref=f26e269]: Double-check everything before it goes live.
+          - generic [ref=f26e270]:
+            - generic [ref=f26e271]:
+              - generic [ref=f26e272]: Type
+              - generic [ref=f26e273]: Hackathon
+            - generic [ref=f26e274]:
+              - generic [ref=f26e275]: Title
+              - generic [ref=f26e276]: Reactive List Check
+            - generic [ref=f26e277]:
+              - generic [ref=f26e278]: Price
+              - generic [ref=f26e279]: Free
+            - generic [ref=f26e280]:
+              - generic [ref=f26e281]: Capacity
+              - generic [ref=f26e282]: Unlimited
+            - generic [ref=f26e283]:
+              - generic [ref=f26e284]: Certificate
+              - generic [ref=f26e285]: "No"
+            - generic [ref=f26e286]:
+              - generic [ref=f26e287]: Mode
+              - generic [ref=f26e288]: Online
+            - generic [ref=f26e289]:
+              - generic [ref=f26e290]: Date
+              - generic [ref=f26e291]: 2026-09-01
+            - generic [ref=f26e292]:
+              - generic [ref=f26e293]: Time
+              - generic [ref=f26e294]: 10:00
+          - generic [ref=f26e295]:
+            - paragraph [ref=f26e296]: Description
+            - paragraph [ref=f26e297]: Testing same-session reactivity.
+          - generic [ref=f26e298]:
+            - paragraph [ref=f26e299]: Community requests (0)
+            - paragraph [ref=f26e300]: No stakeholders requested — you can skip this and add none.
+        - generic [ref=f26e102]:
+          - button "← Back" [ref=f26e103]
+          - button "Publish Event" [ref=f26e301]
+    - button "Ask GCODE AI" [ref=f26e106]:
+      - img [ref=f26e107]
+  - button "Open Next.js Dev Tools" [ref=f26e115] [cursor=pointer]:
+    - img [ref=f26e116]
+  - alert [ref=f26e119]

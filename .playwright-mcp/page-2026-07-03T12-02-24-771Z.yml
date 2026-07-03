@@ -1,0 +1,235 @@
+- generic [active] [ref=f8e1]:
+  - generic [ref=f8e2]:
+    - banner [ref=f8e3]:
+      - generic [ref=f8e5]:
+        - link "logo" [ref=f8e6] [cursor=pointer]:
+          - /url: /
+          - img "logo" [ref=f8e7]
+        - navigation "Primary" [ref=f8e8]:
+          - link "Events" [ref=f8e9] [cursor=pointer]:
+            - /url: /events
+    - main [ref=f8e11]:
+      - generic [ref=f8e13]:
+        - generic [ref=f8e14]:
+          - generic [ref=f8e15]:
+            - heading "Discover Events & Webinars" [level=4] [ref=f8e16]
+            - paragraph [ref=f8e17]: Hackathons, Ideathons, Expert AMAs, Live Webinars — all in one place.
+          - link "+ Host / Submit Event" [ref=f8e18] [cursor=pointer]:
+            - /url: /my-organized-events/new
+        - generic [ref=f8e19]:
+          - tablist [ref=f8e20]:
+            - tab "All" [selected] [ref=f8e21]
+            - tab "Webinars" [ref=f8e22]
+            - tab "Hackathons" [ref=f8e23]
+            - tab "Ideathons" [ref=f8e24]
+            - tab "Meetups" [ref=f8e25]
+            - tab "Expert AMAs" [ref=f8e26]
+          - generic [ref=f8e27]:
+            - checkbox "Free" [ref=f8e28]
+            - checkbox "Paid" [ref=f8e29]
+            - checkbox "Online" [ref=f8e30]
+            - checkbox "In-Person" [ref=f8e31]
+        - generic [ref=f8e32]:
+          - heading "Featured" [level=2] [ref=f8e34]
+          - generic [ref=f8e35]:
+            - generic [ref=f8e36]:
+              - generic [ref=f8e38]:
+                - generic [ref=f8e39]:
+                  - img [ref=f8e41]
+                  - generic [ref=f8e46]: Hackathon
+                - generic [ref=f8e47]:
+                  - generic [ref=f8e48]:
+                    - generic [ref=f8e49]: Online
+                    - generic [ref=f8e50]: Free
+                  - link "GCODE Build Sprint · Summer 2026" [ref=f8e51] [cursor=pointer]:
+                    - /url: /events/gcode-build-sprint-2026
+                  - paragraph [ref=f8e53]:
+                    - img [ref=f8e54]
+                    - text: 15 Jul 2026 · 10:00 AM – 6:00 PM IST
+                  - generic [ref=f8e57]:
+                    - generic [ref=f8e60]: PS
+                    - generic [ref=f8e63]: RV
+                    - generic [ref=f8e66]: AI
+                  - generic [ref=f8e67]:
+                    - generic [ref=f8e68]: 52 spots left
+                    - link "Register" [ref=f8e70] [cursor=pointer]:
+                      - /url: /events/gcode-build-sprint-2026
+                      - text: Register
+                      - img [ref=f8e71]
+              - generic [ref=f8e74]:
+                - generic [ref=f8e75]:
+                  - img [ref=f8e77]
+                  - generic [ref=f8e82]: Hackathon
+                - generic [ref=f8e83]:
+                  - generic [ref=f8e84]:
+                    - generic [ref=f8e85]: Online
+                    - generic [ref=f8e86]: Free
+                  - link "GCODE Build Sprint · Winter 2026" [ref=f8e87] [cursor=pointer]:
+                    - /url: /events/gcode-build-sprint-2026-winter
+                  - paragraph [ref=f8e89]:
+                    - img [ref=f8e90]
+                    - text: 15 Jul 2026 · 10:00 AM – 6:00 PM IST
+                  - generic [ref=f8e92]:
+                    - generic [ref=f8e93]: 52 spots left
+                    - link "Register" [ref=f8e95] [cursor=pointer]:
+                      - /url: /events/gcode-build-sprint-2026-winter
+                      - text: Register
+                      - img [ref=f8e96]
+              - generic [ref=f8e99]:
+                - generic [ref=f8e100]:
+                  - img [ref=f8e102]
+                  - generic [ref=f8e107]: Expert AMA
+                - generic [ref=f8e108]:
+                  - generic [ref=f8e109]:
+                    - generic [ref=f8e110]: Online
+                    - generic [ref=f8e111]: Free
+                  - 'link "Ask Me Anything: Fundraising for Deep-Tech Startups" [ref=f8e112] [cursor=pointer]':
+                    - /url: /events/ask-me-anything-fundraising
+                  - paragraph [ref=f8e114]:
+                    - img [ref=f8e115]
+                    - text: 18 Jul 2026 · 6:00 PM IST
+                  - generic [ref=f8e118]:
+                    - generic [ref=f8e121]: KR
+                    - generic [ref=f8e124]: MP
+                    - generic [ref=f8e127]: AM
+                  - link "Register" [ref=f8e130] [cursor=pointer]:
+                    - /url: /events/ask-me-anything-fundraising
+                    - text: Register
+                    - img [ref=f8e131]
+              - generic [ref=f8e134]:
+                - generic [ref=f8e135]:
+                  - img [ref=f8e137]
+                  - generic [ref=f8e142]: Webinar
+                - generic [ref=f8e143]:
+                  - generic [ref=f8e144]:
+                    - generic [ref=f8e145]: Online
+                    - generic [ref=f8e146]: ₹299
+                  - 'link "Fundraising readiness: what investors check first" [ref=f8e147] [cursor=pointer]':
+                    - /url: /events/fundraising-readiness-webinar
+                  - paragraph [ref=f8e149]:
+                    - img [ref=f8e150]
+                    - text: 5 Jul 2026 · 5:00 PM IST
+                  - generic [ref=f8e153]:
+                    - generic [ref=f8e156]: DM
+                    - generic [ref=f8e159]: AR
+                  - link "Register" [ref=f8e162] [cursor=pointer]:
+                    - /url: /events/fundraising-readiness-webinar
+                    - text: Register
+                    - img [ref=f8e163]
+            - generic [ref=f8e165]:
+              - button "Go to slide 1" [ref=f8e166]
+              - button "Go to slide 2" [ref=f8e167]
+              - button "Go to slide 3" [ref=f8e168]
+        - generic [ref=f8e169]:
+          - heading "Upcoming Events" [level=2] [ref=f8e170]
+          - generic [ref=f8e171]:
+            - generic [ref=f8e172]:
+              - img [ref=f8e175]
+              - generic [ref=f8e179]:
+                - generic [ref=f8e180]:
+                  - generic [ref=f8e181]: Hackathon
+                  - generic [ref=f8e182]: Free
+                - link "GCODE Build Sprint · Summer 2026" [ref=f8e183] [cursor=pointer]:
+                  - /url: /events/gcode-build-sprint-2026
+                - paragraph [ref=f8e184]:
+                  - img [ref=f8e185]
+                  - text: 15 Jul 2026
+                - link "Register" [ref=f8e188] [cursor=pointer]:
+                  - /url: /events/gcode-build-sprint-2026
+                  - text: Register
+                  - img [ref=f8e189]
+            - generic [ref=f8e191]:
+              - img [ref=f8e194]
+              - generic [ref=f8e198]:
+                - generic [ref=f8e199]:
+                  - generic [ref=f8e200]: Hackathon
+                  - generic [ref=f8e201]: Free
+                - link "GCODE Build Sprint · Winter 2026" [ref=f8e202] [cursor=pointer]:
+                  - /url: /events/gcode-build-sprint-2026-winter
+                - paragraph [ref=f8e203]:
+                  - img [ref=f8e204]
+                  - text: 15 Jul 2026
+                - link "Register" [ref=f8e207] [cursor=pointer]:
+                  - /url: /events/gcode-build-sprint-2026-winter
+                  - text: Register
+                  - img [ref=f8e208]
+            - generic [ref=f8e210]:
+              - img [ref=f8e213]
+              - generic [ref=f8e217]:
+                - generic [ref=f8e218]:
+                  - generic [ref=f8e219]: Expert AMA
+                  - generic [ref=f8e220]: Free
+                - 'link "Ask Me Anything: Fundraising for Deep-Tech Startups" [ref=f8e221] [cursor=pointer]':
+                  - /url: /events/ask-me-anything-fundraising
+                - paragraph [ref=f8e222]:
+                  - img [ref=f8e223]
+                  - text: 18 Jul 2026
+                - link "Register" [ref=f8e226] [cursor=pointer]:
+                  - /url: /events/ask-me-anything-fundraising
+                  - text: Register
+                  - img [ref=f8e227]
+            - generic [ref=f8e229]:
+              - img [ref=f8e232]
+              - generic [ref=f8e236]:
+                - generic [ref=f8e237]:
+                  - generic [ref=f8e238]: Webinar
+                  - generic [ref=f8e239]: ₹299
+                - 'link "Fundraising readiness: what investors check first" [ref=f8e240] [cursor=pointer]':
+                  - /url: /events/fundraising-readiness-webinar
+                - paragraph [ref=f8e241]:
+                  - img [ref=f8e242]
+                  - text: 5 Jul 2026
+                - link "Register" [ref=f8e245] [cursor=pointer]:
+                  - /url: /events/fundraising-readiness-webinar
+                  - text: Register
+                  - img [ref=f8e246]
+            - generic [ref=f8e248]:
+              - img [ref=f8e251]
+              - generic [ref=f8e255]:
+                - generic [ref=f8e256]:
+                  - generic [ref=f8e257]: Ideathon
+                  - generic [ref=f8e258]: Free
+                - link "ClimaTech Ideathon 2026" [ref=f8e259] [cursor=pointer]:
+                  - /url: /events/climatech-ideathon-2026
+                - paragraph [ref=f8e260]:
+                  - img [ref=f8e261]
+                  - text: 20 Jul 2026
+                - link "Register" [ref=f8e264] [cursor=pointer]:
+                  - /url: /events/climatech-ideathon-2026
+                  - text: Register
+                  - img [ref=f8e265]
+            - generic [ref=f8e267]:
+              - img [ref=f8e270]
+              - generic [ref=f8e274]:
+                - generic [ref=f8e275]:
+                  - generic [ref=f8e276]: Community Meetup
+                  - generic [ref=f8e277]: Free
+                - link "GCODE Founders Meetup · Mumbai" [ref=f8e278] [cursor=pointer]:
+                  - /url: /events/gcode-founders-meetup-mumbai
+                - paragraph [ref=f8e279]:
+                  - img [ref=f8e280]
+                  - text: 22 Jul 2026
+                - link "Register" [ref=f8e283] [cursor=pointer]:
+                  - /url: /events/gcode-founders-meetup-mumbai
+                  - text: Register
+                  - img [ref=f8e284]
+            - generic [ref=f8e286]:
+              - img [ref=f8e289]
+              - generic [ref=f8e293]:
+                - generic [ref=f8e294]:
+                  - generic [ref=f8e295]: Institution Event
+                  - generic [ref=f8e296]: ₹200
+                - link "National Tech Symposium 2026 — IIT Delhi" [ref=f8e297] [cursor=pointer]:
+                  - /url: /events/national-tech-symposium-2026
+                - paragraph [ref=f8e298]:
+                  - img [ref=f8e299]
+                  - text: 25 Jul 2026
+                - link "Register" [ref=f8e302] [cursor=pointer]:
+                  - /url: /events/national-tech-symposium-2026
+                  - text: Register
+                  - img [ref=f8e303]
+    - button "Ask GCODE AI" [ref=f8e305]:
+      - img [ref=f8e306]
+  - button "Open Next.js Dev Tools" [ref=f8e314] [cursor=pointer]:
+    - img [ref=f8e315]
+  - alert [ref=f8e318]

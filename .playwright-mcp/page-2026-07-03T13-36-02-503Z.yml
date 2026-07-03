@@ -1,0 +1,81 @@
+- generic [ref=f26e1]:
+  - generic [ref=f26e2]:
+    - banner [ref=f26e3]:
+      - generic [ref=f26e5]:
+        - link "logo" [ref=f26e6] [cursor=pointer]:
+          - /url: /
+          - img "logo" [ref=f26e7]
+        - navigation "Primary" [ref=f26e8]:
+          - link "Events" [ref=f26e9] [cursor=pointer]:
+            - /url: /events
+    - main [ref=f26e11]:
+      - generic [ref=f26e13]:
+        - generic [ref=f26e14]:
+          - heading "Host an Event" [level=1] [ref=f26e15]
+          - paragraph [ref=f26e16]: Set up your event and optionally request help from the community.
+        - generic [ref=f26e18]:
+          - generic [ref=f26e19]:
+            - generic [ref=f26e21]: "1"
+            - separator [ref=f26e23]
+          - generic [ref=f26e24]:
+            - separator [ref=f26e26]
+            - generic [ref=f26e27]: "2"
+            - separator [ref=f26e29]
+          - generic [ref=f26e30]:
+            - separator [ref=f26e32]
+            - generic [ref=f26e33]: "3"
+            - separator [ref=f26e35]
+          - generic [ref=f26e36]:
+            - separator [ref=f26e38]
+            - generic [ref=f26e39]: "4"
+            - separator [ref=f26e41]
+          - generic [ref=f26e42]:
+            - separator [ref=f26e44]
+            - generic [ref=f26e45]: "5"
+            - separator [ref=f26e47]
+          - generic [ref=f26e48]:
+            - separator [ref=f26e50]
+            - generic [ref=f26e51]: "6"
+          - paragraph [ref=f26e53]: Type
+          - paragraph [ref=f26e54]: Details
+          - paragraph [ref=f26e55]: Schedule & Mode
+          - paragraph [ref=f26e56]: Agenda & Media
+          - paragraph [ref=f26e57]: Community
+          - paragraph [ref=f26e58]: Review
+        - generic [ref=f26e60]:
+          - generic [ref=f26e61]:
+            - heading "What kind of event is this?" [level=2] [ref=f26e62]
+            - paragraph [ref=f26e63]: Pick the format that best matches your event.
+          - radiogroup "Event type" [ref=f26e64]:
+            - radio "Hackathon Build sprint, team-based" [checked] [active] [ref=f26e65]:
+              - img [ref=f26e66]
+              - generic [ref=f26e71]: Hackathon
+              - generic [ref=f26e72]: Build sprint, team-based
+            - radio "Expert AMA Live Q&A with an expert" [ref=f26e73]:
+              - img [ref=f26e74]
+              - generic [ref=f26e77]: Expert AMA
+              - generic [ref=f26e78]: Live Q&A with an expert
+            - radio "Webinar Live or recorded session" [ref=f26e79]:
+              - img [ref=f26e80]
+              - generic [ref=f26e83]: Webinar
+              - generic [ref=f26e84]: Live or recorded session
+            - radio "Ideathon Idea pitching competition" [ref=f26e85]:
+              - img [ref=f26e86]
+              - generic [ref=f26e88]: Ideathon
+              - generic [ref=f26e89]: Idea pitching competition
+            - radio "Community Meetup Informal networking" [ref=f26e90]:
+              - img [ref=f26e91]
+              - generic [ref=f26e93]: Community Meetup
+              - generic [ref=f26e94]: Informal networking
+            - radio "Institution Event Hosted with a partner institution" [ref=f26e95]:
+              - img [ref=f26e96]
+              - generic [ref=f26e100]: Institution Event
+              - generic [ref=f26e101]: Hosted with a partner institution
+        - generic [ref=f26e102]:
+          - button "← Back" [disabled] [ref=f26e103]
+          - button "Next →" [ref=f26e105]
+    - button "Ask GCODE AI" [ref=f26e106]:
+      - img [ref=f26e107]
+  - button "Open Next.js Dev Tools" [ref=f26e115] [cursor=pointer]:
+    - img [ref=f26e116]
+  - alert [ref=f26e119]

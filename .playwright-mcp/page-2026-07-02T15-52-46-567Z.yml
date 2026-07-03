@@ -1,0 +1,126 @@
+- generic [active] [ref=f35e1]:
+  - generic [ref=f35e2]:
+    - banner [ref=f35e3]:
+      - generic [ref=f35e5]:
+        - link "logo" [ref=f35e6] [cursor=pointer]:
+          - /url: /
+          - img "logo" [ref=f35e7]
+        - navigation "Primary" [ref=f35e8]:
+          - link "Events" [ref=f35e9] [cursor=pointer]:
+            - /url: /events
+    - generic [ref=f35e10]:
+      - complementary [ref=f35e11]:
+        - navigation "Sidebar" [ref=f35e12]:
+          - button "My Events" [ref=f35e15]:
+            - img [ref=f35e16]
+            - generic [ref=f35e19]: My Events
+            - img [ref=f35e20]
+        - button "Arjun Sharma Expert" [ref=f35e24]:
+          - generic [ref=f35e27]: AS
+          - generic [ref=f35e28]:
+            - generic [ref=f35e29]: Arjun Sharma
+            - generic [ref=f35e30]: Expert
+          - img [ref=f35e31]
+      - main [ref=f35e33]:
+        - generic [ref=f35e416]:
+          - navigation "Breadcrumb" [ref=f35e417]:
+            - list [ref=f35e418]:
+              - listitem [ref=f35e419]:
+                - link "Events" [ref=f35e420] [cursor=pointer]:
+                  - /url: /events
+              - listitem [ref=f35e421]:
+                - link "Hackathon" [ref=f35e422] [cursor=pointer]:
+                  - /url: /events
+              - listitem [ref=f35e423]: Image Test Event
+          - generic [ref=f35e424]:
+            - generic [ref=f35e425]:
+              - generic [ref=f35e426]:
+                - img "Image Test Event" [ref=f35e427]
+                - generic [ref=f35e428]:
+                  - generic [ref=f35e429]: Hackathon
+                  - generic [ref=f35e430]: Online
+                  - generic [ref=f35e431]: Free
+              - generic [ref=f35e432]:
+                - heading "Image Test Event" [level=1] [ref=f35e433]
+                - generic [ref=f35e434]:
+                  - generic [ref=f35e435]: Hackathon
+                  - generic [ref=f35e436]: Online
+                  - generic [ref=f35e437]: Free
+                - generic [ref=f35e438]:
+                  - paragraph [ref=f35e439]: About this event
+                  - paragraph [ref=f35e440]: Testing cover image and media.
+              - generic [ref=f35e441]:
+                - paragraph [ref=f35e442]: Event Details
+                - generic [ref=f35e443]:
+                  - generic [ref=f35e444]:
+                    - img [ref=f35e445]
+                    - generic [ref=f35e447]:
+                      - paragraph [ref=f35e448]: Date & Time
+                      - paragraph [ref=f35e449]: 20 Aug 2026
+                      - paragraph [ref=f35e450]: 14:00 IST
+                  - generic [ref=f35e451]:
+                    - img [ref=f35e452]
+                    - generic [ref=f35e455]:
+                      - paragraph [ref=f35e456]: Duration
+                      - paragraph [ref=f35e457]: TBD
+                      - paragraph
+                  - generic [ref=f35e458]:
+                    - img [ref=f35e459]
+                    - generic [ref=f35e462]:
+                      - paragraph [ref=f35e463]: Mode
+                      - paragraph [ref=f35e464]: Online
+                      - paragraph [ref=f35e465]: Online · Link shared after registration
+                  - generic [ref=f35e466]:
+                    - img [ref=f35e467]
+                    - generic [ref=f35e472]:
+                      - paragraph [ref=f35e473]: Team Size
+                      - paragraph [ref=f35e474]: Individual attendance
+                      - paragraph
+              - generic [ref=f35e475]:
+                - paragraph [ref=f35e476]: Organized By
+                - generic [ref=f35e478]:
+                  - generic [ref=f35e481]: GC
+                  - generic [ref=f35e482]:
+                    - generic [ref=f35e483]:
+                      - paragraph [ref=f35e484]: Arjun Sharma
+                      - generic [ref=f35e485]: Verified
+                    - paragraph [ref=f35e486]: 1 events hosted · 0 attendees · Expert
+              - generic [ref=f35e487]:
+                - paragraph [ref=f35e488]: Terms & Eligibility
+                - list [ref=f35e489]:
+                  - listitem [ref=f35e490]: Hosted via GCODE.
+                  - listitem [ref=f35e491]: Free event — no registration fee.
+                  - listitem [ref=f35e492]: GCODE reserves the right to update event details before the start date.
+            - generic [ref=f35e493]:
+              - generic [ref=f35e494]:
+                - generic [ref=f35e496]: Free
+                - paragraph [ref=f35e497]: Registration closes 20 Aug 2026
+                - link "Register Now →" [ref=f35e498] [cursor=pointer]:
+                  - /url: /events/image-test-event-1783007539099/registered
+                - button "📅 Add to Calendar" [ref=f35e499]
+              - generic [ref=f35e500]:
+                - paragraph [ref=f35e501]: Event Info
+                - generic [ref=f35e502]:
+                  - generic [ref=f35e503]:
+                    - img [ref=f35e504]
+                    - generic [ref=f35e506]:
+                      - paragraph
+                      - paragraph [ref=f35e507]: 20 Aug 2026
+                      - paragraph [ref=f35e508]: 14:00 IST
+                  - generic [ref=f35e509]:
+                    - img [ref=f35e510]
+                    - generic [ref=f35e513]:
+                      - paragraph
+                      - paragraph [ref=f35e514]: Online
+                      - paragraph [ref=f35e515]: Online · Link shared after registration
+              - generic [ref=f35e516]:
+                - paragraph [ref=f35e517]: Share Event
+                - generic [ref=f35e518]:
+                  - button "Twitter / X" [ref=f35e519]
+                  - button "LinkedIn" [ref=f35e520]
+                  - button "Copy Link" [ref=f35e521]
+    - button "Ask GCODE AI" [ref=f35e122]:
+      - img [ref=f35e123]
+  - button "Open Next.js Dev Tools" [ref=f35e131] [cursor=pointer]:
+    - img [ref=f35e132]
+  - alert [ref=f35e135]

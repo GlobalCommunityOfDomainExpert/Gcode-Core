@@ -12,48 +12,60 @@ export interface StepIndicatorProps {
   steps: Step[];
 }
 
+function connectorClass(active: boolean) {
+  return active ? "border-primary!" : "";
+}
+
 export function StepIndicator({ steps }: StepIndicatorProps) {
   return (
-    <ol className="flex items-start">
+    <div
+      className="grid  gap-y-2"
+      style={{
+        gridTemplateColumns: `repeat(${steps.length}, minmax(0, 1fr))`,
+      }}
+    >
       {steps.map((step, index) => {
-        const isLast = index === steps.length - 1;
+        const leftActive =
+          index > 0 && steps[index - 1].status === "completed";
+        const rightActive = step.status === "completed";
         return (
-          <li
-            key={step.label}
-            className="flex flex-1 items-start last:flex-none"
-          >
-            <div className="flex flex-col items-center gap-1">
-              <div
-                className={`text-small flex size-8 shrink-0 items-center justify-center rounded-full font-semibold ${
-                  step.status === "completed"
-                    ? "bg-primary text-white"
-                    : step.status === "current"
-                      ? "border-primary text-primary border-2"
-                      : "border-border-light text-text-secondary border"
-                }`}
-              >
-                {step.status === "completed" ? (
-                  <Icon icon={Check} size="sm" />
-                ) : (
-                  index + 1
-                )}
-              </div>
-              <span className="text-small text-text-secondary whitespace-nowrap">
-                {step.label}
-              </span>
+          <div key={step.label} className="flex min-w-0 items-center">
+            <div className="flex h-8 min-w-0 flex-1 items-center">
+              {index > 0 && (
+                <Divider className={connectorClass(leftActive)} />
+              )}
             </div>
-            {!isLast && (
-              <div className="mx-2 flex h-8 flex-1 items-center">
-                <Divider
-                  className={
-                    step.status === "completed" ? "!border-primary" : ""
-                  }
-                />
-              </div>
-            )}
-          </li>
+            <div
+              className={`text-small flex size-8 shrink-0 items-center justify-center rounded-full font-semibold ${
+                step.status === "completed"
+                  ? "bg-primary text-white"
+                  : step.status === "current"
+                    ? "border-primary text-primary border-2"
+                    : "border-border-light text-text-secondary border"
+              }`}
+            >
+              {step.status === "completed" ? (
+                <Icon icon={Check} size="sm" />
+              ) : (
+                index + 1
+              )}
+            </div>
+            <div className="flex h-8 min-w-0 flex-1 items-center">
+              {index < steps.length - 1 && (
+                <Divider className={connectorClass(rightActive)} />
+              )}
+            </div>
+          </div>
         );
       })}
-    </ol>
+      {steps.map((step) => (
+        <p
+          key={step.label}
+          className="text-small text-text-secondary min-w-0 text-center wrap-break-word"
+        >
+          {step.label}
+        </p>
+      ))}
+    </div>
   );
 }

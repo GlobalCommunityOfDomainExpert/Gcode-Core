@@ -1,0 +1,2557 @@
+[     590ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[     671ms] [LOG] [HMR] connected @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[    1036ms] [LOG]  @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[    1037ms] [LOG]  @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[    1286ms] [WARNING] Image with src "/Logo.png" has either width or height modified, but not the other. If you use CSS to change the size of your image, also include the styles 'width: "auto"' or 'height: "auto"' to maintain the aspect ratio. @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[   18974ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[   19627ms] [LOG] [Fast Refresh] done in 936ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[   20412ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[   20840ms] [LOG] [Fast Refresh] done in 994ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[   20977ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[   21413ms] [LOG] [Fast Refresh] done in 538ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[   21414ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[   21887ms] [LOG] [Fast Refresh] done in 325ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[   22256ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[   22292ms] [LOG] [Fast Refresh] done in 259ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[   22711ms] [LOG]  @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[   22712ms] [LOG]  @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[   22813ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[   23154ms] [LOG] [Fast Refresh] done in 459ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[   23323ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[   23324ms] [LOG] [Fast Refresh] done in 170ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[   23425ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[   23453ms] [LOG] [Fast Refresh] done in 129ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[   23740ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[   23741ms] [LOG] [Fast Refresh] done in 125ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[   24747ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[   25114ms] [LOG] [Fast Refresh] done in 480ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[   25311ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[   25354ms] [LOG] [Fast Refresh] done in 239ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[   25718ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[   25729ms] [LOG] [Fast Refresh] done in 193ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[   26051ms] [LOG]  @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[   26054ms] [LOG]  @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[   34204ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[   35158ms] [ERROR] ./src/components/molecules/step-indicator.tsx:51:19
+Expected '</', got '}'
+  49 |                     step.status === "completed" ? "border-primary!" : "",
+  50 |                     
+> 51 |                   }
+     |                   ^
+  52 |                 />
+  53 |               </div>
+  54 |             )}
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Server Component:
+    ./src/components/molecules/step-indicator.tsx
+    ./src/components/molecules/index.ts
+    ./src/app/not-found.tsx
+
+  Client Component Browser:
+    ./src/components/molecules/step-indicator.tsx [Client Component Browser]
+    ./src/components/molecules/index.ts [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/components/molecules/step-indicator.tsx [Client Component SSR]
+    ./src/components/molecules/index.ts [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Server Component] @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[   35159ms] [ERROR] ./src/components/molecules/step-indicator.tsx:51:19
+Expected '</', got '}'
+  49 |                     step.status === "completed" ? "border-primary!" : "",
+  50 |                     
+> 51 |                   }
+     |                   ^
+  52 |                 />
+  53 |               </div>
+  54 |             )}
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Server Component:
+    ./src/components/molecules/step-indicator.tsx
+    ./src/components/molecules/index.ts
+    ./src/app/not-found.tsx
+
+  Client Component Browser:
+    ./src/components/molecules/step-indicator.tsx [Client Component Browser]
+    ./src/components/molecules/index.ts [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/components/molecules/step-indicator.tsx [Client Component SSR]
+    ./src/components/molecules/index.ts [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Server Component] @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[   35265ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[   37421ms] [ERROR] ./src/components/molecules/step-indicator.tsx:51:19
+Expected '</', got '}'
+  49 |                     step.status === "completed" ? "border-primary!" : "",
+  50 |                     
+> 51 |                   }
+     |                   ^
+  52 |                 />
+  53 |               </div>
+  54 |             )}
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Server Component:
+    ./src/components/molecules/step-indicator.tsx
+    ./src/components/molecules/index.ts
+    ./src/app/not-found.tsx
+
+  Client Component Browser:
+    ./src/components/molecules/step-indicator.tsx [Client Component Browser]
+    ./src/components/molecules/index.ts [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/components/molecules/step-indicator.tsx [Client Component SSR]
+    ./src/components/molecules/index.ts [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Server Component] @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[   37422ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[   42000ms] [LOG] [Fast Refresh] done in 117ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[   42037ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[   42082ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3000/events?_rsc=r5jcBv8uZ38RDTWD:0
+[   42125ms] [ERROR] ./src/components/molecules/step-indicator.tsx:50:21
+Expected '</', got 'ident'
+  48 |                   className={
+  49 |                     ""
+> 50 |                     step.status === "completed" ? "border-primary!" : ""
+     |                     ^^^^
+  51 |                   }
+  52 |                 />
+  53 |               </div>
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Server Component:
+    ./src/components/molecules/step-indicator.tsx
+    ./src/components/molecules/index.ts
+    ./src/app/not-found.tsx
+
+  Client Component Browser:
+    ./src/components/molecules/step-indicator.tsx [Client Component Browser]
+    ./src/components/molecules/index.ts [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/components/molecules/step-indicator.tsx [Client Component SSR]
+    ./src/components/molecules/index.ts [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Server Component] @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[   42126ms] [ERROR] ./src/components/molecules/step-indicator.tsx:50:21
+Expected '</', got 'ident'
+  48 |                   className={
+  49 |                     ""
+> 50 |                     step.status === "completed" ? "border-primary!" : ""
+     |                     ^^^^
+  51 |                   }
+  52 |                 />
+  53 |               </div>
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Server Component:
+    ./src/components/molecules/step-indicator.tsx
+    ./src/components/molecules/index.ts
+    ./src/app/not-found.tsx
+
+  Client Component Browser:
+    ./src/components/molecules/step-indicator.tsx [Client Component Browser]
+    ./src/components/molecules/index.ts [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/components/molecules/step-indicator.tsx [Client Component SSR]
+    ./src/components/molecules/index.ts [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Server Component] @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[   42127ms] [ERROR] ./src/components/molecules/step-indicator.tsx:50:21
+Expected '</', got 'ident'
+  48 |                   className={
+  49 |                     ""
+> 50 |                     step.status === "completed" ? "border-primary!" : ""
+     |                     ^^^^
+  51 |                   }
+  52 |                 />
+  53 |               </div>
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Server Component:
+    ./src/components/molecules/step-indicator.tsx
+    ./src/components/molecules/index.ts
+    ./src/app/not-found.tsx
+
+  Client Component Browser:
+    ./src/components/molecules/step-indicator.tsx [Client Component Browser]
+    ./src/components/molecules/index.ts [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/components/molecules/step-indicator.tsx [Client Component SSR]
+    ./src/components/molecules/index.ts [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Server Component] @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[   43006ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3000/events?_rsc=r5jcBv8uZ38RDTWD:0
+[   43033ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3000/events?_rsc=r5jcBv8uZ38RDTWD:0
+[   43887ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[   43888ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3000/events?_rsc=r5jcBv8uZ38RDTWD:0
+[   43889ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3000/events?_rsc=r5jcBv8uZ38RDTWD:0
+[   43899ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3000/events?_rsc=r5jcBv8uZ38RDTWD:0
+[   43916ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3000/events?_rsc=r5jcBv8uZ38RDTWD:0
+[   43929ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3000/events?_rsc=r5jcBv8uZ38RDTWD:0
+[   43932ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3000/events?_rsc=r5jcBv8uZ38RDTWD:0
+[   43955ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3000/events?_rsc=r5jcBv8uZ38RDTWD:0
+[   43976ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3000/events?_rsc=r5jcBv8uZ38RDTWD:0
+[   43980ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3000/events?_rsc=r5jcBv8uZ38RDTWD:0
+[   43981ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3000/events?_rsc=r5jcBv8uZ38RDTWD:0
+[   43985ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3000/events?_rsc=r5jcBv8uZ38RDTWD:0
+[   43988ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3000/events?_rsc=r5jcBv8uZ38RDTWD:0
+[   43989ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3000/events?_rsc=r5jcBv8uZ38RDTWD:0
+[   43991ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3000/events?_rsc=r5jcBv8uZ38RDTWD:0
+[   43992ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3000/events?_rsc=r5jcBv8uZ38RDTWD:0
+[   43993ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3000/events?_rsc=r5jcBv8uZ38RDTWD:0
+[   43994ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3000/events?_rsc=r5jcBv8uZ38RDTWD:0
+[   43995ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3000/events?_rsc=r5jcBv8uZ38RDTWD:0
+[   43997ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3000/events?_rsc=r5jcBv8uZ38RDTWD:0
+[   44007ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3000/events?_rsc=r5jcBv8uZ38RDTWD:0
+[   44008ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3000/events?_rsc=r5jcBv8uZ38RDTWD:0
+[   44012ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3000/events?_rsc=r5jcBv8uZ38RDTWD:0
+[   44014ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3000/events?_rsc=r5jcBv8uZ38RDTWD:0
+[   44022ms] [ERROR] ./src/components/molecules/step-indicator.tsx:50:21
+Expected '</', got 'ident'
+  48 |                   className={
+  49 |                     ""
+> 50 |                     step.status === "completed" ? "border-primary!" : ""
+     |                     ^^^^
+  51 |                   }
+  52 |                 />
+  53 |               </div>
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Server Component:
+    ./src/components/molecules/step-indicator.tsx
+    ./src/components/molecules/index.ts
+    ./src/app/not-found.tsx
+
+  Client Component Browser:
+    ./src/components/molecules/step-indicator.tsx [Client Component Browser]
+    ./src/components/molecules/index.ts [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/components/molecules/step-indicator.tsx [Client Component SSR]
+    ./src/components/molecules/index.ts [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Server Component] @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[   44023ms] [ERROR] ./src/components/molecules/step-indicator.tsx:50:21
+Expected '</', got 'ident'
+  48 |                   className={
+  49 |                     ""
+> 50 |                     step.status === "completed" ? "border-primary!" : ""
+     |                     ^^^^
+  51 |                   }
+  52 |                 />
+  53 |               </div>
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Server Component:
+    ./src/components/molecules/step-indicator.tsx
+    ./src/components/molecules/index.ts
+    ./src/app/not-found.tsx
+
+  Client Component Browser:
+    ./src/components/molecules/step-indicator.tsx [Client Component Browser]
+    ./src/components/molecules/index.ts [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/components/molecules/step-indicator.tsx [Client Component SSR]
+    ./src/components/molecules/index.ts [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Server Component] @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[   44023ms] [ERROR] ./src/components/molecules/step-indicator.tsx:50:21
+Expected '</', got 'ident'
+  48 |                   className={
+  49 |                     ""
+> 50 |                     step.status === "completed" ? "border-primary!" : ""
+     |                     ^^^^
+  51 |                   }
+  52 |                 />
+  53 |               </div>
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Server Component:
+    ./src/components/molecules/step-indicator.tsx
+    ./src/components/molecules/index.ts
+    ./src/app/not-found.tsx
+
+  Client Component Browser:
+    ./src/components/molecules/step-indicator.tsx [Client Component Browser]
+    ./src/components/molecules/index.ts [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/components/molecules/step-indicator.tsx [Client Component SSR]
+    ./src/components/molecules/index.ts [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Server Component] @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[   44024ms] [ERROR] ./src/components/molecules/step-indicator.tsx:50:21
+Expected '</', got 'ident'
+  48 |                   className={
+  49 |                     ""
+> 50 |                     step.status === "completed" ? "border-primary!" : ""
+     |                     ^^^^
+  51 |                   }
+  52 |                 />
+  53 |               </div>
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Server Component:
+    ./src/components/molecules/step-indicator.tsx
+    ./src/components/molecules/index.ts
+    ./src/app/not-found.tsx
+
+  Client Component Browser:
+    ./src/components/molecules/step-indicator.tsx [Client Component Browser]
+    ./src/components/molecules/index.ts [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/components/molecules/step-indicator.tsx [Client Component SSR]
+    ./src/components/molecules/index.ts [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Server Component] @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[   44025ms] [ERROR] ./src/components/molecules/step-indicator.tsx:50:21
+Expected '</', got 'ident'
+  48 |                   className={
+  49 |                     ""
+> 50 |                     step.status === "completed" ? "border-primary!" : ""
+     |                     ^^^^
+  51 |                   }
+  52 |                 />
+  53 |               </div>
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Server Component:
+    ./src/components/molecules/step-indicator.tsx
+    ./src/components/molecules/index.ts
+    ./src/app/not-found.tsx
+
+  Client Component Browser:
+    ./src/components/molecules/step-indicator.tsx [Client Component Browser]
+    ./src/components/molecules/index.ts [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/components/molecules/step-indicator.tsx [Client Component SSR]
+    ./src/components/molecules/index.ts [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Server Component] @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[   44025ms] [ERROR] ./src/components/molecules/step-indicator.tsx:50:21
+Expected '</', got 'ident'
+  48 |                   className={
+  49 |                     ""
+> 50 |                     step.status === "completed" ? "border-primary!" : ""
+     |                     ^^^^
+  51 |                   }
+  52 |                 />
+  53 |               </div>
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Server Component:
+    ./src/components/molecules/step-indicator.tsx
+    ./src/components/molecules/index.ts
+    ./src/app/not-found.tsx
+
+  Client Component Browser:
+    ./src/components/molecules/step-indicator.tsx [Client Component Browser]
+    ./src/components/molecules/index.ts [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/components/molecules/step-indicator.tsx [Client Component SSR]
+    ./src/components/molecules/index.ts [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Server Component] @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[   44027ms] [ERROR] ./src/components/molecules/step-indicator.tsx:50:21
+Expected '</', got 'ident'
+  48 |                   className={
+  49 |                     ""
+> 50 |                     step.status === "completed" ? "border-primary!" : ""
+     |                     ^^^^
+  51 |                   }
+  52 |                 />
+  53 |               </div>
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Server Component:
+    ./src/components/molecules/step-indicator.tsx
+    ./src/components/molecules/index.ts
+    ./src/app/not-found.tsx
+
+  Client Component Browser:
+    ./src/components/molecules/step-indicator.tsx [Client Component Browser]
+    ./src/components/molecules/index.ts [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/components/molecules/step-indicator.tsx [Client Component SSR]
+    ./src/components/molecules/index.ts [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Server Component] @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[   44027ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[   44240ms] [LOG] [Fast Refresh] done in 212ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[   45046ms] [LOG]  @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[   45047ms] [LOG]  @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  163458ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  163522ms] [ERROR] ./src/components/molecules/step-indicator.tsx:49:22
+Expected '</', got '?'
+  47 |                 <Divider
+  48 |                   className={
+> 49 |                      ? "border-primary!" : ""
+     |                      ^
+  50 |                   }
+  51 |                 />
+  52 |               </div>
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Server Component:
+    ./src/components/molecules/step-indicator.tsx
+    ./src/components/molecules/index.ts
+    ./src/app/not-found.tsx
+
+  Client Component Browser:
+    ./src/components/molecules/step-indicator.tsx [Client Component Browser]
+    ./src/components/molecules/index.ts [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/components/molecules/step-indicator.tsx [Client Component SSR]
+    ./src/components/molecules/index.ts [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Server Component] @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[  163542ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3000/events?_rsc=r5jcBv8uZ38RDTWD:0
+[  163557ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3000/events?_rsc=r5jcBv8uZ38RDTWD:0
+[  163573ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3000/events?_rsc=r5jcBv8uZ38RDTWD:0
+[  163600ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3000/events:0
+[  163796ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3000/_next/static/chunks/node_modules_react-dom_0kla17-._.js:15305
+[  164038ms] Error: ./src/components/molecules/step-indicator.tsx:49:22
+Expected '</', got '?'
+  47 |                 <Divider
+  48 |                   className={
+> 49 |                      ? "border-primary!" : ""
+     |                      ^
+  50 |                   }
+  51 |                 />
+  52 |               </div>
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Server Component:
+    ./src/components/molecules/step-indicator.tsx
+    ./src/components/molecules/index.ts
+    ./src/app/not-found.tsx
+
+  Client Component Browser:
+    ./src/components/molecules/step-indicator.tsx [Client Component Browser]
+    ./src/components/molecules/index.ts [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/components/molecules/step-indicator.tsx [Client Component SSR]
+    ./src/components/molecules/index.ts [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Server Component]
+
+
+    at <unknown> (Error: ./src/components/molecules/step-indicator.tsx:49:22)
+    at Object.getCompilationErrors (file://C:\Projects\Claude\gcode-core-events\node_modules\next\dist\server\dev\hot-reloader-turbopack.js:1186:59)
+    at DevBundlerService.getCompilationError (file://C:\Projects\Claude\gcode-core-events\node_modules\next\dist\server\lib\dev-bundler-service.js:44:55)
+    at DevServer.getCompilationError (file://C:\Projects\Claude\gcode-core-events\node_modules\next\dist\server\dev\next-dev-server.js:720:42)
+    at DevServer.findPageComponents (file://C:\Projects\Claude\gcode-core-events\node_modules\next\dist\server\dev\next-dev-server.js:690:43)
+    at async DevServer.renderErrorToResponseImpl (file://C:\Projects\Claude\gcode-core-events\node_modules\next\dist\server\base-server.js:1753:26)
+[  164042ms] [LOG] [HMR] connected @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1gdrd03._.js:1226
+[  164082ms] [ERROR] ./src/components/molecules/step-indicator.tsx:49:22
+Expected '</', got '?'
+  47 |                 <Divider
+  48 |                   className={
+> 49 |                      ? "border-primary!" : ""
+     |                      ^
+  50 |                   }
+  51 |                 />
+  52 |               </div>
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Server Component:
+    ./src/components/molecules/step-indicator.tsx
+    ./src/components/molecules/index.ts
+    ./src/app/not-found.tsx
+
+  Client Component Browser:
+    ./src/components/molecules/step-indicator.tsx [Client Component Browser]
+    ./src/components/molecules/index.ts [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/components/molecules/step-indicator.tsx [Client Component SSR]
+    ./src/components/molecules/index.ts [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Server Component] @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1gdrd03._.js:1945
+[  164083ms] [ERROR] ./src/components/molecules/step-indicator.tsx:49:22
+Expected '</', got '?'
+  47 |                 <Divider
+  48 |                   className={
+> 49 |                      ? "border-primary!" : ""
+     |                      ^
+  50 |                   }
+  51 |                 />
+  52 |               </div>
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./src/components/molecules/step-indicator.tsx
+    ./src/components/molecules/index.ts
+    ./src/app/not-found.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1gdrd03._.js:1945
+[  164083ms] [ERROR] ./src/components/molecules/step-indicator.tsx:49:22
+Expected '</', got '?'
+  47 |                 <Divider
+  48 |                   className={
+> 49 |                      ? "border-primary!" : ""
+     |                      ^
+  50 |                   }
+  51 |                 />
+  52 |               </div>
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Server Component:
+    ./src/components/molecules/step-indicator.tsx
+    ./src/components/molecules/index.ts
+    ./src/app/not-found.tsx
+
+  Client Component Browser:
+    ./src/components/molecules/step-indicator.tsx [Client Component Browser]
+    ./src/components/molecules/index.ts [Client Component Browser]
+    ./src/app/(app)/events/[id]/page.tsx [Client Component Browser]
+    ./src/app/(app)/events/[id]/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/components/molecules/step-indicator.tsx [Client Component SSR]
+    ./src/components/molecules/index.ts [Client Component SSR]
+    ./src/app/(app)/events/[id]/page.tsx [Client Component SSR]
+    ./src/app/(app)/events/[id]/page.tsx [Server Component] @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1gdrd03._.js:1945
+[  164083ms] [ERROR] ./src/components/molecules/step-indicator.tsx:49:22
+Expected '</', got '?'
+  47 |                 <Divider
+  48 |                   className={
+> 49 |                      ? "border-primary!" : ""
+     |                      ^
+  50 |                   }
+  51 |                 />
+  52 |               </div>
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Server Component:
+    ./src/components/molecules/step-indicator.tsx
+    ./src/components/molecules/index.ts
+    ./src/app/not-found.tsx
+
+  Client Component Browser:
+    ./src/components/molecules/step-indicator.tsx [Client Component Browser]
+    ./src/components/molecules/index.ts [Client Component Browser]
+    ./src/app/(app)/my-events/page.tsx [Client Component Browser]
+    ./src/app/(app)/my-events/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/components/molecules/step-indicator.tsx [Client Component SSR]
+    ./src/components/molecules/index.ts [Client Component SSR]
+    ./src/app/(app)/my-events/page.tsx [Client Component SSR]
+    ./src/app/(app)/my-events/page.tsx [Server Component] @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1gdrd03._.js:1945
+[  164083ms] [ERROR] ./src/components/molecules/step-indicator.tsx:49:22
+Expected '</', got '?'
+  47 |                 <Divider
+  48 |                   className={
+> 49 |                      ? "border-primary!" : ""
+     |                      ^
+  50 |                   }
+  51 |                 />
+  52 |               </div>
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Server Component:
+    ./src/components/molecules/step-indicator.tsx
+    ./src/components/molecules/index.ts
+    ./src/app/not-found.tsx
+
+  Client Component Browser:
+    ./src/components/molecules/step-indicator.tsx [Client Component Browser]
+    ./src/components/molecules/index.ts [Client Component Browser]
+    ./src/app/(app)/my-organized-events/page.tsx [Client Component Browser]
+    ./src/app/(app)/my-organized-events/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/components/molecules/step-indicator.tsx [Client Component SSR]
+    ./src/components/molecules/index.ts [Client Component SSR]
+    ./src/app/(app)/my-organized-events/page.tsx [Client Component SSR]
+    ./src/app/(app)/my-organized-events/page.tsx [Server Component] @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1gdrd03._.js:1945
+[  164083ms] [ERROR] ./src/components/molecules/step-indicator.tsx:49:22
+Expected '</', got '?'
+  47 |                 <Divider
+  48 |                   className={
+> 49 |                      ? "border-primary!" : ""
+     |                      ^
+  50 |                   }
+  51 |                 />
+  52 |               </div>
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Server Component:
+    ./src/components/molecules/step-indicator.tsx
+    ./src/components/molecules/index.ts
+    ./src/app/not-found.tsx
+
+  Client Component Browser:
+    ./src/components/molecules/step-indicator.tsx [Client Component Browser]
+    ./src/app/(app)/my-organized-events/_components/event-wizard.tsx [Client Component Browser]
+    ./src/app/(app)/my-organized-events/_components/event-wizard.tsx [Server Component]
+    ./src/app/(app)/my-organized-events/new/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/components/molecules/step-indicator.tsx [Client Component SSR]
+    ./src/app/(app)/my-organized-events/_components/event-wizard.tsx [Client Component SSR]
+    ./src/app/(app)/my-organized-events/_components/event-wizard.tsx [Server Component]
+    ./src/app/(app)/my-organized-events/new/page.tsx [Server Component] @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1gdrd03._.js:1945
+[  164084ms] [ERROR] ./src/components/molecules/step-indicator.tsx:49:22
+Expected '</', got '?'
+  47 |                 <Divider
+  48 |                   className={
+> 49 |                      ? "border-primary!" : ""
+     |                      ^
+  50 |                   }
+  51 |                 />
+  52 |               </div>
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./src/components/molecules/step-indicator.tsx
+    ./src/components/molecules/index.ts
+    ./src/app/not-found.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1gdrd03._.js:1945
+[  164084ms] [ERROR] ./src/components/molecules/step-indicator.tsx:49:22
+Expected '</', got '?'
+  47 |                 <Divider
+  48 |                   className={
+> 49 |                      ? "border-primary!" : ""
+     |                      ^
+  50 |                   }
+  51 |                 />
+  52 |               </div>
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./src/components/molecules/step-indicator.tsx
+    ./src/components/molecules/index.ts
+    ./src/app/not-found.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1gdrd03._.js:1945
+[  164084ms] [ERROR] ./src/components/molecules/step-indicator.tsx:49:22
+Expected '</', got '?'
+  47 |                 <Divider
+  48 |                   className={
+> 49 |                      ? "border-primary!" : ""
+     |                      ^
+  50 |                   }
+  51 |                 />
+  52 |               </div>
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Server Component:
+    ./src/components/molecules/step-indicator.tsx
+    ./src/components/molecules/index.ts
+    ./src/app/not-found.tsx
+
+  Client Component Browser:
+    ./src/components/molecules/step-indicator.tsx [Client Component Browser]
+    ./src/components/molecules/index.ts [Client Component Browser]
+    ./src/app/(app)/my-organized-events/[id]/page.tsx [Client Component Browser]
+    ./src/app/(app)/my-organized-events/[id]/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/components/molecules/step-indicator.tsx [Client Component SSR]
+    ./src/components/molecules/index.ts [Client Component SSR]
+    ./src/app/(app)/my-organized-events/[id]/page.tsx [Client Component SSR]
+    ./src/app/(app)/my-organized-events/[id]/page.tsx [Server Component] @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1gdrd03._.js:1945
+[  164084ms] [ERROR] ./src/components/molecules/step-indicator.tsx:49:22
+Expected '</', got '?'
+  47 |                 <Divider
+  48 |                   className={
+> 49 |                      ? "border-primary!" : ""
+     |                      ^
+  50 |                   }
+  51 |                 />
+  52 |               </div>
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Server Component:
+    ./src/components/molecules/step-indicator.tsx
+    ./src/components/molecules/index.ts
+    ./src/app/not-found.tsx
+
+  Client Component Browser:
+    ./src/components/molecules/step-indicator.tsx [Client Component Browser]
+    ./src/components/molecules/index.ts [Client Component Browser]
+    ./src/app/(app)/events/[id]/registered/page.tsx [Client Component Browser]
+    ./src/app/(app)/events/[id]/registered/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/components/molecules/step-indicator.tsx [Client Component SSR]
+    ./src/components/molecules/index.ts [Client Component SSR]
+    ./src/app/(app)/events/[id]/registered/page.tsx [Client Component SSR]
+    ./src/app/(app)/events/[id]/registered/page.tsx [Server Component] @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1gdrd03._.js:1945
+[  164219ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1gdrd03._.js:1226
+[  164226ms] [ERROR] ./src/components/molecules/step-indicator.tsx:49:22
+Expected '</', got '?'
+  47 |                 <Divider
+  48 |                   className={
+> 49 |                      ? "border-primary!" : ""
+     |                      ^
+  50 |                   }
+  51 |                 />
+  52 |               </div>
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Server Component:
+    ./src/components/molecules/step-indicator.tsx
+    ./src/components/molecules/index.ts
+    ./src/app/not-found.tsx
+
+  Client Component Browser:
+    ./src/components/molecules/step-indicator.tsx [Client Component Browser]
+    ./src/components/molecules/index.ts [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/components/molecules/step-indicator.tsx [Client Component SSR]
+    ./src/components/molecules/index.ts [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Server Component] @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1gdrd03._.js:1945
+[  164526ms] [ERROR] ./src/components/molecules/step-indicator.tsx:49:22
+Expected '</', got '?'
+  47 |                 <Divider
+  48 |                   className={
+> 49 |                      ? "border-primary!" : ""
+     |                      ^
+  50 |                   }
+  51 |                 />
+  52 |               </div>
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Server Component:
+    ./src/components/molecules/step-indicator.tsx
+    ./src/components/molecules/index.ts
+    ./src/app/not-found.tsx
+
+  Client Component Browser:
+    ./src/components/molecules/step-indicator.tsx [Client Component Browser]
+    ./src/components/molecules/index.ts [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/components/molecules/step-indicator.tsx [Client Component SSR]
+    ./src/components/molecules/index.ts [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Server Component] @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1gdrd03._.js:1945
+[  164590ms] [ERROR] ./src/components/molecules/step-indicator.tsx:49:22
+Expected '</', got '?'
+  47 |                 <Divider
+  48 |                   className={
+> 49 |                      ? "border-primary!" : ""
+     |                      ^
+  50 |                   }
+  51 |                 />
+  52 |               </div>
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Server Component:
+    ./src/components/molecules/step-indicator.tsx
+    ./src/components/molecules/index.ts
+    ./src/app/not-found.tsx
+
+  Client Component Browser:
+    ./src/components/molecules/step-indicator.tsx [Client Component Browser]
+    ./src/components/molecules/index.ts [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/components/molecules/step-indicator.tsx [Client Component SSR]
+    ./src/components/molecules/index.ts [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Server Component] @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1gdrd03._.js:1945
+[  164654ms] [ERROR] ./src/components/molecules/step-indicator.tsx:49:22
+Expected '</', got '?'
+  47 |                 <Divider
+  48 |                   className={
+> 49 |                      ? "border-primary!" : ""
+     |                      ^
+  50 |                   }
+  51 |                 />
+  52 |               </div>
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Server Component:
+    ./src/components/molecules/step-indicator.tsx
+    ./src/components/molecules/index.ts
+    ./src/app/not-found.tsx
+
+  Client Component Browser:
+    ./src/components/molecules/step-indicator.tsx [Client Component Browser]
+    ./src/components/molecules/index.ts [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/components/molecules/step-indicator.tsx [Client Component SSR]
+    ./src/components/molecules/index.ts [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Server Component] @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1gdrd03._.js:1945
+[  164718ms] [ERROR] ./src/components/molecules/step-indicator.tsx:49:22
+Expected '</', got '?'
+  47 |                 <Divider
+  48 |                   className={
+> 49 |                      ? "border-primary!" : ""
+     |                      ^
+  50 |                   }
+  51 |                 />
+  52 |               </div>
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Server Component:
+    ./src/components/molecules/step-indicator.tsx
+    ./src/components/molecules/index.ts
+    ./src/app/not-found.tsx
+
+  Client Component Browser:
+    ./src/components/molecules/step-indicator.tsx [Client Component Browser]
+    ./src/components/molecules/index.ts [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/components/molecules/step-indicator.tsx [Client Component SSR]
+    ./src/components/molecules/index.ts [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Server Component] @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1gdrd03._.js:1945
+[  164779ms] [ERROR] ./src/components/molecules/step-indicator.tsx:49:22
+Expected '</', got '?'
+  47 |                 <Divider
+  48 |                   className={
+> 49 |                      ? "border-primary!" : ""
+     |                      ^
+  50 |                   }
+  51 |                 />
+  52 |               </div>
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Server Component:
+    ./src/components/molecules/step-indicator.tsx
+    ./src/components/molecules/index.ts
+    ./src/app/not-found.tsx
+
+  Client Component Browser:
+    ./src/components/molecules/step-indicator.tsx [Client Component Browser]
+    ./src/components/molecules/index.ts [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/components/molecules/step-indicator.tsx [Client Component SSR]
+    ./src/components/molecules/index.ts [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Server Component] @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1gdrd03._.js:1945
+[  164842ms] [ERROR] ./src/components/molecules/step-indicator.tsx:49:22
+Expected '</', got '?'
+  47 |                 <Divider
+  48 |                   className={
+> 49 |                      ? "border-primary!" : ""
+     |                      ^
+  50 |                   }
+  51 |                 />
+  52 |               </div>
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Server Component:
+    ./src/components/molecules/step-indicator.tsx
+    ./src/components/molecules/index.ts
+    ./src/app/not-found.tsx
+
+  Client Component Browser:
+    ./src/components/molecules/step-indicator.tsx [Client Component Browser]
+    ./src/components/molecules/index.ts [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/components/molecules/step-indicator.tsx [Client Component SSR]
+    ./src/components/molecules/index.ts [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Server Component] @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1gdrd03._.js:1945
+[  164907ms] [ERROR] ./src/components/molecules/step-indicator.tsx:49:22
+Expected '</', got '?'
+  47 |                 <Divider
+  48 |                   className={
+> 49 |                      ? "border-primary!" : ""
+     |                      ^
+  50 |                   }
+  51 |                 />
+  52 |               </div>
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Server Component:
+    ./src/components/molecules/step-indicator.tsx
+    ./src/components/molecules/index.ts
+    ./src/app/not-found.tsx
+
+  Client Component Browser:
+    ./src/components/molecules/step-indicator.tsx [Client Component Browser]
+    ./src/components/molecules/index.ts [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/components/molecules/step-indicator.tsx [Client Component SSR]
+    ./src/components/molecules/index.ts [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Server Component] @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1gdrd03._.js:1945
+[  164977ms] [ERROR] ./src/components/molecules/step-indicator.tsx:49:22
+Expected '</', got '?'
+  47 |                 <Divider
+  48 |                   className={
+> 49 |                      ? "border-primary!" : ""
+     |                      ^
+  50 |                   }
+  51 |                 />
+  52 |               </div>
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Server Component:
+    ./src/components/molecules/step-indicator.tsx
+    ./src/components/molecules/index.ts
+    ./src/app/not-found.tsx
+
+  Client Component Browser:
+    ./src/components/molecules/step-indicator.tsx [Client Component Browser]
+    ./src/components/molecules/index.ts [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/components/molecules/step-indicator.tsx [Client Component SSR]
+    ./src/components/molecules/index.ts [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Server Component] @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1gdrd03._.js:1945
+[  165046ms] [ERROR] ./src/components/molecules/step-indicator.tsx:49:22
+Expected '</', got '?'
+  47 |                 <Divider
+  48 |                   className={
+> 49 |                      ? "border-primary!" : ""
+     |                      ^
+  50 |                   }
+  51 |                 />
+  52 |               </div>
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Server Component:
+    ./src/components/molecules/step-indicator.tsx
+    ./src/components/molecules/index.ts
+    ./src/app/not-found.tsx
+
+  Client Component Browser:
+    ./src/components/molecules/step-indicator.tsx [Client Component Browser]
+    ./src/components/molecules/index.ts [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/components/molecules/step-indicator.tsx [Client Component SSR]
+    ./src/components/molecules/index.ts [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Server Component] @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1gdrd03._.js:1945
+[  165106ms] [ERROR] ./src/components/molecules/step-indicator.tsx:49:22
+Expected '</', got '?'
+  47 |                 <Divider
+  48 |                   className={
+> 49 |                      ? "border-primary!" : ""
+     |                      ^
+  50 |                   }
+  51 |                 />
+  52 |               </div>
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Server Component:
+    ./src/components/molecules/step-indicator.tsx
+    ./src/components/molecules/index.ts
+    ./src/app/not-found.tsx
+
+  Client Component Browser:
+    ./src/components/molecules/step-indicator.tsx [Client Component Browser]
+    ./src/components/molecules/index.ts [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/components/molecules/step-indicator.tsx [Client Component SSR]
+    ./src/components/molecules/index.ts [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Server Component] @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1gdrd03._.js:1945
+[  165205ms] [ERROR] ./src/components/molecules/step-indicator.tsx:49:22
+Expected '</', got '?'
+  47 |                 <Divider
+  48 |                   className={
+> 49 |                      ? "border-primary!" : ""
+     |                      ^
+  50 |                   }
+  51 |                 />
+  52 |               </div>
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Server Component:
+    ./src/components/molecules/step-indicator.tsx
+    ./src/components/molecules/index.ts
+    ./src/app/not-found.tsx
+
+  Client Component Browser:
+    ./src/components/molecules/step-indicator.tsx [Client Component Browser]
+    ./src/components/molecules/index.ts [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/components/molecules/step-indicator.tsx [Client Component SSR]
+    ./src/components/molecules/index.ts [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Server Component] @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1gdrd03._.js:1945
+[  165260ms] [ERROR] ./src/components/molecules/step-indicator.tsx:49:22
+Expected '</', got '?'
+  47 |                 <Divider
+  48 |                   className={
+> 49 |                      ? "border-primary!" : ""
+     |                      ^
+  50 |                   }
+  51 |                 />
+  52 |               </div>
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Server Component:
+    ./src/components/molecules/step-indicator.tsx
+    ./src/components/molecules/index.ts
+    ./src/app/not-found.tsx
+
+  Client Component Browser:
+    ./src/components/molecules/step-indicator.tsx [Client Component Browser]
+    ./src/components/molecules/index.ts [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/components/molecules/step-indicator.tsx [Client Component SSR]
+    ./src/components/molecules/index.ts [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Server Component] @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1gdrd03._.js:1945
+[  165331ms] [ERROR] ./src/components/molecules/step-indicator.tsx:49:22
+Expected '</', got '?'
+  47 |                 <Divider
+  48 |                   className={
+> 49 |                      ? "border-primary!" : ""
+     |                      ^
+  50 |                   }
+  51 |                 />
+  52 |               </div>
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Server Component:
+    ./src/components/molecules/step-indicator.tsx
+    ./src/components/molecules/index.ts
+    ./src/app/not-found.tsx
+
+  Client Component Browser:
+    ./src/components/molecules/step-indicator.tsx [Client Component Browser]
+    ./src/components/molecules/index.ts [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/components/molecules/step-indicator.tsx [Client Component SSR]
+    ./src/components/molecules/index.ts [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Server Component] @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1gdrd03._.js:1945
+[  165449ms] [ERROR] ./src/components/molecules/step-indicator.tsx:49:22
+Expected '</', got '?'
+  47 |                 <Divider
+  48 |                   className={
+> 49 |                      ? "border-primary!" : ""
+     |                      ^
+  50 |                   }
+  51 |                 />
+  52 |               </div>
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Server Component:
+    ./src/components/molecules/step-indicator.tsx
+    ./src/components/molecules/index.ts
+    ./src/app/not-found.tsx
+
+  Client Component Browser:
+    ./src/components/molecules/step-indicator.tsx [Client Component Browser]
+    ./src/components/molecules/index.ts [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/components/molecules/step-indicator.tsx [Client Component SSR]
+    ./src/components/molecules/index.ts [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Server Component] @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1gdrd03._.js:1945
+[  165513ms] [ERROR] ./src/components/molecules/step-indicator.tsx:49:22
+Expected '</', got '?'
+  47 |                 <Divider
+  48 |                   className={
+> 49 |                      ? "border-primary!" : ""
+     |                      ^
+  50 |                   }
+  51 |                 />
+  52 |               </div>
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Server Component:
+    ./src/components/molecules/step-indicator.tsx
+    ./src/components/molecules/index.ts
+    ./src/app/not-found.tsx
+
+  Client Component Browser:
+    ./src/components/molecules/step-indicator.tsx [Client Component Browser]
+    ./src/components/molecules/index.ts [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/components/molecules/step-indicator.tsx [Client Component SSR]
+    ./src/components/molecules/index.ts [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Server Component] @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1gdrd03._.js:1945
+[  165572ms] [ERROR] ./src/components/molecules/step-indicator.tsx:49:22
+Expected '</', got '?'
+  47 |                 <Divider
+  48 |                   className={
+> 49 |                      ? "border-primary!" : ""
+     |                      ^
+  50 |                   }
+  51 |                 />
+  52 |               </div>
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Server Component:
+    ./src/components/molecules/step-indicator.tsx
+    ./src/components/molecules/index.ts
+    ./src/app/not-found.tsx
+
+  Client Component Browser:
+    ./src/components/molecules/step-indicator.tsx [Client Component Browser]
+    ./src/components/molecules/index.ts [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/components/molecules/step-indicator.tsx [Client Component SSR]
+    ./src/components/molecules/index.ts [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Server Component] @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1gdrd03._.js:1945
+[  165634ms] [ERROR] ./src/components/molecules/step-indicator.tsx:49:22
+Expected '</', got '?'
+  47 |                 <Divider
+  48 |                   className={
+> 49 |                      ? "border-primary!" : ""
+     |                      ^
+  50 |                   }
+  51 |                 />
+  52 |               </div>
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Server Component:
+    ./src/components/molecules/step-indicator.tsx
+    ./src/components/molecules/index.ts
+    ./src/app/not-found.tsx
+
+  Client Component Browser:
+    ./src/components/molecules/step-indicator.tsx [Client Component Browser]
+    ./src/components/molecules/index.ts [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/components/molecules/step-indicator.tsx [Client Component SSR]
+    ./src/components/molecules/index.ts [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Server Component] @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1gdrd03._.js:1945
+[  165695ms] [ERROR] ./src/components/molecules/step-indicator.tsx:49:22
+Expected '</', got '?'
+  47 |                 <Divider
+  48 |                   className={
+> 49 |                      ? "border-primary!" : ""
+     |                      ^
+  50 |                   }
+  51 |                 />
+  52 |               </div>
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Server Component:
+    ./src/components/molecules/step-indicator.tsx
+    ./src/components/molecules/index.ts
+    ./src/app/not-found.tsx
+
+  Client Component Browser:
+    ./src/components/molecules/step-indicator.tsx [Client Component Browser]
+    ./src/components/molecules/index.ts [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/components/molecules/step-indicator.tsx [Client Component SSR]
+    ./src/components/molecules/index.ts [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Server Component] @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1gdrd03._.js:1945
+[  165758ms] [ERROR] ./src/components/molecules/step-indicator.tsx:49:22
+Expected '</', got '?'
+  47 |                 <Divider
+  48 |                   className={
+> 49 |                      ? "border-primary!" : ""
+     |                      ^
+  50 |                   }
+  51 |                 />
+  52 |               </div>
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Server Component:
+    ./src/components/molecules/step-indicator.tsx
+    ./src/components/molecules/index.ts
+    ./src/app/not-found.tsx
+
+  Client Component Browser:
+    ./src/components/molecules/step-indicator.tsx [Client Component Browser]
+    ./src/components/molecules/index.ts [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/components/molecules/step-indicator.tsx [Client Component SSR]
+    ./src/components/molecules/index.ts [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Server Component] @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1gdrd03._.js:1945
+[  165820ms] [ERROR] ./src/components/molecules/step-indicator.tsx:49:22
+Expected '</', got '?'
+  47 |                 <Divider
+  48 |                   className={
+> 49 |                      ? "border-primary!" : ""
+     |                      ^
+  50 |                   }
+  51 |                 />
+  52 |               </div>
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Server Component:
+    ./src/components/molecules/step-indicator.tsx
+    ./src/components/molecules/index.ts
+    ./src/app/not-found.tsx
+
+  Client Component Browser:
+    ./src/components/molecules/step-indicator.tsx [Client Component Browser]
+    ./src/components/molecules/index.ts [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/components/molecules/step-indicator.tsx [Client Component SSR]
+    ./src/components/molecules/index.ts [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Server Component] @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1gdrd03._.js:1945
+[  165883ms] [ERROR] ./src/components/molecules/step-indicator.tsx:49:22
+Expected '</', got '?'
+  47 |                 <Divider
+  48 |                   className={
+> 49 |                      ? "border-primary!" : ""
+     |                      ^
+  50 |                   }
+  51 |                 />
+  52 |               </div>
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Server Component:
+    ./src/components/molecules/step-indicator.tsx
+    ./src/components/molecules/index.ts
+    ./src/app/not-found.tsx
+
+  Client Component Browser:
+    ./src/components/molecules/step-indicator.tsx [Client Component Browser]
+    ./src/components/molecules/index.ts [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/components/molecules/step-indicator.tsx [Client Component SSR]
+    ./src/components/molecules/index.ts [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Server Component] @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1gdrd03._.js:1945
+[  165948ms] [ERROR] ./src/components/molecules/step-indicator.tsx:49:22
+Expected '</', got '?'
+  47 |                 <Divider
+  48 |                   className={
+> 49 |                      ? "border-primary!" : ""
+     |                      ^
+  50 |                   }
+  51 |                 />
+  52 |               </div>
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Server Component:
+    ./src/components/molecules/step-indicator.tsx
+    ./src/components/molecules/index.ts
+    ./src/app/not-found.tsx
+
+  Client Component Browser:
+    ./src/components/molecules/step-indicator.tsx [Client Component Browser]
+    ./src/components/molecules/index.ts [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/components/molecules/step-indicator.tsx [Client Component SSR]
+    ./src/components/molecules/index.ts [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Server Component] @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1gdrd03._.js:1945
+[  166007ms] [ERROR] ./src/components/molecules/step-indicator.tsx:49:22
+Expected '</', got '?'
+  47 |                 <Divider
+  48 |                   className={
+> 49 |                      ? "border-primary!" : ""
+     |                      ^
+  50 |                   }
+  51 |                 />
+  52 |               </div>
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Server Component:
+    ./src/components/molecules/step-indicator.tsx
+    ./src/components/molecules/index.ts
+    ./src/app/not-found.tsx
+
+  Client Component Browser:
+    ./src/components/molecules/step-indicator.tsx [Client Component Browser]
+    ./src/components/molecules/index.ts [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/components/molecules/step-indicator.tsx [Client Component SSR]
+    ./src/components/molecules/index.ts [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Server Component] @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1gdrd03._.js:1945
+[  166069ms] [ERROR] ./src/components/molecules/step-indicator.tsx:49:22
+Expected '</', got '?'
+  47 |                 <Divider
+  48 |                   className={
+> 49 |                      ? "border-primary!" : ""
+     |                      ^
+  50 |                   }
+  51 |                 />
+  52 |               </div>
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Server Component:
+    ./src/components/molecules/step-indicator.tsx
+    ./src/components/molecules/index.ts
+    ./src/app/not-found.tsx
+
+  Client Component Browser:
+    ./src/components/molecules/step-indicator.tsx [Client Component Browser]
+    ./src/components/molecules/index.ts [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/components/molecules/step-indicator.tsx [Client Component SSR]
+    ./src/components/molecules/index.ts [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Server Component] @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1gdrd03._.js:1945
+[  166131ms] [ERROR] ./src/components/molecules/step-indicator.tsx:49:22
+Expected '</', got '?'
+  47 |                 <Divider
+  48 |                   className={
+> 49 |                      ? "border-primary!" : ""
+     |                      ^
+  50 |                   }
+  51 |                 />
+  52 |               </div>
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Server Component:
+    ./src/components/molecules/step-indicator.tsx
+    ./src/components/molecules/index.ts
+    ./src/app/not-found.tsx
+
+  Client Component Browser:
+    ./src/components/molecules/step-indicator.tsx [Client Component Browser]
+    ./src/components/molecules/index.ts [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/components/molecules/step-indicator.tsx [Client Component SSR]
+    ./src/components/molecules/index.ts [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Server Component] @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1gdrd03._.js:1945
+[  166193ms] [ERROR] ./src/components/molecules/step-indicator.tsx:49:22
+Expected '</', got '?'
+  47 |                 <Divider
+  48 |                   className={
+> 49 |                      ? "border-primary!" : ""
+     |                      ^
+  50 |                   }
+  51 |                 />
+  52 |               </div>
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Server Component:
+    ./src/components/molecules/step-indicator.tsx
+    ./src/components/molecules/index.ts
+    ./src/app/not-found.tsx
+
+  Client Component Browser:
+    ./src/components/molecules/step-indicator.tsx [Client Component Browser]
+    ./src/components/molecules/index.ts [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/components/molecules/step-indicator.tsx [Client Component SSR]
+    ./src/components/molecules/index.ts [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Server Component] @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1gdrd03._.js:1945
+[  166256ms] [ERROR] ./src/components/molecules/step-indicator.tsx:49:22
+Expected '</', got '?'
+  47 |                 <Divider
+  48 |                   className={
+> 49 |                      ? "border-primary!" : ""
+     |                      ^
+  50 |                   }
+  51 |                 />
+  52 |               </div>
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Server Component:
+    ./src/components/molecules/step-indicator.tsx
+    ./src/components/molecules/index.ts
+    ./src/app/not-found.tsx
+
+  Client Component Browser:
+    ./src/components/molecules/step-indicator.tsx [Client Component Browser]
+    ./src/components/molecules/index.ts [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/components/molecules/step-indicator.tsx [Client Component SSR]
+    ./src/components/molecules/index.ts [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Server Component] @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1gdrd03._.js:1945
+[  166337ms] [ERROR] ./src/components/molecules/step-indicator.tsx:49:22
+Expected '</', got '?'
+  47 |                 <Divider
+  48 |                   className={
+> 49 |                      ? "border-primary!" : ""
+     |                      ^
+  50 |                   }
+  51 |                 />
+  52 |               </div>
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Server Component:
+    ./src/components/molecules/step-indicator.tsx
+    ./src/components/molecules/index.ts
+    ./src/app/not-found.tsx
+
+  Client Component Browser:
+    ./src/components/molecules/step-indicator.tsx [Client Component Browser]
+    ./src/components/molecules/index.ts [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/components/molecules/step-indicator.tsx [Client Component SSR]
+    ./src/components/molecules/index.ts [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Server Component] @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1gdrd03._.js:1945
+[  166395ms] [ERROR] ./src/components/molecules/step-indicator.tsx:49:22
+Expected '</', got '?'
+  47 |                 <Divider
+  48 |                   className={
+> 49 |                      ? "border-primary!" : ""
+     |                      ^
+  50 |                   }
+  51 |                 />
+  52 |               </div>
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Server Component:
+    ./src/components/molecules/step-indicator.tsx
+    ./src/components/molecules/index.ts
+    ./src/app/not-found.tsx
+
+  Client Component Browser:
+    ./src/components/molecules/step-indicator.tsx [Client Component Browser]
+    ./src/components/molecules/index.ts [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/components/molecules/step-indicator.tsx [Client Component SSR]
+    ./src/components/molecules/index.ts [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Server Component] @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1gdrd03._.js:1945
+[  166456ms] [ERROR] ./src/components/molecules/step-indicator.tsx:49:22
+Expected '</', got '?'
+  47 |                 <Divider
+  48 |                   className={
+> 49 |                      ? "border-primary!" : ""
+     |                      ^
+  50 |                   }
+  51 |                 />
+  52 |               </div>
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Server Component:
+    ./src/components/molecules/step-indicator.tsx
+    ./src/components/molecules/index.ts
+    ./src/app/not-found.tsx
+
+  Client Component Browser:
+    ./src/components/molecules/step-indicator.tsx [Client Component Browser]
+    ./src/components/molecules/index.ts [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/components/molecules/step-indicator.tsx [Client Component SSR]
+    ./src/components/molecules/index.ts [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Server Component] @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1gdrd03._.js:1945
+[  166518ms] [ERROR] ./src/components/molecules/step-indicator.tsx:49:22
+Expected '</', got '?'
+  47 |                 <Divider
+  48 |                   className={
+> 49 |                      ? "border-primary!" : ""
+     |                      ^
+  50 |                   }
+  51 |                 />
+  52 |               </div>
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Server Component:
+    ./src/components/molecules/step-indicator.tsx
+    ./src/components/molecules/index.ts
+    ./src/app/not-found.tsx
+
+  Client Component Browser:
+    ./src/components/molecules/step-indicator.tsx [Client Component Browser]
+    ./src/components/molecules/index.ts [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/components/molecules/step-indicator.tsx [Client Component SSR]
+    ./src/components/molecules/index.ts [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Server Component] @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1gdrd03._.js:1945
+[  166584ms] [ERROR] ./src/components/molecules/step-indicator.tsx:49:22
+Expected '</', got '?'
+  47 |                 <Divider
+  48 |                   className={
+> 49 |                      ? "border-primary!" : ""
+     |                      ^
+  50 |                   }
+  51 |                 />
+  52 |               </div>
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Server Component:
+    ./src/components/molecules/step-indicator.tsx
+    ./src/components/molecules/index.ts
+    ./src/app/not-found.tsx
+
+  Client Component Browser:
+    ./src/components/molecules/step-indicator.tsx [Client Component Browser]
+    ./src/components/molecules/index.ts [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/components/molecules/step-indicator.tsx [Client Component SSR]
+    ./src/components/molecules/index.ts [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Server Component] @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1gdrd03._.js:1945
+[  166644ms] [ERROR] ./src/components/molecules/step-indicator.tsx:49:22
+Expected '</', got '?'
+  47 |                 <Divider
+  48 |                   className={
+> 49 |                      ? "border-primary!" : ""
+     |                      ^
+  50 |                   }
+  51 |                 />
+  52 |               </div>
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Server Component:
+    ./src/components/molecules/step-indicator.tsx
+    ./src/components/molecules/index.ts
+    ./src/app/not-found.tsx
+
+  Client Component Browser:
+    ./src/components/molecules/step-indicator.tsx [Client Component Browser]
+    ./src/components/molecules/index.ts [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/components/molecules/step-indicator.tsx [Client Component SSR]
+    ./src/components/molecules/index.ts [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Server Component] @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1gdrd03._.js:1945
+[  166709ms] [ERROR] ./src/components/molecules/step-indicator.tsx:49:22
+Expected '</', got '?'
+  47 |                 <Divider
+  48 |                   className={
+> 49 |                      ? "border-primary!" : ""
+     |                      ^
+  50 |                   }
+  51 |                 />
+  52 |               </div>
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Server Component:
+    ./src/components/molecules/step-indicator.tsx
+    ./src/components/molecules/index.ts
+    ./src/app/not-found.tsx
+
+  Client Component Browser:
+    ./src/components/molecules/step-indicator.tsx [Client Component Browser]
+    ./src/components/molecules/index.ts [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/components/molecules/step-indicator.tsx [Client Component SSR]
+    ./src/components/molecules/index.ts [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Server Component] @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1gdrd03._.js:1945
+[  166793ms] [ERROR] ./src/components/molecules/step-indicator.tsx:49:22
+Expected '</', got '?'
+  47 |                 <Divider
+  48 |                   className={
+> 49 |                      ? "border-primary!" : ""
+     |                      ^
+  50 |                   }
+  51 |                 />
+  52 |               </div>
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Server Component:
+    ./src/components/molecules/step-indicator.tsx
+    ./src/components/molecules/index.ts
+    ./src/app/not-found.tsx
+
+  Client Component Browser:
+    ./src/components/molecules/step-indicator.tsx [Client Component Browser]
+    ./src/components/molecules/index.ts [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/components/molecules/step-indicator.tsx [Client Component SSR]
+    ./src/components/molecules/index.ts [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Server Component] @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1gdrd03._.js:1945
+[  167101ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1gdrd03._.js:1226
+[  167384ms] [ERROR] ./src/components/molecules/step-indicator.tsx:48:30
+Expected '</', got '='
+  46 |               <div className="mx-2 hidden h-8 flex-1 items-center sm:flex">
+  47 |                 <Divider
+> 48 |                   className={=`
+     |                              ^
+  49 |     ${step.status === "completed" ? "border-primary!" : ""}
+  50 |     my-other-class
+  51 |   `
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Server Component:
+    ./src/components/molecules/step-indicator.tsx
+    ./src/components/molecules/index.ts
+    ./src/app/not-found.tsx
+
+  Client Component Browser:
+    ./src/components/molecules/step-indicator.tsx [Client Component Browser]
+    ./src/components/molecules/index.ts [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/components/molecules/step-indicator.tsx [Client Component SSR]
+    ./src/components/molecules/index.ts [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Server Component] @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1gdrd03._.js:1945
+[  167447ms] [ERROR] ./src/components/molecules/step-indicator.tsx:48:30
+Expected '</', got '='
+  46 |               <div className="mx-2 hidden h-8 flex-1 items-center sm:flex">
+  47 |                 <Divider
+> 48 |                   className={=`
+     |                              ^
+  49 |     ${step.status === "completed" ? "border-primary!" : ""}
+  50 |     my-other-class
+  51 |   `
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Server Component:
+    ./src/components/molecules/step-indicator.tsx
+    ./src/components/molecules/index.ts
+    ./src/app/not-found.tsx
+
+  Client Component Browser:
+    ./src/components/molecules/step-indicator.tsx [Client Component Browser]
+    ./src/components/molecules/index.ts [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/components/molecules/step-indicator.tsx [Client Component SSR]
+    ./src/components/molecules/index.ts [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Server Component] @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1gdrd03._.js:1945
+[  167492ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3000/events:0
+[  167552ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3000/_next/static/chunks/node_modules_react-dom_0kla17-._.js:15305
+[  167582ms] Error: ./src/components/molecules/step-indicator.tsx:48:30
+Expected '</', got '='
+  46 |               <div className="mx-2 hidden h-8 flex-1 items-center sm:flex">
+  47 |                 <Divider
+> 48 |                   className={=`
+     |                              ^
+  49 |     ${step.status === "completed" ? "border-primary!" : ""}
+  50 |     my-other-class
+  51 |   `
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Server Component:
+    ./src/components/molecules/step-indicator.tsx
+    ./src/components/molecules/index.ts
+    ./src/app/not-found.tsx
+
+  Client Component Browser:
+    ./src/components/molecules/step-indicator.tsx [Client Component Browser]
+    ./src/components/molecules/index.ts [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/components/molecules/step-indicator.tsx [Client Component SSR]
+    ./src/components/molecules/index.ts [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Server Component]
+
+
+    at <unknown> (Error: ./src/components/molecules/step-indicator.tsx:48:30)
+    at Object.getCompilationErrors (file://C:\Projects\Claude\gcode-core-events\node_modules\next\dist\server\dev\hot-reloader-turbopack.js:1186:59)
+    at DevBundlerService.getCompilationError (file://C:\Projects\Claude\gcode-core-events\node_modules\next\dist\server\lib\dev-bundler-service.js:44:55)
+    at DevServer.getCompilationError (file://C:\Projects\Claude\gcode-core-events\node_modules\next\dist\server\dev\next-dev-server.js:720:42)
+    at DevServer.findPageComponents (file://C:\Projects\Claude\gcode-core-events\node_modules\next\dist\server\dev\next-dev-server.js:690:43)
+    at async DevServer.renderErrorToResponseImpl (file://C:\Projects\Claude\gcode-core-events\node_modules\next\dist\server\base-server.js:1753:26)
+[  167583ms] [LOG] [HMR] connected @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1gdrd03._.js:1226
+[  167591ms] [ERROR] ./src/components/molecules/step-indicator.tsx:48:30
+Expected '</', got '='
+  46 |               <div className="mx-2 hidden h-8 flex-1 items-center sm:flex">
+  47 |                 <Divider
+> 48 |                   className={=`
+     |                              ^
+  49 |     ${step.status === "completed" ? "border-primary!" : ""}
+  50 |     my-other-class
+  51 |   `
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Server Component:
+    ./src/components/molecules/step-indicator.tsx
+    ./src/components/molecules/index.ts
+    ./src/app/not-found.tsx
+
+  Client Component Browser:
+    ./src/components/molecules/step-indicator.tsx [Client Component Browser]
+    ./src/components/molecules/index.ts [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/components/molecules/step-indicator.tsx [Client Component SSR]
+    ./src/components/molecules/index.ts [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Server Component] @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1gdrd03._.js:1945
+[  167592ms] [ERROR] ./src/components/molecules/step-indicator.tsx:48:30
+Expected '</', got '='
+  46 |               <div className="mx-2 hidden h-8 flex-1 items-center sm:flex">
+  47 |                 <Divider
+> 48 |                   className={=`
+     |                              ^
+  49 |     ${step.status === "completed" ? "border-primary!" : ""}
+  50 |     my-other-class
+  51 |   `
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./src/components/molecules/step-indicator.tsx
+    ./src/components/molecules/index.ts
+    ./src/app/not-found.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1gdrd03._.js:1945
+[  167592ms] [ERROR] ./src/components/molecules/step-indicator.tsx:48:30
+Expected '</', got '='
+  46 |               <div className="mx-2 hidden h-8 flex-1 items-center sm:flex">
+  47 |                 <Divider
+> 48 |                   className={=`
+     |                              ^
+  49 |     ${step.status === "completed" ? "border-primary!" : ""}
+  50 |     my-other-class
+  51 |   `
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Server Component:
+    ./src/components/molecules/step-indicator.tsx
+    ./src/components/molecules/index.ts
+    ./src/app/not-found.tsx
+
+  Client Component Browser:
+    ./src/components/molecules/step-indicator.tsx [Client Component Browser]
+    ./src/components/molecules/index.ts [Client Component Browser]
+    ./src/app/(app)/events/[id]/page.tsx [Client Component Browser]
+    ./src/app/(app)/events/[id]/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/components/molecules/step-indicator.tsx [Client Component SSR]
+    ./src/components/molecules/index.ts [Client Component SSR]
+    ./src/app/(app)/events/[id]/page.tsx [Client Component SSR]
+    ./src/app/(app)/events/[id]/page.tsx [Server Component] @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1gdrd03._.js:1945
+[  167592ms] [ERROR] ./src/components/molecules/step-indicator.tsx:48:30
+Expected '</', got '='
+  46 |               <div className="mx-2 hidden h-8 flex-1 items-center sm:flex">
+  47 |                 <Divider
+> 48 |                   className={=`
+     |                              ^
+  49 |     ${step.status === "completed" ? "border-primary!" : ""}
+  50 |     my-other-class
+  51 |   `
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Server Component:
+    ./src/components/molecules/step-indicator.tsx
+    ./src/components/molecules/index.ts
+    ./src/app/not-found.tsx
+
+  Client Component Browser:
+    ./src/components/molecules/step-indicator.tsx [Client Component Browser]
+    ./src/components/molecules/index.ts [Client Component Browser]
+    ./src/app/(app)/my-events/page.tsx [Client Component Browser]
+    ./src/app/(app)/my-events/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/components/molecules/step-indicator.tsx [Client Component SSR]
+    ./src/components/molecules/index.ts [Client Component SSR]
+    ./src/app/(app)/my-events/page.tsx [Client Component SSR]
+    ./src/app/(app)/my-events/page.tsx [Server Component] @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1gdrd03._.js:1945
+[  167593ms] [ERROR] ./src/components/molecules/step-indicator.tsx:48:30
+Expected '</', got '='
+  46 |               <div className="mx-2 hidden h-8 flex-1 items-center sm:flex">
+  47 |                 <Divider
+> 48 |                   className={=`
+     |                              ^
+  49 |     ${step.status === "completed" ? "border-primary!" : ""}
+  50 |     my-other-class
+  51 |   `
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Server Component:
+    ./src/components/molecules/step-indicator.tsx
+    ./src/components/molecules/index.ts
+    ./src/app/not-found.tsx
+
+  Client Component Browser:
+    ./src/components/molecules/step-indicator.tsx [Client Component Browser]
+    ./src/components/molecules/index.ts [Client Component Browser]
+    ./src/app/(app)/my-organized-events/page.tsx [Client Component Browser]
+    ./src/app/(app)/my-organized-events/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/components/molecules/step-indicator.tsx [Client Component SSR]
+    ./src/components/molecules/index.ts [Client Component SSR]
+    ./src/app/(app)/my-organized-events/page.tsx [Client Component SSR]
+    ./src/app/(app)/my-organized-events/page.tsx [Server Component] @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1gdrd03._.js:1945
+[  167593ms] [ERROR] ./src/components/molecules/step-indicator.tsx:48:30
+Expected '</', got '='
+  46 |               <div className="mx-2 hidden h-8 flex-1 items-center sm:flex">
+  47 |                 <Divider
+> 48 |                   className={=`
+     |                              ^
+  49 |     ${step.status === "completed" ? "border-primary!" : ""}
+  50 |     my-other-class
+  51 |   `
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Server Component:
+    ./src/components/molecules/step-indicator.tsx
+    ./src/components/molecules/index.ts
+    ./src/app/not-found.tsx
+
+  Client Component Browser:
+    ./src/components/molecules/step-indicator.tsx [Client Component Browser]
+    ./src/app/(app)/my-organized-events/_components/event-wizard.tsx [Client Component Browser]
+    ./src/app/(app)/my-organized-events/_components/event-wizard.tsx [Server Component]
+    ./src/app/(app)/my-organized-events/new/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/components/molecules/step-indicator.tsx [Client Component SSR]
+    ./src/app/(app)/my-organized-events/_components/event-wizard.tsx [Client Component SSR]
+    ./src/app/(app)/my-organized-events/_components/event-wizard.tsx [Server Component]
+    ./src/app/(app)/my-organized-events/new/page.tsx [Server Component] @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1gdrd03._.js:1945
+[  167593ms] [ERROR] ./src/components/molecules/step-indicator.tsx:48:30
+Expected '</', got '='
+  46 |               <div className="mx-2 hidden h-8 flex-1 items-center sm:flex">
+  47 |                 <Divider
+> 48 |                   className={=`
+     |                              ^
+  49 |     ${step.status === "completed" ? "border-primary!" : ""}
+  50 |     my-other-class
+  51 |   `
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./src/components/molecules/step-indicator.tsx
+    ./src/components/molecules/index.ts
+    ./src/app/not-found.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1gdrd03._.js:1945
+[  167595ms] [ERROR] ./src/components/molecules/step-indicator.tsx:48:30
+Expected '</', got '='
+  46 |               <div className="mx-2 hidden h-8 flex-1 items-center sm:flex">
+  47 |                 <Divider
+> 48 |                   className={=`
+     |                              ^
+  49 |     ${step.status === "completed" ? "border-primary!" : ""}
+  50 |     my-other-class
+  51 |   `
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./src/components/molecules/step-indicator.tsx
+    ./src/components/molecules/index.ts
+    ./src/app/not-found.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1gdrd03._.js:1945
+[  167595ms] [ERROR] ./src/components/molecules/step-indicator.tsx:48:30
+Expected '</', got '='
+  46 |               <div className="mx-2 hidden h-8 flex-1 items-center sm:flex">
+  47 |                 <Divider
+> 48 |                   className={=`
+     |                              ^
+  49 |     ${step.status === "completed" ? "border-primary!" : ""}
+  50 |     my-other-class
+  51 |   `
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Server Component:
+    ./src/components/molecules/step-indicator.tsx
+    ./src/components/molecules/index.ts
+    ./src/app/not-found.tsx
+
+  Client Component Browser:
+    ./src/components/molecules/step-indicator.tsx [Client Component Browser]
+    ./src/components/molecules/index.ts [Client Component Browser]
+    ./src/app/(app)/my-organized-events/[id]/page.tsx [Client Component Browser]
+    ./src/app/(app)/my-organized-events/[id]/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/components/molecules/step-indicator.tsx [Client Component SSR]
+    ./src/components/molecules/index.ts [Client Component SSR]
+    ./src/app/(app)/my-organized-events/[id]/page.tsx [Client Component SSR]
+    ./src/app/(app)/my-organized-events/[id]/page.tsx [Server Component] @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1gdrd03._.js:1945
+[  167595ms] [ERROR] ./src/components/molecules/step-indicator.tsx:48:30
+Expected '</', got '='
+  46 |               <div className="mx-2 hidden h-8 flex-1 items-center sm:flex">
+  47 |                 <Divider
+> 48 |                   className={=`
+     |                              ^
+  49 |     ${step.status === "completed" ? "border-primary!" : ""}
+  50 |     my-other-class
+  51 |   `
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Server Component:
+    ./src/components/molecules/step-indicator.tsx
+    ./src/components/molecules/index.ts
+    ./src/app/not-found.tsx
+
+  Client Component Browser:
+    ./src/components/molecules/step-indicator.tsx [Client Component Browser]
+    ./src/components/molecules/index.ts [Client Component Browser]
+    ./src/app/(app)/events/[id]/registered/page.tsx [Client Component Browser]
+    ./src/app/(app)/events/[id]/registered/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/components/molecules/step-indicator.tsx [Client Component SSR]
+    ./src/components/molecules/index.ts [Client Component SSR]
+    ./src/app/(app)/events/[id]/registered/page.tsx [Client Component SSR]
+    ./src/app/(app)/events/[id]/registered/page.tsx [Server Component] @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1gdrd03._.js:1945
+[  167870ms] [ERROR] ./src/components/molecules/step-indicator.tsx:48:30
+Expected '</', got '='
+  46 |               <div className="mx-2 hidden h-8 flex-1 items-center sm:flex">
+  47 |                 <Divider
+> 48 |                   className={=`
+     |                              ^
+  49 |     ${step.status === "completed" ? "border-primary!" : ""}
+  50 |     my-other-class
+  51 |   `
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Server Component:
+    ./src/components/molecules/step-indicator.tsx
+    ./src/components/molecules/index.ts
+    ./src/app/not-found.tsx
+
+  Client Component Browser:
+    ./src/components/molecules/step-indicator.tsx [Client Component Browser]
+    ./src/components/molecules/index.ts [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/components/molecules/step-indicator.tsx [Client Component SSR]
+    ./src/components/molecules/index.ts [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Server Component] @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1gdrd03._.js:1945
+[  167870ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1gdrd03._.js:1226
+[  167939ms] [ERROR] ./src/components/molecules/step-indicator.tsx:48:30
+Expected '</', got '='
+  46 |               <div className="mx-2 hidden h-8 flex-1 items-center sm:flex">
+  47 |                 <Divider
+> 48 |                   className={=`
+     |                              ^
+  49 |     ${step.status === "completed" ? "border-primary!" : ""}
+  50 |     my-other-class
+  51 |   `
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Server Component:
+    ./src/components/molecules/step-indicator.tsx
+    ./src/components/molecules/index.ts
+    ./src/app/not-found.tsx
+
+  Client Component Browser:
+    ./src/components/molecules/step-indicator.tsx [Client Component Browser]
+    ./src/components/molecules/index.ts [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/components/molecules/step-indicator.tsx [Client Component SSR]
+    ./src/components/molecules/index.ts [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Server Component] @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1gdrd03._.js:1945
+[  168001ms] [ERROR] ./src/components/molecules/step-indicator.tsx:48:30
+Expected '</', got '='
+  46 |               <div className="mx-2 hidden h-8 flex-1 items-center sm:flex">
+  47 |                 <Divider
+> 48 |                   className={=`
+     |                              ^
+  49 |     ${step.status === "completed" ? "border-primary!" : ""}
+  50 |     my-other-class
+  51 |   `
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Server Component:
+    ./src/components/molecules/step-indicator.tsx
+    ./src/components/molecules/index.ts
+    ./src/app/not-found.tsx
+
+  Client Component Browser:
+    ./src/components/molecules/step-indicator.tsx [Client Component Browser]
+    ./src/components/molecules/index.ts [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/components/molecules/step-indicator.tsx [Client Component SSR]
+    ./src/components/molecules/index.ts [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Server Component] @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1gdrd03._.js:1945
+[  168063ms] [ERROR] ./src/components/molecules/step-indicator.tsx:48:30
+Expected '</', got '='
+  46 |               <div className="mx-2 hidden h-8 flex-1 items-center sm:flex">
+  47 |                 <Divider
+> 48 |                   className={=`
+     |                              ^
+  49 |     ${step.status === "completed" ? "border-primary!" : ""}
+  50 |     my-other-class
+  51 |   `
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Server Component:
+    ./src/components/molecules/step-indicator.tsx
+    ./src/components/molecules/index.ts
+    ./src/app/not-found.tsx
+
+  Client Component Browser:
+    ./src/components/molecules/step-indicator.tsx [Client Component Browser]
+    ./src/components/molecules/index.ts [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/components/molecules/step-indicator.tsx [Client Component SSR]
+    ./src/components/molecules/index.ts [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Server Component] @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1gdrd03._.js:1945
+[  168125ms] [ERROR] ./src/components/molecules/step-indicator.tsx:48:30
+Expected '</', got '='
+  46 |               <div className="mx-2 hidden h-8 flex-1 items-center sm:flex">
+  47 |                 <Divider
+> 48 |                   className={=`
+     |                              ^
+  49 |     ${step.status === "completed" ? "border-primary!" : ""}
+  50 |     my-other-class
+  51 |   `
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Server Component:
+    ./src/components/molecules/step-indicator.tsx
+    ./src/components/molecules/index.ts
+    ./src/app/not-found.tsx
+
+  Client Component Browser:
+    ./src/components/molecules/step-indicator.tsx [Client Component Browser]
+    ./src/components/molecules/index.ts [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/components/molecules/step-indicator.tsx [Client Component SSR]
+    ./src/components/molecules/index.ts [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Server Component] @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1gdrd03._.js:1945
+[  168193ms] [ERROR] ./src/components/molecules/step-indicator.tsx:48:30
+Expected '</', got '='
+  46 |               <div className="mx-2 hidden h-8 flex-1 items-center sm:flex">
+  47 |                 <Divider
+> 48 |                   className={=`
+     |                              ^
+  49 |     ${step.status === "completed" ? "border-primary!" : ""}
+  50 |     my-other-class
+  51 |   `
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Server Component:
+    ./src/components/molecules/step-indicator.tsx
+    ./src/components/molecules/index.ts
+    ./src/app/not-found.tsx
+
+  Client Component Browser:
+    ./src/components/molecules/step-indicator.tsx [Client Component Browser]
+    ./src/components/molecules/index.ts [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/components/molecules/step-indicator.tsx [Client Component SSR]
+    ./src/components/molecules/index.ts [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Server Component] @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1gdrd03._.js:1945
+[  168249ms] [ERROR] ./src/components/molecules/step-indicator.tsx:48:30
+Expected '</', got '='
+  46 |               <div className="mx-2 hidden h-8 flex-1 items-center sm:flex">
+  47 |                 <Divider
+> 48 |                   className={=`
+     |                              ^
+  49 |     ${step.status === "completed" ? "border-primary!" : ""}
+  50 |     my-other-class
+  51 |   `
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Server Component:
+    ./src/components/molecules/step-indicator.tsx
+    ./src/components/molecules/index.ts
+    ./src/app/not-found.tsx
+
+  Client Component Browser:
+    ./src/components/molecules/step-indicator.tsx [Client Component Browser]
+    ./src/components/molecules/index.ts [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/components/molecules/step-indicator.tsx [Client Component SSR]
+    ./src/components/molecules/index.ts [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Server Component] @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1gdrd03._.js:1945
+[  168313ms] [ERROR] ./src/components/molecules/step-indicator.tsx:48:30
+Expected '</', got '='
+  46 |               <div className="mx-2 hidden h-8 flex-1 items-center sm:flex">
+  47 |                 <Divider
+> 48 |                   className={=`
+     |                              ^
+  49 |     ${step.status === "completed" ? "border-primary!" : ""}
+  50 |     my-other-class
+  51 |   `
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Server Component:
+    ./src/components/molecules/step-indicator.tsx
+    ./src/components/molecules/index.ts
+    ./src/app/not-found.tsx
+
+  Client Component Browser:
+    ./src/components/molecules/step-indicator.tsx [Client Component Browser]
+    ./src/components/molecules/index.ts [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/components/molecules/step-indicator.tsx [Client Component SSR]
+    ./src/components/molecules/index.ts [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Server Component] @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1gdrd03._.js:1945
+[  168400ms] [ERROR] ./src/components/molecules/step-indicator.tsx:48:30
+Expected '</', got '='
+  46 |               <div className="mx-2 hidden h-8 flex-1 items-center sm:flex">
+  47 |                 <Divider
+> 48 |                   className={=`
+     |                              ^
+  49 |     ${step.status === "completed" ? "border-primary!" : ""}
+  50 |     my-other-class
+  51 |   `
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Server Component:
+    ./src/components/molecules/step-indicator.tsx
+    ./src/components/molecules/index.ts
+    ./src/app/not-found.tsx
+
+  Client Component Browser:
+    ./src/components/molecules/step-indicator.tsx [Client Component Browser]
+    ./src/components/molecules/index.ts [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/components/molecules/step-indicator.tsx [Client Component SSR]
+    ./src/components/molecules/index.ts [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Server Component] @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1gdrd03._.js:1945
+[  168460ms] [ERROR] ./src/components/molecules/step-indicator.tsx:48:30
+Expected '</', got '='
+  46 |               <div className="mx-2 hidden h-8 flex-1 items-center sm:flex">
+  47 |                 <Divider
+> 48 |                   className={=`
+     |                              ^
+  49 |     ${step.status === "completed" ? "border-primary!" : ""}
+  50 |     my-other-class
+  51 |   `
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Server Component:
+    ./src/components/molecules/step-indicator.tsx
+    ./src/components/molecules/index.ts
+    ./src/app/not-found.tsx
+
+  Client Component Browser:
+    ./src/components/molecules/step-indicator.tsx [Client Component Browser]
+    ./src/components/molecules/index.ts [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Client Component Browser]
+    ./src/app/(app)/events/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/components/molecules/step-indicator.tsx [Client Component SSR]
+    ./src/components/molecules/index.ts [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Client Component SSR]
+    ./src/app/(app)/events/page.tsx [Server Component] @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1gdrd03._.js:1945
+[  168849ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1gdrd03._.js:1226
+[  168968ms] [LOG] [Fast Refresh] done in 507ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1gdrd03._.js:1226
+[  169109ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1gdrd03._.js:1226
+[  169191ms] [LOG] [Fast Refresh] done in 192ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1gdrd03._.js:1226
+[  169559ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  169716ms] [LOG] [HMR] connected @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  169764ms] [LOG]  @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  169765ms] [LOG]  @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  169871ms] [WARNING] Image with src "/Logo.png" has either width or height modified, but not the other. If you use CSS to change the size of your image, also include the styles 'width: "auto"' or 'height: "auto"' to maintain the aspect ratio. @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  175954ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  176593ms] [LOG] [Fast Refresh] done in 1306ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  176977ms] [LOG]  @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  176978ms] [LOG]  @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  177012ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  177060ms] [LOG] [Fast Refresh] done in 155ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  177101ms] [LOG]  @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  177103ms] [LOG]  @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  183239ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  183298ms] [LOG] [Fast Refresh] done in 536ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  183487ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  183493ms] [LOG] [Fast Refresh] done in 113ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  183823ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  183825ms] [LOG] [Fast Refresh] done in 309ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  184043ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  184084ms] [LOG] [Fast Refresh] done in 257ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  184144ms] [LOG]  @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  184145ms] [LOG]  @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  184357ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  184358ms] [LOG] [Fast Refresh] done in 220ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  184738ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  184750ms] [LOG] [Fast Refresh] done in 113ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  184853ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  184877ms] [LOG] [Fast Refresh] done in 126ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  186091ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  186804ms] [LOG] [Fast Refresh] done in 1403ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  187234ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  187246ms] [LOG] [Fast Refresh] done in 156ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  187271ms] [LOG]  @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  187274ms] [LOG]  @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  187594ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  187635ms] [LOG] [Fast Refresh] done in 158ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  303818ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  303877ms] [LOG] [Fast Refresh] done in 604ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  304303ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  304306ms] [LOG] [Fast Refresh] done in 104ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  304457ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  304569ms] [LOG] [Fast Refresh] done in 213ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  304617ms] [LOG]  @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  304617ms] [LOG]  @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  304749ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  304749ms] [LOG] [Fast Refresh] done in 168ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  305011ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  305037ms] [LOG] [Fast Refresh] done in 244ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  315946ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  316011ms] [LOG] [Fast Refresh] done in 469ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  316129ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  316177ms] [LOG] [Fast Refresh] done in 167ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  316497ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  316523ms] [LOG] [Fast Refresh] done in 136ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  316658ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  316659ms] [LOG] [Fast Refresh] done in 114ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  316754ms] [LOG]  @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  316755ms] [LOG]  @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  316862ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  316960ms] [LOG] [Fast Refresh] done in 207ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  321681ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  321738ms] [LOG] [Fast Refresh] done in 522ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  322247ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  322247ms] [LOG] [Fast Refresh] done in 117ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  322459ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  322639ms] [LOG] [Fast Refresh] done in 380ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  322840ms] [LOG]  @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  322841ms] [LOG]  @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  323024ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  323024ms] [LOG] [Fast Refresh] done in 175ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  336865ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  337185ms] [LOG] [Fast Refresh] done in 714ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  337292ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  337444ms] [LOG] [Fast Refresh] done in 258ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  337589ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  337661ms] [LOG] [Fast Refresh] done in 180ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  338115ms] [LOG]  @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  338116ms] [LOG]  @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  338460ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  338514ms] [LOG] [Fast Refresh] done in 156ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  719215ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  721604ms] [LOG] [Fast Refresh] done in 2539ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  721793ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  721814ms] [LOG] [Fast Refresh] done in 124ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  721933ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  721960ms] [LOG] [Fast Refresh] done in 142ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  722079ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  722084ms] [LOG] [Fast Refresh] done in 109ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  722697ms] [LOG]  @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  722698ms] [LOG]  @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477

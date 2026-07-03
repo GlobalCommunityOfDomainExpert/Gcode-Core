@@ -1,0 +1,191 @@
+- generic [ref=f23e1]:
+  - generic [ref=f23e2]:
+    - banner [ref=f23e3]:
+      - generic [ref=f23e5]:
+        - link "logo" [ref=f23e6] [cursor=pointer]:
+          - /url: /
+          - img "logo" [ref=f23e7]
+        - navigation "Primary" [ref=f23e8]:
+          - link "Events" [ref=f23e9] [cursor=pointer]:
+            - /url: /events
+    - generic [ref=f23e10]:
+      - complementary [ref=f23e11]:
+        - navigation "Sidebar" [ref=f23e12]:
+          - generic [ref=f23e14]:
+            - button "My Events" [expanded] [ref=f23e15]:
+              - img [ref=f23e16]
+              - generic [ref=f23e19]: My Events
+              - img [ref=f23e20]
+            - generic [ref=f23e22]:
+              - link "Attending" [ref=f23e23] [cursor=pointer]:
+                - /url: /my-events
+              - link "Organizing" [ref=f23e24] [cursor=pointer]:
+                - /url: /my-organized-events
+        - button "Arjun Sharma Expert" [ref=f23e27]:
+          - generic [ref=f23e30]: AS
+          - generic [ref=f23e31]:
+            - generic [ref=f23e32]: Arjun Sharma
+            - generic [ref=f23e33]: Expert
+          - img [ref=f23e34]
+      - main [ref=f23e36]:
+        - generic [ref=f23e173]:
+          - navigation "Breadcrumb" [ref=f23e174]:
+            - list [ref=f23e175]:
+              - listitem [ref=f23e176]:
+                - link "Organizing" [ref=f23e177] [cursor=pointer]:
+                  - /url: /my-organized-events
+              - listitem [ref=f23e178]: GCODE Build Sprint · Summer 2026
+          - generic [ref=f23e179]:
+            - generic [ref=f23e180]:
+              - generic [ref=f23e181]:
+                - generic [ref=f23e182]:
+                  - generic [ref=f23e183]: ● Live
+                  - generic [ref=f23e184]: Hackathon
+                  - generic [ref=f23e185]: Online
+                  - generic [ref=f23e186]: Free
+                - heading "GCODE Build Sprint · Summer 2026" [level=1] [ref=f23e187]
+                - paragraph [ref=f23e188]: 15 Jul 2026 · 10:00 AM – 6:00 PM IST · Online
+              - generic [ref=f23e189]:
+                - generic [ref=f23e190]:
+                  - paragraph [ref=f23e191]: "148"
+                  - paragraph [ref=f23e192]: Registered
+                - generic [ref=f23e194]:
+                  - paragraph [ref=f23e195]: "200"
+                  - paragraph [ref=f23e196]: Capacity
+            - generic [ref=f23e197]:
+              - link "View Public Page →" [ref=f23e198] [cursor=pointer]:
+                - /url: /events/gcode-build-sprint-2026
+              - link "Edit Event →" [ref=f23e199] [cursor=pointer]:
+                - /url: /my-organized-events/gcode-build-sprint-2026/edit
+              - button "Cancel Event" [ref=f23e200]
+          - generic [ref=f23e201]:
+            - tablist [ref=f23e202]:
+              - tab "Overview" [ref=f23e203]
+              - tab "Attendees (18)" [ref=f23e204]
+              - tab "Communication" [ref=f23e205]
+              - tab "Settings" [ref=f23e206]
+              - tab "Community (0)" [selected] [ref=f23e207]
+            - generic [ref=f23e258]:
+              - generic [ref=f23e259]:
+                - generic [ref=f23e260]:
+                  - paragraph [ref=f23e261]: Active Community Requests
+                  - button "+ Request Help" [ref=f23e263]
+                - generic [ref=f23e264]:
+                  - generic [ref=f23e265]:
+                    - generic [ref=f23e266]: 🏢
+                    - paragraph [ref=f23e267]: Venue Partner
+                    - paragraph [ref=f23e268]:
+                      - text: 0 interested ·
+                      - generic [ref=f23e269]: 0 helping
+                      - text: · 0 passed
+                    - button "Send Reminder" [ref=f23e270]
+                  - generic [ref=f23e271]:
+                    - generic [ref=f23e272]: 💰
+                    - paragraph [ref=f23e273]: Sponsorship Partner
+                    - paragraph [ref=f23e274]:
+                      - text: 0 interested ·
+                      - generic [ref=f23e275]: 0 helping
+                      - text: · 0 passed
+                    - button "Send Reminder" [ref=f23e276]
+                  - generic [ref=f23e277]:
+                    - generic [ref=f23e278]: 🎤
+                    - paragraph [ref=f23e279]: Domain Experts
+                    - paragraph [ref=f23e280]:
+                      - text: 0 interested ·
+                      - generic [ref=f23e281]: 0 helping
+                      - text: · 0 passed
+                    - button "Send Reminder" [ref=f23e282]
+                  - generic [ref=f23e283]:
+                    - generic [ref=f23e284]: 🙋
+                    - paragraph [ref=f23e285]: Volunteer
+                    - paragraph [ref=f23e286]:
+                      - text: 0 interested ·
+                      - generic [ref=f23e287]: 0 helping
+                      - text: · 0 passed
+                    - button "Send Reminder" [ref=f23e288]
+              - generic [ref=f23e289]:
+                - paragraph [ref=f23e290]: Responses
+                - generic [ref=f23e292]:
+                  - checkbox "All (0)" [checked] [ref=f23e293]
+                  - checkbox "🏢 Venue Partner (0)" [ref=f23e294]
+                  - checkbox "💰 Sponsorship Partner (0)" [ref=f23e295]
+                  - checkbox "🎤 Domain Experts (0)" [ref=f23e296]
+                  - checkbox "🙋 Volunteer (0)" [ref=f23e297]
+                - paragraph [ref=f23e299]: No community requests yet.
+    - button "Ask GCODE AI" [ref=f23e159]:
+      - img [ref=f23e160]
+  - button "Open Next.js Dev Tools" [ref=f23e168] [cursor=pointer]:
+    - img [ref=f23e169]
+  - alert [ref=f23e172]
+  - dialog "Request community help" [ref=f23e301]:
+    - generic [ref=f23e302]:
+      - heading "Request community help" [level=3] [ref=f23e303]
+      - button "Close" [ref=f23e304]:
+        - img [ref=f23e305]
+    - generic [ref=f23e309]:
+      - generic [ref=f23e310]:
+        - heading "Request community help" [level=2] [ref=f23e311]
+        - paragraph [ref=f23e312]: Optional — ask venue partners, sponsors, guest speakers, or volunteers to help with this event. Skip this if you don't need help yet.
+      - generic [ref=f23e313]:
+        - tablist [ref=f23e314]:
+          - tab "Venue Partner" [selected] [ref=f23e315]
+          - tab "Sponsorship Partner" [ref=f23e316]
+          - tab "Guest Speaker" [ref=f23e317]
+          - tab "Volunteer" [ref=f23e318]
+        - search [ref=f23e319]:
+          - generic:
+            - img
+          - searchbox "Search venue partners by name..." [ref=f23e320]
+        - generic [ref=f23e321]:
+          - generic [ref=f23e322]:
+            - generic [ref=f23e323]:
+              - generic [ref=f23e326]: ID
+              - generic [ref=f23e327]:
+                - heading "IIT Delhi Innovation Hub" [level=4] [ref=f23e328]
+                - paragraph [ref=f23e329]: IIT Delhi
+                - generic [ref=f23e330]: Venue Partner
+            - paragraph [ref=f23e331]: Campus auditoriums and labs available for hackathons and symposiums.
+            - generic [ref=f23e332]:
+              - generic [ref=f23e333]: Auditorium
+              - generic [ref=f23e334]: Up to 500 seats
+            - button "✓ Selected" [active] [ref=f23e367]
+          - generic [ref=f23e336]:
+            - generic [ref=f23e337]:
+              - generic [ref=f23e340]: WK
+              - generic [ref=f23e341]:
+                - heading "WeWork Koramangala" [level=4] [ref=f23e342]
+                - paragraph [ref=f23e343]: WeWork India
+                - generic [ref=f23e344]: Venue Partner
+            - paragraph [ref=f23e345]: Flexible event spaces in Bangalore, ideal for meetups and workshops.
+            - generic [ref=f23e346]:
+              - generic [ref=f23e347]: Meetup Space
+              - generic [ref=f23e348]: Up to 120 seats
+            - button "Select" [ref=f23e349]
+          - generic [ref=f23e350]:
+            - generic [ref=f23e351]:
+              - generic [ref=f23e354]: NC
+              - generic [ref=f23e355]:
+                - heading "NASSCOM CoE" [level=4] [ref=f23e356]
+                - paragraph [ref=f23e357]: NASSCOM Center of Excellence
+                - generic [ref=f23e358]: Venue Partner
+            - paragraph [ref=f23e359]: Deep-tech focused venue with demo labs and breakout rooms.
+            - generic [ref=f23e360]:
+              - generic [ref=f23e361]: Demo Labs
+              - generic [ref=f23e362]: Up to 200 seats
+            - button "Select" [ref=f23e363]
+      - generic [ref=f23e368]:
+        - paragraph [ref=f23e369]: Requested (1)
+        - generic [ref=f23e370]:
+          - generic [ref=f23e371]:
+            - generic [ref=f23e372]:
+              - paragraph [ref=f23e373]: IIT Delhi Innovation Hub
+              - paragraph [ref=f23e374]: Venue Partner
+            - button "Remove IIT Delhi Innovation Hub" [ref=f23e375]:
+              - img [ref=f23e376]
+          - generic [ref=f23e379]:
+            - generic [ref=f23e380]: Message to IIT Delhi Innovation Hub
+            - textbox "Message to IIT Delhi Innovation Hub" [ref=f23e381]:
+              - /placeholder: What kind of help do you need from them?
+    - generic [ref=f23e364]:
+      - button "Cancel" [ref=f23e365]
+      - button "Send Requests (1)" [ref=f23e382]

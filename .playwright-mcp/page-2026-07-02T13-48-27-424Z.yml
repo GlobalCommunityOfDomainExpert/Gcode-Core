@@ -1,0 +1,35 @@
+- generic [active] [ref=f19e1]:
+  - generic [ref=f19e2]:
+    - banner [ref=f19e3]:
+      - generic [ref=f19e5]:
+        - link "logo" [ref=f19e6] [cursor=pointer]:
+          - /url: /
+          - img "logo" [ref=f19e7]
+        - navigation "Primary" [ref=f19e8]:
+          - link "Events" [ref=f19e9] [cursor=pointer]:
+            - /url: /events
+    - generic [ref=f19e10]:
+      - complementary [ref=f19e11]:
+        - navigation "Sidebar" [ref=f19e12]:
+          - button "My Events" [ref=f19e15]:
+            - img [ref=f19e16]
+            - generic [ref=f19e19]: My Events
+            - img [ref=f19e20]
+        - button "Arjun Sharma Expert" [ref=f19e24]:
+          - generic [ref=f19e27]: AS
+          - generic [ref=f19e28]:
+            - generic [ref=f19e29]: Arjun Sharma
+            - generic [ref=f19e30]: Expert
+          - img [ref=f19e31]
+      - main [ref=f19e33]:
+        - generic [ref=f19e36]:
+          - img [ref=f19e38]
+          - generic [ref=f19e41]:
+            - heading "Event not found" [level=3] [ref=f19e42]
+            - paragraph [ref=f19e43]: This event may not exist, or in-memory data was reset by a full page refresh.
+          - link "Browse Events" [ref=f19e44] [cursor=pointer]:
+            - /url: /events
+    - button "Ask GCODE AI" [ref=f19e45]:
+      - img [ref=f19e46]
+  - button "Open Next.js Dev Tools" [ref=f19e54] [cursor=pointer]:
+    - img [ref=f19e55]

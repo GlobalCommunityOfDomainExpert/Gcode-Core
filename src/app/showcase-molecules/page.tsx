@@ -283,12 +283,14 @@ export default function MoleculesShowcasePage() {
         <div className="grid gap-4 sm:grid-cols-2">
           <EventCard
             variant="compact"
+            colorSeed="building-secure-auth-systems"
             tags={[{ label: "Tech" }, { label: "Free", tone: "success" }]}
             title="Building secure auth systems"
             date="10 Jul 2026"
           />
           <EventCard
             variant="featured"
+            colorSeed="gcode-sprint"
             imageSrc="https://picsum.photos/seed/gcode-sprint/640/360"
             headerLabel="Hackathon"
             tags={[{ label: "Online" }, { label: "Free", tone: "success" }]}

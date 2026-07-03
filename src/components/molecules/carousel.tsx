@@ -1,99 +1,180 @@
 "use client";
 
-import { Children, ReactNode, useRef, useState } from "react";
+import {
+  Children,
+  forwardRef,
+  ReactNode,
+  useEffect,
+  useImperativeHandle,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Icon } from "@/components/atoms";
+
+export interface CarouselHandle {
+  scrollPrev: () => void;
+  scrollNext: () => void;
+}
+
+export interface CarouselState {
+  canScrollPrev: boolean;
+  canScrollNext: boolean;
+}
 
 export interface CarouselProps {
   children: ReactNode[];
   className?: string;
+  hideArrows?: boolean;
+  onStateChange?: (state: CarouselState) => void;
 }
 
-export function Carousel({ children, className = "" }: CarouselProps) {
-  const trackRef = useRef<HTMLDivElement>(null);
-  const [activeIndex, setActiveIndex] = useState(0);
-  const items = Children.toArray(children);
-
-  function scrollToIndex(index: number) {
-    const track = trackRef.current;
-    const child = track?.children[index] as HTMLElement | undefined;
-    if (track && child) {
-      track.scrollTo({ left: child.offsetLeft, behavior: "smooth" });
+function computeStops(track: HTMLDivElement): number[] {
+  const maxScrollLeft = Math.max(0, track.scrollWidth - track.clientWidth);
+  const children = Array.from(track.children) as HTMLElement[];
+  const stops: number[] = [];
+  for (const child of children) {
+    const target = Math.min(child.offsetLeft, maxScrollLeft);
+    if (stops.length === 0 || target - stops[stops.length - 1] > 1) {
+      stops.push(target);
     }
   }
+  return stops.length > 0 ? stops : [0];
+}
 
-  function handleScroll() {
-    const track = trackRef.current;
-    if (!track) return;
-    const children = Array.from(track.children) as HTMLElement[];
-    let closest = 0;
-    let minDistance = Infinity;
-    children.forEach((child, index) => {
-      const distance = Math.abs(child.offsetLeft - track.scrollLeft);
-      if (distance < minDistance) {
-        minDistance = distance;
-        closest = index;
+export const Carousel = forwardRef<CarouselHandle, CarouselProps>(
+  function Carousel(
+    { children, className = "", hideArrows = false, onStateChange },
+    ref,
+  ) {
+    const trackRef = useRef<HTMLDivElement>(null);
+    const [stops, setStops] = useState<number[]>([0]);
+    const [activeStop, setActiveStop] = useState(0);
+    const activeStopRef = useRef(0);
+    const stopsRef = useRef<number[]>([0]);
+    const items = Children.toArray(children);
+
+    useLayoutEffect(() => {
+      const track = trackRef.current;
+      if (!track) return;
+
+      function recomputeStops() {
+        if (!track) return;
+        const next = computeStops(track);
+        stopsRef.current = next;
+        setStops(next);
       }
-    });
-    setActiveIndex(closest);
-  }
 
-  return (
-    <div className={`relative ${className}`}>
-      <div
-        ref={trackRef}
-        onScroll={handleScroll}
-        className="flex snap-x snap-mandatory [scrollbar-width:none] gap-4 overflow-x-auto scroll-smooth pb-1 [&::-webkit-scrollbar]:hidden"
-      >
-        {items.map((item, index) => (
-          <div
-            key={index}
-            className="w-full shrink-0 snap-start sm:w-[calc(50%-0.5rem)] lg:w-[calc(33.333%-0.667rem)]"
-          >
-            {item}
-          </div>
-        ))}
-      </div>
+      recomputeStops();
 
-      {items.length > 1 && (
-        <>
-          <button
-            type="button"
-            onClick={() => scrollToIndex(Math.max(0, activeIndex - 1))}
-            aria-label="Previous"
-            disabled={activeIndex === 0}
-            className="border-border-light bg-surface-light text-text-secondary hover:text-text-primary focus-visible:ring-primary absolute top-1/2 left-0 flex size-8 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border shadow-sm focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:opacity-40"
-          >
-            <Icon icon={ChevronLeft} size="sm" />
-          </button>
-          <button
-            type="button"
-            onClick={() =>
-              scrollToIndex(Math.min(items.length - 1, activeIndex + 1))
-            }
-            aria-label="Next"
-            disabled={activeIndex === items.length - 1}
-            className="border-border-light bg-surface-light text-text-secondary hover:text-text-primary focus-visible:ring-primary absolute top-1/2 right-0 flex size-8 translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border shadow-sm focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:opacity-40"
-          >
-            <Icon icon={ChevronRight} size="sm" />
-          </button>
+      const observer = new ResizeObserver(recomputeStops);
+      observer.observe(track);
+      return () => observer.disconnect();
+    }, [items.length]);
 
+    function scrollToStop(index: number) {
+      const targets = stopsRef.current;
+      const clamped = Math.max(0, Math.min(targets.length - 1, index));
+      activeStopRef.current = clamped;
+      setActiveStop(clamped);
+      trackRef.current?.scrollTo({
+        left: targets[clamped],
+        behavior: "smooth",
+      });
+    }
+
+    function handleScroll() {
+      const track = trackRef.current;
+      if (!track) return;
+      const targets = stopsRef.current;
+      let closest = 0;
+      let minDistance = Infinity;
+      targets.forEach((target, index) => {
+        const distance = Math.abs(target - track.scrollLeft);
+        if (distance < minDistance) {
+          minDistance = distance;
+          closest = index;
+        }
+      });
+      activeStopRef.current = closest;
+      setActiveStop(closest);
+    }
+
+    useImperativeHandle(ref, () => ({
+      scrollPrev: () => scrollToStop(activeStopRef.current - 1),
+      scrollNext: () => scrollToStop(activeStopRef.current + 1),
+    }));
+
+    const canScroll = stops.length > 1;
+
+    useEffect(() => {
+      onStateChange?.({
+        canScrollPrev: canScroll && activeStop > 0,
+        canScrollNext: canScroll && activeStop < stops.length - 1,
+      });
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [canScroll, activeStop, stops.length]);
+
+    const showControls = canScroll;
+
+    return (
+      <div className={`relative ${className}`}>
+        <div
+          ref={trackRef}
+          onScroll={handleScroll}
+          className="flex snap-x snap-mandatory [scrollbar-width:none] gap-4 overflow-x-auto scroll-smooth pb-1 [&::-webkit-scrollbar]:hidden"
+        >
+          {items.map((item, index) => (
+            <div
+              key={index}
+              className="w-full shrink-0 snap-start sm:w-[calc(50%-0.5rem)] lg:w-[calc(33.333%-0.667rem)]"
+            >
+              {item}
+            </div>
+          ))}
+        </div>
+
+        {showControls && !hideArrows && (
+          <>
+            <button
+              type="button"
+              onClick={() => scrollToStop(activeStopRef.current - 1)}
+              aria-label="Previous"
+              disabled={activeStop === 0}
+              className="border-border-light bg-surface-light text-text-secondary hover:text-text-primary focus-visible:ring-primary absolute top-1/2 left-0 flex size-8 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border shadow-sm focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:opacity-40"
+            >
+              <Icon icon={ChevronLeft} size="sm" />
+            </button>
+            <button
+              type="button"
+              onClick={() => scrollToStop(activeStopRef.current + 1)}
+              aria-label="Next"
+              disabled={activeStop === stops.length - 1}
+              className="border-border-light bg-surface-light text-text-secondary hover:text-text-primary focus-visible:ring-primary absolute top-1/2 right-0 flex size-8 translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border shadow-sm focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:opacity-40"
+            >
+              <Icon icon={ChevronRight} size="sm" />
+            </button>
+          </>
+        )}
+
+        {showControls && (
           <div className="mt-3 flex items-center justify-center gap-1.5">
-            {items.map((_, index) => (
+            {stops.map((_, index) => (
               <button
                 key={index}
                 type="button"
-                onClick={() => scrollToIndex(index)}
+                onClick={() => scrollToStop(index)}
                 aria-label={`Go to slide ${index + 1}`}
-                aria-current={index === activeIndex}
+                aria-current={index === activeStop}
                 className={`size-1.5 rounded-full transition-colors ${
-                  index === activeIndex ? "bg-primary" : "bg-border-hover"
+                  index === activeStop ? "bg-primary" : "bg-border-hover"
                 }`}
               />
             ))}
           </div>
-        </>
-      )}
-    </div>
-  );
-}
+        )}
+      </div>
+    );
+  },
+);

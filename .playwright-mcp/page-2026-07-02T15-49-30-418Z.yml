@@ -1,0 +1,103 @@
+- generic [active] [ref=f35e1]:
+  - generic [ref=f35e2]:
+    - banner [ref=f35e3]:
+      - generic [ref=f35e5]:
+        - link "logo" [ref=f35e6] [cursor=pointer]:
+          - /url: /
+          - img "logo" [ref=f35e7]
+        - navigation "Primary" [ref=f35e8]:
+          - link "Events" [ref=f35e9] [cursor=pointer]:
+            - /url: /events
+    - generic [ref=f35e10]:
+      - complementary [ref=f35e11]:
+        - navigation "Sidebar" [ref=f35e12]:
+          - button "My Events" [ref=f35e15]:
+            - img [ref=f35e16]
+            - generic [ref=f35e19]: My Events
+            - img [ref=f35e20]
+        - button "Arjun Sharma Expert" [ref=f35e24]:
+          - generic [ref=f35e27]: AS
+          - generic [ref=f35e28]:
+            - generic [ref=f35e29]: Arjun Sharma
+            - generic [ref=f35e30]: Expert
+          - img [ref=f35e31]
+      - main [ref=f35e33]:
+        - generic [ref=f35e35]:
+          - generic [ref=f35e36]:
+            - heading "Host an Event" [level=1] [ref=f35e37]
+            - paragraph [ref=f35e38]: Set up your event and optionally request help from the community.
+          - list [ref=f35e40]:
+            - listitem [ref=f35e41]:
+              - generic [ref=f35e42]:
+                - img [ref=f35e136]
+                - generic [ref=f35e44]: Type
+              - separator [ref=f35e46]
+            - listitem [ref=f35e47]:
+              - generic [ref=f35e48]:
+                - generic [ref=f35e49]: "2"
+                - generic [ref=f35e50]: Details
+              - separator [ref=f35e52]
+            - listitem [ref=f35e53]:
+              - generic [ref=f35e54]:
+                - generic [ref=f35e55]: "3"
+                - generic [ref=f35e56]: Schedule & Mode
+              - separator [ref=f35e58]
+            - listitem [ref=f35e59]:
+              - generic [ref=f35e60]:
+                - generic [ref=f35e61]: "4"
+                - generic [ref=f35e62]: Agenda, Links & Media
+              - separator [ref=f35e64]
+            - listitem [ref=f35e65]:
+              - generic [ref=f35e66]:
+                - generic [ref=f35e67]: "5"
+                - generic [ref=f35e68]: Community
+              - separator [ref=f35e70]
+            - listitem [ref=f35e71]:
+              - generic [ref=f35e72]:
+                - generic [ref=f35e73]: "6"
+                - generic [ref=f35e74]: Review
+          - generic [ref=f35e138]:
+            - generic [ref=f35e139]:
+              - heading "Tell us about the event" [level=2] [ref=f35e140]
+              - paragraph [ref=f35e141]: This shows up on the event's public page.
+            - generic [ref=f35e142]:
+              - generic [ref=f35e143]:
+                - text: Event Title
+                - generic [ref=f35e144]: "*"
+              - textbox "Event Title" [ref=f35e145]:
+                - /placeholder: e.g. GCODE Build Sprint · Winter 2026
+            - generic [ref=f35e146]:
+              - generic [ref=f35e147]:
+                - text: Description
+                - generic [ref=f35e148]: "*"
+              - textbox "Description" [ref=f35e149]:
+                - /placeholder: Describe the event, who it's for, and what attendees will get out of it...
+              - paragraph [ref=f35e150]: One idea per line — each becomes a paragraph on the event page.
+            - generic [ref=f35e151]:
+              - generic [ref=f35e152]: Cover Image URL
+              - textbox "Cover Image URL" [ref=f35e153]:
+                - /placeholder: https://images.example.com/banner.jpg
+              - paragraph [ref=f35e154]: Shown as the event banner. Leave blank to use an auto-generated color instead.
+            - generic [ref=f35e156]:
+              - generic [ref=f35e157]: Price
+              - radiogroup [ref=f35e158]:
+                - radio "Free" [checked] [ref=f35e159]
+                - radio "Paid" [ref=f35e160]
+            - generic [ref=f35e161]:
+              - generic [ref=f35e162]:
+                - generic [ref=f35e163]: Capacity
+                - spinbutton "Capacity" [ref=f35e164]
+                - paragraph [ref=f35e165]: Leave blank for unlimited.
+              - generic [ref=f35e166]:
+                - generic [ref=f35e167]: Certificate
+                - generic [ref=f35e169] [cursor=pointer]:
+                  - switch "Certificate Issue a certificate on completion" [ref=f35e170]
+                  - text: Issue a certificate on completion
+          - generic [ref=f35e118]:
+            - button "← Back" [ref=f35e119]
+            - button "Next →" [disabled] [ref=f35e121]
+    - button "Ask GCODE AI" [ref=f35e122]:
+      - img [ref=f35e123]
+  - button "Open Next.js Dev Tools" [ref=f35e131] [cursor=pointer]:
+    - img [ref=f35e132]
+  - alert [ref=f35e135]

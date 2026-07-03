@@ -1,0 +1,101 @@
+- generic [active] [ref=f18e1]:
+  - generic [ref=f18e2]:
+    - banner [ref=f18e3]:
+      - generic [ref=f18e5]:
+        - link "logo" [ref=f18e6] [cursor=pointer]:
+          - /url: /
+          - img "logo" [ref=f18e7]
+        - navigation "Primary" [ref=f18e8]:
+          - link "Events" [ref=f18e9] [cursor=pointer]:
+            - /url: /events
+    - generic [ref=f18e10]:
+      - complementary [ref=f18e11]:
+        - navigation "Sidebar" [ref=f18e12]:
+          - generic [ref=f18e14]:
+            - button "My Events" [expanded] [ref=f18e15]:
+              - img [ref=f18e16]
+              - generic [ref=f18e19]: My Events
+              - img [ref=f18e20]
+            - generic [ref=f18e22]:
+              - link "Attending" [ref=f18e23] [cursor=pointer]:
+                - /url: /my-events
+              - link "Organizing" [ref=f18e24] [cursor=pointer]:
+                - /url: /my-organized-events
+        - button "Arjun Sharma Expert" [ref=f18e27]:
+          - generic [ref=f18e30]: AS
+          - generic [ref=f18e31]:
+            - generic [ref=f18e32]: Arjun Sharma
+            - generic [ref=f18e33]: Expert
+          - img [ref=f18e34]
+      - main [ref=f18e36]:
+        - generic [ref=f18e66]:
+          - generic [ref=f18e67]:
+            - heading "Host an Event" [level=1] [ref=f18e68]
+            - paragraph [ref=f18e69]: Set up your event and optionally request help from the community.
+          - list [ref=f18e71]:
+            - listitem [ref=f18e72]:
+              - generic [ref=f18e73]:
+                - generic [ref=f18e74]: "1"
+                - generic [ref=f18e75]: Type
+              - separator [ref=f18e77]
+            - listitem [ref=f18e78]:
+              - generic [ref=f18e79]:
+                - generic [ref=f18e80]: "2"
+                - generic [ref=f18e81]: Details
+              - separator [ref=f18e83]
+            - listitem [ref=f18e84]:
+              - generic [ref=f18e85]:
+                - generic [ref=f18e86]: "3"
+                - generic [ref=f18e87]: Schedule & Mode
+              - separator [ref=f18e89]
+            - listitem [ref=f18e90]:
+              - generic [ref=f18e91]:
+                - generic [ref=f18e92]: "4"
+                - generic [ref=f18e93]: Agenda & Links
+              - separator [ref=f18e95]
+            - listitem [ref=f18e96]:
+              - generic [ref=f18e97]:
+                - generic [ref=f18e98]: "5"
+                - generic [ref=f18e99]: Community
+              - separator [ref=f18e101]
+            - listitem [ref=f18e102]:
+              - generic [ref=f18e103]:
+                - generic [ref=f18e104]: "6"
+                - generic [ref=f18e105]: Review
+          - generic [ref=f18e107]:
+            - generic [ref=f18e108]:
+              - heading "What kind of event is this?" [level=2] [ref=f18e109]
+              - paragraph [ref=f18e110]: Pick the format that best matches your event.
+            - radiogroup "Event type" [ref=f18e111]:
+              - radio "Hackathon Build sprint, team-based" [ref=f18e112]:
+                - img [ref=f18e113]
+                - generic [ref=f18e118]: Hackathon
+                - generic [ref=f18e119]: Build sprint, team-based
+              - radio "Expert AMA Live Q&A with an expert" [ref=f18e120]:
+                - img [ref=f18e121]
+                - generic [ref=f18e124]: Expert AMA
+                - generic [ref=f18e125]: Live Q&A with an expert
+              - radio "Webinar Live or recorded session" [ref=f18e126]:
+                - img [ref=f18e127]
+                - generic [ref=f18e130]: Webinar
+                - generic [ref=f18e131]: Live or recorded session
+              - radio "Ideathon Idea pitching competition" [ref=f18e132]:
+                - img [ref=f18e133]
+                - generic [ref=f18e135]: Ideathon
+                - generic [ref=f18e136]: Idea pitching competition
+              - radio "Community Meetup Informal networking" [ref=f18e137]:
+                - img [ref=f18e138]
+                - generic [ref=f18e140]: Community Meetup
+                - generic [ref=f18e141]: Informal networking
+              - radio "Institution Event Hosted with a partner institution" [ref=f18e142]:
+                - img [ref=f18e143]
+                - generic [ref=f18e147]: Institution Event
+                - generic [ref=f18e148]: Hosted with a partner institution
+          - generic [ref=f18e149]:
+            - button "← Back" [disabled] [ref=f18e150]
+            - button "Next →" [disabled] [ref=f18e152]
+    - button "Ask GCODE AI" [ref=f18e52]:
+      - img [ref=f18e53]
+  - button "Open Next.js Dev Tools" [ref=f18e61] [cursor=pointer]:
+    - img [ref=f18e62]
+  - alert [ref=f18e65]

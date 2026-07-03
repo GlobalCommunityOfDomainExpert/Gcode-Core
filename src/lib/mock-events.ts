@@ -38,6 +38,11 @@ export interface EventAgendaItem {
   description: string;
 }
 
+export interface EventSocialLink {
+  platform: string;
+  url: string;
+}
+
 export interface EventOrganizer {
   name: string;
   title: string;
@@ -71,12 +76,73 @@ export interface MockEvent {
   organizer: EventOrganizer;
   terms: string[];
   tags?: string[];
+  socialLinks?: EventSocialLink[];
+  coverImageUrl?: string;
+  mediaUrls?: string[];
 }
 
 export const mockEvents: MockEvent[] = [
   {
     id: "gcode-build-sprint-2026",
     title: "GCODE Build Sprint · Summer 2026",
+    type: "Hackathon",
+    mode: "Online",
+    price: "Free",
+    date: "15 Jul 2026",
+    time: "10:00 AM – 6:00 PM IST",
+    location: "Online · Link shared after registration",
+    registeredCount: 148,
+    spotsLeft: 52,
+    capacity: 200,
+    featured: true,
+    tags: ["Hackathon", "Beginner Friendly"],
+    registrationCloses: "14 Jul 2026",
+    duration: "8 hours · Full-day event",
+    teamSize: "1–4 members · Solo or team participation",
+    certificate: true,
+    description: [
+      "A full-day build sprint for founders, engineers, and domain experts to ship a working prototype in a single day.",
+      "Teams of up to 4 pick a track, get 30 minutes of live expert office hours at noon, and demo their build for judging at 5 PM.",
+    ],
+    agenda: [
+      {
+        time: "10:00 AM",
+        title: "Kickoff & Problem Statement",
+        description: "Opening session, team registration, problem brief",
+      },
+      {
+        time: "12:00 PM",
+        title: "Expert Office Hours",
+        description: "30-min live Q&A with domain experts",
+      },
+      {
+        time: "4:00 PM",
+        title: "Submissions Close",
+        description: "Final project submission deadline",
+      },
+      {
+        time: "5:00 PM",
+        title: "Winners Announced",
+        description: "Live judging + prize distribution",
+      },
+    ],
+    organizer: {
+      name: "GCODE Team",
+      title: "GCODE Expert",
+      verified: true,
+      eventsHosted: 8,
+      attendees: 1240,
+    },
+    terms: [
+      "Open to all GCODE members — freshers, startup founders, and domain experts.",
+      "Free event — no registration fee. Spot is confirmed on sign-up.",
+      "Certificate issued to all participants who complete the full event.",
+      "GCODE reserves the right to disqualify participants for code-of-conduct violations.",
+    ],
+  },
+   {
+    id: "gcode-build-sprint-2026-winter",
+    title: "GCODE Build Sprint · Winter 2026",
     type: "Hackathon",
     mode: "Online",
     price: "Free",

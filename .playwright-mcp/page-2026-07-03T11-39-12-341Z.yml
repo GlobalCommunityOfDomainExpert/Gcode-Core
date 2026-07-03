@@ -1,0 +1,217 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - generic [ref=e5]:
+        - link "logo" [ref=e6] [cursor=pointer]:
+          - /url: /
+          - img "logo" [ref=e7]
+        - navigation "Primary" [ref=e8]:
+          - link "Events" [ref=e9] [cursor=pointer]:
+            - /url: /events
+    - generic [ref=e10]:
+      - complementary [ref=e11]:
+        - navigation "Sidebar" [ref=e12]:
+          - button "My Events" [ref=e15]:
+            - img [ref=e16]
+            - generic [ref=e19]: My Events
+            - img [ref=e20]
+        - button "Arjun Sharma Expert" [ref=e24]:
+          - generic [ref=e27]: AS
+          - generic [ref=e28]:
+            - generic [ref=e29]: Arjun Sharma
+            - generic [ref=e30]: Expert
+          - img [ref=e31]
+      - main [ref=e33]:
+        - generic [ref=e35]:
+          - generic [ref=e36]:
+            - generic [ref=e37]:
+              - heading "Discover Events & Webinars" [level=4] [ref=e38]
+              - paragraph [ref=e39]: Hackathons, Ideathons, Expert AMAs, Live Webinars — all in one place.
+            - link "+ Host / Submit Event" [ref=e40] [cursor=pointer]:
+              - /url: /my-organized-events/new
+          - generic [ref=e41]:
+            - tablist [ref=e42]:
+              - tab "All" [selected] [ref=e43]
+              - tab "Webinars" [ref=e44]
+              - tab "Hackathons" [ref=e45]
+              - tab "Ideathons" [ref=e46]
+              - tab "Meetups" [ref=e47]
+              - tab "Expert AMAs" [ref=e48]
+            - generic [ref=e49]:
+              - checkbox "Free" [ref=e50]
+              - checkbox "Paid" [ref=e51]
+              - checkbox "Online" [ref=e52]
+              - checkbox "In-Person" [ref=e53]
+          - generic [ref=e54]:
+            - heading "Featured" [level=2] [ref=e55]
+            - generic [ref=e56]:
+              - generic [ref=e57]:
+                - generic [ref=e59]:
+                  - generic [ref=e60]:
+                    - img [ref=e62]
+                    - generic [ref=e67]: Hackathon
+                  - generic [ref=e68]:
+                    - generic [ref=e69]:
+                      - generic [ref=e70]: Online
+                      - generic [ref=e71]: Free
+                    - link "GCODE Build Sprint · Summer 2026" [ref=e72] [cursor=pointer]:
+                      - /url: /events/gcode-build-sprint-2026
+                    - paragraph [ref=e74]:
+                      - img [ref=e75]
+                      - text: 15 Jul 2026 · 10:00 AM – 6:00 PM IST
+                    - generic [ref=e78]:
+                      - generic [ref=e81]: PS
+                      - generic [ref=e84]: RV
+                      - generic [ref=e87]: AI
+                    - generic [ref=e88]:
+                      - generic [ref=e89]: 52 spots left
+                      - link "Register" [ref=e91] [cursor=pointer]:
+                        - /url: /events/gcode-build-sprint-2026
+                        - text: Register
+                        - img [ref=e92]
+                - generic [ref=e95]:
+                  - generic [ref=e96]:
+                    - img [ref=e98]
+                    - generic [ref=e103]: Expert AMA
+                  - generic [ref=e104]:
+                    - generic [ref=e105]:
+                      - generic [ref=e106]: Online
+                      - generic [ref=e107]: Free
+                    - 'link "Ask Me Anything: Fundraising for Deep-Tech Startups" [ref=e108] [cursor=pointer]':
+                      - /url: /events/ask-me-anything-fundraising
+                    - paragraph [ref=e110]:
+                      - img [ref=e111]
+                      - text: 18 Jul 2026 · 6:00 PM IST
+                    - generic [ref=e114]:
+                      - generic [ref=e117]: KR
+                      - generic [ref=e120]: MP
+                      - generic [ref=e123]: AM
+                    - link "Register" [ref=e126] [cursor=pointer]:
+                      - /url: /events/ask-me-anything-fundraising
+                      - text: Register
+                      - img [ref=e127]
+                - generic [ref=e130]:
+                  - generic [ref=e131]:
+                    - img [ref=e133]
+                    - generic [ref=e138]: Webinar
+                  - generic [ref=e139]:
+                    - generic [ref=e140]:
+                      - generic [ref=e141]: Online
+                      - generic [ref=e142]: ₹299
+                    - 'link "Fundraising readiness: what investors check first" [ref=e143] [cursor=pointer]':
+                      - /url: /events/fundraising-readiness-webinar
+                    - paragraph [ref=e145]:
+                      - img [ref=e146]
+                      - text: 5 Jul 2026 · 5:00 PM IST
+                    - generic [ref=e149]:
+                      - generic [ref=e152]: DM
+                      - generic [ref=e155]: AR
+                    - link "Register" [ref=e158] [cursor=pointer]:
+                      - /url: /events/fundraising-readiness-webinar
+                      - text: Register
+                      - img [ref=e159]
+              - button "Previous" [disabled] [ref=e161]:
+                - img [ref=e162]
+              - button "Next" [ref=e164]:
+                - img [ref=e165]
+              - generic [ref=e167]:
+                - button "Go to slide 1" [ref=e168]
+                - button "Go to slide 2" [ref=e169]
+                - button "Go to slide 3" [ref=e170]
+          - generic [ref=e171]:
+            - heading "Upcoming Events" [level=2] [ref=e172]
+            - generic [ref=e173]:
+              - generic [ref=e174]:
+                - img [ref=e177]
+                - generic [ref=e181]:
+                  - generic [ref=e182]:
+                    - generic [ref=e183]: Hackathon
+                    - generic [ref=e184]: Free
+                  - link "GCODE Build Sprint · Summer 2026" [ref=e185] [cursor=pointer]:
+                    - /url: /events/gcode-build-sprint-2026
+                  - paragraph [ref=e186]:
+                    - img [ref=e187]
+                    - text: 15 Jul 2026
+                  - link "Register" [ref=e190] [cursor=pointer]:
+                    - /url: /events/gcode-build-sprint-2026
+                    - text: Register
+                    - img [ref=e191]
+              - generic [ref=e193]:
+                - img [ref=e196]
+                - generic [ref=e200]:
+                  - generic [ref=e201]:
+                    - generic [ref=e202]: Expert AMA
+                    - generic [ref=e203]: Free
+                  - 'link "Ask Me Anything: Fundraising for Deep-Tech Startups" [ref=e204] [cursor=pointer]':
+                    - /url: /events/ask-me-anything-fundraising
+                  - paragraph [ref=e205]:
+                    - img [ref=e206]
+                    - text: 18 Jul 2026
+                  - link "Register" [ref=e209] [cursor=pointer]:
+                    - /url: /events/ask-me-anything-fundraising
+                    - text: Register
+                    - img [ref=e210]
+              - generic [ref=e212]:
+                - img [ref=e215]
+                - generic [ref=e219]:
+                  - generic [ref=e220]:
+                    - generic [ref=e221]: Webinar
+                    - generic [ref=e222]: ₹299
+                  - 'link "Fundraising readiness: what investors check first" [ref=e223] [cursor=pointer]':
+                    - /url: /events/fundraising-readiness-webinar
+                  - paragraph [ref=e224]:
+                    - img [ref=e225]
+                    - text: 5 Jul 2026
+                  - link "Register" [ref=e228] [cursor=pointer]:
+                    - /url: /events/fundraising-readiness-webinar
+                    - text: Register
+                    - img [ref=e229]
+              - generic [ref=e231]:
+                - img [ref=e234]
+                - generic [ref=e238]:
+                  - generic [ref=e239]:
+                    - generic [ref=e240]: Ideathon
+                    - generic [ref=e241]: Free
+                  - link "ClimaTech Ideathon 2026" [ref=e242] [cursor=pointer]:
+                    - /url: /events/climatech-ideathon-2026
+                  - paragraph [ref=e243]:
+                    - img [ref=e244]
+                    - text: 20 Jul 2026
+                  - link "Register" [ref=e247] [cursor=pointer]:
+                    - /url: /events/climatech-ideathon-2026
+                    - text: Register
+                    - img [ref=e248]
+              - generic [ref=e250]:
+                - img [ref=e253]
+                - generic [ref=e257]:
+                  - generic [ref=e258]:
+                    - generic [ref=e259]: Community Meetup
+                    - generic [ref=e260]: Free
+                  - link "GCODE Founders Meetup · Mumbai" [ref=e261] [cursor=pointer]:
+                    - /url: /events/gcode-founders-meetup-mumbai
+                  - paragraph [ref=e262]:
+                    - img [ref=e263]
+                    - text: 22 Jul 2026
+                  - link "Register" [ref=e266] [cursor=pointer]:
+                    - /url: /events/gcode-founders-meetup-mumbai
+                    - text: Register
+                    - img [ref=e267]
+              - generic [ref=e269]:
+                - img [ref=e272]
+                - generic [ref=e276]:
+                  - generic [ref=e277]:
+                    - generic [ref=e278]: Institution Event
+                    - generic [ref=e279]: ₹200
+                  - link "National Tech Symposium 2026 — IIT Delhi" [ref=e280] [cursor=pointer]:
+                    - /url: /events/national-tech-symposium-2026
+                  - paragraph [ref=e281]:
+                    - img [ref=e282]
+                    - text: 25 Jul 2026
+                  - link "Register" [ref=e285] [cursor=pointer]:
+                    - /url: /events/national-tech-symposium-2026
+                    - text: Register
+                    - img [ref=e286]
+    - button "Ask GCODE AI" [ref=e288]:
+      - img [ref=e289]
+  - button "Open Next.js Dev Tools" [ref=e297] [cursor=pointer]:
+    - img [ref=e298]

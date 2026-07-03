@@ -1,6 +1,7 @@
 import { ArrowRight, Calendar, Image as ImageIcon, MapPin } from "lucide-react";
 import NextLink from "next/link";
 import { Badge, BadgeTone, Button, ButtonLink, Icon } from "@/components/atoms";
+import { getEventColor } from "@/lib/event-color";
 import { AvatarGroup, AvatarGroupItem } from "./avatar-group";
 
 export interface EventCardTag {
@@ -12,6 +13,7 @@ export interface EventCardProps {
   variant?: "compact" | "featured";
   imageSrc?: string;
   imageAlt?: string;
+  colorSeed: string;
   headerLabel?: string;
   tags: EventCardTag[];
   title: string;
@@ -25,7 +27,15 @@ export interface EventCardProps {
   onAction?: () => void;
 }
 
-function EventCardMedia({ src, alt }: { src?: string; alt: string }) {
+function EventCardMedia({
+  src,
+  alt,
+  colorSeed,
+}: {
+  src?: string;
+  alt: string;
+  colorSeed: string;
+}) {
   if (src) {
     return (
       // eslint-disable-next-line @next/next/no-img-element
@@ -34,8 +44,11 @@ function EventCardMedia({ src, alt }: { src?: string; alt: string }) {
   }
 
   return (
-    <div className="bg-bg-light text-text-secondary flex h-full w-full items-center justify-center">
-      <Icon icon={ImageIcon} size="lg" />
+    <div
+      className="flex h-full w-full items-center justify-center"
+      style={{ backgroundColor: getEventColor(colorSeed) }}
+    >
+      <Icon icon={ImageIcon} size="lg" className="text-white/40" />
     </div>
   );
 }
@@ -63,6 +76,7 @@ export function EventCard({
   variant = "compact",
   imageSrc,
   imageAlt,
+  colorSeed,
   headerLabel,
   tags,
   title,
@@ -89,7 +103,11 @@ export function EventCard({
     return (
       <div className="border-border-light bg-surface-light flex h-full flex-col overflow-hidden rounded-md border transition-shadow hover:shadow-md">
         <div className="relative aspect-video shrink-0">
-          <EventCardMedia src={imageSrc} alt={imageAlt ?? title} />
+          <EventCardMedia
+            src={imageSrc}
+            alt={imageAlt ?? title}
+            colorSeed={colorSeed}
+          />
           {headerLabel && (
             <div className="absolute top-3 left-3">
               <Badge variant="solid" tone="neutral">
@@ -151,7 +169,11 @@ export function EventCard({
   return (
     <div className="border-border-light bg-surface-light flex h-full flex-col overflow-hidden rounded-md border transition-shadow hover:shadow-md">
       <div className="aspect-video shrink-0">
-        <EventCardMedia src={imageSrc} alt={imageAlt ?? title} />
+        <EventCardMedia
+          src={imageSrc}
+          alt={imageAlt ?? title}
+          colorSeed={colorSeed}
+        />
       </div>
       <div className="flex flex-1 flex-col gap-2 p-4">
         <div className="flex flex-wrap gap-2">
