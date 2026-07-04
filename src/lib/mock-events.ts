@@ -140,7 +140,7 @@ export const mockEvents: MockEvent[] = [
       "GCODE reserves the right to disqualify participants for code-of-conduct violations.",
     ],
   },
-   {
+  {
     id: "gcode-build-sprint-2026-winter",
     title: "GCODE Build Sprint · Winter 2026",
     type: "Hackathon",

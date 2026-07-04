@@ -1,48 +1,48 @@
 - generic [active] [ref=f18e1]:
-  - generic [ref=f18e2]:
-    - banner [ref=f18e3]:
-      - generic [ref=f18e5]:
-        - link "logo" [ref=f18e6] [cursor=pointer]:
-          - /url: /
-          - img "logo" [ref=f18e7]
-        - navigation "Primary" [ref=f18e8]:
-          - link "Events" [ref=f18e9] [cursor=pointer]:
-            - /url: /events
-    - generic [ref=f18e10]:
-      - complementary [ref=f18e11]:
-        - navigation "Sidebar" [ref=f18e12]:
-          - generic [ref=f18e14]:
-            - button "My Events" [expanded] [ref=f18e15]:
-              - img [ref=f18e16]
-              - generic [ref=f18e19]: My Events
-              - img [ref=f18e20]
-            - generic [ref=f18e22]:
-              - link "Attending" [ref=f18e23] [cursor=pointer]:
-                - /url: /my-events
-              - link "Organizing" [ref=f18e24] [cursor=pointer]:
-                - /url: /my-organized-events
-        - button "Arjun Sharma Expert" [ref=f18e27]:
-          - generic [ref=f18e30]: AS
-          - generic [ref=f18e31]:
-            - generic [ref=f18e32]: Arjun Sharma
-            - generic [ref=f18e33]: Expert
-          - img [ref=f18e34]
-      - main [ref=f18e36]:
-        - generic [ref=f18e38]:
-          - generic [ref=f18e39]:
-            - generic [ref=f18e40]:
-              - heading "Organizing" [level=1] [ref=f18e41]
-              - paragraph [ref=f18e42]: Events you're hosting on GCODE.
-            - link "+ Host Event" [ref=f18e43] [cursor=pointer]:
-              - /url: /my-organized-events/new
-          - generic [ref=f18e44]:
-            - img [ref=f18e46]
-            - generic [ref=f18e48]:
-              - heading "You haven't hosted an event yet" [level=3] [ref=f18e49]
-              - paragraph [ref=f18e50]: Set up your first event in a few guided steps — you can also request help from the community along the way.
-            - link "+ Host Event" [ref=f18e51] [cursor=pointer]:
-              - /url: /my-organized-events/new
-    - button "Ask GCODE AI" [ref=f18e52]:
-      - img [ref=f18e53]
-  - button "Open Next.js Dev Tools" [ref=f18e61] [cursor=pointer]:
-    - img [ref=f18e62]
+    - generic [ref=f18e2]:
+        - banner [ref=f18e3]:
+            - generic [ref=f18e5]:
+                - link "logo" [ref=f18e6] [cursor=pointer]:
+                    - /url: /
+                    - img "logo" [ref=f18e7]
+                - navigation "Primary" [ref=f18e8]:
+                    - link "Events" [ref=f18e9] [cursor=pointer]:
+                        - /url: /events
+        - generic [ref=f18e10]:
+            - complementary [ref=f18e11]:
+                - navigation "Sidebar" [ref=f18e12]:
+                    - generic [ref=f18e14]:
+                        - button "My Events" [expanded] [ref=f18e15]:
+                            - img [ref=f18e16]
+                            - generic [ref=f18e19]: My Events
+                            - img [ref=f18e20]
+                        - generic [ref=f18e22]:
+                            - link "Attending" [ref=f18e23] [cursor=pointer]:
+                                - /url: /my-events
+                            - link "Organizing" [ref=f18e24] [cursor=pointer]:
+                                - /url: /my-organized-events
+                - button "Arjun Sharma Expert" [ref=f18e27]:
+                    - generic [ref=f18e30]: AS
+                    - generic [ref=f18e31]:
+                        - generic [ref=f18e32]: Arjun Sharma
+                        - generic [ref=f18e33]: Expert
+                    - img [ref=f18e34]
+            - main [ref=f18e36]:
+                - generic [ref=f18e38]:
+                    - generic [ref=f18e39]:
+                        - generic [ref=f18e40]:
+                            - heading "Organizing" [level=1] [ref=f18e41]
+                            - paragraph [ref=f18e42]: Events you're hosting on GCODE.
+                        - link "+ Host Event" [ref=f18e43] [cursor=pointer]:
+                            - /url: /my-organized-events/new
+                    - generic [ref=f18e44]:
+                        - img [ref=f18e46]
+                        - generic [ref=f18e48]:
+                            - heading "You haven't hosted an event yet" [level=3] [ref=f18e49]
+                            - paragraph [ref=f18e50]: Set up your first event in a few guided steps — you can also request help from the community along the way.
+                        - link "+ Host Event" [ref=f18e51] [cursor=pointer]:
+                            - /url: /my-organized-events/new
+        - button "Ask GCODE AI" [ref=f18e52]:
+            - img [ref=f18e53]
+    - button "Open Next.js Dev Tools" [ref=f18e61] [cursor=pointer]:
+        - img [ref=f18e62]

@@ -1,119 +1,119 @@
 - generic [ref=f35e1]:
-  - generic [ref=f35e2]:
-    - banner [ref=f35e3]:
-      - generic [ref=f35e5]:
-        - link "logo" [ref=f35e6] [cursor=pointer]:
-          - /url: /
-          - img "logo" [ref=f35e7]
-        - navigation "Primary" [ref=f35e8]:
-          - link "Events" [ref=f35e9] [cursor=pointer]:
-            - /url: /events
-    - generic [ref=f35e10]:
-      - complementary [ref=f35e11]:
-        - navigation "Sidebar" [ref=f35e12]:
-          - button "My Events" [ref=f35e15]:
-            - img [ref=f35e16]
-            - generic [ref=f35e19]: My Events
-            - img [ref=f35e20]
-        - button "Arjun Sharma Expert" [ref=f35e24]:
-          - generic [ref=f35e27]: AS
-          - generic [ref=f35e28]:
-            - generic [ref=f35e29]: Arjun Sharma
-            - generic [ref=f35e30]: Expert
-          - img [ref=f35e31]
-      - main [ref=f35e33]:
-        - generic [ref=f35e35]:
-          - generic [ref=f35e36]:
-            - heading "Host an Event" [level=1] [ref=f35e37]
-            - paragraph [ref=f35e38]: Set up your event and optionally request help from the community.
-          - list [ref=f35e40]:
-            - listitem [ref=f35e41]:
-              - generic [ref=f35e42]:
-                - img [ref=f35e136]
-                - generic [ref=f35e44]: Type
-              - separator [ref=f35e46]
-            - listitem [ref=f35e47]:
-              - generic [ref=f35e48]:
-                - img [ref=f35e173]
-                - generic [ref=f35e50]: Details
-              - separator [ref=f35e52]
-            - listitem [ref=f35e53]:
-              - generic [ref=f35e54]:
-                - img [ref=f35e204]
-                - generic [ref=f35e56]: Schedule & Mode
-              - separator [ref=f35e58]
-            - listitem [ref=f35e59]:
-              - generic [ref=f35e60]:
-                - img [ref=f35e228]
-                - generic [ref=f35e62]: Agenda, Links & Media
-              - separator [ref=f35e64]
-            - listitem [ref=f35e65]:
-              - generic [ref=f35e66]:
-                - generic [ref=f35e67]: "5"
-                - generic [ref=f35e68]: Community
-              - separator [ref=f35e70]
-            - listitem [ref=f35e71]:
-              - generic [ref=f35e72]:
-                - generic [ref=f35e73]: "6"
-                - generic [ref=f35e74]: Review
-          - generic [ref=f35e230]:
-            - generic [ref=f35e231]:
-              - heading "Request community help" [level=2] [ref=f35e232]
-              - paragraph [ref=f35e233]: Optional — ask venue partners, sponsors, guest speakers, or volunteers to help with this event. Skip this if you don't need help yet.
-            - generic [ref=f35e234]:
-              - tablist [ref=f35e235]:
-                - tab "Venue Partner" [selected] [ref=f35e236]
-                - tab "Sponsorship Partner" [ref=f35e237]
-                - tab "Guest Speaker" [ref=f35e238]
-                - tab "Volunteer" [ref=f35e239]
-              - search [ref=f35e240]:
-                - generic:
-                  - img
-                - searchbox "Search venue partners by name..." [ref=f35e241]
-              - generic [ref=f35e242]:
-                - generic [ref=f35e243]:
-                  - generic [ref=f35e244]:
-                    - generic [ref=f35e247]: ID
-                    - generic [ref=f35e248]:
-                      - heading "IIT Delhi Innovation Hub" [level=4] [ref=f35e249]
-                      - paragraph [ref=f35e250]: IIT Delhi
-                      - generic [ref=f35e251]: Venue Partner
-                  - paragraph [ref=f35e252]: Campus auditoriums and labs available for hackathons and symposiums.
-                  - generic [ref=f35e253]:
-                    - generic [ref=f35e254]: Auditorium
-                    - generic [ref=f35e255]: Up to 500 seats
-                  - button "Select" [ref=f35e256]
-                - generic [ref=f35e257]:
-                  - generic [ref=f35e258]:
-                    - generic [ref=f35e261]: WK
-                    - generic [ref=f35e262]:
-                      - heading "WeWork Koramangala" [level=4] [ref=f35e263]
-                      - paragraph [ref=f35e264]: WeWork India
-                      - generic [ref=f35e265]: Venue Partner
-                  - paragraph [ref=f35e266]: Flexible event spaces in Bangalore, ideal for meetups and workshops.
-                  - generic [ref=f35e267]:
-                    - generic [ref=f35e268]: Meetup Space
-                    - generic [ref=f35e269]: Up to 120 seats
-                  - button "Select" [ref=f35e270]
-                - generic [ref=f35e271]:
-                  - generic [ref=f35e272]:
-                    - generic [ref=f35e275]: NC
-                    - generic [ref=f35e276]:
-                      - heading "NASSCOM CoE" [level=4] [ref=f35e277]
-                      - paragraph [ref=f35e278]: NASSCOM Center of Excellence
-                      - generic [ref=f35e279]: Venue Partner
-                  - paragraph [ref=f35e280]: Deep-tech focused venue with demo labs and breakout rooms.
-                  - generic [ref=f35e281]:
-                    - generic [ref=f35e282]: Demo Labs
-                    - generic [ref=f35e283]: Up to 200 seats
-                  - button "Select" [ref=f35e284]
-          - generic [ref=f35e118]:
-            - button "← Back" [ref=f35e119]
-            - generic [ref=f35e120]:
-              - button "Skip this step" [ref=f35e285]
-              - button "Next →" [active] [ref=f35e121]
-    - button "Ask GCODE AI" [ref=f35e122]:
-      - img [ref=f35e123]
-  - button "Open Next.js Dev Tools" [ref=f35e131] [cursor=pointer]:
-    - img [ref=f35e132]
-  - alert [ref=f35e135]
+    - generic [ref=f35e2]:
+        - banner [ref=f35e3]:
+            - generic [ref=f35e5]:
+                - link "logo" [ref=f35e6] [cursor=pointer]:
+                    - /url: /
+                    - img "logo" [ref=f35e7]
+                - navigation "Primary" [ref=f35e8]:
+                    - link "Events" [ref=f35e9] [cursor=pointer]:
+                        - /url: /events
+        - generic [ref=f35e10]:
+            - complementary [ref=f35e11]:
+                - navigation "Sidebar" [ref=f35e12]:
+                    - button "My Events" [ref=f35e15]:
+                        - img [ref=f35e16]
+                        - generic [ref=f35e19]: My Events
+                        - img [ref=f35e20]
+                - button "Arjun Sharma Expert" [ref=f35e24]:
+                    - generic [ref=f35e27]: AS
+                    - generic [ref=f35e28]:
+                        - generic [ref=f35e29]: Arjun Sharma
+                        - generic [ref=f35e30]: Expert
+                    - img [ref=f35e31]
+            - main [ref=f35e33]:
+                - generic [ref=f35e35]:
+                    - generic [ref=f35e36]:
+                        - heading "Host an Event" [level=1] [ref=f35e37]
+                        - paragraph [ref=f35e38]: Set up your event and optionally request help from the community.
+                    - list [ref=f35e40]:
+                        - listitem [ref=f35e41]:
+                            - generic [ref=f35e42]:
+                                - img [ref=f35e136]
+                                - generic [ref=f35e44]: Type
+                            - separator [ref=f35e46]
+                        - listitem [ref=f35e47]:
+                            - generic [ref=f35e48]:
+                                - img [ref=f35e173]
+                                - generic [ref=f35e50]: Details
+                            - separator [ref=f35e52]
+                        - listitem [ref=f35e53]:
+                            - generic [ref=f35e54]:
+                                - img [ref=f35e204]
+                                - generic [ref=f35e56]: Schedule & Mode
+                            - separator [ref=f35e58]
+                        - listitem [ref=f35e59]:
+                            - generic [ref=f35e60]:
+                                - img [ref=f35e228]
+                                - generic [ref=f35e62]: Agenda, Links & Media
+                            - separator [ref=f35e64]
+                        - listitem [ref=f35e65]:
+                            - generic [ref=f35e66]:
+                                - generic [ref=f35e67]: "5"
+                                - generic [ref=f35e68]: Community
+                            - separator [ref=f35e70]
+                        - listitem [ref=f35e71]:
+                            - generic [ref=f35e72]:
+                                - generic [ref=f35e73]: "6"
+                                - generic [ref=f35e74]: Review
+                    - generic [ref=f35e230]:
+                        - generic [ref=f35e231]:
+                            - heading "Request community help" [level=2] [ref=f35e232]
+                            - paragraph [ref=f35e233]: Optional — ask venue partners, sponsors, guest speakers, or volunteers to help with this event. Skip this if you don't need help yet.
+                        - generic [ref=f35e234]:
+                            - tablist [ref=f35e235]:
+                                - tab "Venue Partner" [selected] [ref=f35e236]
+                                - tab "Sponsorship Partner" [ref=f35e237]
+                                - tab "Guest Speaker" [ref=f35e238]
+                                - tab "Volunteer" [ref=f35e239]
+                            - search [ref=f35e240]:
+                                - generic:
+                                    - img
+                                - searchbox "Search venue partners by name..." [ref=f35e241]
+                            - generic [ref=f35e242]:
+                                - generic [ref=f35e243]:
+                                    - generic [ref=f35e244]:
+                                        - generic [ref=f35e247]: ID
+                                        - generic [ref=f35e248]:
+                                            - heading "IIT Delhi Innovation Hub" [level=4] [ref=f35e249]
+                                            - paragraph [ref=f35e250]: IIT Delhi
+                                            - generic [ref=f35e251]: Venue Partner
+                                    - paragraph [ref=f35e252]: Campus auditoriums and labs available for hackathons and symposiums.
+                                    - generic [ref=f35e253]:
+                                        - generic [ref=f35e254]: Auditorium
+                                        - generic [ref=f35e255]: Up to 500 seats
+                                    - button "Select" [ref=f35e256]
+                                - generic [ref=f35e257]:
+                                    - generic [ref=f35e258]:
+                                        - generic [ref=f35e261]: WK
+                                        - generic [ref=f35e262]:
+                                            - heading "WeWork Koramangala" [level=4] [ref=f35e263]
+                                            - paragraph [ref=f35e264]: WeWork India
+                                            - generic [ref=f35e265]: Venue Partner
+                                    - paragraph [ref=f35e266]: Flexible event spaces in Bangalore, ideal for meetups and workshops.
+                                    - generic [ref=f35e267]:
+                                        - generic [ref=f35e268]: Meetup Space
+                                        - generic [ref=f35e269]: Up to 120 seats
+                                    - button "Select" [ref=f35e270]
+                                - generic [ref=f35e271]:
+                                    - generic [ref=f35e272]:
+                                        - generic [ref=f35e275]: NC
+                                        - generic [ref=f35e276]:
+                                            - heading "NASSCOM CoE" [level=4] [ref=f35e277]
+                                            - paragraph [ref=f35e278]: NASSCOM Center of Excellence
+                                            - generic [ref=f35e279]: Venue Partner
+                                    - paragraph [ref=f35e280]: Deep-tech focused venue with demo labs and breakout rooms.
+                                    - generic [ref=f35e281]:
+                                        - generic [ref=f35e282]: Demo Labs
+                                        - generic [ref=f35e283]: Up to 200 seats
+                                    - button "Select" [ref=f35e284]
+                    - generic [ref=f35e118]:
+                        - button "← Back" [ref=f35e119]
+                        - generic [ref=f35e120]:
+                            - button "Skip this step" [ref=f35e285]
+                            - button "Next →" [active] [ref=f35e121]
+        - button "Ask GCODE AI" [ref=f35e122]:
+            - img [ref=f35e123]
+    - button "Open Next.js Dev Tools" [ref=f35e131] [cursor=pointer]:
+        - img [ref=f35e132]
+    - alert [ref=f35e135]

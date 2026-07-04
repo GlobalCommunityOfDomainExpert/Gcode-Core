@@ -70,9 +70,7 @@ export function StepAgendaLinks({ data, onChange }: StepAgendaLinksProps) {
   function updateMediaUrl(index: number, value: string) {
     onChange(
       "mediaUrls",
-      data.mediaUrls.map((url, urlIndex) =>
-        urlIndex === index ? value : url,
-      ),
+      data.mediaUrls.map((url, urlIndex) => (urlIndex === index ? value : url)),
     );
   }
 
@@ -90,8 +88,8 @@ export function StepAgendaLinks({ data, onChange }: StepAgendaLinksProps) {
           Agenda &amp; links
         </h2>
         <p className="text-body text-text-secondary">
-          Optional — both help attendees know what to expect. Skip either if
-          you don&apos;t need them.
+          Optional — both help attendees know what to expect. Skip either if you
+          don&apos;t need them.
         </p>
       </div>
 
@@ -118,10 +116,7 @@ export function StepAgendaLinks({ data, onChange }: StepAgendaLinksProps) {
               </button>
             </div>
             <div className="grid gap-4 sm:grid-cols-2">
-              <FormField
-                label="Time"
-                htmlFor={`agenda-time-${index}`}
-              >
+              <FormField label="Time" htmlFor={`agenda-time-${index}`}>
                 <Input
                   id={`agenda-time-${index}`}
                   value={item.time}
@@ -131,10 +126,7 @@ export function StepAgendaLinks({ data, onChange }: StepAgendaLinksProps) {
                   placeholder="e.g. 10:00 AM"
                 />
               </FormField>
-              <FormField
-                label="Title"
-                htmlFor={`agenda-title-${index}`}
-              >
+              <FormField label="Title" htmlFor={`agenda-title-${index}`}>
                 <Input
                   id={`agenda-title-${index}`}
                   value={item.title}
@@ -189,10 +181,7 @@ export function StepAgendaLinks({ data, onChange }: StepAgendaLinksProps) {
               </button>
             </div>
             <div className="grid gap-4 sm:grid-cols-2">
-              <FormField
-                label="Platform"
-                htmlFor={`social-platform-${index}`}
-              >
+              <FormField label="Platform" htmlFor={`social-platform-${index}`}>
                 <Input
                   id={`social-platform-${index}`}
                   value={link.platform}

@@ -1,104 +1,104 @@
 - generic [active] [ref=f20e1]:
-  - generic [ref=f20e2]:
-    - banner [ref=f20e3]:
-      - generic [ref=f20e5]:
-        - link "logo" [ref=f20e6] [cursor=pointer]:
-          - /url: /
-          - img "logo" [ref=f20e7]
-        - navigation "Primary" [ref=f20e8]:
-          - link "Events" [ref=f20e9] [cursor=pointer]:
-            - /url: /events
-    - generic [ref=f20e10]:
-      - complementary [ref=f20e11]:
-        - navigation "Sidebar" [ref=f20e12]:
-          - generic [ref=f20e14]:
-            - button "My Events" [expanded] [ref=f20e15]:
-              - img [ref=f20e16]
-              - generic [ref=f20e19]: My Events
-              - img [ref=f20e20]
-            - generic [ref=f20e22]:
-              - link "Attending" [ref=f20e23] [cursor=pointer]:
-                - /url: /my-events
-              - link "Organizing" [ref=f20e24] [cursor=pointer]:
-                - /url: /my-organized-events
-        - button "Arjun Sharma Expert" [ref=f20e27]:
-          - generic [ref=f20e30]: AS
-          - generic [ref=f20e31]:
-            - generic [ref=f20e32]: Arjun Sharma
-            - generic [ref=f20e33]: Expert
-          - img [ref=f20e34]
-      - main [ref=f20e36]:
-        - generic [ref=f20e66]:
-          - generic [ref=f20e67]:
-            - heading "Host an Event" [level=1] [ref=f20e68]
-            - paragraph [ref=f20e69]: Set up your event and optionally request help from the community.
-          - list [ref=f20e71]:
-            - listitem [ref=f20e72]:
-              - generic [ref=f20e73]:
-                - img [ref=f20e153]
-                - generic [ref=f20e75]: Type
-              - separator [ref=f20e77]
-            - listitem [ref=f20e78]:
-              - generic [ref=f20e79]:
-                - generic [ref=f20e80]: "2"
-                - generic [ref=f20e81]: Details
-              - separator [ref=f20e83]
-            - listitem [ref=f20e84]:
-              - generic [ref=f20e85]:
-                - generic [ref=f20e86]: "3"
-                - generic [ref=f20e87]: Schedule & Mode
-              - separator [ref=f20e89]
-            - listitem [ref=f20e90]:
-              - generic [ref=f20e91]:
-                - generic [ref=f20e92]: "4"
-                - generic [ref=f20e93]: Agenda & Links
-              - separator [ref=f20e95]
-            - listitem [ref=f20e96]:
-              - generic [ref=f20e97]:
-                - generic [ref=f20e98]: "5"
-                - generic [ref=f20e99]: Community
-              - separator [ref=f20e101]
-            - listitem [ref=f20e102]:
-              - generic [ref=f20e103]:
-                - generic [ref=f20e104]: "6"
-                - generic [ref=f20e105]: Review
-          - generic [ref=f20e155]:
-            - generic [ref=f20e156]:
-              - heading "Tell us about the event" [level=2] [ref=f20e157]
-              - paragraph [ref=f20e158]: This shows up on the event's public page.
-            - generic [ref=f20e159]:
-              - generic [ref=f20e160]:
-                - text: Event Title
-                - generic [ref=f20e161]: "*"
-              - textbox "Event Title" [ref=f20e162]:
-                - /placeholder: e.g. GCODE Build Sprint · Winter 2026
-            - generic [ref=f20e163]:
-              - generic [ref=f20e164]:
-                - text: Description
-                - generic [ref=f20e165]: "*"
-              - textbox "Description" [ref=f20e166]:
-                - /placeholder: Describe the event, who it's for, and what attendees will get out of it...
-              - paragraph [ref=f20e167]: One idea per line — each becomes a paragraph on the event page.
-            - generic [ref=f20e169]:
-              - generic [ref=f20e170]: Price
-              - radiogroup [ref=f20e171]:
-                - radio "Free" [checked] [ref=f20e172]
-                - radio "Paid" [ref=f20e173]
-            - generic [ref=f20e174]:
-              - generic [ref=f20e175]:
-                - generic [ref=f20e176]: Capacity
-                - spinbutton "Capacity" [ref=f20e177]
-                - paragraph [ref=f20e178]: Leave blank for unlimited.
-              - generic [ref=f20e179]:
-                - generic [ref=f20e180]: Certificate
-                - generic [ref=f20e182] [cursor=pointer]:
-                  - switch "Certificate Issue a certificate on completion" [ref=f20e183]
-                  - text: Issue a certificate on completion
-          - generic [ref=f20e149]:
-            - button "← Back" [ref=f20e150]
-            - button "Next →" [disabled] [ref=f20e152]
-    - button "Ask GCODE AI" [ref=f20e52]:
-      - img [ref=f20e53]
-  - button "Open Next.js Dev Tools" [ref=f20e61] [cursor=pointer]:
-    - img [ref=f20e62]
-  - alert [ref=f20e65]
+    - generic [ref=f20e2]:
+        - banner [ref=f20e3]:
+            - generic [ref=f20e5]:
+                - link "logo" [ref=f20e6] [cursor=pointer]:
+                    - /url: /
+                    - img "logo" [ref=f20e7]
+                - navigation "Primary" [ref=f20e8]:
+                    - link "Events" [ref=f20e9] [cursor=pointer]:
+                        - /url: /events
+        - generic [ref=f20e10]:
+            - complementary [ref=f20e11]:
+                - navigation "Sidebar" [ref=f20e12]:
+                    - generic [ref=f20e14]:
+                        - button "My Events" [expanded] [ref=f20e15]:
+                            - img [ref=f20e16]
+                            - generic [ref=f20e19]: My Events
+                            - img [ref=f20e20]
+                        - generic [ref=f20e22]:
+                            - link "Attending" [ref=f20e23] [cursor=pointer]:
+                                - /url: /my-events
+                            - link "Organizing" [ref=f20e24] [cursor=pointer]:
+                                - /url: /my-organized-events
+                - button "Arjun Sharma Expert" [ref=f20e27]:
+                    - generic [ref=f20e30]: AS
+                    - generic [ref=f20e31]:
+                        - generic [ref=f20e32]: Arjun Sharma
+                        - generic [ref=f20e33]: Expert
+                    - img [ref=f20e34]
+            - main [ref=f20e36]:
+                - generic [ref=f20e66]:
+                    - generic [ref=f20e67]:
+                        - heading "Host an Event" [level=1] [ref=f20e68]
+                        - paragraph [ref=f20e69]: Set up your event and optionally request help from the community.
+                    - list [ref=f20e71]:
+                        - listitem [ref=f20e72]:
+                            - generic [ref=f20e73]:
+                                - img [ref=f20e153]
+                                - generic [ref=f20e75]: Type
+                            - separator [ref=f20e77]
+                        - listitem [ref=f20e78]:
+                            - generic [ref=f20e79]:
+                                - generic [ref=f20e80]: "2"
+                                - generic [ref=f20e81]: Details
+                            - separator [ref=f20e83]
+                        - listitem [ref=f20e84]:
+                            - generic [ref=f20e85]:
+                                - generic [ref=f20e86]: "3"
+                                - generic [ref=f20e87]: Schedule & Mode
+                            - separator [ref=f20e89]
+                        - listitem [ref=f20e90]:
+                            - generic [ref=f20e91]:
+                                - generic [ref=f20e92]: "4"
+                                - generic [ref=f20e93]: Agenda & Links
+                            - separator [ref=f20e95]
+                        - listitem [ref=f20e96]:
+                            - generic [ref=f20e97]:
+                                - generic [ref=f20e98]: "5"
+                                - generic [ref=f20e99]: Community
+                            - separator [ref=f20e101]
+                        - listitem [ref=f20e102]:
+                            - generic [ref=f20e103]:
+                                - generic [ref=f20e104]: "6"
+                                - generic [ref=f20e105]: Review
+                    - generic [ref=f20e155]:
+                        - generic [ref=f20e156]:
+                            - heading "Tell us about the event" [level=2] [ref=f20e157]
+                            - paragraph [ref=f20e158]: This shows up on the event's public page.
+                        - generic [ref=f20e159]:
+                            - generic [ref=f20e160]:
+                                - text: Event Title
+                                - generic [ref=f20e161]: "*"
+                            - textbox "Event Title" [ref=f20e162]:
+                                - /placeholder: e.g. GCODE Build Sprint · Winter 2026
+                        - generic [ref=f20e163]:
+                            - generic [ref=f20e164]:
+                                - text: Description
+                                - generic [ref=f20e165]: "*"
+                            - textbox "Description" [ref=f20e166]:
+                                - /placeholder: Describe the event, who it's for, and what attendees will get out of it...
+                            - paragraph [ref=f20e167]: One idea per line — each becomes a paragraph on the event page.
+                        - generic [ref=f20e169]:
+                            - generic [ref=f20e170]: Price
+                            - radiogroup [ref=f20e171]:
+                                - radio "Free" [checked] [ref=f20e172]
+                                - radio "Paid" [ref=f20e173]
+                        - generic [ref=f20e174]:
+                            - generic [ref=f20e175]:
+                                - generic [ref=f20e176]: Capacity
+                                - spinbutton "Capacity" [ref=f20e177]
+                                - paragraph [ref=f20e178]: Leave blank for unlimited.
+                            - generic [ref=f20e179]:
+                                - generic [ref=f20e180]: Certificate
+                                - generic [ref=f20e182] [cursor=pointer]:
+                                    - switch "Certificate Issue a certificate on completion" [ref=f20e183]
+                                    - text: Issue a certificate on completion
+                    - generic [ref=f20e149]:
+                        - button "← Back" [ref=f20e150]
+                        - button "Next →" [disabled] [ref=f20e152]
+        - button "Ask GCODE AI" [ref=f20e52]:
+            - img [ref=f20e53]
+    - button "Open Next.js Dev Tools" [ref=f20e61] [cursor=pointer]:
+        - img [ref=f20e62]
+    - alert [ref=f20e65]

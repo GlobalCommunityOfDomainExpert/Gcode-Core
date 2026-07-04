@@ -1,65 +1,65 @@
 - generic [ref=f28e1]:
-  - generic [ref=f28e2]:
-    - banner [ref=f28e3]:
-      - generic [ref=f28e5]:
-        - link "logo" [ref=f28e6] [cursor=pointer]:
-          - /url: /
-          - img "logo" [ref=f28e7]
-        - navigation "Primary" [ref=f28e8]:
-          - link "Events" [ref=f28e9] [cursor=pointer]:
-            - /url: /events
-    - main [ref=f28e11]:
-      - generic [ref=f28e13]:
-        - generic [ref=f28e14]:
-          - heading "Host an Event" [level=1] [ref=f28e15]
-          - paragraph [ref=f28e16]: Set up your event and optionally request help from the community.
-        - generic [ref=f28e18]:
-          - generic [ref=f28e19]:
-            - img [ref=f28e120]
-            - separator [ref=f28e23]
-          - generic [ref=f28e24]:
-            - separator [ref=f28e26]
-            - img [ref=f28e160]
-            - separator [ref=f28e29]
-          - generic [ref=f28e30]:
-            - separator [ref=f28e32]
-            - img [ref=f28e191]
-            - separator [ref=f28e35]
-          - generic [ref=f28e36]:
-            - separator [ref=f28e38]
-            - generic [ref=f28e39]: "4"
-            - separator [ref=f28e41]
-          - generic [ref=f28e42]:
-            - separator [ref=f28e44]
-            - generic [ref=f28e45]: "5"
-            - separator [ref=f28e47]
-          - generic [ref=f28e48]:
-            - separator [ref=f28e50]
-            - generic [ref=f28e51]: "6"
-          - paragraph [ref=f28e53]: Type
-          - paragraph [ref=f28e54]: Details
-          - paragraph [ref=f28e55]: Schedule & Mode
-          - paragraph [ref=f28e56]: Agenda & Media
-          - paragraph [ref=f28e57]: Community
-          - paragraph [ref=f28e58]: Review
-        - generic [ref=f28e193]:
-          - generic [ref=f28e194]:
-            - heading "Agenda & links" [level=2] [ref=f28e195]
-            - paragraph [ref=f28e196]: Optional — both help attendees know what to expect. Skip either if you don't need them.
-          - generic [ref=f28e197]:
-            - paragraph [ref=f28e198]: Agenda
-            - button "+ Add agenda item" [ref=f28e199]
-          - generic [ref=f28e200]:
-            - paragraph [ref=f28e201]: Social links
-            - button "+ Add link" [ref=f28e202]
-          - generic [ref=f28e203]:
-            - paragraph [ref=f28e204]: Media
-            - button "+ Add media link" [ref=f28e205]
-        - generic [ref=f28e102]:
-          - button "← Back" [ref=f28e103]
-          - button "Next →" [active] [ref=f28e105]
-    - button "Ask GCODE AI" [ref=f28e106]:
-      - img [ref=f28e107]
-  - button "Open Next.js Dev Tools" [ref=f28e115] [cursor=pointer]:
-    - img [ref=f28e116]
-  - alert [ref=f28e119]
+    - generic [ref=f28e2]:
+        - banner [ref=f28e3]:
+            - generic [ref=f28e5]:
+                - link "logo" [ref=f28e6] [cursor=pointer]:
+                    - /url: /
+                    - img "logo" [ref=f28e7]
+                - navigation "Primary" [ref=f28e8]:
+                    - link "Events" [ref=f28e9] [cursor=pointer]:
+                        - /url: /events
+        - main [ref=f28e11]:
+            - generic [ref=f28e13]:
+                - generic [ref=f28e14]:
+                    - heading "Host an Event" [level=1] [ref=f28e15]
+                    - paragraph [ref=f28e16]: Set up your event and optionally request help from the community.
+                - generic [ref=f28e18]:
+                    - generic [ref=f28e19]:
+                        - img [ref=f28e120]
+                        - separator [ref=f28e23]
+                    - generic [ref=f28e24]:
+                        - separator [ref=f28e26]
+                        - img [ref=f28e160]
+                        - separator [ref=f28e29]
+                    - generic [ref=f28e30]:
+                        - separator [ref=f28e32]
+                        - img [ref=f28e191]
+                        - separator [ref=f28e35]
+                    - generic [ref=f28e36]:
+                        - separator [ref=f28e38]
+                        - generic [ref=f28e39]: "4"
+                        - separator [ref=f28e41]
+                    - generic [ref=f28e42]:
+                        - separator [ref=f28e44]
+                        - generic [ref=f28e45]: "5"
+                        - separator [ref=f28e47]
+                    - generic [ref=f28e48]:
+                        - separator [ref=f28e50]
+                        - generic [ref=f28e51]: "6"
+                    - paragraph [ref=f28e53]: Type
+                    - paragraph [ref=f28e54]: Details
+                    - paragraph [ref=f28e55]: Schedule & Mode
+                    - paragraph [ref=f28e56]: Agenda & Media
+                    - paragraph [ref=f28e57]: Community
+                    - paragraph [ref=f28e58]: Review
+                - generic [ref=f28e193]:
+                    - generic [ref=f28e194]:
+                        - heading "Agenda & links" [level=2] [ref=f28e195]
+                        - paragraph [ref=f28e196]: Optional — both help attendees know what to expect. Skip either if you don't need them.
+                    - generic [ref=f28e197]:
+                        - paragraph [ref=f28e198]: Agenda
+                        - button "+ Add agenda item" [ref=f28e199]
+                    - generic [ref=f28e200]:
+                        - paragraph [ref=f28e201]: Social links
+                        - button "+ Add link" [ref=f28e202]
+                    - generic [ref=f28e203]:
+                        - paragraph [ref=f28e204]: Media
+                        - button "+ Add media link" [ref=f28e205]
+                - generic [ref=f28e102]:
+                    - button "← Back" [ref=f28e103]
+                    - button "Next →" [active] [ref=f28e105]
+        - button "Ask GCODE AI" [ref=f28e106]:
+            - img [ref=f28e107]
+    - button "Open Next.js Dev Tools" [ref=f28e115] [cursor=pointer]:
+        - img [ref=f28e116]
+    - alert [ref=f28e119]

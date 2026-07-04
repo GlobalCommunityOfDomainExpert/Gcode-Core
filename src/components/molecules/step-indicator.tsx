@@ -19,21 +19,18 @@ function connectorClass(active: boolean) {
 export function StepIndicator({ steps }: StepIndicatorProps) {
   return (
     <div
-      className="grid  gap-y-2"
+      className="grid gap-y-2"
       style={{
         gridTemplateColumns: `repeat(${steps.length}, minmax(0, 1fr))`,
       }}
     >
       {steps.map((step, index) => {
-        const leftActive =
-          index > 0 && steps[index - 1].status === "completed";
+        const leftActive = index > 0 && steps[index - 1].status === "completed";
         const rightActive = step.status === "completed";
         return (
           <div key={step.label} className="flex min-w-0 items-center">
             <div className="flex h-8 min-w-0 flex-1 items-center">
-              {index > 0 && (
-                <Divider className={connectorClass(leftActive)} />
-              )}
+              {index > 0 && <Divider className={connectorClass(leftActive)} />}
             </div>
             <div
               className={`text-small flex size-8 shrink-0 items-center justify-center rounded-full font-semibold ${

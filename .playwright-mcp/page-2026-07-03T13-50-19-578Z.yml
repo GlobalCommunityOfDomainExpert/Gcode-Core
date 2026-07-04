@@ -1,211 +1,211 @@
 - generic [ref=f32e1]:
-  - generic [ref=f32e2]:
-    - banner [ref=f32e3]:
-      - generic [ref=f32e5]:
-        - link "logo" [ref=f32e6] [cursor=pointer]:
-          - /url: /
-          - img "logo" [ref=f32e7]
-        - navigation "Primary" [ref=f32e8]:
-          - link "Events" [ref=f32e9] [cursor=pointer]:
-            - /url: /events
-    - main [ref=f32e11]:
-      - generic [ref=f32e13]:
-        - generic [ref=f32e14]:
-          - generic [ref=f32e15]:
-            - heading "Discover Events & Webinars" [level=4] [ref=f32e16]
-            - paragraph [ref=f32e17]: Hackathons, Ideathons, Expert AMAs, Live Webinars — all in one place.
-          - link "+ Host / Submit Event" [ref=f32e18] [cursor=pointer]:
-            - /url: /my-organized-events/new
-        - generic [ref=f32e19]:
-          - tablist [ref=f32e20]:
-            - tab "All" [selected] [ref=f32e21]
-            - tab "Webinars" [ref=f32e22]
-            - tab "Hackathons" [ref=f32e23]
-            - tab "Ideathons" [ref=f32e24]
-            - tab "Meetups" [ref=f32e25]
-            - tab "Expert AMAs" [ref=f32e26]
-          - generic [ref=f32e27]:
-            - checkbox "Free" [checked] [active] [ref=f32e28] [cursor=pointer]
-            - checkbox "Paid" [ref=f32e29]
-            - checkbox "Online" [ref=f32e30]
-            - checkbox "In-Person" [ref=f32e31]
-        - generic [ref=f32e32]:
-          - generic [ref=f32e33]:
-            - heading "Featured" [level=2] [ref=f32e34]
-            - generic [ref=f32e314]:
-              - button "Previous" [disabled] [ref=f32e315]:
-                - img [ref=f32e316]
-              - button "Next" [ref=f32e318]:
-                - img [ref=f32e319]
-          - generic [ref=f32e35]:
-            - generic [ref=f32e36]:
-              - generic [ref=f32e38]:
-                - generic [ref=f32e39]:
-                  - img [ref=f32e41]
-                  - generic [ref=f32e46]: Hackathon
-                - generic [ref=f32e47]:
-                  - generic [ref=f32e48]:
-                    - generic [ref=f32e49]: Online
-                    - generic [ref=f32e50]: Free
-                  - link "GCODE Build Sprint · Summer 2026" [ref=f32e51] [cursor=pointer]:
-                    - /url: /events/gcode-build-sprint-2026
-                  - paragraph [ref=f32e53]:
-                    - img [ref=f32e54]
-                    - text: 15 Jul 2026 · 10:00 AM – 6:00 PM IST
-                  - generic [ref=f32e57]:
-                    - generic [ref=f32e60]: PS
-                    - generic [ref=f32e63]: RV
-                    - generic [ref=f32e66]: AI
-                  - generic [ref=f32e67]:
-                    - generic [ref=f32e68]: 52 spots left
-                    - link "Register" [ref=f32e70] [cursor=pointer]:
-                      - /url: /events/gcode-build-sprint-2026
-                      - text: Register
-                      - img [ref=f32e71]
-              - generic [ref=f32e74]:
-                - generic [ref=f32e75]:
-                  - img [ref=f32e77]
-                  - generic [ref=f32e82]: Hackathon
-                - generic [ref=f32e83]:
-                  - generic [ref=f32e84]:
-                    - generic [ref=f32e85]: Online
-                    - generic [ref=f32e86]: Free
-                  - link "GCODE Build Sprint · Winter 2026" [ref=f32e87] [cursor=pointer]:
-                    - /url: /events/gcode-build-sprint-2026-winter
-                  - paragraph [ref=f32e89]:
-                    - img [ref=f32e90]
-                    - text: 15 Jul 2026 · 10:00 AM – 6:00 PM IST
-                  - generic [ref=f32e92]:
-                    - generic [ref=f32e93]: 52 spots left
-                    - link "Register" [ref=f32e95] [cursor=pointer]:
-                      - /url: /events/gcode-build-sprint-2026-winter
-                      - text: Register
-                      - img [ref=f32e96]
-              - generic [ref=f32e99]:
-                - generic [ref=f32e100]:
-                  - img [ref=f32e102]
-                  - generic [ref=f32e107]: Expert AMA
-                - generic [ref=f32e108]:
-                  - generic [ref=f32e109]:
-                    - generic [ref=f32e110]: Online
-                    - generic [ref=f32e111]: Free
-                  - 'link "Ask Me Anything: Fundraising for Deep-Tech Startups" [ref=f32e112] [cursor=pointer]':
-                    - /url: /events/ask-me-anything-fundraising
-                  - paragraph [ref=f32e114]:
-                    - img [ref=f32e115]
-                    - text: 18 Jul 2026 · 6:00 PM IST
-                  - generic [ref=f32e118]:
-                    - generic [ref=f32e121]: KR
-                    - generic [ref=f32e124]: MP
-                    - generic [ref=f32e127]: AM
-                  - link "Register" [ref=f32e130] [cursor=pointer]:
-                    - /url: /events/ask-me-anything-fundraising
-                    - text: Register
-                    - img [ref=f32e131]
-              - generic [ref=f32e134]:
-                - generic [ref=f32e135]:
-                  - img [ref=f32e137]
-                  - generic [ref=f32e142]: Webinar
-                - generic [ref=f32e143]:
-                  - generic [ref=f32e144]:
-                    - generic [ref=f32e145]: Online
-                    - generic [ref=f32e146]: ₹299
-                  - 'link "Fundraising readiness: what investors check first" [ref=f32e147] [cursor=pointer]':
-                    - /url: /events/fundraising-readiness-webinar
-                  - paragraph [ref=f32e149]:
-                    - img [ref=f32e150]
-                    - text: 5 Jul 2026 · 5:00 PM IST
-                  - generic [ref=f32e153]:
-                    - generic [ref=f32e156]: DM
-                    - generic [ref=f32e159]: AR
-                  - link "Register" [ref=f32e162] [cursor=pointer]:
-                    - /url: /events/fundraising-readiness-webinar
-                    - text: Register
-                    - img [ref=f32e163]
-            - generic [ref=f32e321]:
-              - button "Go to slide 1" [ref=f32e322]
-              - button "Go to slide 2" [ref=f32e323]
-              - button "Go to slide 3" [ref=f32e324]
-        - generic [ref=f32e165]:
-          - heading "Upcoming Events" [level=2] [ref=f32e166]
-          - generic [ref=f32e167]:
-            - generic [ref=f32e168]:
-              - img [ref=f32e171]
-              - generic [ref=f32e175]:
-                - generic [ref=f32e176]:
-                  - generic [ref=f32e177]: Hackathon
-                  - generic [ref=f32e178]: Free
-                - link "GCODE Build Sprint · Summer 2026" [ref=f32e179] [cursor=pointer]:
-                  - /url: /events/gcode-build-sprint-2026
-                - paragraph [ref=f32e180]:
-                  - img [ref=f32e181]
-                  - text: 15 Jul 2026
-                - link "Register" [ref=f32e184] [cursor=pointer]:
-                  - /url: /events/gcode-build-sprint-2026
-                  - text: Register
-                  - img [ref=f32e185]
-            - generic [ref=f32e187]:
-              - img [ref=f32e190]
-              - generic [ref=f32e194]:
-                - generic [ref=f32e195]:
-                  - generic [ref=f32e196]: Hackathon
-                  - generic [ref=f32e197]: Free
-                - link "GCODE Build Sprint · Winter 2026" [ref=f32e198] [cursor=pointer]:
-                  - /url: /events/gcode-build-sprint-2026-winter
-                - paragraph [ref=f32e199]:
-                  - img [ref=f32e200]
-                  - text: 15 Jul 2026
-                - link "Register" [ref=f32e203] [cursor=pointer]:
-                  - /url: /events/gcode-build-sprint-2026-winter
-                  - text: Register
-                  - img [ref=f32e204]
-            - generic [ref=f32e206]:
-              - img [ref=f32e209]
-              - generic [ref=f32e213]:
-                - generic [ref=f32e214]:
-                  - generic [ref=f32e215]: Expert AMA
-                  - generic [ref=f32e216]: Free
-                - 'link "Ask Me Anything: Fundraising for Deep-Tech Startups" [ref=f32e217] [cursor=pointer]':
-                  - /url: /events/ask-me-anything-fundraising
-                - paragraph [ref=f32e218]:
-                  - img [ref=f32e219]
-                  - text: 18 Jul 2026
-                - link "Register" [ref=f32e222] [cursor=pointer]:
-                  - /url: /events/ask-me-anything-fundraising
-                  - text: Register
-                  - img [ref=f32e223]
-            - generic [ref=f32e244]:
-              - img [ref=f32e247]
-              - generic [ref=f32e251]:
-                - generic [ref=f32e252]:
-                  - generic [ref=f32e253]: Ideathon
-                  - generic [ref=f32e254]: Free
-                - link "ClimaTech Ideathon 2026" [ref=f32e255] [cursor=pointer]:
-                  - /url: /events/climatech-ideathon-2026
-                - paragraph [ref=f32e256]:
-                  - img [ref=f32e257]
-                  - text: 20 Jul 2026
-                - link "Register" [ref=f32e260] [cursor=pointer]:
-                  - /url: /events/climatech-ideathon-2026
-                  - text: Register
-                  - img [ref=f32e261]
-            - generic [ref=f32e263]:
-              - img [ref=f32e266]
-              - generic [ref=f32e270]:
-                - generic [ref=f32e271]:
-                  - generic [ref=f32e272]: Community Meetup
-                  - generic [ref=f32e273]: Free
-                - link "GCODE Founders Meetup · Mumbai" [ref=f32e274] [cursor=pointer]:
-                  - /url: /events/gcode-founders-meetup-mumbai
-                - paragraph [ref=f32e275]:
-                  - img [ref=f32e276]
-                  - text: 22 Jul 2026
-                - link "Register" [ref=f32e279] [cursor=pointer]:
-                  - /url: /events/gcode-founders-meetup-mumbai
-                  - text: Register
-                  - img [ref=f32e280]
-    - button "Ask GCODE AI" [ref=f32e301]:
-      - img [ref=f32e302]
-  - button "Open Next.js Dev Tools" [ref=f32e310] [cursor=pointer]:
-    - img [ref=f32e311]
-  - alert [ref=f32e325]
+    - generic [ref=f32e2]:
+        - banner [ref=f32e3]:
+            - generic [ref=f32e5]:
+                - link "logo" [ref=f32e6] [cursor=pointer]:
+                    - /url: /
+                    - img "logo" [ref=f32e7]
+                - navigation "Primary" [ref=f32e8]:
+                    - link "Events" [ref=f32e9] [cursor=pointer]:
+                        - /url: /events
+        - main [ref=f32e11]:
+            - generic [ref=f32e13]:
+                - generic [ref=f32e14]:
+                    - generic [ref=f32e15]:
+                        - heading "Discover Events & Webinars" [level=4] [ref=f32e16]
+                        - paragraph [ref=f32e17]: Hackathons, Ideathons, Expert AMAs, Live Webinars — all in one place.
+                    - link "+ Host / Submit Event" [ref=f32e18] [cursor=pointer]:
+                        - /url: /my-organized-events/new
+                - generic [ref=f32e19]:
+                    - tablist [ref=f32e20]:
+                        - tab "All" [selected] [ref=f32e21]
+                        - tab "Webinars" [ref=f32e22]
+                        - tab "Hackathons" [ref=f32e23]
+                        - tab "Ideathons" [ref=f32e24]
+                        - tab "Meetups" [ref=f32e25]
+                        - tab "Expert AMAs" [ref=f32e26]
+                    - generic [ref=f32e27]:
+                        - checkbox "Free" [checked] [active] [ref=f32e28] [cursor=pointer]
+                        - checkbox "Paid" [ref=f32e29]
+                        - checkbox "Online" [ref=f32e30]
+                        - checkbox "In-Person" [ref=f32e31]
+                - generic [ref=f32e32]:
+                    - generic [ref=f32e33]:
+                        - heading "Featured" [level=2] [ref=f32e34]
+                        - generic [ref=f32e314]:
+                            - button "Previous" [disabled] [ref=f32e315]:
+                                - img [ref=f32e316]
+                            - button "Next" [ref=f32e318]:
+                                - img [ref=f32e319]
+                    - generic [ref=f32e35]:
+                        - generic [ref=f32e36]:
+                            - generic [ref=f32e38]:
+                                - generic [ref=f32e39]:
+                                    - img [ref=f32e41]
+                                    - generic [ref=f32e46]: Hackathon
+                                - generic [ref=f32e47]:
+                                    - generic [ref=f32e48]:
+                                        - generic [ref=f32e49]: Online
+                                        - generic [ref=f32e50]: Free
+                                    - link "GCODE Build Sprint · Summer 2026" [ref=f32e51] [cursor=pointer]:
+                                        - /url: /events/gcode-build-sprint-2026
+                                    - paragraph [ref=f32e53]:
+                                        - img [ref=f32e54]
+                                        - text: 15 Jul 2026 · 10:00 AM – 6:00 PM IST
+                                    - generic [ref=f32e57]:
+                                        - generic [ref=f32e60]: PS
+                                        - generic [ref=f32e63]: RV
+                                        - generic [ref=f32e66]: AI
+                                    - generic [ref=f32e67]:
+                                        - generic [ref=f32e68]: 52 spots left
+                                        - link "Register" [ref=f32e70] [cursor=pointer]:
+                                            - /url: /events/gcode-build-sprint-2026
+                                            - text: Register
+                                            - img [ref=f32e71]
+                            - generic [ref=f32e74]:
+                                - generic [ref=f32e75]:
+                                    - img [ref=f32e77]
+                                    - generic [ref=f32e82]: Hackathon
+                                - generic [ref=f32e83]:
+                                    - generic [ref=f32e84]:
+                                        - generic [ref=f32e85]: Online
+                                        - generic [ref=f32e86]: Free
+                                    - link "GCODE Build Sprint · Winter 2026" [ref=f32e87] [cursor=pointer]:
+                                        - /url: /events/gcode-build-sprint-2026-winter
+                                    - paragraph [ref=f32e89]:
+                                        - img [ref=f32e90]
+                                        - text: 15 Jul 2026 · 10:00 AM – 6:00 PM IST
+                                    - generic [ref=f32e92]:
+                                        - generic [ref=f32e93]: 52 spots left
+                                        - link "Register" [ref=f32e95] [cursor=pointer]:
+                                            - /url: /events/gcode-build-sprint-2026-winter
+                                            - text: Register
+                                            - img [ref=f32e96]
+                            - generic [ref=f32e99]:
+                                - generic [ref=f32e100]:
+                                    - img [ref=f32e102]
+                                    - generic [ref=f32e107]: Expert AMA
+                                - generic [ref=f32e108]:
+                                    - generic [ref=f32e109]:
+                                        - generic [ref=f32e110]: Online
+                                        - generic [ref=f32e111]: Free
+                                    - 'link "Ask Me Anything: Fundraising for Deep-Tech Startups" [ref=f32e112] [cursor=pointer]':
+                                        - /url: /events/ask-me-anything-fundraising
+                                    - paragraph [ref=f32e114]:
+                                        - img [ref=f32e115]
+                                        - text: 18 Jul 2026 · 6:00 PM IST
+                                    - generic [ref=f32e118]:
+                                        - generic [ref=f32e121]: KR
+                                        - generic [ref=f32e124]: MP
+                                        - generic [ref=f32e127]: AM
+                                    - link "Register" [ref=f32e130] [cursor=pointer]:
+                                        - /url: /events/ask-me-anything-fundraising
+                                        - text: Register
+                                        - img [ref=f32e131]
+                            - generic [ref=f32e134]:
+                                - generic [ref=f32e135]:
+                                    - img [ref=f32e137]
+                                    - generic [ref=f32e142]: Webinar
+                                - generic [ref=f32e143]:
+                                    - generic [ref=f32e144]:
+                                        - generic [ref=f32e145]: Online
+                                        - generic [ref=f32e146]: ₹299
+                                    - 'link "Fundraising readiness: what investors check first" [ref=f32e147] [cursor=pointer]':
+                                        - /url: /events/fundraising-readiness-webinar
+                                    - paragraph [ref=f32e149]:
+                                        - img [ref=f32e150]
+                                        - text: 5 Jul 2026 · 5:00 PM IST
+                                    - generic [ref=f32e153]:
+                                        - generic [ref=f32e156]: DM
+                                        - generic [ref=f32e159]: AR
+                                    - link "Register" [ref=f32e162] [cursor=pointer]:
+                                        - /url: /events/fundraising-readiness-webinar
+                                        - text: Register
+                                        - img [ref=f32e163]
+                        - generic [ref=f32e321]:
+                            - button "Go to slide 1" [ref=f32e322]
+                            - button "Go to slide 2" [ref=f32e323]
+                            - button "Go to slide 3" [ref=f32e324]
+                - generic [ref=f32e165]:
+                    - heading "Upcoming Events" [level=2] [ref=f32e166]
+                    - generic [ref=f32e167]:
+                        - generic [ref=f32e168]:
+                            - img [ref=f32e171]
+                            - generic [ref=f32e175]:
+                                - generic [ref=f32e176]:
+                                    - generic [ref=f32e177]: Hackathon
+                                    - generic [ref=f32e178]: Free
+                                - link "GCODE Build Sprint · Summer 2026" [ref=f32e179] [cursor=pointer]:
+                                    - /url: /events/gcode-build-sprint-2026
+                                - paragraph [ref=f32e180]:
+                                    - img [ref=f32e181]
+                                    - text: 15 Jul 2026
+                                - link "Register" [ref=f32e184] [cursor=pointer]:
+                                    - /url: /events/gcode-build-sprint-2026
+                                    - text: Register
+                                    - img [ref=f32e185]
+                        - generic [ref=f32e187]:
+                            - img [ref=f32e190]
+                            - generic [ref=f32e194]:
+                                - generic [ref=f32e195]:
+                                    - generic [ref=f32e196]: Hackathon
+                                    - generic [ref=f32e197]: Free
+                                - link "GCODE Build Sprint · Winter 2026" [ref=f32e198] [cursor=pointer]:
+                                    - /url: /events/gcode-build-sprint-2026-winter
+                                - paragraph [ref=f32e199]:
+                                    - img [ref=f32e200]
+                                    - text: 15 Jul 2026
+                                - link "Register" [ref=f32e203] [cursor=pointer]:
+                                    - /url: /events/gcode-build-sprint-2026-winter
+                                    - text: Register
+                                    - img [ref=f32e204]
+                        - generic [ref=f32e206]:
+                            - img [ref=f32e209]
+                            - generic [ref=f32e213]:
+                                - generic [ref=f32e214]:
+                                    - generic [ref=f32e215]: Expert AMA
+                                    - generic [ref=f32e216]: Free
+                                - 'link "Ask Me Anything: Fundraising for Deep-Tech Startups" [ref=f32e217] [cursor=pointer]':
+                                    - /url: /events/ask-me-anything-fundraising
+                                - paragraph [ref=f32e218]:
+                                    - img [ref=f32e219]
+                                    - text: 18 Jul 2026
+                                - link "Register" [ref=f32e222] [cursor=pointer]:
+                                    - /url: /events/ask-me-anything-fundraising
+                                    - text: Register
+                                    - img [ref=f32e223]
+                        - generic [ref=f32e244]:
+                            - img [ref=f32e247]
+                            - generic [ref=f32e251]:
+                                - generic [ref=f32e252]:
+                                    - generic [ref=f32e253]: Ideathon
+                                    - generic [ref=f32e254]: Free
+                                - link "ClimaTech Ideathon 2026" [ref=f32e255] [cursor=pointer]:
+                                    - /url: /events/climatech-ideathon-2026
+                                - paragraph [ref=f32e256]:
+                                    - img [ref=f32e257]
+                                    - text: 20 Jul 2026
+                                - link "Register" [ref=f32e260] [cursor=pointer]:
+                                    - /url: /events/climatech-ideathon-2026
+                                    - text: Register
+                                    - img [ref=f32e261]
+                        - generic [ref=f32e263]:
+                            - img [ref=f32e266]
+                            - generic [ref=f32e270]:
+                                - generic [ref=f32e271]:
+                                    - generic [ref=f32e272]: Community Meetup
+                                    - generic [ref=f32e273]: Free
+                                - link "GCODE Founders Meetup · Mumbai" [ref=f32e274] [cursor=pointer]:
+                                    - /url: /events/gcode-founders-meetup-mumbai
+                                - paragraph [ref=f32e275]:
+                                    - img [ref=f32e276]
+                                    - text: 22 Jul 2026
+                                - link "Register" [ref=f32e279] [cursor=pointer]:
+                                    - /url: /events/gcode-founders-meetup-mumbai
+                                    - text: Register
+                                    - img [ref=f32e280]
+        - button "Ask GCODE AI" [ref=f32e301]:
+            - img [ref=f32e302]
+    - button "Open Next.js Dev Tools" [ref=f32e310] [cursor=pointer]:
+        - img [ref=f32e311]
+    - alert [ref=f32e325]

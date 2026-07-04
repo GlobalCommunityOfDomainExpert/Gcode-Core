@@ -1,89 +1,89 @@
 - generic [active] [ref=f25e1]:
-  - generic [ref=f25e2]:
-    - banner [ref=f25e3]:
-      - generic [ref=f25e4]:
-        - link "logo" [ref=f25e6] [cursor=pointer]:
-          - /url: /
-          - img "logo" [ref=f25e7]
-        - generic [ref=f25e8]:
-          - button "Notifications" [ref=f25e9]:
-            - img [ref=f25e10]
-          - button "Problem Feed" [ref=f25e14]
-          - button "Open menu" [ref=f25e15]:
-            - img [ref=f25e16]
-    - main [ref=f25e18]:
-      - generic [ref=f25e20]:
-        - generic [ref=f25e21]:
-          - heading "Host an Event" [level=1] [ref=f25e22]
-          - paragraph [ref=f25e23]: Set up your event and optionally request help from the community.
-        - list [ref=f25e25]:
-          - listitem [ref=f25e26]:
-            - generic [ref=f25e27]:
-              - generic [ref=f25e28]: "1"
-              - generic [ref=f25e29]: Type
-            - generic:
-              - separator
-          - listitem [ref=f25e30]:
-            - generic [ref=f25e31]:
-              - generic [ref=f25e32]: "2"
-              - generic [ref=f25e33]: Details
-            - generic:
-              - separator
-          - listitem [ref=f25e34]:
-            - generic [ref=f25e35]:
-              - generic [ref=f25e36]: "3"
-              - generic [ref=f25e37]: Schedule & Mode
-            - generic:
-              - separator
-          - listitem [ref=f25e38]:
-            - generic [ref=f25e39]:
-              - generic [ref=f25e40]: "4"
-              - generic [ref=f25e41]: Agenda & Links
-            - generic:
-              - separator
-          - listitem [ref=f25e42]:
-            - generic [ref=f25e43]:
-              - generic [ref=f25e44]: "5"
-              - generic [ref=f25e45]: Community
-            - generic:
-              - separator
-          - listitem [ref=f25e46]:
-            - generic [ref=f25e47]:
-              - generic [ref=f25e48]: "6"
-              - generic [ref=f25e49]: Review
-        - generic [ref=f25e51]:
-          - generic [ref=f25e52]:
-            - heading "What kind of event is this?" [level=2] [ref=f25e53]
-            - paragraph [ref=f25e54]: Pick the format that best matches your event.
-          - radiogroup "Event type" [ref=f25e55]:
-            - radio "Hackathon Build sprint, team-based" [ref=f25e56]:
-              - img [ref=f25e57]
-              - generic [ref=f25e62]: Hackathon
-              - generic [ref=f25e63]: Build sprint, team-based
-            - radio "Expert AMA Live Q&A with an expert" [ref=f25e64]:
-              - img [ref=f25e65]
-              - generic [ref=f25e68]: Expert AMA
-              - generic [ref=f25e69]: Live Q&A with an expert
-            - radio "Webinar Live or recorded session" [ref=f25e70]:
-              - img [ref=f25e71]
-              - generic [ref=f25e74]: Webinar
-              - generic [ref=f25e75]: Live or recorded session
-            - radio "Ideathon Idea pitching competition" [ref=f25e76]:
-              - img [ref=f25e77]
-              - generic [ref=f25e79]: Ideathon
-              - generic [ref=f25e80]: Idea pitching competition
-            - radio "Community Meetup Informal networking" [ref=f25e81]:
-              - img [ref=f25e82]
-              - generic [ref=f25e84]: Community Meetup
-              - generic [ref=f25e85]: Informal networking
-            - radio "Institution Event Hosted with a partner institution" [ref=f25e86]:
-              - img [ref=f25e87]
-              - generic [ref=f25e91]: Institution Event
-              - generic [ref=f25e92]: Hosted with a partner institution
-        - generic [ref=f25e93]:
-          - button "← Back" [disabled] [ref=f25e94]
-          - button "Next →" [disabled] [ref=f25e96]
-    - button "Ask GCODE AI" [ref=f25e97]:
-      - img [ref=f25e98]
-  - button "Open Next.js Dev Tools" [ref=f25e106] [cursor=pointer]:
-    - img [ref=f25e107]
+    - generic [ref=f25e2]:
+        - banner [ref=f25e3]:
+            - generic [ref=f25e4]:
+                - link "logo" [ref=f25e6] [cursor=pointer]:
+                    - /url: /
+                    - img "logo" [ref=f25e7]
+                - generic [ref=f25e8]:
+                    - button "Notifications" [ref=f25e9]:
+                        - img [ref=f25e10]
+                    - button "Problem Feed" [ref=f25e14]
+                    - button "Open menu" [ref=f25e15]:
+                        - img [ref=f25e16]
+        - main [ref=f25e18]:
+            - generic [ref=f25e20]:
+                - generic [ref=f25e21]:
+                    - heading "Host an Event" [level=1] [ref=f25e22]
+                    - paragraph [ref=f25e23]: Set up your event and optionally request help from the community.
+                - list [ref=f25e25]:
+                    - listitem [ref=f25e26]:
+                        - generic [ref=f25e27]:
+                            - generic [ref=f25e28]: "1"
+                            - generic [ref=f25e29]: Type
+                        - generic:
+                            - separator
+                    - listitem [ref=f25e30]:
+                        - generic [ref=f25e31]:
+                            - generic [ref=f25e32]: "2"
+                            - generic [ref=f25e33]: Details
+                        - generic:
+                            - separator
+                    - listitem [ref=f25e34]:
+                        - generic [ref=f25e35]:
+                            - generic [ref=f25e36]: "3"
+                            - generic [ref=f25e37]: Schedule & Mode
+                        - generic:
+                            - separator
+                    - listitem [ref=f25e38]:
+                        - generic [ref=f25e39]:
+                            - generic [ref=f25e40]: "4"
+                            - generic [ref=f25e41]: Agenda & Links
+                        - generic:
+                            - separator
+                    - listitem [ref=f25e42]:
+                        - generic [ref=f25e43]:
+                            - generic [ref=f25e44]: "5"
+                            - generic [ref=f25e45]: Community
+                        - generic:
+                            - separator
+                    - listitem [ref=f25e46]:
+                        - generic [ref=f25e47]:
+                            - generic [ref=f25e48]: "6"
+                            - generic [ref=f25e49]: Review
+                - generic [ref=f25e51]:
+                    - generic [ref=f25e52]:
+                        - heading "What kind of event is this?" [level=2] [ref=f25e53]
+                        - paragraph [ref=f25e54]: Pick the format that best matches your event.
+                    - radiogroup "Event type" [ref=f25e55]:
+                        - radio "Hackathon Build sprint, team-based" [ref=f25e56]:
+                            - img [ref=f25e57]
+                            - generic [ref=f25e62]: Hackathon
+                            - generic [ref=f25e63]: Build sprint, team-based
+                        - radio "Expert AMA Live Q&A with an expert" [ref=f25e64]:
+                            - img [ref=f25e65]
+                            - generic [ref=f25e68]: Expert AMA
+                            - generic [ref=f25e69]: Live Q&A with an expert
+                        - radio "Webinar Live or recorded session" [ref=f25e70]:
+                            - img [ref=f25e71]
+                            - generic [ref=f25e74]: Webinar
+                            - generic [ref=f25e75]: Live or recorded session
+                        - radio "Ideathon Idea pitching competition" [ref=f25e76]:
+                            - img [ref=f25e77]
+                            - generic [ref=f25e79]: Ideathon
+                            - generic [ref=f25e80]: Idea pitching competition
+                        - radio "Community Meetup Informal networking" [ref=f25e81]:
+                            - img [ref=f25e82]
+                            - generic [ref=f25e84]: Community Meetup
+                            - generic [ref=f25e85]: Informal networking
+                        - radio "Institution Event Hosted with a partner institution" [ref=f25e86]:
+                            - img [ref=f25e87]
+                            - generic [ref=f25e91]: Institution Event
+                            - generic [ref=f25e92]: Hosted with a partner institution
+                - generic [ref=f25e93]:
+                    - button "← Back" [disabled] [ref=f25e94]
+                    - button "Next →" [disabled] [ref=f25e96]
+        - button "Ask GCODE AI" [ref=f25e97]:
+            - img [ref=f25e98]
+    - button "Open Next.js Dev Tools" [ref=f25e106] [cursor=pointer]:
+        - img [ref=f25e107]

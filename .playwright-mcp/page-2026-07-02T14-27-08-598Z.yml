@@ -1,125 +1,125 @@
 - generic [active] [ref=f31e1]:
-  - generic [ref=f31e2]:
-    - banner [ref=f31e3]:
-      - generic [ref=f31e5]:
-        - link "logo" [ref=f31e6] [cursor=pointer]:
-          - /url: /
-          - img "logo" [ref=f31e7]
-        - navigation "Primary" [ref=f31e8]:
-          - link "Events" [ref=f31e9] [cursor=pointer]:
-            - /url: /events
-    - generic [ref=f31e10]:
-      - complementary [ref=f31e11]:
-        - navigation "Sidebar" [ref=f31e12]:
-          - button "My Events" [ref=f31e15]:
-            - img [ref=f31e16]
-            - generic [ref=f31e19]: My Events
-            - img [ref=f31e20]
-        - button "Arjun Sharma Expert" [ref=f31e24]:
-          - generic [ref=f31e27]: AS
-          - generic [ref=f31e28]:
-            - generic [ref=f31e29]: Arjun Sharma
-            - generic [ref=f31e30]: Expert
-          - img [ref=f31e31]
-      - main [ref=f31e33]:
-        - generic [ref=f31e35]:
-          - navigation "Breadcrumb" [ref=f31e36]:
-            - list [ref=f31e37]:
-              - listitem [ref=f31e38]:
-                - link "Organizing" [ref=f31e39] [cursor=pointer]:
-                  - /url: /my-organized-events
-              - listitem [ref=f31e40]: GCODE Build Sprint · Summer 2026
-          - generic [ref=f31e41]:
-            - generic [ref=f31e42]:
-              - generic [ref=f31e43]:
-                - generic [ref=f31e44]:
-                  - generic [ref=f31e45]: ● Live
-                  - generic [ref=f31e46]: Hackathon
-                  - generic [ref=f31e47]: Online
-                  - generic [ref=f31e48]: Free
-                - heading "GCODE Build Sprint · Summer 2026" [level=1] [ref=f31e49]
-                - paragraph [ref=f31e50]: 15 Jul 2026 · 10:00 AM – 6:00 PM IST · Online
-              - generic [ref=f31e51]:
-                - generic [ref=f31e52]:
-                  - paragraph [ref=f31e53]: "148"
-                  - paragraph [ref=f31e54]: Registered
-                - generic [ref=f31e56]:
-                  - paragraph [ref=f31e57]: "200"
-                  - paragraph [ref=f31e58]: Capacity
-            - generic [ref=f31e59]:
-              - link "View Public Page →" [ref=f31e60] [cursor=pointer]:
-                - /url: /events/gcode-build-sprint-2026
-              - link "Edit Event →" [ref=f31e61] [cursor=pointer]:
-                - /url: /my-organized-events/gcode-build-sprint-2026/edit
-              - button "Cancel Event" [ref=f31e62]
-          - generic [ref=f31e63]:
-            - tablist [ref=f31e64]:
-              - tab "Overview" [selected] [ref=f31e65]
-              - tab "Attendees (18)" [ref=f31e66]
-              - tab "Communication" [ref=f31e67]
-              - tab "Settings" [ref=f31e68]
-              - tab "Community (0)" [ref=f31e69]
-            - generic [ref=f31e71]:
-              - generic [ref=f31e72]:
-                - generic [ref=f31e73]:
-                  - paragraph [ref=f31e74]: Registered
-                  - generic [ref=f31e75]:
-                    - generic [ref=f31e76]: "148"
-                    - generic [ref=f31e77]: +18 this week
-                  - paragraph [ref=f31e78]: 200 capacity
-                - generic [ref=f31e79]:
-                  - paragraph [ref=f31e80]: Revenue
-                  - generic [ref=f31e82]: ₹0
-                  - paragraph [ref=f31e83]: Free event
-                - generic [ref=f31e84]:
-                  - paragraph [ref=f31e85]: Capacity
-                  - generic [ref=f31e86]: 74%
-                  - progressbar "Capacity filled" [ref=f31e87]
-                - generic [ref=f31e89]:
-                  - paragraph [ref=f31e90]: Days Left
-                  - generic [ref=f31e92]: "13"
-                  - paragraph [ref=f31e93]: Closes 14 Jul 2026
-              - generic [ref=f31e94]:
-                - paragraph [ref=f31e95]: Registration Trend
-                - img "Daily registrations over the last 7 days" [ref=f31e97]:
-                  - generic [ref=f31e98]:
-                    - generic:
-                      - 'generic "26 Jun: 1 registration"'
-                    - generic [ref=f31e99]: 26 Jun
-                  - generic [ref=f31e100]:
-                    - generic:
-                      - 'generic "27 Jun: 2 registrations"'
-                    - generic [ref=f31e101]: 27 Jun
-                  - generic [ref=f31e102]:
-                    - generic:
-                      - 'generic "28 Jun: 2 registrations"'
-                    - generic [ref=f31e103]: 28 Jun
-                  - generic [ref=f31e104]:
-                    - generic:
-                      - 'generic "29 Jun: 3 registrations"'
-                    - generic [ref=f31e105]: 29 Jun
-                  - generic [ref=f31e106]:
-                    - generic:
-                      - 'generic "30 Jun: 2 registrations"'
-                    - generic [ref=f31e107]: 30 Jun
-                  - generic [ref=f31e108]:
-                    - generic:
-                      - 'generic "1 Jul: 4 registrations"'
-                    - generic [ref=f31e109]: 1 Jul
-                  - generic [ref=f31e110]:
-                    - generic:
-                      - 'generic "Today: 4 registrations"'
-                    - generic [ref=f31e111]: Today
-              - generic [ref=f31e112]:
-                - paragraph [ref=f31e113]: Quick Actions
-                - generic [ref=f31e115]:
-                  - button "📢 Send Announcement" [ref=f31e116]
-                  - button "⬇ Export CSV" [ref=f31e117]
-                  - link "✏ Edit Event" [ref=f31e118] [cursor=pointer]:
-                    - /url: /my-organized-events/gcode-build-sprint-2026/edit
-                  - link "↗ View Public Page" [ref=f31e119] [cursor=pointer]:
-                    - /url: /events/gcode-build-sprint-2026
-    - button "Ask GCODE AI" [ref=f31e120]:
-      - img [ref=f31e121]
-  - button "Open Next.js Dev Tools" [ref=f31e129] [cursor=pointer]:
-    - img [ref=f31e130]
+    - generic [ref=f31e2]:
+        - banner [ref=f31e3]:
+            - generic [ref=f31e5]:
+                - link "logo" [ref=f31e6] [cursor=pointer]:
+                    - /url: /
+                    - img "logo" [ref=f31e7]
+                - navigation "Primary" [ref=f31e8]:
+                    - link "Events" [ref=f31e9] [cursor=pointer]:
+                        - /url: /events
+        - generic [ref=f31e10]:
+            - complementary [ref=f31e11]:
+                - navigation "Sidebar" [ref=f31e12]:
+                    - button "My Events" [ref=f31e15]:
+                        - img [ref=f31e16]
+                        - generic [ref=f31e19]: My Events
+                        - img [ref=f31e20]
+                - button "Arjun Sharma Expert" [ref=f31e24]:
+                    - generic [ref=f31e27]: AS
+                    - generic [ref=f31e28]:
+                        - generic [ref=f31e29]: Arjun Sharma
+                        - generic [ref=f31e30]: Expert
+                    - img [ref=f31e31]
+            - main [ref=f31e33]:
+                - generic [ref=f31e35]:
+                    - navigation "Breadcrumb" [ref=f31e36]:
+                        - list [ref=f31e37]:
+                            - listitem [ref=f31e38]:
+                                - link "Organizing" [ref=f31e39] [cursor=pointer]:
+                                    - /url: /my-organized-events
+                            - listitem [ref=f31e40]: GCODE Build Sprint · Summer 2026
+                    - generic [ref=f31e41]:
+                        - generic [ref=f31e42]:
+                            - generic [ref=f31e43]:
+                                - generic [ref=f31e44]:
+                                    - generic [ref=f31e45]: ● Live
+                                    - generic [ref=f31e46]: Hackathon
+                                    - generic [ref=f31e47]: Online
+                                    - generic [ref=f31e48]: Free
+                                - heading "GCODE Build Sprint · Summer 2026" [level=1] [ref=f31e49]
+                                - paragraph [ref=f31e50]: 15 Jul 2026 · 10:00 AM – 6:00 PM IST · Online
+                            - generic [ref=f31e51]:
+                                - generic [ref=f31e52]:
+                                    - paragraph [ref=f31e53]: "148"
+                                    - paragraph [ref=f31e54]: Registered
+                                - generic [ref=f31e56]:
+                                    - paragraph [ref=f31e57]: "200"
+                                    - paragraph [ref=f31e58]: Capacity
+                        - generic [ref=f31e59]:
+                            - link "View Public Page →" [ref=f31e60] [cursor=pointer]:
+                                - /url: /events/gcode-build-sprint-2026
+                            - link "Edit Event →" [ref=f31e61] [cursor=pointer]:
+                                - /url: /my-organized-events/gcode-build-sprint-2026/edit
+                            - button "Cancel Event" [ref=f31e62]
+                    - generic [ref=f31e63]:
+                        - tablist [ref=f31e64]:
+                            - tab "Overview" [selected] [ref=f31e65]
+                            - tab "Attendees (18)" [ref=f31e66]
+                            - tab "Communication" [ref=f31e67]
+                            - tab "Settings" [ref=f31e68]
+                            - tab "Community (0)" [ref=f31e69]
+                        - generic [ref=f31e71]:
+                            - generic [ref=f31e72]:
+                                - generic [ref=f31e73]:
+                                    - paragraph [ref=f31e74]: Registered
+                                    - generic [ref=f31e75]:
+                                        - generic [ref=f31e76]: "148"
+                                        - generic [ref=f31e77]: +18 this week
+                                    - paragraph [ref=f31e78]: 200 capacity
+                                - generic [ref=f31e79]:
+                                    - paragraph [ref=f31e80]: Revenue
+                                    - generic [ref=f31e82]: ₹0
+                                    - paragraph [ref=f31e83]: Free event
+                                - generic [ref=f31e84]:
+                                    - paragraph [ref=f31e85]: Capacity
+                                    - generic [ref=f31e86]: 74%
+                                    - progressbar "Capacity filled" [ref=f31e87]
+                                - generic [ref=f31e89]:
+                                    - paragraph [ref=f31e90]: Days Left
+                                    - generic [ref=f31e92]: "13"
+                                    - paragraph [ref=f31e93]: Closes 14 Jul 2026
+                            - generic [ref=f31e94]:
+                                - paragraph [ref=f31e95]: Registration Trend
+                                - img "Daily registrations over the last 7 days" [ref=f31e97]:
+                                    - generic [ref=f31e98]:
+                                        - generic:
+                                            - 'generic "26 Jun: 1 registration"'
+                                        - generic [ref=f31e99]: 26 Jun
+                                    - generic [ref=f31e100]:
+                                        - generic:
+                                            - 'generic "27 Jun: 2 registrations"'
+                                        - generic [ref=f31e101]: 27 Jun
+                                    - generic [ref=f31e102]:
+                                        - generic:
+                                            - 'generic "28 Jun: 2 registrations"'
+                                        - generic [ref=f31e103]: 28 Jun
+                                    - generic [ref=f31e104]:
+                                        - generic:
+                                            - 'generic "29 Jun: 3 registrations"'
+                                        - generic [ref=f31e105]: 29 Jun
+                                    - generic [ref=f31e106]:
+                                        - generic:
+                                            - 'generic "30 Jun: 2 registrations"'
+                                        - generic [ref=f31e107]: 30 Jun
+                                    - generic [ref=f31e108]:
+                                        - generic:
+                                            - 'generic "1 Jul: 4 registrations"'
+                                        - generic [ref=f31e109]: 1 Jul
+                                    - generic [ref=f31e110]:
+                                        - generic:
+                                            - 'generic "Today: 4 registrations"'
+                                        - generic [ref=f31e111]: Today
+                            - generic [ref=f31e112]:
+                                - paragraph [ref=f31e113]: Quick Actions
+                                - generic [ref=f31e115]:
+                                    - button "📢 Send Announcement" [ref=f31e116]
+                                    - button "⬇ Export CSV" [ref=f31e117]
+                                    - link "✏ Edit Event" [ref=f31e118] [cursor=pointer]:
+                                        - /url: /my-organized-events/gcode-build-sprint-2026/edit
+                                    - link "↗ View Public Page" [ref=f31e119] [cursor=pointer]:
+                                        - /url: /events/gcode-build-sprint-2026
+        - button "Ask GCODE AI" [ref=f31e120]:
+            - img [ref=f31e121]
+    - button "Open Next.js Dev Tools" [ref=f31e129] [cursor=pointer]:
+        - img [ref=f31e130]

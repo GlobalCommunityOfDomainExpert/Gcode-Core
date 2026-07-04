@@ -1,141 +1,141 @@
 - generic [active] [ref=f20e1]:
-  - generic [ref=f20e2]:
-    - banner [ref=f20e3]:
-      - generic [ref=f20e5]:
-        - link "logo" [ref=f20e6] [cursor=pointer]:
-          - /url: /
-          - img "logo" [ref=f20e7]
-        - navigation "Primary" [ref=f20e8]:
-          - link "Events" [ref=f20e9] [cursor=pointer]:
-            - /url: /events
-    - generic [ref=f20e10]:
-      - complementary [ref=f20e11]:
-        - navigation "Sidebar" [ref=f20e12]:
-          - generic [ref=f20e14]:
-            - button "My Events" [expanded] [ref=f20e15]:
-              - img [ref=f20e16]
-              - generic [ref=f20e19]: My Events
-              - img [ref=f20e20]
-            - generic [ref=f20e22]:
-              - link "Attending" [ref=f20e23] [cursor=pointer]:
-                - /url: /my-events
-              - link "Organizing" [ref=f20e24] [cursor=pointer]:
-                - /url: /my-organized-events
-        - button "Arjun Sharma Expert" [ref=f20e27]:
-          - generic [ref=f20e30]: AS
-          - generic [ref=f20e31]:
-            - generic [ref=f20e32]: Arjun Sharma
-            - generic [ref=f20e33]: Expert
-          - img [ref=f20e34]
-      - main [ref=f20e36]:
-        - generic [ref=f20e441]:
-          - navigation "Breadcrumb" [ref=f20e442]:
-            - list [ref=f20e443]:
-              - listitem [ref=f20e444]:
-                - link "Events" [ref=f20e445] [cursor=pointer]:
-                  - /url: /events
-              - listitem [ref=f20e446]:
-                - link "Hackathon" [ref=f20e447] [cursor=pointer]:
-                  - /url: /events
-              - listitem [ref=f20e448]: Test Agenda Event 2
-          - generic [ref=f20e449]:
-            - generic [ref=f20e450]:
-              - generic [ref=f20e452]:
-                - generic [ref=f20e453]: Hackathon
-                - generic [ref=f20e454]: Online
-                - generic [ref=f20e455]: Free
-              - generic [ref=f20e456]:
-                - heading "Test Agenda Event 2" [level=1] [ref=f20e457]
-                - generic [ref=f20e458]:
-                  - generic [ref=f20e459]: Hackathon
-                  - generic [ref=f20e460]: Online
-                  - generic [ref=f20e461]: Free
-                - generic [ref=f20e462]:
-                  - paragraph [ref=f20e463]: About this event
-                  - paragraph [ref=f20e464]: A test event to verify agenda and social links.
-              - generic [ref=f20e465]:
-                - paragraph [ref=f20e466]: Event Details
-                - generic [ref=f20e467]:
-                  - generic [ref=f20e468]:
-                    - img [ref=f20e469]
-                    - generic [ref=f20e471]:
-                      - paragraph [ref=f20e472]: Date & Time
-                      - paragraph [ref=f20e473]: 15 Aug 2026
-                      - paragraph [ref=f20e474]: 10:00 IST
-                  - generic [ref=f20e475]:
-                    - img [ref=f20e476]
-                    - generic [ref=f20e479]:
-                      - paragraph [ref=f20e480]: Duration
-                      - paragraph [ref=f20e481]: TBD
-                      - paragraph
-                  - generic [ref=f20e482]:
-                    - img [ref=f20e483]
-                    - generic [ref=f20e486]:
-                      - paragraph [ref=f20e487]: Mode
-                      - paragraph [ref=f20e488]: Online
-                      - paragraph [ref=f20e489]: Online · Link shared after registration
-                  - generic [ref=f20e490]:
-                    - img [ref=f20e491]
-                    - generic [ref=f20e496]:
-                      - paragraph [ref=f20e497]: Team Size
-                      - paragraph [ref=f20e498]: Individual attendance
-                      - paragraph
-              - generic [ref=f20e499]:
-                - paragraph [ref=f20e500]: Agenda
-                - list [ref=f20e501]:
-                  - listitem [ref=f20e502]:
-                    - generic [ref=f20e505]:
-                      - heading "10:00 AM — Opening Keynote" [level=4] [ref=f20e506]
-                      - paragraph [ref=f20e507]: Welcome and kickoff remarks
-              - generic [ref=f20e508]:
-                - paragraph [ref=f20e509]: Organized By
-                - generic [ref=f20e511]:
-                  - generic [ref=f20e514]: GC
-                  - generic [ref=f20e515]:
-                    - generic [ref=f20e516]:
-                      - paragraph [ref=f20e517]: Arjun Sharma
-                      - generic [ref=f20e518]: Verified
-                    - paragraph [ref=f20e519]: 1 events hosted · 0 attendees · Expert
-              - generic [ref=f20e520]:
-                - paragraph [ref=f20e521]: Social Links
-                - link "Twitter" [ref=f20e523] [cursor=pointer]:
-                  - /url: https://twitter.com/gcode
-              - generic [ref=f20e524]:
-                - paragraph [ref=f20e525]: Terms & Eligibility
-                - list [ref=f20e526]:
-                  - listitem [ref=f20e527]: Hosted via GCODE.
-                  - listitem [ref=f20e528]: Free event — no registration fee.
-                  - listitem [ref=f20e529]: GCODE reserves the right to update event details before the start date.
-            - generic [ref=f20e530]:
-              - generic [ref=f20e531]:
-                - generic [ref=f20e533]: Free
-                - paragraph [ref=f20e534]: Registration closes 15 Aug 2026
-                - link "Register Now →" [ref=f20e535] [cursor=pointer]:
-                  - /url: /events/test-agenda-event-2-1783000308027/registered
-                - button "📅 Add to Calendar" [ref=f20e536]
-              - generic [ref=f20e537]:
-                - paragraph [ref=f20e538]: Event Info
-                - generic [ref=f20e539]:
-                  - generic [ref=f20e540]:
-                    - img [ref=f20e541]
-                    - generic [ref=f20e543]:
-                      - paragraph
-                      - paragraph [ref=f20e544]: 15 Aug 2026
-                      - paragraph [ref=f20e545]: 10:00 IST
-                  - generic [ref=f20e546]:
-                    - img [ref=f20e547]
-                    - generic [ref=f20e550]:
-                      - paragraph
-                      - paragraph [ref=f20e551]: Online
-                      - paragraph [ref=f20e552]: Online · Link shared after registration
-              - generic [ref=f20e553]:
-                - paragraph [ref=f20e554]: Share Event
-                - generic [ref=f20e555]:
-                  - button "Twitter / X" [ref=f20e556]
-                  - button "LinkedIn" [ref=f20e557]
-                  - button "Copy Link" [ref=f20e558]
-    - button "Ask GCODE AI" [ref=f20e52]:
-      - img [ref=f20e53]
-  - button "Open Next.js Dev Tools" [ref=f20e61] [cursor=pointer]:
-    - img [ref=f20e62]
-  - alert [ref=f20e65]
+    - generic [ref=f20e2]:
+        - banner [ref=f20e3]:
+            - generic [ref=f20e5]:
+                - link "logo" [ref=f20e6] [cursor=pointer]:
+                    - /url: /
+                    - img "logo" [ref=f20e7]
+                - navigation "Primary" [ref=f20e8]:
+                    - link "Events" [ref=f20e9] [cursor=pointer]:
+                        - /url: /events
+        - generic [ref=f20e10]:
+            - complementary [ref=f20e11]:
+                - navigation "Sidebar" [ref=f20e12]:
+                    - generic [ref=f20e14]:
+                        - button "My Events" [expanded] [ref=f20e15]:
+                            - img [ref=f20e16]
+                            - generic [ref=f20e19]: My Events
+                            - img [ref=f20e20]
+                        - generic [ref=f20e22]:
+                            - link "Attending" [ref=f20e23] [cursor=pointer]:
+                                - /url: /my-events
+                            - link "Organizing" [ref=f20e24] [cursor=pointer]:
+                                - /url: /my-organized-events
+                - button "Arjun Sharma Expert" [ref=f20e27]:
+                    - generic [ref=f20e30]: AS
+                    - generic [ref=f20e31]:
+                        - generic [ref=f20e32]: Arjun Sharma
+                        - generic [ref=f20e33]: Expert
+                    - img [ref=f20e34]
+            - main [ref=f20e36]:
+                - generic [ref=f20e441]:
+                    - navigation "Breadcrumb" [ref=f20e442]:
+                        - list [ref=f20e443]:
+                            - listitem [ref=f20e444]:
+                                - link "Events" [ref=f20e445] [cursor=pointer]:
+                                    - /url: /events
+                            - listitem [ref=f20e446]:
+                                - link "Hackathon" [ref=f20e447] [cursor=pointer]:
+                                    - /url: /events
+                            - listitem [ref=f20e448]: Test Agenda Event 2
+                    - generic [ref=f20e449]:
+                        - generic [ref=f20e450]:
+                            - generic [ref=f20e452]:
+                                - generic [ref=f20e453]: Hackathon
+                                - generic [ref=f20e454]: Online
+                                - generic [ref=f20e455]: Free
+                            - generic [ref=f20e456]:
+                                - heading "Test Agenda Event 2" [level=1] [ref=f20e457]
+                                - generic [ref=f20e458]:
+                                    - generic [ref=f20e459]: Hackathon
+                                    - generic [ref=f20e460]: Online
+                                    - generic [ref=f20e461]: Free
+                                - generic [ref=f20e462]:
+                                    - paragraph [ref=f20e463]: About this event
+                                    - paragraph [ref=f20e464]: A test event to verify agenda and social links.
+                            - generic [ref=f20e465]:
+                                - paragraph [ref=f20e466]: Event Details
+                                - generic [ref=f20e467]:
+                                    - generic [ref=f20e468]:
+                                        - img [ref=f20e469]
+                                        - generic [ref=f20e471]:
+                                            - paragraph [ref=f20e472]: Date & Time
+                                            - paragraph [ref=f20e473]: 15 Aug 2026
+                                            - paragraph [ref=f20e474]: 10:00 IST
+                                    - generic [ref=f20e475]:
+                                        - img [ref=f20e476]
+                                        - generic [ref=f20e479]:
+                                            - paragraph [ref=f20e480]: Duration
+                                            - paragraph [ref=f20e481]: TBD
+                                            - paragraph
+                                    - generic [ref=f20e482]:
+                                        - img [ref=f20e483]
+                                        - generic [ref=f20e486]:
+                                            - paragraph [ref=f20e487]: Mode
+                                            - paragraph [ref=f20e488]: Online
+                                            - paragraph [ref=f20e489]: Online · Link shared after registration
+                                    - generic [ref=f20e490]:
+                                        - img [ref=f20e491]
+                                        - generic [ref=f20e496]:
+                                            - paragraph [ref=f20e497]: Team Size
+                                            - paragraph [ref=f20e498]: Individual attendance
+                                            - paragraph
+                            - generic [ref=f20e499]:
+                                - paragraph [ref=f20e500]: Agenda
+                                - list [ref=f20e501]:
+                                    - listitem [ref=f20e502]:
+                                        - generic [ref=f20e505]:
+                                            - heading "10:00 AM — Opening Keynote" [level=4] [ref=f20e506]
+                                            - paragraph [ref=f20e507]: Welcome and kickoff remarks
+                            - generic [ref=f20e508]:
+                                - paragraph [ref=f20e509]: Organized By
+                                - generic [ref=f20e511]:
+                                    - generic [ref=f20e514]: GC
+                                    - generic [ref=f20e515]:
+                                        - generic [ref=f20e516]:
+                                            - paragraph [ref=f20e517]: Arjun Sharma
+                                            - generic [ref=f20e518]: Verified
+                                        - paragraph [ref=f20e519]: 1 events hosted · 0 attendees · Expert
+                            - generic [ref=f20e520]:
+                                - paragraph [ref=f20e521]: Social Links
+                                - link "Twitter" [ref=f20e523] [cursor=pointer]:
+                                    - /url: https://twitter.com/gcode
+                            - generic [ref=f20e524]:
+                                - paragraph [ref=f20e525]: Terms & Eligibility
+                                - list [ref=f20e526]:
+                                    - listitem [ref=f20e527]: Hosted via GCODE.
+                                    - listitem [ref=f20e528]: Free event — no registration fee.
+                                    - listitem [ref=f20e529]: GCODE reserves the right to update event details before the start date.
+                        - generic [ref=f20e530]:
+                            - generic [ref=f20e531]:
+                                - generic [ref=f20e533]: Free
+                                - paragraph [ref=f20e534]: Registration closes 15 Aug 2026
+                                - link "Register Now →" [ref=f20e535] [cursor=pointer]:
+                                    - /url: /events/test-agenda-event-2-1783000308027/registered
+                                - button "📅 Add to Calendar" [ref=f20e536]
+                            - generic [ref=f20e537]:
+                                - paragraph [ref=f20e538]: Event Info
+                                - generic [ref=f20e539]:
+                                    - generic [ref=f20e540]:
+                                        - img [ref=f20e541]
+                                        - generic [ref=f20e543]:
+                                            - paragraph
+                                            - paragraph [ref=f20e544]: 15 Aug 2026
+                                            - paragraph [ref=f20e545]: 10:00 IST
+                                    - generic [ref=f20e546]:
+                                        - img [ref=f20e547]
+                                        - generic [ref=f20e550]:
+                                            - paragraph
+                                            - paragraph [ref=f20e551]: Online
+                                            - paragraph [ref=f20e552]: Online · Link shared after registration
+                            - generic [ref=f20e553]:
+                                - paragraph [ref=f20e554]: Share Event
+                                - generic [ref=f20e555]:
+                                    - button "Twitter / X" [ref=f20e556]
+                                    - button "LinkedIn" [ref=f20e557]
+                                    - button "Copy Link" [ref=f20e558]
+        - button "Ask GCODE AI" [ref=f20e52]:
+            - img [ref=f20e53]
+    - button "Open Next.js Dev Tools" [ref=f20e61] [cursor=pointer]:
+        - img [ref=f20e62]
+    - alert [ref=f20e65]

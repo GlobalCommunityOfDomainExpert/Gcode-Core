@@ -1,105 +1,105 @@
 - generic [active] [ref=f18e1]:
-  - generic [ref=f18e2]:
-    - banner [ref=f18e3]:
-      - generic [ref=f18e5]:
-        - link "logo" [ref=f18e6] [cursor=pointer]:
-          - /url: /
-          - img "logo" [ref=f18e7]
-        - navigation "Primary" [ref=f18e8]:
-          - link "Events" [ref=f18e9] [cursor=pointer]:
-            - /url: /events
-    - generic [ref=f18e10]:
-      - complementary [ref=f18e11]:
-        - navigation "Sidebar" [ref=f18e12]:
-          - generic [ref=f18e14]:
-            - button "My Events" [expanded] [ref=f18e15]:
-              - img [ref=f18e16]
-              - generic [ref=f18e19]: My Events
-              - img [ref=f18e20]
-            - generic [ref=f18e22]:
-              - link "Attending" [ref=f18e23] [cursor=pointer]:
-                - /url: /my-events
-              - link "Organizing" [ref=f18e24] [cursor=pointer]:
-                - /url: /my-organized-events
-        - button "Arjun Sharma Expert" [ref=f18e27]:
-          - generic [ref=f18e30]: AS
-          - generic [ref=f18e31]:
-            - generic [ref=f18e32]: Arjun Sharma
-            - generic [ref=f18e33]: Expert
-          - img [ref=f18e34]
-      - main [ref=f18e36]:
-        - generic [ref=f18e66]:
-          - generic [ref=f18e67]:
-            - heading "Host an Event" [level=1] [ref=f18e68]
-            - paragraph [ref=f18e69]: Set up your event and optionally request help from the community.
-          - list [ref=f18e71]:
-            - listitem [ref=f18e72]:
-              - generic [ref=f18e73]:
-                - img [ref=f18e153]
-                - generic [ref=f18e75]: Type
-              - separator [ref=f18e77]
-            - listitem [ref=f18e78]:
-              - generic [ref=f18e79]:
-                - img [ref=f18e186]
-                - generic [ref=f18e81]: Details
-              - separator [ref=f18e83]
-            - listitem [ref=f18e84]:
-              - generic [ref=f18e85]:
-                - generic [ref=f18e86]: "3"
-                - generic [ref=f18e87]: Schedule & Mode
-              - separator [ref=f18e89]
-            - listitem [ref=f18e90]:
-              - generic [ref=f18e91]:
-                - generic [ref=f18e92]: "4"
-                - generic [ref=f18e93]: Agenda & Links
-              - separator [ref=f18e95]
-            - listitem [ref=f18e96]:
-              - generic [ref=f18e97]:
-                - generic [ref=f18e98]: "5"
-                - generic [ref=f18e99]: Community
-              - separator [ref=f18e101]
-            - listitem [ref=f18e102]:
-              - generic [ref=f18e103]:
-                - generic [ref=f18e104]: "6"
-                - generic [ref=f18e105]: Review
-          - generic [ref=f18e188]:
-            - generic [ref=f18e189]:
-              - heading "Schedule & mode" [level=2] [ref=f18e190]
-              - paragraph [ref=f18e191]: When and how attendees will join.
-            - generic [ref=f18e192]:
-              - generic [ref=f18e193]: Mode
-              - radiogroup [ref=f18e194]:
-                - radio "Online" [checked] [ref=f18e195]
-                - radio "In-Person" [ref=f18e196]
-                - radio "Hybrid" [ref=f18e197]
-            - generic [ref=f18e198]:
-              - generic [ref=f18e199]:
-                - generic [ref=f18e200]:
-                  - text: Date
-                  - generic [ref=f18e201]: "*"
-                - textbox "Date" [ref=f18e202]
-              - generic [ref=f18e203]:
-                - generic [ref=f18e204]:
-                  - text: Time
-                  - generic [ref=f18e205]: "*"
-                - textbox "Time" [ref=f18e206]
-            - generic [ref=f18e207]:
-              - generic [ref=f18e208]: Online meeting link
-              - textbox "Online meeting link" [ref=f18e209]:
-                - /placeholder: Shared with registrants after they sign up
-            - generic [ref=f18e210]:
-              - generic [ref=f18e211]:
-                - generic [ref=f18e212]: Registration closes
-                - textbox "Registration closes" [ref=f18e213]
-              - generic [ref=f18e214]:
-                - generic [ref=f18e215]: Duration
-                - textbox "Duration" [ref=f18e216]:
-                  - /placeholder: e.g. 3 hours
-          - generic [ref=f18e149]:
-            - button "← Back" [ref=f18e150]
-            - button "Next →" [disabled] [ref=f18e152]
-    - button "Ask GCODE AI" [ref=f18e52]:
-      - img [ref=f18e53]
-  - button "Open Next.js Dev Tools" [ref=f18e61] [cursor=pointer]:
-    - img [ref=f18e62]
-  - alert [ref=f18e65]
+    - generic [ref=f18e2]:
+        - banner [ref=f18e3]:
+            - generic [ref=f18e5]:
+                - link "logo" [ref=f18e6] [cursor=pointer]:
+                    - /url: /
+                    - img "logo" [ref=f18e7]
+                - navigation "Primary" [ref=f18e8]:
+                    - link "Events" [ref=f18e9] [cursor=pointer]:
+                        - /url: /events
+        - generic [ref=f18e10]:
+            - complementary [ref=f18e11]:
+                - navigation "Sidebar" [ref=f18e12]:
+                    - generic [ref=f18e14]:
+                        - button "My Events" [expanded] [ref=f18e15]:
+                            - img [ref=f18e16]
+                            - generic [ref=f18e19]: My Events
+                            - img [ref=f18e20]
+                        - generic [ref=f18e22]:
+                            - link "Attending" [ref=f18e23] [cursor=pointer]:
+                                - /url: /my-events
+                            - link "Organizing" [ref=f18e24] [cursor=pointer]:
+                                - /url: /my-organized-events
+                - button "Arjun Sharma Expert" [ref=f18e27]:
+                    - generic [ref=f18e30]: AS
+                    - generic [ref=f18e31]:
+                        - generic [ref=f18e32]: Arjun Sharma
+                        - generic [ref=f18e33]: Expert
+                    - img [ref=f18e34]
+            - main [ref=f18e36]:
+                - generic [ref=f18e66]:
+                    - generic [ref=f18e67]:
+                        - heading "Host an Event" [level=1] [ref=f18e68]
+                        - paragraph [ref=f18e69]: Set up your event and optionally request help from the community.
+                    - list [ref=f18e71]:
+                        - listitem [ref=f18e72]:
+                            - generic [ref=f18e73]:
+                                - img [ref=f18e153]
+                                - generic [ref=f18e75]: Type
+                            - separator [ref=f18e77]
+                        - listitem [ref=f18e78]:
+                            - generic [ref=f18e79]:
+                                - img [ref=f18e186]
+                                - generic [ref=f18e81]: Details
+                            - separator [ref=f18e83]
+                        - listitem [ref=f18e84]:
+                            - generic [ref=f18e85]:
+                                - generic [ref=f18e86]: "3"
+                                - generic [ref=f18e87]: Schedule & Mode
+                            - separator [ref=f18e89]
+                        - listitem [ref=f18e90]:
+                            - generic [ref=f18e91]:
+                                - generic [ref=f18e92]: "4"
+                                - generic [ref=f18e93]: Agenda & Links
+                            - separator [ref=f18e95]
+                        - listitem [ref=f18e96]:
+                            - generic [ref=f18e97]:
+                                - generic [ref=f18e98]: "5"
+                                - generic [ref=f18e99]: Community
+                            - separator [ref=f18e101]
+                        - listitem [ref=f18e102]:
+                            - generic [ref=f18e103]:
+                                - generic [ref=f18e104]: "6"
+                                - generic [ref=f18e105]: Review
+                    - generic [ref=f18e188]:
+                        - generic [ref=f18e189]:
+                            - heading "Schedule & mode" [level=2] [ref=f18e190]
+                            - paragraph [ref=f18e191]: When and how attendees will join.
+                        - generic [ref=f18e192]:
+                            - generic [ref=f18e193]: Mode
+                            - radiogroup [ref=f18e194]:
+                                - radio "Online" [checked] [ref=f18e195]
+                                - radio "In-Person" [ref=f18e196]
+                                - radio "Hybrid" [ref=f18e197]
+                        - generic [ref=f18e198]:
+                            - generic [ref=f18e199]:
+                                - generic [ref=f18e200]:
+                                    - text: Date
+                                    - generic [ref=f18e201]: "*"
+                                - textbox "Date" [ref=f18e202]
+                            - generic [ref=f18e203]:
+                                - generic [ref=f18e204]:
+                                    - text: Time
+                                    - generic [ref=f18e205]: "*"
+                                - textbox "Time" [ref=f18e206]
+                        - generic [ref=f18e207]:
+                            - generic [ref=f18e208]: Online meeting link
+                            - textbox "Online meeting link" [ref=f18e209]:
+                                - /placeholder: Shared with registrants after they sign up
+                        - generic [ref=f18e210]:
+                            - generic [ref=f18e211]:
+                                - generic [ref=f18e212]: Registration closes
+                                - textbox "Registration closes" [ref=f18e213]
+                            - generic [ref=f18e214]:
+                                - generic [ref=f18e215]: Duration
+                                - textbox "Duration" [ref=f18e216]:
+                                    - /placeholder: e.g. 3 hours
+                    - generic [ref=f18e149]:
+                        - button "← Back" [ref=f18e150]
+                        - button "Next →" [disabled] [ref=f18e152]
+        - button "Ask GCODE AI" [ref=f18e52]:
+            - img [ref=f18e53]
+    - button "Open Next.js Dev Tools" [ref=f18e61] [cursor=pointer]:
+        - img [ref=f18e62]
+    - alert [ref=f18e65]
