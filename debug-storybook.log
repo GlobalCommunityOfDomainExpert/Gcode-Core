@@ -1,0 +1,297 @@
+[12:20:39.247] [INFO] This command is running via an AI agent: claude-code_2-1-198_agent. Proceeding with agentic installation flow.
+[12:20:39.598] [DEBUG] Command "yarn.cmd" not found, trying next variation...
+[12:20:39.846] [DEBUG] Command "yarn.exe" not found, trying next variation...
+[12:20:40.082] [DEBUG] Command "yarn.ps1" not found, trying next variation...
+[12:20:43.606] [INFO] [36mInitializing Storybook[39m
+[12:20:43.835] [DEBUG] Command "yarn.cmd" not found, trying next variation...
+[12:20:44.067] [DEBUG] Command "yarn.exe" not found, trying next variation...
+[12:20:44.175] [DEBUG] Command "yarn.ps1" not found, trying next variation...
+[12:20:45.474] [DEBUG] Getting package.json info for C:/Projects/Claude/gcode-core-events/package.json...
+[12:20:45.474] [INFO] Package manager: npm
+[12:20:45.477] [DEBUG] Getting CLI versions from NPM for storybook...
+[12:20:45.477] [DEBUG] Executing command: npm info storybook version
+[12:20:45.479] [DEBUG] Resolved command variation: npm.cmd
+[12:20:47.945] [INFO] Adding Storybook version 10.4.6 to your project
+[12:20:47.946] [DEBUG] Executing command: npm config get min-release-age --workspaces=false --include-workspace-root
+[12:20:47.950] [DEBUG] Resolved command variation: npm.cmd
+[12:20:48.646] [DEBUG] Using cached package.json for C:\Projects\Claude\gcode-core-events\package.json...
+[12:20:48.646] [DEBUG] Project type detected: nextjs
+[12:20:48.647] [DEBUG] Using cached package.json for C:\Projects\Claude\gcode-core-events\package.json...
+[12:20:48.710] [INFO] Framework detected: nextjs-vite
+[12:20:48.712] [DEBUG] Getting installed version for vitest...
+[12:20:48.715] [DEBUG] Executing command: npm ls --json --depth=99 2>NUL
+[12:20:48.717] [DEBUG] Resolved command variation: npm.cmd
+[12:20:51.636] [DEBUG] Executing command: npm ls --json --depth=0 2>NUL
+[12:20:51.637] [DEBUG] Resolved command variation: npm.cmd
+[12:20:53.507] [DEBUG] Error finding installations for vitest: ExecaError: Command failed with exit code 1: npm.cmd ls --json "--depth=0" "2>NUL"
+
+npm error code EINVALIDTAGNAME
+npm error Invalid tag name "2>NUL" of package "2>NUL": Tags may not have any characters that encodeURIComponent encodes.
+npm error A complete log of this run can be found in: C:\Users\shash\AppData\Local\npm-cache\_logs\2026-07-06T06_50_52_194Z-debug-0.log
+
+{
+  "error": {
+    "code": "EINVALIDTAGNAME",
+    "summary": "Invalid tag name \"2>NUL\" of package \"2>NUL\": Tags may not have any characters that encodeURIComponent encodes.",
+    "detail": ""
+  }
+}
+[12:20:53.507] [DEBUG] No installations found for vitest
+[12:20:53.507] [DEBUG] Getting installed version for msw...
+[12:20:53.507] [DEBUG] Executing command: npm ls --json --depth=99 2>NUL
+[12:20:53.508] [DEBUG] Resolved command variation: npm.cmd
+[12:20:55.219] [DEBUG] Executing command: npm ls --json --depth=0 2>NUL
+[12:20:55.221] [DEBUG] Resolved command variation: npm.cmd
+[12:20:56.945] [DEBUG] Error finding installations for msw: ExecaError: Command failed with exit code 1: npm.cmd ls --json "--depth=0" "2>NUL"
+
+npm error code EINVALIDTAGNAME
+npm error Invalid tag name "2>NUL" of package "2>NUL": Tags may not have any characters that encodeURIComponent encodes.
+npm error A complete log of this run can be found in: C:\Users\shash\AppData\Local\npm-cache\_logs\2026-07-06T06_50_55_713Z-debug-0.log
+
+{
+  "error": {
+    "code": "EINVALIDTAGNAME",
+    "summary": "Invalid tag name \"2>NUL\" of package \"2>NUL\": Tags may not have any characters that encodeURIComponent encodes.",
+    "detail": ""
+  }
+}
+[12:20:56.945] [DEBUG] No installations found for msw
+[12:20:56.950] [INFO] Storybook collects completely anonymous usage telemetry. We use it to shape Storybook's roadmap and prioritize features. You can learn more, including how to opt out, at https://storybook.js.org/telemetry
+[12:20:57.742] [DEBUG] Using cached package.json for C:\Projects\Claude\gcode-core-events\package.json...
+[12:20:57.742] [DEBUG] Using cached package.json for C:\Projects\Claude\gcode-core-events\package.json...
+[12:20:57.742] [DEBUG] Using cached package.json for C:\Projects\Claude\gcode-core-events\package.json...
+[12:20:57.743] [INFO] - Configuring ESLint plugin
+[12:20:57.744] [DEBUG] Detected flat config at C:\Projects\Claude\gcode-core-events\eslint.config.mjs
+[12:20:57.843] [DEBUG] Using cached version for storybook...
+[12:20:57.843] [DEBUG] Getting CLI versions from NPM for @storybook/nextjs-vite...
+[12:20:57.843] [DEBUG] Executing command: npm info @storybook/nextjs-vite version
+[12:20:57.846] [DEBUG] Resolved command variation: npm.cmd
+[12:20:57.904] [DEBUG] Getting CLI versions from NPM for @chromatic-com/storybook...
+[12:20:57.904] [DEBUG] Executing command: npm info @chromatic-com/storybook version
+[12:20:57.906] [DEBUG] Resolved command variation: npm.cmd
+[12:20:57.958] [DEBUG] Getting CLI versions from NPM for @storybook/addon-vitest...
+[12:20:57.958] [DEBUG] Executing command: npm info @storybook/addon-vitest version
+[12:20:57.960] [DEBUG] Resolved command variation: npm.cmd
+[12:20:58.002] [DEBUG] Getting CLI versions from NPM for @storybook/addon-a11y...
+[12:20:58.002] [DEBUG] Executing command: npm info @storybook/addon-a11y version
+[12:20:58.004] [DEBUG] Resolved command variation: npm.cmd
+[12:20:58.050] [DEBUG] Getting CLI versions from NPM for @storybook/addon-docs...
+[12:20:58.050] [DEBUG] Executing command: npm info @storybook/addon-docs version
+[12:20:58.053] [DEBUG] Resolved command variation: npm.cmd
+[12:20:58.095] [DEBUG] Getting CLI versions from NPM for @storybook/addon-mcp...
+[12:20:58.095] [DEBUG] Executing command: npm info @storybook/addon-mcp version
+[12:20:58.098] [DEBUG] Resolved command variation: npm.cmd
+[12:20:58.134] [DEBUG] Getting CLI versions from NPM for vite...
+[12:20:58.134] [DEBUG] Executing command: npm info vite version
+[12:20:58.136] [DEBUG] Resolved command variation: npm.cmd
+[12:20:58.178] [DEBUG] Getting CLI versions from NPM for eslint-plugin-storybook...
+[12:20:58.178] [DEBUG] Executing command: npm info eslint-plugin-storybook version
+[12:20:58.180] [DEBUG] Resolved command variation: npm.cmd
+[12:21:04.708] [INFO] - Configuring main.ts
+[12:21:04.710] [INFO] - Configuring preview.ts
+[12:21:04.712] [INFO] - Adding Storybook command to package.json
+[12:21:04.713] [DEBUG] Getting package.json info for C:/Projects/Claude/gcode-core-events/package.json...
+[12:21:04.713] [DEBUG] Using cached package.json for C:\Projects\Claude\gcode-core-events\package.json...
+[12:21:04.713] [DEBUG] Using cached package.json for C:\Projects\Claude\gcode-core-events\package.json...
+[12:21:04.714] [INFO] - Copying framework templates
+[12:21:04.792] [DEBUG] Executing command: npm config get registry --workspaces=false --include-workspace-root
+[12:21:04.795] [DEBUG] Resolved command variation: npm.cmd
+[12:21:06.323] [INFO] Storybook configuration generated
+[12:21:06.324] [DEBUG] Using cached package.json for C:\Projects\Claude\gcode-core-events\package.json...
+[12:21:06.324] [DEBUG] Using cached installed version for vitest...
+[12:21:06.324] [DEBUG] Getting installed version for @vitest/coverage-v8...
+[12:21:06.324] [DEBUG] Executing command: npm ls --json --depth=99 2>NUL
+[12:21:06.327] [DEBUG] Resolved command variation: npm.cmd
+[12:21:08.115] [DEBUG] Executing command: npm ls --json --depth=0 2>NUL
+[12:21:08.117] [DEBUG] Resolved command variation: npm.cmd
+[12:21:09.827] [DEBUG] Error finding installations for @vitest/coverage-v8: ExecaError: Command failed with exit code 1: npm.cmd ls --json "--depth=0" "2>NUL"
+
+npm error code EINVALIDTAGNAME
+npm error Invalid tag name "2>NUL" of package "2>NUL": Tags may not have any characters that encodeURIComponent encodes.
+npm error A complete log of this run can be found in: C:\Users\shash\AppData\Local\npm-cache\_logs\2026-07-06T06_51_08_587Z-debug-0.log
+
+{
+  "error": {
+    "code": "EINVALIDTAGNAME",
+    "summary": "Invalid tag name \"2>NUL\" of package \"2>NUL\": Tags may not have any characters that encodeURIComponent encodes.",
+    "detail": ""
+  }
+}
+[12:21:09.827] [DEBUG] No installations found for @vitest/coverage-v8
+[12:21:09.827] [DEBUG] Getting installed version for @vitest/coverage-istanbul...
+[12:21:09.827] [DEBUG] Executing command: npm ls --json --depth=99 2>NUL
+[12:21:09.828] [DEBUG] Resolved command variation: npm.cmd
+[12:21:11.594] [DEBUG] Executing command: npm ls --json --depth=0 2>NUL
+[12:21:11.595] [DEBUG] Resolved command variation: npm.cmd
+[12:21:13.287] [DEBUG] Error finding installations for @vitest/coverage-istanbul: ExecaError: Command failed with exit code 1: npm.cmd ls --json "--depth=0" "2>NUL"
+
+npm error code EINVALIDTAGNAME
+npm error Invalid tag name "2>NUL" of package "2>NUL": Tags may not have any characters that encodeURIComponent encodes.
+npm error A complete log of this run can be found in: C:\Users\shash\AppData\Local\npm-cache\_logs\2026-07-06T06_51_12_068Z-debug-0.log
+
+{
+  "error": {
+    "code": "EINVALIDTAGNAME",
+    "summary": "Invalid tag name \"2>NUL\" of package \"2>NUL\": Tags may not have any characters that encodeURIComponent encodes.",
+    "detail": ""
+  }
+}
+[12:21:13.287] [DEBUG] No installations found for @vitest/coverage-istanbul
+[12:21:13.287] [INFO] Adding devDependencies:
+- storybook@^10.4.6
+- @storybook/nextjs-vite@^10.4.6
+- @chromatic-com/storybook@^5.2.1
+- @storybook/addon-vitest@^10.4.6
+- @storybook/addon-a11y@^10.4.6
+- @storybook/addon-docs@^10.4.6
+- @storybook/addon-mcp@^0.6.0
+- vite@^8.1.3
+- eslint-plugin-storybook@^10.4.6
+- vitest
+- playwright
+- @vitest/browser-playwright
+- @vitest/coverage-v8
+[12:21:13.289] [DEBUG] Using cached package.json for C:\Projects\Claude\gcode-core-events\package.json...
+[12:21:13.289] [DEBUG] Using cached version for storybook...
+[12:21:13.289] [DEBUG] Using cached version for @storybook/nextjs-vite...
+[12:21:13.289] [DEBUG] Using cached version for @chromatic-com/storybook...
+[12:21:13.289] [DEBUG] Using cached version for @storybook/addon-vitest...
+[12:21:13.289] [DEBUG] Using cached version for @storybook/addon-a11y...
+[12:21:13.289] [DEBUG] Using cached version for @storybook/addon-docs...
+[12:21:13.289] [DEBUG] Using cached version for @storybook/addon-mcp...
+[12:21:13.289] [DEBUG] Using cached version for vite...
+[12:21:13.289] [DEBUG] Using cached version for eslint-plugin-storybook...
+[12:21:13.289] [DEBUG] Getting CLI versions from NPM for vitest...
+[12:21:13.289] [DEBUG] Executing command: npm info vitest version
+[12:21:13.291] [DEBUG] Resolved command variation: npm.cmd
+[12:21:14.904] [DEBUG] Getting CLI versions from NPM for playwright...
+[12:21:14.904] [DEBUG] Executing command: npm info playwright version
+[12:21:14.908] [DEBUG] Resolved command variation: npm.cmd
+[12:21:18.996] [DEBUG] Getting CLI versions from NPM for @vitest/browser-playwright...
+[12:21:18.996] [DEBUG] Executing command: npm info @vitest/browser-playwright version
+[12:21:19.001] [DEBUG] Resolved command variation: npm.cmd
+[12:21:20.590] [DEBUG] Getting CLI versions from NPM for @vitest/coverage-v8...
+[12:21:20.590] [DEBUG] Executing command: npm info @vitest/coverage-v8 version
+[12:21:20.595] [DEBUG] Resolved command variation: npm.cmd
+[12:21:22.178] [DEBUG] Using cached package.json for C:\Projects\Claude\gcode-core-events\package.json...
+[12:21:22.181] [INFO] Dependencies added to package.json
+[12:21:22.183] [INFO] Installing dependencies...
+[12:21:22.183] [INFO] Installing dependencies...
+[12:21:22.184] [DEBUG] Executing command: npm install
+[12:21:22.188] [DEBUG] Resolved command variation: npm.cmd
+[12:22:19.648] [INFO] Installing dependencies...: 
+added 186 packages, and audited 549 packages in 57s
+
+[12:22:19.648] [INFO] Installing dependencies...: added 186 packages, and a
+[12:22:19.649] [INFO] Installing dependencies...: 
+197 packages are looking for funding
+  run `npm fund` for details
+
+[12:22:19.649] [INFO] Installing dependencies...: 197 packages are looking 
+[12:22:19.750] [INFO] Installing dependencies...: 
+2 moderate severity vulnerabilities
+
+To address all issues (including breaking changes), run:
+  npm audit fix --force
+
+Run `npm audit` for details.
+
+[12:22:19.750] [INFO] Installing dependencies...: 2 moderate severity vulne
+[12:22:19.811] [INFO] Dependencies installed
+[12:22:19.811] [INFO] Dependencies installed
+[12:22:19.896] [INFO] Configuring @chromatic-com/storybook...
+[12:22:19.925] [INFO] @chromatic-com/storybook configured
+
+[12:22:19.925] [INFO] Configuring @storybook/addon-vitest...
+[12:22:19.928] [DEBUG] Getting package.json info for C:/Projects/Claude/gcode-core-events/package.json...
+[12:22:19.928] [DEBUG] Using cached package.json for C:\Projects\Claude\gcode-core-events\package.json...
+[12:22:19.928] [DEBUG] Getting installed version for vitest...
+[12:22:19.928] [DEBUG] Executing command: npm ls --json --depth=99 2>NUL
+[12:22:19.932] [DEBUG] Resolved command variation: npm.cmd
+[12:22:21.470] [DEBUG] Executing command: npm ls --json --depth=0 2>NUL
+[12:22:21.474] [DEBUG] Resolved command variation: npm.cmd
+[12:22:22.974] [DEBUG] Error finding installations for vitest: ExecaError: Command failed with exit code 1: npm.cmd ls --json "--depth=0" "2>NUL"
+
+npm error code EINVALIDTAGNAME
+npm error Invalid tag name "2>NUL" of package "2>NUL": Tags may not have any characters that encodeURIComponent encodes.
+npm error A complete log of this run can be found in: C:\Users\shash\AppData\Local\npm-cache\_logs\2026-07-06T06_52_22_026Z-debug-0.log
+
+{
+  "error": {
+    "code": "EINVALIDTAGNAME",
+    "summary": "Invalid tag name \"2>NUL\" of package \"2>NUL\": Tags may not have any characters that encodeURIComponent encodes.",
+    "detail": ""
+  }
+}
+[12:22:22.974] [DEBUG] No installations found for vitest
+[12:22:22.974] [DEBUG] Vitest version specifier: 4.1.10
+[12:22:23.638] [DEBUG] Using cached installed version for vitest...
+[12:22:23.638] [DEBUG] Getting installed version for msw...
+[12:22:23.638] [DEBUG] Executing command: npm ls --json --depth=99 2>NUL
+[12:22:23.642] [DEBUG] Resolved command variation: npm.cmd
+[12:22:25.327] [DEBUG] Executing command: npm ls --json --depth=0 2>NUL
+[12:22:25.331] [DEBUG] Resolved command variation: npm.cmd
+[12:22:27.016] [DEBUG] Error finding installations for msw: ExecaError: Command failed with exit code 1: npm.cmd ls --json "--depth=0" "2>NUL"
+
+npm error code EINVALIDTAGNAME
+npm error Invalid tag name "2>NUL" of package "2>NUL": Tags may not have any characters that encodeURIComponent encodes.
+npm error A complete log of this run can be found in: C:\Users\shash\AppData\Local\npm-cache\_logs\2026-07-06T06_52_25_926Z-debug-0.log
+
+{
+  "error": {
+    "code": "EINVALIDTAGNAME",
+    "summary": "Invalid tag name \"2>NUL\" of package \"2>NUL\": Tags may not have any characters that encodeURIComponent encodes.",
+    "detail": ""
+  }
+}
+[12:22:27.016] [DEBUG] No installations found for msw
+[12:22:27.063] [INFO] Creating a Vitest config file:
+[12:22:27.064] [INFO] C:/Projects/Claude/gcode-core-events/vitest.config.ts
+[12:22:27.079] [INFO] Setting up a11y addon for @storybook/addon-vitest
+[12:22:27.079] [INFO] Setting up a11y addon for @storybook/addon-vitest
+[12:22:27.079] [DEBUG] Executing command: npx storybook@10.4.6 automigrate addon-a11y-addon-test --loglevel silent --yes --skip-doctor --package-manager npm --skip-install
+[12:22:27.080] [DEBUG] Resolved command variation: npx.cmd
+[12:23:26.912] [INFO] a11y addon setup successfully
+[12:23:26.912] [INFO] [32ma11y addon setup successfully[39m
+[12:23:26.912] [INFO] [32m@storybook/addon-vitest setup completed successfully[39m
+[12:23:26.913] [INFO] @storybook/addon-vitest is now configured and you're ready to run your tests!
+Here are a couple of tips to get you started:
+
+• You can run tests with "[36mnpx vitest[39m"
+• Vitest IDE extension shows all stories as tests in your editor!
+
+Check the documentation for more information about its features and options at:
+https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon
+[12:23:26.931] [INFO] @storybook/addon-vitest configured
+
+[12:23:26.932] [INFO] Configuring @storybook/addon-a11y...
+[12:23:26.933] [DEBUG] Executing command: npx storybook@10.4.6 automigrate addon-a11y-addon-test --loglevel silent --skip-doctor --yes --package-manager npm --config-dir .storybook
+[12:23:26.937] [DEBUG] Resolved command variation: npx.cmd
+[12:23:36.871] [INFO] @storybook/addon-a11y configured
+
+[12:23:36.871] [INFO] Configuring @storybook/addon-docs...
+[12:23:36.908] [INFO] @storybook/addon-docs configured
+
+[12:23:36.909] [INFO] Configuring @storybook/addon-mcp...
+[12:23:36.945] [INFO] @storybook/addon-mcp configured
+
+[12:23:36.946] [INFO] Addons configured successfully
+[12:23:36.947] [INFO] [2m✅ @chromatic-com/storybook[22m
+[12:23:36.970] [INFO] [2m✅ @storybook/addon-vitest[22m
+[12:23:36.971] [INFO] [2m✅ @storybook/addon-a11y[22m
+[12:23:36.971] [INFO] [2m✅ @storybook/addon-docs[22m
+[12:23:36.971] [INFO] [2m✅ @storybook/addon-mcp[22m
+[12:23:36.972] [INFO] Installing Playwright browser binaries (press "c" to abort)
+[12:23:36.972] [INFO] Installing Playwright browser binaries (press "c" to abort)
+[12:23:36.973] [DEBUG] Executing command: npx playwright install chromium --with-deps
+[12:23:36.978] [DEBUG] Resolved command variation: npx.cmd
+[12:23:42.617] [INFO] Playwright browser binaries installed successfully
+[12:23:42.617] [INFO] Playwright browser binaries installed successfully
+[12:23:44.393] [INFO] [38;2;255;71;133mStorybook is installed but is not entirely set up yet.
+To finish setting up, now run `npx storybook ai setup` and follow its instructions precisely.[39m
+[12:23:44.396] [INFO] To run Storybook, run [36mnpm run storybook[39m. CTRL+C to stop.
+[12:23:44.398] [INFO] Official documentation reference: [36mhttps://storybook.js.org/llms.txt[39m
+[12:23:44.399] [INFO] To finalize setting up with AI, paste this prompt to your AI agent:
+
+[38;2;255;71;133mRun `npx storybook ai setup` and follow its instructions precisely.[39m
+[12:23:50.176] [INFO] 
