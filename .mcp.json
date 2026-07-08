@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "sqlcl": {
+      "type": "stdio",
+      "command": "sql",
+      "args": ["-mcp"],
+      "env": {
+        "TNS_ADMIN": "/home/atharva/.oracle/wallet/startup-db"
+      }
+    }
+  }
+}

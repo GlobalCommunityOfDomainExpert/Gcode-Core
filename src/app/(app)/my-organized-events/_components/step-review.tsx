@@ -1,6 +1,6 @@
-import { Badge } from "@/components/atoms";
+import { Badge, Card, SectionLabel } from "@/components/atoms";
 import { getStakeholderById } from "@/lib/community-requests";
-import { SelectedStakeholder, WizardData } from "./types";
+import { SelectedStakeholder, EventDetailData } from "@/lib/zod/event";
 
 function ReviewRow({ label, value }: { label: string; value: string }) {
   if (!value) return null;
@@ -13,7 +13,7 @@ function ReviewRow({ label, value }: { label: string; value: string }) {
 }
 
 export interface StepReviewProps {
-  data: WizardData;
+  data: EventDetailData;
   selectedStakeholders: SelectedStakeholder[];
   showCommunityRequests?: boolean;
 }
@@ -23,7 +23,7 @@ export function StepReview({
   selectedStakeholders,
   showCommunityRequests = true,
 }: StepReviewProps) {
-  const price = data.price === "Free" ? "Free" : `₹${data.priceAmount || "0"}`;
+  const price = data.priceAmount > 0 ? `₹${data.priceAmount}` : "Free";
 
   return (
     <div className="space-y-5">
@@ -36,8 +36,11 @@ export function StepReview({
         </p>
       </div>
 
-      <div className="divide-border-light border-border-light space-y-1 divide-y rounded-md border p-4">
-        <ReviewRow label="Type" value={data.type ?? ""} />
+      <Card className="divide-border-light space-y-1 divide-y">
+        <ReviewRow
+          label="Type"
+          value={data.type !== null ? String(data.type) : ""}
+        />
         <ReviewRow label="Title" value={data.title} />
         <ReviewRow label="Price" value={price} />
         <ReviewRow
@@ -48,22 +51,22 @@ export function StepReview({
           label="Certificate"
           value={data.certificate ? "Yes" : "No"}
         />
-        <ReviewRow label="Mode" value={data.mode} />
+        <ReviewRow label="Mode" value={String(data.mode)} />
         <ReviewRow label="Date" value={data.date} />
         <ReviewRow label="Time" value={data.time} />
-        <ReviewRow label="Location" value={data.location} />
+        <ReviewRow label="City" value={data.city} />
+        <ReviewRow label="Venue address" value={data.location} />
+        <ReviewRow label="Participation link" value={data.participationLink} />
         <ReviewRow
           label="Registration closes"
           value={data.registrationCloses}
         />
         <ReviewRow label="Duration" value={data.duration} />
-      </div>
+      </Card>
 
       {data.description && (
-        <div className="border-border-light space-y-1 rounded-md border p-4">
-          <p className="text-small text-text-secondary font-bold tracking-widest uppercase">
-            Description
-          </p>
+        <Card className="space-y-1">
+          <SectionLabel>Description</SectionLabel>
           {data.description
             .split("\n")
             .filter(Boolean)
@@ -72,40 +75,36 @@ export function StepReview({
                 {paragraph}
               </p>
             ))}
-        </div>
+        </Card>
       )}
 
       {(data.coverImageUrl || data.mediaUrls.length > 0) && (
-        <div className="border-border-light space-y-1 rounded-md border p-4">
+        <Card className="space-y-1">
           <ReviewRow
             label="Cover Image"
             value={data.coverImageUrl ? "Set" : "Not set"}
           />
           <ReviewRow label="Media" value={`${data.mediaUrls.length} link(s)`} />
-        </div>
+        </Card>
       )}
 
-      {data.agenda.length > 0 && (
-        <div className="border-border-light space-y-2 rounded-md border p-4">
-          <p className="text-small text-text-secondary font-bold tracking-widest uppercase">
-            Agenda ({data.agenda.length})
-          </p>
+      {data.timeline.length > 0 && (
+        <Card className="space-y-2">
+          <SectionLabel>Timeline ({data.timeline.length})</SectionLabel>
           <ul className="space-y-1">
-            {data.agenda.map((item, index) => (
+            {data.timeline.map((item, index) => (
               <li key={index} className="text-body text-text-secondary">
                 {item.time && `${item.time} — `}
                 {item.title || "Untitled item"}
               </li>
             ))}
           </ul>
-        </div>
+        </Card>
       )}
 
       {data.socialLinks.length > 0 && (
-        <div className="border-border-light space-y-2 rounded-md border p-4">
-          <p className="text-small text-text-secondary font-bold tracking-widest uppercase">
-            Social links ({data.socialLinks.length})
-          </p>
+        <Card className="space-y-2">
+          <SectionLabel>Social links ({data.socialLinks.length})</SectionLabel>
           <ul className="space-y-1">
             {data.socialLinks.map((link, index) => (
               <li key={index} className="text-body text-text-secondary">
@@ -113,14 +112,14 @@ export function StepReview({
               </li>
             ))}
           </ul>
-        </div>
+        </Card>
       )}
 
       {showCommunityRequests && (
-        <div className="border-border-light space-y-2 rounded-md border p-4">
-          <p className="text-small text-text-secondary font-bold tracking-widest uppercase">
+        <Card className="space-y-2">
+          <SectionLabel>
             Community requests ({selectedStakeholders.length})
-          </p>
+          </SectionLabel>
           {selectedStakeholders.length === 0 ? (
             <p className="text-body text-text-secondary">
               No stakeholders requested — you can skip this and add none.
@@ -146,7 +145,7 @@ export function StepReview({
               })}
             </ul>
           )}
-        </div>
+        </Card>
       )}
     </div>
   );

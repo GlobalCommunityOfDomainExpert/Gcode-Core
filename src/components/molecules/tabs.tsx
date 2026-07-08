@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useControllableState } from "@/hooks/use-controllable-state";
 
 export interface TabItem {
   value: string;
@@ -15,13 +15,11 @@ export interface TabsProps {
 }
 
 export function Tabs({ items, value, defaultValue, onChange }: TabsProps) {
-  const [internal, setInternal] = useState(defaultValue ?? items[0]?.value);
-  const active = value ?? internal;
-
-  function select(next: string) {
-    if (value === undefined) setInternal(next);
-    onChange?.(next);
-  }
+  const [active, select] = useControllableState(
+    value,
+    defaultValue ?? items[0]?.value,
+    onChange,
+  );
 
   return (
     <div

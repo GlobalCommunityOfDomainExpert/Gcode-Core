@@ -17,30 +17,30 @@ import {
   ButtonLink,
   Icon,
   QrPlaceholder,
+  SectionLabel,
 } from "@/components/atoms";
-import { EmptyState } from "@/components/molecules";
+import { EventBadgeRow, NotFoundState } from "@/components/molecules";
 import { downloadIcs } from "@/lib/calendar";
-import { getEventById } from "@/lib/mock-events";
+import { useEvent } from "@/hooks/use-event";
 
 export default function EventRegisteredPage() {
   const params = useParams<{ id: string }>();
-  const event = getEventById(params.id);
+  const { event, status } = useEvent(params.id);
   const [joinedCommunity, setJoinedCommunity] = useState(false);
 
   if (!event) {
     return (
-      <div className="mx-auto max-w-md">
-        <EmptyState
-          icon={Compass}
-          title="Event not found"
-          description="This event may not exist, or in-memory data was reset by a full page refresh."
-          action={
-            <ButtonLink href="/events" variant="primary">
-              Browse Events
-            </ButtonLink>
-          }
-        />
-      </div>
+      <NotFoundState
+        icon={Compass}
+        title={status === "loading" ? "Loading event…" : "Event not found"}
+        description={
+          status === "loading"
+            ? "Fetching this event."
+            : "This event may not exist, or it couldn't be loaded."
+        }
+        actionHref="/events"
+        actionLabel="Browse Events"
+      />
     );
   }
 
@@ -122,18 +122,11 @@ export default function EventRegisteredPage() {
         </div>
         <div className="space-y-2 p-4">
           <div className="flex items-start justify-between gap-2">
-            <div className="flex flex-wrap gap-2">
-              <Badge size="sm">{event.type}</Badge>
-              <Badge size="sm" tone="neutral">
-                {event.mode}
-              </Badge>
-              <Badge
-                size="sm"
-                tone={event.price === "Free" ? "success" : "neutral"}
-              >
-                {event.price}
-              </Badge>
-            </div>
+            <EventBadgeRow
+              type={event.type}
+              mode={event.mode}
+              price={event.price}
+            />
             <ButtonLink href={`/events/${event.id}`} variant="ghost" size="sm">
               View Event →
             </ButtonLink>
@@ -153,9 +146,7 @@ export default function EventRegisteredPage() {
       </div>
 
       <div className="border-border-light bg-surface-light space-y-4 rounded-md border p-6">
-        <p className="text-small text-text-secondary font-bold tracking-widest uppercase">
-          Your Ticket
-        </p>
+        <SectionLabel>Your Ticket</SectionLabel>
         <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center">
           <QrPlaceholder />
           <div className="space-y-2">
@@ -172,9 +163,7 @@ export default function EventRegisteredPage() {
       </div>
 
       <div className="border-border-light bg-surface-light space-y-3 rounded-md border p-6">
-        <p className="text-small text-text-secondary font-bold tracking-widest uppercase">
-          What&apos;s Next
-        </p>
+        <SectionLabel>What&apos;s Next</SectionLabel>
         <div className="space-y-3">
           {nextSteps.map((step) => (
             <div key={step.label} className="flex items-center gap-3">

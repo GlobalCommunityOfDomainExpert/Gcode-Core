@@ -2,20 +2,65 @@
 
 import { useParams } from "next/navigation";
 import { Calendar, Clock, MapPin, Award, Users, Compass } from "lucide-react";
-import { Avatar, Badge, Button, ButtonLink, Icon } from "@/components/atoms";
+import {
+  Avatar,
+  Badge,
+  Button,
+  ButtonLink,
+  Icon,
+  SectionLabel,
+} from "@/components/atoms";
 import {
   AvatarGroup,
   Banner,
   Breadcrumb,
-  EmptyState,
+  EventBadgeRow,
+  NotFoundState,
 } from "@/components/molecules";
 import { Timeline } from "@/components/molecules";
 import { getAttendeesByEvent } from "@/lib/attendees";
-import { downloadIcs } from "@/lib/calendar";
 import { getEventColor } from "@/lib/event-color";
-import { eventTypeTone } from "@/lib/mock-events";
-import { useAnyEventById } from "@/store/organized-events-store";
+import { eventTypeTone, EventTimelineItem } from "@/lib/event";
+import { useEvent } from "@/hooks/use-event";
 import { ShareEventCard } from "./_components/share-event-card";
+
+// "14:30" / "00:00" -> "2:30 PM" / "12:00 AM". Handles the 12/0 hour edge.
+function to12Hour(hhmm: string): string {
+  if (!hhmm) return "";
+  const [h, m] = hhmm.split(":").map(Number);
+  const period = h < 12 ? "AM" : "PM";
+  const hour12 = h % 12 === 0 ? 12 : h % 12;
+  return `${hour12}:${String(m).padStart(2, "0")} ${period}`;
+}
+
+// Bucket timeline items by calendar date so multi-day agendas get a header per
+// day. Single-day agendas produce one group with no label.
+function groupByDay(items: EventTimelineItem[]) {
+  const order: string[] = [];
+  const buckets = new Map<string, EventTimelineItem[]>();
+  for (const item of items) {
+    const key = item.date || "";
+    if (!buckets.has(key)) {
+      buckets.set(key, []);
+      order.push(key);
+    }
+    buckets.get(key)!.push(item);
+  }
+  const multiDay = order.filter((d) => d).length > 1;
+  return order.map((day) => ({
+    day,
+    label:
+      multiDay && day
+        ? new Intl.DateTimeFormat("en-IN", {
+            weekday: "short",
+            day: "numeric",
+            month: "short",
+            timeZone: "UTC",
+          }).format(new Date(day))
+        : "",
+    items: buckets.get(day)!,
+  }));
+}
 
 function DetailItem({
   icon,
@@ -42,7 +87,7 @@ function DetailItem({
 
 export default function EventDetailPage() {
   const params = useParams<{ id: string }>();
-  const event = useAnyEventById(params.id);
+  const { event, status } = useEvent(params.id);
   const attendees = event
     ? getAttendeesByEvent(event.id)
         .slice(0, 3)
@@ -54,18 +99,17 @@ export default function EventDetailPage() {
 
   if (!event) {
     return (
-      <div className="mx-auto max-w-md">
-        <EmptyState
-          icon={Compass}
-          title="Event not found"
-          description="This event may not exist, or in-memory data was reset by a full page refresh."
-          action={
-            <ButtonLink href="/events" variant="primary">
-              Browse Events
-            </ButtonLink>
-          }
-        />
-      </div>
+      <NotFoundState
+        icon={Compass}
+        title={status === "loading" ? "Loading event…" : "Event not found"}
+        description={
+          status === "loading"
+            ? "Fetching this event."
+            : "This event may not exist, or it couldn't be loaded."
+        }
+        actionHref="/events"
+        actionLabel="Browse Events"
+      />
     );
   }
 
@@ -79,7 +123,7 @@ export default function EventDetailPage() {
         ]}
       />
 
-      {event.status === "cancelled" && (
+      {event.status === "CANCELLED" && (
         <Banner tone="danger">
           This event has been cancelled by the organizer.
         </Banner>
@@ -88,7 +132,7 @@ export default function EventDetailPage() {
       <div className="grid gap-6 lg:grid-cols-[1fr_320px]">
         <div className="space-y-6">
           <div
-            className="relative flex aspect-[3/1] items-end overflow-hidden rounded-md p-4"
+            className="relative flex aspect-3/1 items-end overflow-hidden rounded-md p-4"
             style={
               event.coverImageUrl
                 ? undefined
@@ -129,24 +173,14 @@ export default function EventDetailPage() {
             <h1 className="text-heading text-text-primary font-extrabold">
               {event.title}
             </h1>
-            <div className="flex flex-wrap gap-2">
-              <Badge tone={eventTypeTone[event.type]} size="sm">
-                {event.type}
-              </Badge>
-              <Badge tone="neutral" size="sm">
-                {event.mode}
-              </Badge>
-              <Badge
-                tone={event.price === "Free" ? "success" : "neutral"}
-                size="sm"
-              >
-                {event.price}
-              </Badge>
-            </div>
+            <EventBadgeRow
+              type={event.type}
+              mode={event.mode}
+              price={event.price}
+              typeTone={eventTypeTone(event.type)}
+            />
             <div className="border-border-light space-y-2 border-t pt-4">
-              <p className="text-small text-text-secondary font-bold tracking-widest uppercase">
-                About this event
-              </p>
+              <SectionLabel>About this event</SectionLabel>
               {event.description.map((paragraph, index) => (
                 <p key={index} className="text-body text-text-secondary">
                   {paragraph}
@@ -156,9 +190,7 @@ export default function EventDetailPage() {
           </div>
 
           <div className="border-border-light bg-surface-light space-y-4 rounded-md border p-6">
-            <p className="text-small text-text-secondary font-bold tracking-widest uppercase">
-              Event Details
-            </p>
+            <SectionLabel>Event Details</SectionLabel>
             <div className="grid gap-4 sm:grid-cols-2">
               <DetailItem
                 icon={Calendar}
@@ -169,7 +201,7 @@ export default function EventDetailPage() {
               <DetailItem
                 icon={Clock}
                 label="Duration"
-                value={event.duration}
+                value={event.duration || "TBD"}
                 description=""
               />
               <DetailItem
@@ -187,25 +219,37 @@ export default function EventDetailPage() {
             </div>
           </div>
 
-          {event.agenda.length > 0 && (
-            <div className="border-border-light bg-surface-light space-y-4 rounded-md border p-6">
-              <p className="text-small text-text-secondary font-bold tracking-widest uppercase">
-                Agenda
-              </p>
-              <Timeline
-                items={event.agenda.map((item, index) => ({
-                  title: `${item.time} — ${item.title}`,
-                  description: item.description,
-                  active: index === 0,
-                }))}
-              />
+          {event.timeline.length > 0 && (
+            <div className="border-border-light bg-surface-light space-y-5 rounded-md border p-6">
+              <SectionLabel>Timeline</SectionLabel>
+              {groupByDay(event.timeline).map((group, groupIndex) => (
+                <div key={group.day} className="space-y-3">
+                  {group.label && (
+                    <div className="flex items-center gap-3">
+                      <span className="text-small text-text-primary font-semibold">
+                        {group.label}
+                      </span>
+                      <span className="bg-border-light h-px flex-1" />
+                    </div>
+                  )}
+                  <Timeline
+                    items={group.items.map((item, index) => ({
+                      time: item.endTime
+                        ? `${to12Hour(item.time)} – ${to12Hour(item.endTime)}`
+                        : to12Hour(item.time),
+                      title: item.title,
+                      location: item.location,
+                      description: item.description,
+                      active: groupIndex === 0 && index === 0,
+                    }))}
+                  />
+                </div>
+              ))}
             </div>
           )}
 
           <div className="border-border-light bg-surface-light space-y-3 rounded-md border p-6">
-            <p className="text-small text-text-secondary font-bold tracking-widest uppercase">
-              Organized By
-            </p>
+            <SectionLabel>Organized By</SectionLabel>
             <div className="flex items-center justify-between gap-4">
               <div className="flex items-center gap-3">
                 <Avatar alt={event.organizer.name} initials="GC" size="md" />
@@ -232,9 +276,7 @@ export default function EventDetailPage() {
 
           {event.socialLinks && event.socialLinks.length > 0 && (
             <div className="border-border-light bg-surface-light space-y-3 rounded-md border p-6">
-              <p className="text-small text-text-secondary font-bold tracking-widest uppercase">
-                Social Links
-              </p>
+              <SectionLabel>Social Links</SectionLabel>
               <div className="flex flex-wrap gap-2">
                 {event.socialLinks.map((link, index) => (
                   <a
@@ -252,9 +294,7 @@ export default function EventDetailPage() {
           )}
 
           <div className="border-border-light bg-surface-light space-y-3 rounded-md border p-6">
-            <p className="text-small text-text-secondary font-bold tracking-widest uppercase">
-              Terms &amp; Eligibility
-            </p>
+            <SectionLabel>Terms &amp; Eligibility</SectionLabel>
             <ul className="text-body text-text-secondary list-disc space-y-1.5 pl-5">
               {event.terms.map((term) => (
                 <li key={term}>{term}</li>
@@ -284,7 +324,7 @@ export default function EventDetailPage() {
                 overflowLabel={`+${event.registeredCount} already registered`}
               />
             )}
-            {event.status === "cancelled" ? (
+            {event.status === "CANCELLED" ? (
               <Button variant="secondary" className="w-full" disabled>
                 Event Cancelled
               </Button>
@@ -294,16 +334,9 @@ export default function EventDetailPage() {
                 variant="primary"
                 className="w-full"
               >
-                Register Now →
+                Register Now
               </ButtonLink>
             )}
-            <button
-              type="button"
-              onClick={() => downloadIcs(event)}
-              className="border-border-light text-body text-text-primary hover:bg-bg-light w-full rounded-sm border py-2 text-center font-medium"
-            >
-              📅 Add to Calendar
-            </button>
             {event.capacity && (
               <p className="text-small text-text-secondary text-center">
                 {event.capacity} total capacity · {event.registeredCount}{" "}
@@ -313,9 +346,7 @@ export default function EventDetailPage() {
           </div>
 
           <div className="border-border-light bg-surface-light space-y-3 rounded-md border p-4">
-            <p className="text-small text-text-secondary font-bold tracking-widest uppercase">
-              Event Info
-            </p>
+            <SectionLabel>Event Info</SectionLabel>
             <div className="space-y-3">
               <DetailItem
                 icon={Calendar}

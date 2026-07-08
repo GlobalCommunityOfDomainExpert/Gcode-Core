@@ -1,6 +1,6 @@
 import { HTMLAttributes } from "react";
 
-export type SectionLabelProps = HTMLAttributes<HTMLDivElement>;
+export type SectionLabelProps = HTMLAttributes<HTMLParagraphElement>;
 
 export function SectionLabel({
   className = "",
@@ -8,11 +8,11 @@ export function SectionLabel({
   ...props
 }: SectionLabelProps) {
   return (
-    <div className={`flex items-center gap-2 ${className}`} {...props}>
-      <span className="text-small text-text-secondary shrink-0 font-semibold tracking-wide uppercase">
-        {children}
-      </span>
-      <span className="bg-border-light h-px flex-1" />
-    </div>
+    <p
+      className={`text-small text-text-secondary font-bold tracking-widest uppercase ${className}`}
+      {...props}
+    >
+      {children}
+    </p>
   );
 }

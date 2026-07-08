@@ -1,17 +1,21 @@
 import { Button, ButtonLink, Progress } from "@/components/atoms";
 import { StatCard } from "@/components/molecules";
-import { Attendee } from "@/lib/attendees";
+import {
+  ATTENDEES_CSV_HEADERS,
+  Attendee,
+  attendeesCsvRows,
+} from "@/lib/attendees";
 import { downloadCsv } from "@/lib/csv";
-import { MockEvent } from "@/lib/mock-events";
+import { Event } from "@/lib/event";
 import { RegistrationTrendChart } from "./registration-trend-chart";
 
 export interface OverviewTabProps {
-  event: MockEvent;
+  event: Event;
   attendees: Attendee[];
   onNavigateToCommunication: () => void;
 }
 
-function daysLeft(event: MockEvent): number | null {
+function daysLeft(event: Event): number | null {
   const parsed = new Date(event.date);
   if (Number.isNaN(parsed.getTime())) return null;
   const today = new Date();
@@ -20,21 +24,6 @@ function daysLeft(event: MockEvent): number | null {
   return Math.max(
     0,
     Math.round((parsed.getTime() - today.getTime()) / 86_400_000),
-  );
-}
-
-function exportAttendeesCsv(event: MockEvent, attendees: Attendee[]) {
-  downloadCsv(
-    `${event.id}-attendees.csv`,
-    ["Name", "Email", "Role", "Registered", "Payment", "Status"],
-    attendees.map((attendee) => [
-      attendee.name,
-      attendee.email,
-      attendee.role,
-      new Date(attendee.registeredAt).toLocaleDateString("en-IN"),
-      attendee.ticketType,
-      attendee.status,
-    ]),
   );
 }
 
@@ -122,7 +111,13 @@ export function OverviewTab({
           <Button
             variant="secondary"
             size="sm"
-            onClick={() => exportAttendeesCsv(event, attendees)}
+            onClick={() =>
+              downloadCsv(
+                `${event.id}-attendees.csv`,
+                ATTENDEES_CSV_HEADERS,
+                attendeesCsvRows(attendees),
+              )
+            }
           >
             ⬇ Export CSV
           </Button>

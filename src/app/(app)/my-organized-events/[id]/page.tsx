@@ -7,41 +7,30 @@ import { Badge, Button, ButtonLink } from "@/components/atoms";
 import {
   Banner,
   Breadcrumb,
-  EmptyState,
   Modal,
+  NotFoundState,
   Tabs,
 } from "@/components/molecules";
-import { useShallow } from "zustand/react/shallow";
 import { Attendee, getAttendeesByEvent } from "@/lib/attendees";
-import { eventTypeTone, MockEvent } from "@/lib/mock-events";
-import { useCommunityRequestsStore } from "@/store/community-requests-store";
-import { useOrganizedEventsStore } from "@/store/organized-events-store";
+import { eventTypeTone, Event, priceTone } from "@/lib/event";
+import { useEvent } from "@/hooks/use-event";
+import { useCommunityRequests } from "@/hooks/use-community-requests";
 import { AttendeesTab } from "./_components/attendees-tab";
 import { CommunicationTab } from "./_components/communication-tab";
 import { CommunityTab } from "./_components/community-tab";
 import { OverviewTab } from "./_components/overview-tab";
 import { SettingsTab } from "./_components/settings-tab";
-import { SelectedStakeholder } from "../_components/types";
 
-function OrganizedEventDetailView({ eventId }: { eventId: string }) {
-  const event = useOrganizedEventsStore((state) =>
-    state.events.find((item) => item.id === eventId),
-  );
-  const updateEvent = useOrganizedEventsStore((state) => state.updateEvent);
-  const cancelEvent = useOrganizedEventsStore((state) => state.cancelEvent);
-  const requests = useCommunityRequestsStore(
-    useShallow((state) =>
-      state.requests.filter((request) => request.eventId === eventId),
-    ),
-  );
-  const addRequest = useCommunityRequestsStore((state) => state.addRequest);
-  const nudgeRequest = useCommunityRequestsStore((state) => state.nudgeRequest);
-  const confirmRequest = useCommunityRequestsStore(
-    (state) => state.confirmRequest,
-  );
-  const removeRequest = useCommunityRequestsStore(
-    (state) => state.removeRequest,
-  );
+export default function OrganizedEventDetailPage() {
+  const params = useParams<{ id: string }>();
+  const { event, status: eventStatus } = useEvent(params.id);
+  const {
+    requests,
+    addRequests: handleAddRequests,
+    nudge: handleNudge,
+    confirm: handleConfirmRequest,
+    remove: handleRemoveRequest,
+  } = useCommunityRequests(params.id);
 
   const [activeTab, setActiveTab] = useState("overview");
   const [selectedAttendeeIds, setSelectedAttendeeIds] = useState<Set<string>>(
@@ -49,10 +38,25 @@ function OrganizedEventDetailView({ eventId }: { eventId: string }) {
   );
   const [showCancelModal, setShowCancelModal] = useState(false);
 
-  if (!event) return null;
+  if (!event) {
+    return (
+      <NotFoundState
+        icon={Compass}
+        title={eventStatus === "loading" ? "Loading event…" : "Event not found"}
+        description={
+          eventStatus === "loading"
+            ? "Fetching this event from the server."
+            : "This event may not exist, or it couldn't be loaded."
+        }
+        actionHref="/my-organized-events"
+        actionLabel="Back to Organizing"
+      />
+    );
+  }
 
+  const eventId = event.id;
   const attendees: Attendee[] = getAttendeesByEvent(event.id);
-  const isCancelled = event.status === "cancelled";
+  const isCancelled = event.status === "CANCELLED";
 
   const tabItems = [
     { value: "overview", label: "Overview" },
@@ -62,36 +66,14 @@ function OrganizedEventDetailView({ eventId }: { eventId: string }) {
     { value: "community", label: `Community (${requests.length})` },
   ];
 
-  function handleSave(updates: Partial<MockEvent>) {
-    updateEvent(eventId, updates);
+  function handleSave(updates: Partial<Event>) {
+    void updates;
+    // TODO: call src/lib/api/events.ts updateEvent(eventId, ...)
   }
 
   function handleConfirmCancel() {
-    cancelEvent(eventId);
+    // TODO: call src/lib/api/events.ts updateEvent(eventId, { status_id: <cancelled> })
     setShowCancelModal(false);
-  }
-
-  function handleNudge(id: string) {
-    nudgeRequest(id);
-  }
-
-  function handleConfirmRequest(id: string) {
-    confirmRequest(id);
-  }
-
-  function handleRemoveRequest(id: string) {
-    removeRequest(id);
-  }
-
-  function handleAddRequests(selected: SelectedStakeholder[]) {
-    selected.forEach((item) => {
-      addRequest({
-        eventId,
-        stakeholderId: item.stakeholderId,
-        category: item.category,
-        message: item.message,
-      });
-    });
   }
 
   return (
@@ -120,16 +102,13 @@ function OrganizedEventDetailView({ eventId }: { eventId: string }) {
                     ● Live
                   </Badge>
                 )}
-                <Badge tone={eventTypeTone[event.type]} size="sm">
+                <Badge tone={eventTypeTone(event.type)} size="sm">
                   {event.type}
                 </Badge>
                 <Badge tone="neutral" size="sm">
                   {event.mode}
                 </Badge>
-                <Badge
-                  tone={event.price === "Free" ? "success" : "neutral"}
-                  size="sm"
-                >
+                <Badge tone={priceTone(event.price)} size="sm">
                   {event.price}
                 </Badge>
                 {isCancelled && (
@@ -273,30 +252,4 @@ function OrganizedEventDetailView({ eventId }: { eventId: string }) {
       </Modal>
     </>
   );
-}
-
-export default function OrganizedEventDetailPage() {
-  const params = useParams<{ id: string }>();
-  const event = useOrganizedEventsStore((state) =>
-    state.events.find((item) => item.id === params.id),
-  );
-
-  if (!event) {
-    return (
-      <div className="mx-auto max-w-md">
-        <EmptyState
-          icon={Compass}
-          title="Event not found"
-          description="This event may not exist yet, or your session was reset. In-memory data resets on a full page refresh."
-          action={
-            <ButtonLink href="/my-organized-events" variant="primary">
-              Back to Organizing
-            </ButtonLink>
-          }
-        />
-      </div>
-    );
-  }
-
-  return <OrganizedEventDetailView eventId={event.id} />;
 }

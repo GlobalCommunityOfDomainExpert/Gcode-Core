@@ -1,31 +1,27 @@
 import { Input } from "@/components/atoms";
 import { FormField, ToggleGroup } from "@/components/molecules";
-import { UpdateWizardData, WizardData } from "./types";
+import { useLookup } from "@/hooks/use-lookup";
+import { getModes } from "@/lib/api/lookups";
+import { EventModeLookup } from "@/lib/api/types";
+import { UpdateEventDetailData, EventDetailData } from "@/lib/zod/event";
 
-const modeOptions = [
-  { value: "Online", label: "Online" },
-  { value: "In-Person", label: "In-Person" },
-  { value: "Hybrid", label: "Hybrid" },
-];
-
-const locationLabel: Record<WizardData["mode"], string> = {
-  Online: "Online meeting link",
-  "In-Person": "Venue address",
-  Hybrid: "Venue address & online link",
-};
-
-const locationPlaceholder: Record<WizardData["mode"], string> = {
-  Online: "Shared with registrants after they sign up",
-  "In-Person": "e.g. GCODE Campus, Bangalore",
-  Hybrid: "e.g. GCODE Campus, Bangalore + streaming link",
+// Known DB mode_name codes get friendlier copy; anything else falls back to the raw name.
+const KNOWN_MODE_LABEL: Record<string, string> = {
+  ONLINE: "Online",
+  PHYSICAL: "In-Person",
+  HYBRID: "Hybrid",
 };
 
 export interface StepScheduleModeProps {
-  data: WizardData;
-  onChange: UpdateWizardData;
+  data: EventDetailData;
+  onChange: UpdateEventDetailData;
 }
 
 export function StepScheduleMode({ data, onChange }: StepScheduleModeProps) {
+  const { status, data: modes } = useLookup(getModes);
+  const activeMode = modes.find((mode) => mode.id === data.mode);
+  const modeCode = activeMode?.mode_name ?? "";
+
   return (
     <div className="space-y-5">
       <div>
@@ -37,11 +33,20 @@ export function StepScheduleMode({ data, onChange }: StepScheduleModeProps) {
         </p>
       </div>
 
+      {status === "error" && (
+        <p className="text-small text-danger">
+          Couldn&apos;t load event modes. Refresh to try again.
+        </p>
+      )}
+
       <FormField label="Mode" htmlFor="event-mode">
         <ToggleGroup
-          options={modeOptions}
-          value={data.mode}
-          onChange={(value) => onChange("mode", value as WizardData["mode"])}
+          options={modes.map((mode: EventModeLookup) => ({
+            value: String(mode.id),
+            label: KNOWN_MODE_LABEL[mode.mode_name] ?? mode.mode_name,
+          }))}
+          value={String(data.mode)}
+          onChange={(value) => onChange("mode", Number(value))}
         />
       </FormField>
 
@@ -64,14 +69,42 @@ export function StepScheduleMode({ data, onChange }: StepScheduleModeProps) {
         </FormField>
       </div>
 
-      <FormField label={locationLabel[data.mode]} htmlFor="event-location">
-        <Input
-          id="event-location"
-          value={data.location}
-          onChange={(event) => onChange("location", event.target.value)}
-          placeholder={locationPlaceholder[data.mode]}
-        />
-      </FormField>
+      {(modeCode === "PHYSICAL" || modeCode === "HYBRID") && (
+        <div className="grid gap-4 sm:grid-cols-2">
+          <FormField label="City" htmlFor="event-city">
+            <Input
+              id="event-city"
+              value={data.city}
+              onChange={(event) => onChange("city", event.target.value)}
+              placeholder="e.g. Bangalore"
+            />
+          </FormField>
+          <FormField label="Venue address" htmlFor="event-location">
+            <Input
+              id="event-location"
+              value={data.location}
+              onChange={(event) => onChange("location", event.target.value)}
+              placeholder="e.g. GCODE Campus"
+            />
+          </FormField>
+        </div>
+      )}
+
+      {(modeCode === "ONLINE" || modeCode === "HYBRID") && (
+        <FormField
+          label="Participation link"
+          htmlFor="event-participation-link"
+        >
+          <Input
+            id="event-participation-link"
+            value={data.participationLink}
+            onChange={(event) =>
+              onChange("participationLink", event.target.value)
+            }
+            placeholder="Shared with registrants after they sign up"
+          />
+        </FormField>
+      )}
 
       <div className="grid gap-4 sm:grid-cols-2">
         <FormField

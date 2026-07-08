@@ -1,8 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { X } from "lucide-react";
-import { Icon, Textarea } from "@/components/atoms";
+import {
+  Card,
+  RemoveIconButton,
+  SectionLabel,
+  Textarea,
+} from "@/components/atoms";
 import {
   FormField,
   SearchBar,
@@ -15,7 +19,7 @@ import {
   stakeholderCategories,
   StakeholderCategory,
 } from "@/lib/community-requests";
-import { SelectedStakeholder } from "./types";
+import { SelectedStakeholder } from "@/lib/zod/event";
 
 const categoryTabs = stakeholderCategories.map((category) => ({
   value: category,
@@ -120,17 +124,12 @@ export function StepCommunityRequest({
 
       {selected.length > 0 && (
         <div className="border-border-light space-y-3 border-t pt-4">
-          <p className="text-small text-text-secondary font-bold tracking-widest uppercase">
-            Requested ({selected.length})
-          </p>
+          <SectionLabel>Requested ({selected.length})</SectionLabel>
           {selected.map((item) => {
             const stakeholder = getStakeholderById(item.stakeholderId);
             if (!stakeholder) return null;
             return (
-              <div
-                key={item.stakeholderId}
-                className="border-border-light space-y-2 rounded-md border p-4"
-              >
+              <Card key={item.stakeholderId} className="space-y-2">
                 <div className="flex items-center justify-between gap-2">
                   <div>
                     <p className="text-body text-text-primary font-semibold">
@@ -140,14 +139,10 @@ export function StepCommunityRequest({
                       {stakeholder.category}
                     </p>
                   </div>
-                  <button
-                    type="button"
+                  <RemoveIconButton
                     onClick={() => removeStakeholder(item.stakeholderId)}
-                    aria-label={`Remove ${stakeholder.name}`}
-                    className="text-text-secondary hover:text-danger focus-visible:ring-primary rounded-full p-1 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
-                  >
-                    <Icon icon={X} size="sm" />
-                  </button>
+                    ariaLabel={`Remove ${stakeholder.name}`}
+                  />
                 </div>
                 <FormField
                   label={`Message to ${stakeholder.name}`}
@@ -163,7 +158,7 @@ export function StepCommunityRequest({
                     rows={2}
                   />
                 </FormField>
-              </div>
+              </Card>
             );
           })}
         </div>

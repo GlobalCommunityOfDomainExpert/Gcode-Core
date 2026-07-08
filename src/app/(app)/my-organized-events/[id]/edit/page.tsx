@@ -1,37 +1,55 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { PencilOff } from "lucide-react";
-import { ButtonLink } from "@/components/atoms";
-import { EmptyState } from "@/components/molecules";
-import { useOrganizedEventsStore } from "@/store/organized-events-store";
-import { EventWizard } from "../../_components/event-wizard";
-import { WizardData } from "../../_components/types";
+import { NotFoundState } from "@/components/molecules";
+import { getEvent, listEventTimeline } from "@/lib/api/events";
+import { toEventDraft } from "@/lib/api/adapters";
+import { EventWizard } from "@/app/(app)/my-organized-events/_components/event-wizard";
+import { EventDetailData } from "@/lib/zod/event";
+
+type LoadStatus = "loading" | "error" | "ready";
 
 export default function EditOrganizedEventPage() {
   const params = useParams<{ id: string }>();
-  const event = useOrganizedEventsStore((state) =>
-    state.events.find((item) => item.id === params.id),
-  );
-  const getDraft = useOrganizedEventsStore((state) => state.getDraft);
-  const draft = event ? getDraft<WizardData>(event.id) : undefined;
+  const [draft, setDraft] = useState<EventDetailData | undefined>(undefined);
+  const [status, setStatus] = useState<LoadStatus>("loading");
 
-  if (!event || !draft) {
+  useEffect(() => {
+    let cancelled = false;
+    setStatus("loading");
+    Promise.all([getEvent(params.id), listEventTimeline(params.id)])
+      .then(([detail, timeline]) => {
+        if (cancelled) return;
+        setDraft(toEventDraft(detail, timeline));
+        setStatus("ready");
+      })
+      .catch(() => {
+        if (!cancelled) setStatus("error");
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [params.id]);
+
+  if (!draft) {
     return (
-      <div className="mx-auto max-w-md">
-        <EmptyState
-          icon={PencilOff}
-          title="Can't edit this event"
-          description="Only events you hosted through GCODE can be edited, and the original form data must still be in memory (it resets on a full page refresh)."
-          action={
-            <ButtonLink href="/my-organized-events" variant="primary">
-              Back to Organizing
-            </ButtonLink>
-          }
-        />
-      </div>
+      <NotFoundState
+        icon={PencilOff}
+        title={
+          status === "loading" ? "Loading event…" : "Can't edit this event"
+        }
+        description={
+          status === "loading"
+            ? "Fetching the event to edit."
+            : "This event may not exist, or it couldn't be loaded."
+        }
+        actionHref="/my-organized-events"
+        actionLabel="Back to Organizing"
+      />
     );
   }
 
-  return <EventWizard mode="edit" eventId={event.id} initialData={draft} />;
+  return <EventWizard mode="edit" eventId={params.id} initialData={draft} />;
 }

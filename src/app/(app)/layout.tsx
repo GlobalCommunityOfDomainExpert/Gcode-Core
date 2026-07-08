@@ -1,25 +1,16 @@
 "use client";
 
-import { ReactNode } from "react";
-import {
-  CalendarCheck,
-  // CalendarClock,
-  // LayoutDashboard,
-  // Share2,
-  // Settings,
-  // Wallet,
-} from "lucide-react";
+import { ReactNode, useEffect } from "react";
+import { CalendarCheck } from "lucide-react";
 import { AppShell, Navbar, Sidebar, SidebarLink } from "@/components/layout";
+import {
+  getCategories,
+  getEventTypes,
+  getModes,
+  getStatuses,
+} from "@/lib/api/lookups";
 
 const sidebarLinks: SidebarLink[] = [
-  // {
-  //   label: "Dashboard",
-  //   groupLabel: "Main",
-  //   href: "/dashboard",
-  //   icon: LayoutDashboard,
-  //   badge: "12",
-  // },
-  // { label: "My Bookings", href: "/my-bookings", icon: CalendarClock },
   {
     label: "My Events",
     icon: CalendarCheck,
@@ -28,14 +19,6 @@ const sidebarLinks: SidebarLink[] = [
       { label: "Organizing", href: "/my-organized-events" },
     ],
   },
-  // { label: "Payouts", href: "/payouts", icon: Wallet },
-  // {
-  //   label: "Settings",
-  //   groupLabel: "Account",
-  //   href: "/settings",
-  //   icon: Settings,
-  // },
-  // { label: "Refer", href: "/refer", icon: Share2 },
 ];
 
 const sidebarUser = {
@@ -45,6 +28,15 @@ const sidebarUser = {
 };
 
 export default function AppLayout({ children }: { children: ReactNode }) {
+  useEffect(() => {
+    // Warm the lookup-table caches immediately so components that need
+    // them later (e.g. the event wizard's type step) get a cache hit.
+    getEventTypes();
+    getStatuses();
+    getModes();
+    getCategories();
+  }, []);
+
   return (
     <AppShell
       navbar={

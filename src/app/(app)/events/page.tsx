@@ -12,8 +12,8 @@ import {
   Tabs,
 } from "@/components/molecules";
 import { getAttendeesByEvent } from "@/lib/attendees";
-import { eventTypeTone, mockEvents } from "@/lib/mock-events";
-import { useEventsFiltersStore } from "@/store/events-filters-store";
+import { priceTone } from "@/lib/event";
+import { useEvents } from "@/hooks/use-events";
 
 const categoryTabs = [
   { value: "all", label: "All" },
@@ -27,17 +27,24 @@ const categoryTabs = [
 const filterChips = ["Free", "Paid", "Online", "In-Person"] as const;
 
 export default function EventsPage() {
-  const activeTab = useEventsFiltersStore((state) => state.activeTab);
-  const activeFilters = useEventsFiltersStore((state) => state.activeFilters);
-  const setActiveTab = useEventsFiltersStore((state) => state.setActiveTab);
-  const toggleFilter = useEventsFiltersStore((state) => state.toggleFilter);
+  const [activeTab, setActiveTab] = useState("all");
+  const [activeFilters, setActiveFilters] = useState<string[]>([]);
   const featuredCarouselRef = useRef<CarouselHandle>(null);
   const [featuredCarouselState, setFeaturedCarouselState] =
     useState<CarouselState>({ canScrollPrev: false, canScrollNext: false });
+  const { events, status } = useEvents();
 
-  const featured = mockEvents.filter((event) => event.featured);
+  function toggleFilter(filter: string) {
+    setActiveFilters((prev) =>
+      prev.includes(filter)
+        ? prev.filter((f) => f !== filter)
+        : [...prev, filter],
+    );
+  }
 
-  const filtered = mockEvents.filter((event) => {
+  const featured = events.filter((event) => event.featured);
+
+  const filtered = events.filter((event) => {
     if (activeTab !== "all" && event.type !== activeTab) return false;
     if (activeFilters.includes("Free") && event.price !== "Free") return false;
     if (activeFilters.includes("Paid") && event.price === "Free") return false;
@@ -138,7 +145,7 @@ export default function EventsPage() {
                     { label: event.mode },
                     {
                       label: event.price,
-                      tone: event.price === "Free" ? "success" : "neutral",
+                      tone: priceTone(event.price),
                     },
                   ]}
                   title={event.title}
@@ -170,7 +177,20 @@ export default function EventsPage() {
         <h2 className="text-small text-text-secondary font-bold tracking-widest uppercase">
           Upcoming Events
         </h2>
-        {filtered.length === 0 ? (
+        {status === "loading" ? (
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {Array.from({ length: 6 }).map((_, index) => (
+              <div
+                key={index}
+                className="border-border-light bg-surface-light h-40 animate-pulse rounded-md border"
+              />
+            ))}
+          </div>
+        ) : status === "error" ? (
+          <p className="border-border-light bg-surface-light text-body text-danger rounded-md border p-8 text-center">
+            Couldn&apos;t load events. Refresh to try again.
+          </p>
+        ) : filtered.length === 0 ? (
           <p className="border-border-light bg-surface-light text-body text-text-secondary rounded-md border p-8 text-center">
             No events match these filters.
           </p>
@@ -184,10 +204,10 @@ export default function EventsPage() {
                 imageSrc={event.coverImageUrl}
                 colorSeed={event.id}
                 tags={[
-                  { label: event.type, tone: eventTypeTone[event.type] },
+                  { label: event.type, tone: "primary" },
                   {
                     label: event.price,
-                    tone: event.price === "Free" ? "success" : "neutral",
+                    tone: priceTone(event.price),
                   },
                 ]}
                 title={event.title}

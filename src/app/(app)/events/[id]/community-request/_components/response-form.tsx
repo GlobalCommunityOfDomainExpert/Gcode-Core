@@ -1,10 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { Button, Textarea } from "@/components/atoms";
+import { Button, Card, SectionLabel, Textarea } from "@/components/atoms";
 import { Banner } from "@/components/molecules";
 import { CommunityRequestStatus } from "@/lib/community-requests";
-import { useCommunityRequestsStore } from "@/store/community-requests-store";
+import { respondToCommunityRequest } from "@/lib/api/community";
 
 export interface ResponseFormProps {
   requestId: string;
@@ -22,13 +22,17 @@ export function ResponseForm({
   onRespond,
 }: ResponseFormProps) {
   const [note, setNote] = useState(responseMessage ?? "");
-  const respondToRequest = useCommunityRequestsStore(
-    (state) => state.respondToRequest,
-  );
+  const [submitting, setSubmitting] = useState(false);
 
-  function respond(next: "interested" | "passed") {
-    const updated = respondToRequest(requestId, next, note);
-    onRespond(next, updated?.respondedAt ?? new Date().toISOString());
+  async function respond(next: "interested" | "passed") {
+    setSubmitting(true);
+    try {
+      await respondToCommunityRequest(requestId, next, note);
+      onRespond(next, new Date().toISOString());
+    } catch (error) {
+      console.error("Failed to submit response", error);
+      setSubmitting(false);
+    }
   }
 
   if (status === "helping") {
@@ -60,10 +64,8 @@ export function ResponseForm({
   }
 
   return (
-    <div className="border-border-light bg-surface-light space-y-3 rounded-md border p-6">
-      <p className="text-small text-text-secondary font-bold tracking-widest uppercase">
-        Your Response
-      </p>
+    <Card padding="md" className="space-y-3">
+      <SectionLabel>Your Response</SectionLabel>
       <Textarea
         value={note}
         onChange={(event) => setNote(event.target.value)}
@@ -73,6 +75,7 @@ export function ResponseForm({
         <Button
           variant="primary"
           className="flex-1"
+          loading={submitting}
           onClick={() => respond("interested")}
         >
           ✓ I&apos;m Interested
@@ -80,6 +83,7 @@ export function ResponseForm({
         <Button
           variant="danger-ghost"
           className="border-danger/30 flex-1 border"
+          disabled={submitting}
           onClick={() => respond("passed")}
         >
           ✗ Pass
@@ -89,6 +93,6 @@ export function ResponseForm({
         Marking interested means the organizer will follow up to confirm your
         role.
       </p>
-    </div>
+    </Card>
   );
 }
