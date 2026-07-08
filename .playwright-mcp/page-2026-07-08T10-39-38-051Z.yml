@@ -1,0 +1,18 @@
+- generic [ref=e1]:
+  - generic [ref=e4]:
+    - generic [ref=e5]:
+      - heading "Verify Your Email" [level=1] [ref=e44]
+      - paragraph [ref=e7]: Enter the code we sent you
+    - generic [ref=e45]:
+      - paragraph [ref=e46]: Enter the 6-digit code sent to your email
+      - paragraph [ref=e47]: "Dev OTP: 21Y7YU"
+      - group "One-time passcode" [ref=e48]:
+        - textbox [active] [ref=e49]
+        - textbox [ref=e50]
+        - textbox [ref=e51]
+        - textbox [ref=e52]
+        - textbox [ref=e53]
+        - textbox [ref=e54]
+  - button "Open Next.js Dev Tools" [ref=e39] [cursor=pointer]:
+    - img [ref=e40]
+  - alert [ref=e43]

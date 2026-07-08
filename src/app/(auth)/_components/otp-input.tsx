@@ -18,7 +18,10 @@ export function OtpInput({
   const inputsRef = useRef<(HTMLInputElement | null)[]>([]);
 
   function handleChange(event: ChangeEvent<HTMLInputElement>, index: number) {
-    const value = event.target.value.replace(/[^0-9]/g, "").slice(-1);
+    const value = event.target.value
+      .replace(/[^a-zA-Z0-9]/g, "")
+      .toUpperCase()
+      .slice(-1);
     event.target.value = value;
 
     if (value && index < length - 1) {
@@ -50,7 +53,7 @@ export function OtpInput({
             inputsRef.current[index] = el;
           }}
           type="text"
-          inputMode="numeric"
+          inputMode="text"
           maxLength={1}
           autoFocus={index === 0}
           disabled={disabled}
