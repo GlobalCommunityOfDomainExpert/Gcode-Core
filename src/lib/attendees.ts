@@ -282,3 +282,23 @@ export const mockAttendees: Attendee[] = [
 export function getAttendeesByEvent(eventId: string): Attendee[] {
   return mockAttendees.filter((attendee) => attendee.eventId === eventId);
 }
+
+export function attendeesCsvRows(attendees: Attendee[]): string[][] {
+  return attendees.map((attendee) => [
+    attendee.name,
+    attendee.email,
+    attendee.role,
+    new Date(attendee.registeredAt).toLocaleDateString("en-IN"),
+    attendee.ticketType,
+    attendee.status,
+  ]);
+}
+
+export const ATTENDEES_CSV_HEADERS = [
+  "Name",
+  "Email",
+  "Role",
+  "Registered",
+  "Payment",
+  "Status",
+];

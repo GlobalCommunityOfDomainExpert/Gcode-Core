@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { Badge, Blurred } from "@/components/atoms";
 import {
   BulkActionBar,
@@ -11,21 +11,24 @@ import {
   Table,
   TableColumn,
 } from "@/components/molecules";
-import { Attendee } from "@/lib/attendees";
-import { downloadCsv } from "@/lib/csv";
-import { MockEvent } from "@/lib/mock-events";
 import {
-  AttendeesFilterValue,
-  useAttendeesTabStore,
-} from "@/store/attendees-tab-store";
+  ATTENDEES_CSV_HEADERS,
+  Attendee,
+  attendeesCsvRows,
+} from "@/lib/attendees";
+import { downloadCsv } from "@/lib/csv";
+import { Event } from "@/lib/event";
 import {
   attendanceStatusLabel,
   attendanceStatusTone,
   ticketTypeTone,
 } from "./status-maps";
 
+export type AttendeesFilterValue =
+  "all" | "paid" | "free" | "attended" | "missed";
+
 export interface AttendeesTabProps {
-  event: MockEvent;
+  event: Event;
   attendees: Attendee[];
   selectedIds: Set<string>;
   onSelectedIdsChange: (ids: Set<string>) => void;
@@ -35,18 +38,7 @@ export interface AttendeesTabProps {
 const PAGE_SIZE = 8;
 
 function exportCsv(filename: string, attendees: Attendee[]) {
-  downloadCsv(
-    filename,
-    ["Name", "Email", "Role", "Registered", "Payment", "Status"],
-    attendees.map((attendee) => [
-      attendee.name,
-      attendee.email,
-      attendee.role,
-      new Date(attendee.registeredAt).toLocaleDateString("en-IN"),
-      attendee.ticketType,
-      attendee.status,
-    ]),
-  );
+  downloadCsv(filename, ATTENDEES_CSV_HEADERS, attendeesCsvRows(attendees));
 }
 
 export function AttendeesTab({
@@ -56,18 +48,10 @@ export function AttendeesTab({
   onSelectedIdsChange,
   onNavigateToCommunication,
 }: AttendeesTabProps) {
-  const query = useAttendeesTabStore((state) => state.query);
-  const filter = useAttendeesTabStore((state) => state.filter);
-  const page = useAttendeesTabStore((state) => state.page);
-  const viewingAttendee = useAttendeesTabStore(
-    (state) => state.viewingAttendee,
-  );
-  const setQuery = useAttendeesTabStore((state) => state.setQuery);
-  const setFilter = useAttendeesTabStore((state) => state.setFilter);
-  const setPage = useAttendeesTabStore((state) => state.setPage);
-  const setViewingAttendee = useAttendeesTabStore(
-    (state) => state.setViewingAttendee,
-  );
+  const [query, setQuery] = useState("");
+  const [filter, setFilter] = useState<AttendeesFilterValue>("all");
+  const [page, setPage] = useState(1);
+  const [viewingAttendee, setViewingAttendee] = useState<Attendee | null>(null);
 
   const counts = useMemo(
     () => ({

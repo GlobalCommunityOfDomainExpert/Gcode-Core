@@ -1,8 +1,8 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { Upload, X } from "lucide-react";
-import { Button, Icon, Input, Switch, Textarea } from "@/components/atoms";
+import { Button, Icon, Input, Textarea } from "@/components/atoms";
 import { FormField, ToggleGroup } from "@/components/molecules";
-import { UpdateWizardData, WizardData } from "./types";
+import { UpdateEventDetailData, EventDetailData } from "@/lib/zod/event";
 
 const priceOptions = [
   { value: "Free", label: "Free" },
@@ -10,12 +10,15 @@ const priceOptions = [
 ];
 
 export interface StepDetailsProps {
-  data: WizardData;
-  onChange: UpdateWizardData;
+  data: EventDetailData;
+  onChange: UpdateEventDetailData;
 }
 
 export function StepDetails({ data, onChange }: StepDetailsProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
+  // Paid/Free is tracked locally so clearing the amount field to retype it
+  // doesn't snap the toggle back to Free (priceAmount briefly 0).
+  const [isPaid, setIsPaid] = useState(data.priceAmount > 0);
 
   function handleFileChange(event: React.ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0];
@@ -83,7 +86,7 @@ export function StepDetails({ data, onChange }: StepDetailsProps) {
           className="hidden"
         />
         {data.coverImageUrl ? (
-          <div className="relative aspect-[3/1] w-full max-w-sm overflow-hidden rounded-md">
+          <div className="relative aspect-3/1 w-full max-w-sm overflow-hidden rounded-md">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={data.coverImageUrl}
@@ -114,20 +117,24 @@ export function StepDetails({ data, onChange }: StepDetailsProps) {
         <FormField label="Price" htmlFor="event-price">
           <ToggleGroup
             options={priceOptions}
-            value={data.price}
-            onChange={(value) =>
-              onChange("price", value as WizardData["price"])
-            }
+            value={isPaid ? "Paid" : "Free"}
+            onChange={(value) => {
+              const paid = value === "Paid";
+              setIsPaid(paid);
+              if (!paid) onChange("priceAmount", 0);
+            }}
           />
         </FormField>
-        {data.price === "Paid" && (
+        {isPaid && (
           <FormField label="Amount (₹)" htmlFor="event-price-amount">
             <Input
               id="event-price-amount"
               type="number"
               min={0}
-              value={data.priceAmount}
-              onChange={(event) => onChange("priceAmount", event.target.value)}
+              value={data.priceAmount || ""}
+              onChange={(event) =>
+                onChange("priceAmount", Number(event.target.value) || 0)
+              }
               placeholder="299"
             />
           </FormField>
@@ -144,22 +151,12 @@ export function StepDetails({ data, onChange }: StepDetailsProps) {
             id="event-capacity"
             type="number"
             min={0}
-            value={data.capacity}
-            onChange={(event) => onChange("capacity", event.target.value)}
+            value={data.capacity || ""}
+            onChange={(event) =>
+              onChange("capacity", Number(event.target.value) || 0)
+            }
             placeholder="200"
           />
-        </FormField>
-        <FormField label="Certificate" htmlFor="event-certificate">
-          <div className="flex h-11 items-center">
-            <Switch
-              id="event-certificate"
-              checked={data.certificate}
-              onChange={(event) =>
-                onChange("certificate", event.target.checked)
-              }
-              label="Issue a certificate on completion"
-            />
-          </div>
         </FormField>
       </div>
     </div>

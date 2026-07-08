@@ -3,11 +3,11 @@
 import { CalendarPlus } from "lucide-react";
 import { ButtonLink } from "@/components/atoms";
 import { EmptyState, EventCard } from "@/components/molecules";
-import { eventTypeTone } from "@/lib/mock-events";
-import { useOrganizedEventsStore } from "@/store/organized-events-store";
+import { eventTypeTone, priceTone } from "@/lib/event";
+import { useEvents } from "@/hooks/use-events";
 
 export default function MyOrganizedEventsPage() {
-  const events = useOrganizedEventsStore((state) => state.events);
+  const { events, status } = useEvents();
 
   return (
     <div className="space-y-6">
@@ -29,7 +29,16 @@ export default function MyOrganizedEventsPage() {
         </ButtonLink>
       </div>
 
-      {events.length === 0 ? (
+      {status === "loading" ? (
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {Array.from({ length: 3 }).map((_, index) => (
+            <div
+              key={index}
+              className="border-border-light bg-surface-light h-40 animate-pulse rounded-md border"
+            />
+          ))}
+        </div>
+      ) : events.length === 0 ? (
         <EmptyState
           icon={CalendarPlus}
           title="You haven't hosted an event yet"
@@ -50,13 +59,13 @@ export default function MyOrganizedEventsPage() {
               imageSrc={event.coverImageUrl}
               colorSeed={event.id}
               tags={
-                event.status === "cancelled"
+                event.status === "CANCELLED"
                   ? [{ label: "Cancelled", tone: "danger" }]
                   : [
-                      { label: event.type, tone: eventTypeTone[event.type] },
+                      { label: event.type, tone: eventTypeTone(event.type) },
                       {
                         label: event.price,
-                        tone: event.price === "Free" ? "success" : "neutral",
+                        tone: priceTone(event.price),
                       },
                     ]
               }

@@ -1,39 +1,41 @@
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 import {
-  initialWizardData,
+  initialEventData,
   SelectedStakeholder,
-  WizardData,
-} from "@/app/(app)/my-organized-events/_components/types";
+  eventDetailDataSchema,
+  EventDetailData,
+} from "@/lib/zod/event";
 
-interface EventWizardState {
+interface WizardState {
   stepIndex: number;
-  data: WizardData;
+  data: EventDetailData;
   selectedStakeholders: SelectedStakeholder[];
   submitting: boolean;
 }
 
-interface EventWizardActions {
+interface WizardActions {
   setStep: (index: number) => void;
-  update: <K extends keyof WizardData>(key: K, value: WizardData[K]) => void;
+  update: <K extends keyof EventDetailData>(
+    key: K,
+    value: EventDetailData[K],
+  ) => void;
   setSelectedStakeholders: (selected: SelectedStakeholder[]) => void;
   setSubmitting: (submitting: boolean) => void;
-  reset: (initialData?: WizardData) => void;
+  reset: (initialData?: EventDetailData) => void;
 }
 
-export const useEventWizardStore = create<
-  EventWizardState & EventWizardActions
->()(
+export const useWizardStore = create<WizardState & WizardActions>()(
   devtools(
     (set) => ({
       stepIndex: 0,
-      data: initialWizardData,
+      data: initialEventData,
       selectedStakeholders: [],
       submitting: false,
 
       setStep: (index) => set({ stepIndex: index }, false, "setStep"),
 
-      update: <K extends keyof WizardData>(key: K, value: WizardData[K]) =>
+      update: (key, value) =>
         set(
           (state) => ({ data: { ...state.data, [key]: value } }),
           false,
@@ -54,7 +56,9 @@ export const useEventWizardStore = create<
         set(
           {
             stepIndex: 0,
-            data: initialData ?? initialWizardData,
+            data: initialData
+              ? eventDetailDataSchema.parse(initialData)
+              : initialEventData,
             selectedStakeholders: [],
             submitting: false,
           },
@@ -63,7 +67,7 @@ export const useEventWizardStore = create<
         ),
     }),
     {
-      name: "event-wizard-store",
+      name: "wizard-store",
       enabled: process.env.NODE_ENV !== "production",
     },
   ),

@@ -11,7 +11,8 @@ const KNOWN_EVENT_TYPE_TONE: Record<string, Tone> = {
   Webinar: "success",
   Ideathon: "danger",
   "Community Meetup": "neutral",
-  "Institution Event": "primary",
+  Fest: "primary",
+  "Charity Event": "success",
 };
 
 const KNOWN_EVENT_TYPE_BORDER_CLASS: Record<string, string> = {
@@ -20,7 +21,8 @@ const KNOWN_EVENT_TYPE_BORDER_CLASS: Record<string, string> = {
   Webinar: "border-l-success",
   Ideathon: "border-l-danger",
   "Community Meetup": "border-l-border-hover",
-  "Institution Event": "border-l-primary",
+  Fest: "border-l-primary",
+  "Charity Event": "border-l-success",
 };
 
 export function eventTypeTone(type: EventType): Tone {
@@ -31,16 +33,23 @@ export function eventTypeBorderClass(type: EventType): string {
   return KNOWN_EVENT_TYPE_BORDER_CLASS[type] ?? "border-l-border-hover";
 }
 
+export function priceTone(price: string): Tone {
+  return price === "Free" ? "success" : "neutral";
+}
+
 export function formatDateBadge(date: string): { day: string; month: string } {
   const [day, month] = date.split(" ");
   return { day, month: month.toUpperCase() };
 }
 
-// No backend table for agenda yet — adapter always sets [].
-export interface EventAgendaItem {
+// Backed by EVENT_TIMELINE table.
+export interface EventTimelineItem {
+  date: string; // yyyy-mm-dd
   time: string;
+  endTime?: string;
   title: string;
   description: string;
+  location?: string;
 }
 
 // No backend table for social links yet — adapter never sets this.
@@ -88,7 +97,7 @@ export interface Event {
   teamSize: string; // no backend column — adapter hardcodes ""
   certificate: boolean; // no backend column — adapter hardcodes false
   description: string[]; // EventDetail.description (detail fetch only), wrapped in array
-  agenda: EventAgendaItem[]; // no backend table — adapter hardcodes []
+  timeline: EventTimelineItem[]; // EVENT_TIMELINE rows — adapter hardcodes [] for now
   organizer: EventOrganizer; // see EventOrganizer — only .name is backed
   terms: string[]; // no backend column — adapter hardcodes []
   tags?: string[]; // EventDetail.categories (detail fetch only)

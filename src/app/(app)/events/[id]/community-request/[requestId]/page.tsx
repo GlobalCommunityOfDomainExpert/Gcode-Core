@@ -1,17 +1,30 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { Calendar, Clock, Mic } from "lucide-react";
-import { Avatar, Badge, ButtonLink, Icon } from "@/components/atoms";
-import { Breadcrumb, EmptyState } from "@/components/molecules";
 import {
+  Avatar,
+  Badge,
+  ButtonLink,
+  Icon,
+  SectionLabel,
+} from "@/components/atoms";
+import {
+  Breadcrumb,
+  EventBadgeRow,
+  NotFoundState,
+} from "@/components/molecules";
+import {
+  CommunityRequest,
   getStakeholderById,
   stakeholderCategoryLabel,
   StakeholderCategory,
 } from "@/lib/community-requests";
-import { getCommunityRequestById } from "@/store/community-requests-store";
-import { useAnyEventById } from "@/store/organized-events-store";
+import { getCommunityRequest } from "@/lib/api/community";
+import { adaptCommunityRequest } from "@/lib/api/adapters";
+import { useEvent } from "@/hooks/use-event";
+import { Event } from "@/lib/event";
 import { ResponseForm } from "../_components/response-form";
 
 const categoryIntro: Record<StakeholderCategory, string> = {
@@ -24,25 +37,35 @@ const categoryIntro: Record<StakeholderCategory, string> = {
 
 export default function CommunityRequestPage() {
   const params = useParams<{ id: string; requestId: string }>();
-  const event = useAnyEventById(params.id);
-  const request = getCommunityRequestById(params.requestId);
+  const { event } = useEvent(params.id);
+  const [request, setRequest] = useState<CommunityRequest | undefined>(
+    undefined,
+  );
+
+  useEffect(() => {
+    let cancelled = false;
+    getCommunityRequest(params.requestId)
+      .then((row) => {
+        if (!cancelled && row) setRequest(adaptCommunityRequest(row));
+      })
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
+  }, [params.requestId]);
+
   const stakeholder = request
     ? getStakeholderById(request.stakeholderId)
     : undefined;
 
   if (!event || !request || !stakeholder) {
     return (
-      <div className="mx-auto max-w-md">
-        <EmptyState
-          title="Request not found"
-          description="This request may not exist, or in-memory data was reset by a full page refresh."
-          action={
-            <ButtonLink href="/events" variant="primary">
-              Browse Events
-            </ButtonLink>
-          }
-        />
-      </div>
+      <NotFoundState
+        title="Request not found"
+        description="This request may not exist, or in-memory data was reset by a full page refresh."
+        actionHref="/events"
+        actionLabel="Browse Events"
+      />
     );
   }
 
@@ -60,8 +83,8 @@ function CommunityRequestView({
   request,
   stakeholder,
 }: {
-  event: NonNullable<ReturnType<typeof useAnyEventById>>;
-  request: NonNullable<ReturnType<typeof getCommunityRequestById>>;
+  event: Event;
+  request: CommunityRequest;
   stakeholder: NonNullable<ReturnType<typeof getStakeholderById>>;
 }) {
   const [status, setStatus] = useState(request.status);
@@ -99,18 +122,11 @@ function CommunityRequestView({
 
       <div className="border-border-light bg-surface-light space-y-3 rounded-md border p-4">
         <div className="flex items-start justify-between gap-2">
-          <div className="flex flex-wrap gap-2">
-            <Badge size="sm">{event.type}</Badge>
-            <Badge size="sm" tone="neutral">
-              {event.mode}
-            </Badge>
-            <Badge
-              size="sm"
-              tone={event.price === "Free" ? "success" : "neutral"}
-            >
-              {event.price}
-            </Badge>
-          </div>
+          <EventBadgeRow
+            type={event.type}
+            mode={event.mode}
+            price={event.price}
+          />
           <ButtonLink href={`/events/${event.id}`} variant="ghost" size="sm">
             View Event →
           </ButtonLink>
@@ -144,9 +160,7 @@ function CommunityRequestView({
       </div>
 
       <div className="border-border-light bg-surface-light space-y-4 rounded-md border p-6">
-        <p className="text-small text-text-secondary font-bold tracking-widest uppercase">
-          What They Need
-        </p>
+        <SectionLabel>What They Need</SectionLabel>
         <div className="flex items-start gap-3">
           <Icon icon={Mic} size="md" className="text-text-secondary mt-0.5" />
           <div>

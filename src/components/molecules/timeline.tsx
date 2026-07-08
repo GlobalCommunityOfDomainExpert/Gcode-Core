@@ -1,5 +1,10 @@
+import { MapPin } from "lucide-react";
+import { Icon } from "@/components/atoms";
+
 export interface TimelineItem {
   title: string;
+  time?: string;
+  location?: string;
   description?: string;
   active?: boolean;
   past?: boolean;
@@ -15,26 +20,35 @@ export function Timeline({ items }: TimelineProps) {
       {items.map((item, index) => {
         const isLast = index === items.length - 1;
         return (
-          <li key={item.title} className="flex gap-4">
-            <div className="flex flex-col items-center">
+          <li key={`${item.title}-${index}`} className="flex gap-4">
+            <div className="flex flex-col items-center pt-1">
               <span
-                className={`mt-1 size-2.5 shrink-0 rounded-full ${
+                className={`size-3 shrink-0 rounded-full ring-4 ${
                   item.active
-                    ? "bg-primary"
-                    : item.past
-                      ? "bg-border-hover"
-                      : "bg-border-light"
+                    ? "bg-primary ring-primary-light"
+                    : "bg-border-hover ring-transparent"
                 }`}
               />
-              {!isLast && <span className="bg-border-light w-px flex-1" />}
+              {!isLast && <span className="bg-border-light mt-1 w-px flex-1" />}
             </div>
-            <div className={`pb-6 ${item.past ? "opacity-60" : ""}`}>
+            <div className={`min-w-0 pb-6 ${item.past ? "opacity-60" : ""}`}>
+              {item.time && (
+                <span className="bg-primary-light text-primary text-small mb-1 inline-block rounded-full px-2 py-0.5 font-semibold">
+                  {item.time}
+                </span>
+              )}
               <h4 className="text-body text-text-primary font-semibold">
                 {item.title}
               </h4>
               {item.description && (
-                <p className="text-small text-text-secondary">
+                <p className="text-small text-text-secondary mt-0.5">
                   {item.description}
+                </p>
+              )}
+              {item.location && (
+                <p className="text-small text-text-secondary mt-1 flex items-center gap-1">
+                  <Icon icon={MapPin} size="sm" />
+                  {item.location}
                 </p>
               )}
             </div>

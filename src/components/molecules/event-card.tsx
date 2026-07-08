@@ -39,7 +39,11 @@ function EventCardMedia({
   if (src) {
     return (
       // eslint-disable-next-line @next/next/no-img-element
-      <img src={src} alt={alt} className="h-full w-full object-cover" />
+      <img
+        src={src}
+        alt={alt}
+        className="absolute inset-0 h-full w-full object-cover"
+      />
     );
   }
 
@@ -168,7 +172,7 @@ export function EventCard({
 
   return (
     <div className="border-border-light bg-surface-light flex h-full flex-col overflow-hidden rounded-md border transition-shadow hover:shadow-md">
-      <div className="aspect-video shrink-0">
+      <div className="relative aspect-video shrink-0">
         <EventCardMedia
           src={imageSrc}
           alt={imageAlt ?? title}

@@ -4,11 +4,11 @@ import { useState } from "react";
 import { X } from "lucide-react";
 import { Badge, Button, Icon, Input } from "@/components/atoms";
 import { FormField } from "@/components/molecules";
-import { MockEvent } from "@/lib/mock-events";
+import { Event } from "@/lib/event";
 
 export interface SettingsTabProps {
-  event: MockEvent;
-  onSave: (updates: Partial<MockEvent>) => void;
+  event: Event;
+  onSave: (updates: Partial<Event>) => void;
   onRequestCancel: () => void;
 }
 
@@ -154,7 +154,7 @@ export function SettingsTab({
         </div>
       </div>
 
-      {event.status !== "cancelled" && (
+      {event.status !== "CANCELLED" && (
         <div className="mt-4">
           <p className="text-small text-danger mb-3 flex items-center gap-2 font-bold tracking-widest uppercase">
             Danger Zone <span className="bg-danger-light h-px flex-1" />

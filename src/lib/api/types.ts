@@ -28,6 +28,8 @@ export interface EventCategory {
 export interface EventDetail extends EventListItem {
   registration_deadline: string | null;
   description: string | null;
+  summary: string | null;
+  certificate_offered: number;
   created_by: string | null;
   created_on: string;
   updated_by: string | null;
@@ -68,18 +70,30 @@ export interface CategoryLookup {
   description: string;
 }
 
+// Mirrors the ORDS POST /events binds -> GCODE_EVENTS_API.create_event params.
+// title/event_type_id/mode_of_event_id required; rest optional (proc defaults them).
 export interface CreateEventPayload {
-  event_name: string;
+  title: string;
   event_type_id: number;
   mode_of_event_id: number;
-  city: string;
-  address: string;
-  description: string;
-  status_id: number;
-  max_attendees: number;
-  ticket_price: number;
-  is_featured: number;
-  registration_deadline: string;
+  status_id?: number;
+  summary?: string;
+  description?: string;
+  start_date?: string; // ISO 8601
+  end_date?: string;
+  registration_deadline?: string;
+  city?: string;
+  venue_address?: string;
+  participation_link?: string;
+  max_attendees?: number;
+  ticket_price?: number;
+  is_featured?: number;
+  certificate_offered?: number;
+  cover_image_url?: string;
+  banner_image_url?: string;
+  is_external?: number;
+  external_url?: string;
+  created_by?: string;
 }
 
 export type UpdateEventPayload = Partial<CreateEventPayload>;

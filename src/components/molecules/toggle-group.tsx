@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useControllableState } from "@/hooks/use-controllable-state";
 
 export interface ToggleGroupOption {
   value: string;
@@ -20,13 +20,11 @@ export function ToggleGroup({
   defaultValue,
   onChange,
 }: ToggleGroupProps) {
-  const [internal, setInternal] = useState(defaultValue ?? options[0]?.value);
-  const active = value ?? internal;
-
-  function select(next: string) {
-    if (value === undefined) setInternal(next);
-    onChange?.(next);
-  }
+  const [active, select] = useControllableState(
+    value,
+    defaultValue ?? options[0]?.value,
+    onChange,
+  );
 
   return (
     <div

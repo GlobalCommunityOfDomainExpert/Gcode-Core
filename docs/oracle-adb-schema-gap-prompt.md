@@ -62,6 +62,7 @@ amount_paid,     -- nullable, only for paid tickets
 status,          -- registered / attended / missed / cancelled
 registered_at
 ```
+
 Plus a paginated/filterable list endpoint (`GET /events/{id}/attendees?status=&query=&page=`) to replace the client-side mock filter — this table also directly answers the `registeredCount` gap above.
 
 ### 2. Communications (`src/store/communications-store.ts` + `src/lib/communications.ts`)
@@ -71,22 +72,26 @@ Hardcoded `seedLogs`, appended to client-side, never persisted. Need a `COMMUNIC
 ```
 id, event_id, subject, message, sent_at, recipient_count, open_rate (nullable)
 ```
+
 Plus `GET /events/{id}/communications` and `POST /events/{id}/communications` (send + log) endpoints. `recipient_count`/`open_rate` imply this needs to integrate with an actual email/notification send pipeline, not just a table.
 
 ### 3. Community requests & stakeholders (`src/store/community-requests-store.ts`, `community-tab-store.ts` + `src/lib/community-requests.ts`)
 
 **Stakeholders directory** (`mockStakeholders`) — need a `STAKEHOLDERS` table:
+
 ```
 id, name, category,   -- Venue Partner / Sponsorship Partner / Guest Speaker / Volunteer — confirm fixed enum vs. lookup table
 org, title, avatar_initials, bio, tags (array or join table)
 ```
 
 **Community requests** (`CommunityRequest`) — organizer requesting a stakeholder's involvement in an event. Need a `COMMUNITY_REQUESTS` table:
+
 ```
 id, event_id, stakeholder_id, category, message,
 status,          -- interested / helping / passed
 response_message, created_at, responded_at, reminded_at
 ```
+
 Plus endpoints: list by event, create, respond, confirm, remove, nudge (mirrors the store's actions).
 
 ### 4. Attendee-facing history (`src/lib/attendee-history.ts`, used by `my-events/page.tsx`)

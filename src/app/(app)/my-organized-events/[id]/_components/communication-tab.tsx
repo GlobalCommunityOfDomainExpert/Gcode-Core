@@ -4,14 +4,11 @@ import { useState } from "react";
 import { Button, Input, Textarea } from "@/components/atoms";
 import { Chip, FormField, Modal } from "@/components/molecules";
 import { Attendee } from "@/lib/attendees";
-import { MockEvent } from "@/lib/mock-events";
-import {
-  useCommunicationLogsByEvent,
-  useCommunicationsStore,
-} from "@/store/communications-store";
+import { CommunicationLog } from "@/lib/communications";
+import { Event } from "@/lib/event";
 
 export interface CommunicationTabProps {
-  event: MockEvent;
+  event: Event;
   attendees: Attendee[];
   selectedIds: Set<string>;
 }
@@ -21,9 +18,9 @@ type RecipientMode = "all" | "confirmed" | "paid" | "custom";
 const templates: {
   key: string;
   label: string;
-  subject: (event: MockEvent) => string;
-  body: (event: MockEvent) => string;
-  disabled?: (event: MockEvent) => boolean;
+  subject: (event: Event) => string;
+  body: (event: Event) => string;
+  disabled?: (event: Event) => boolean;
 }[] = [
   {
     key: "reminder",
@@ -65,8 +62,7 @@ export function CommunicationTab({
   const [subject, setSubject] = useState("");
   const [message, setMessage] = useState("");
   const [previewOpen, setPreviewOpen] = useState(false);
-  const logs = useCommunicationLogsByEvent(event.id);
-  const addLog = useCommunicationsStore((state) => state.addLog);
+  const [logs, setLogs] = useState<CommunicationLog[]>([]); // TODO: fetch communication logs
 
   const recipientCounts: Record<RecipientMode, number> = {
     all: attendees.filter((a) => a.status !== "cancelled").length,
@@ -84,13 +80,19 @@ export function CommunicationTab({
 
   function handleSend() {
     if (!subject.trim() || !message.trim()) return;
-    addLog({
-      eventId: event.id,
-      subject: subject.trim(),
-      message: message.trim(),
-      recipientCount: recipientCounts[recipientMode],
-      openRate: undefined,
-    });
+    // TODO: persist communication log
+    setLogs((prev) => [
+      {
+        id: `comm-${prev.length + 1}`,
+        eventId: event.id,
+        subject: subject.trim(),
+        message: message.trim(),
+        sentAt: new Date().toISOString(),
+        recipientCount: recipientCounts[recipientMode],
+        openRate: undefined,
+      },
+      ...prev,
+    ]);
     setSubject("");
     setMessage("");
   }

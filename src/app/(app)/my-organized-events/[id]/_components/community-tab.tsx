@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { Badge, Blurred, Button, ButtonLink } from "@/components/atoms";
 import {
   BulkActionBar,
@@ -16,14 +16,13 @@ import {
   stakeholderCategories,
   stakeholderCategoryLabel,
 } from "@/lib/community-requests";
-import { MockEvent } from "@/lib/mock-events";
-import { useCommunityTabStore } from "@/store/community-tab-store";
-import { StepCommunityRequest } from "../../_components/step-community-request";
-import { SelectedStakeholder } from "../../_components/types";
+import { Event } from "@/lib/event";
+import { StepCommunityRequest } from "@/app/(app)/my-organized-events/_components/step-community-request";
+import { SelectedStakeholder } from "@/lib/zod/event";
 import { communityStatusLabel, communityStatusTone } from "./status-maps";
 
 export interface CommunityTabProps {
-  event: MockEvent;
+  event: Event;
   requests: CommunityRequest[];
   onNudge: (id: string) => void;
   onConfirm: (id: string) => void;
@@ -46,24 +45,14 @@ export function CommunityTab({
   onRemove,
   onAddRequests,
 }: CommunityTabProps) {
-  const categoryFilter = useCommunityTabStore((state) => state.categoryFilter);
-  const selectedIds = useCommunityTabStore((state) => state.selectedIds);
-  const showRequestModal = useCommunityTabStore(
-    (state) => state.showRequestModal,
-  );
-  const pendingSelection = useCommunityTabStore(
-    (state) => state.pendingSelection,
-  );
-  const setCategoryFilter = useCommunityTabStore(
-    (state) => state.setCategoryFilter,
-  );
-  const setSelectedIds = useCommunityTabStore((state) => state.setSelectedIds);
-  const setShowRequestModal = useCommunityTabStore(
-    (state) => state.setShowRequestModal,
-  );
-  const setPendingSelection = useCommunityTabStore(
-    (state) => state.setPendingSelection,
-  );
+  const [categoryFilter, setCategoryFilter] = useState<
+    StakeholderCategory | "all"
+  >("all");
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
+  const [showRequestModal, setShowRequestModal] = useState(false);
+  const [pendingSelection, setPendingSelection] = useState<
+    SelectedStakeholder[]
+  >([]);
 
   function handleSendRequests() {
     onAddRequests(pendingSelection);
@@ -166,7 +155,7 @@ export function CommunityTab({
       key: "message",
       header: "Message",
       render: (row) => (
-        <span className="text-text-secondary line-clamp-1 max-w-[200px]">
+        <span className="text-text-secondary line-clamp-1 max-w-50">
           &ldquo;{row.responseMessage ?? row.message}&rdquo;
         </span>
       ),

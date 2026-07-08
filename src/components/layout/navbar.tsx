@@ -26,16 +26,9 @@ export interface NavbarProps {
   mobileFooter?: ReactNode;
 }
 
-const defaultLinks: NavLink[] = [
-  // { label: "Explore", href: "/explore" },
-  { label: "Events", href: "/events" },
-];
+const defaultLinks: NavLink[] = [{ label: "Events", href: "/events" }];
 
-const defaultResourcesItems: DropdownItem[] = [
-  // { label: "Blogs", href: "/blogs" },
-  // { label: "Terms & Conditions", href: "/terms" },
-  // { label: "Refund Policy", href: "/refund-policy" },
-];
+const defaultResourcesItems: DropdownItem[] = [];
 
 export function Navbar({
   logo = (
@@ -48,7 +41,6 @@ export function Navbar({
     />
   ),
   links = defaultLinks,
-  resourcesLabel = "",
   resourcesItems = defaultResourcesItems,
   ctaLabel = "Get Started",
   onCtaClick,
@@ -58,7 +50,6 @@ export function Navbar({
 }: NavbarProps) {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
-  console.log(resourcesLabel);
   return (
     <header className="bg-primary relative">
       <div className="mx-auto flex h-16 items-center justify-between gap-4">
@@ -83,32 +74,7 @@ export function Navbar({
                 </Link>
               );
             })}
-            {/* <Dropdown
-              trigger={
-                <span className="text-body cursor-pointer font-medium text-white/70 hover:text-white">
-                  {resourcesLabel} ▾
-                </span>
-              }
-              items={resourcesItems}
-            /> */}
           </nav>
-        </div>
-
-        <div className="hidden items-center gap-3 md:flex">
-          {/* <button
-            type="button"
-            onClick={onNotificationClick}
-            aria-label="Notifications"
-            className="focus-visible:ring-offset-primary relative rounded-sm p-2 text-white/80 hover:text-white focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:outline-none"
-          >
-            <Icon icon={Bell} size="md" />
-            {hasUnreadNotifications && (
-              <span className="bg-danger absolute top-1.5 right-1.5 size-2 rounded-full" />
-            )}
-          </button>
-          <Button variant="accent" size="sm" onClick={onCtaClick}>
-            {ctaLabel}
-          </Button> */}
         </div>
 
         <div className="flex items-center gap-2 md:hidden">

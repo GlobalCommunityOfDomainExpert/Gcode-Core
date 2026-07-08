@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import {
   ArrowRight,
   Award,
@@ -8,7 +9,12 @@ import {
   IndianRupee,
 } from "lucide-react";
 import { Badge, BadgeTone, ButtonLink, Icon } from "@/components/atoms";
-import { EmptyState, Tabs, ToggleGroup } from "@/components/molecules";
+import {
+  EmptyState,
+  EventBadgeRow,
+  Tabs,
+  ToggleGroup,
+} from "@/components/molecules";
 import {
   mockPastEvents,
   mockPurchases,
@@ -19,9 +25,8 @@ import {
   eventTypeBorderClass,
   eventTypeTone,
   formatDateBadge,
-  mockEvents,
-} from "@/lib/mock-events";
-import { useMyEventsFiltersStore } from "@/store/my-events-filters-store";
+} from "@/lib/event";
+import { useEvents } from "@/hooks/use-events";
 
 const tabItems = [
   { value: "upcoming", label: "Upcoming" },
@@ -55,15 +60,14 @@ function isSameMonth(date: Date, today: Date): boolean {
 }
 
 export default function MyEventsPage() {
-  const activeTab = useMyEventsFiltersStore((state) => state.activeTab);
-  const range = useMyEventsFiltersStore((state) => state.range);
-  const setActiveTab = useMyEventsFiltersStore((state) => state.setActiveTab);
-  const setRange = useMyEventsFiltersStore((state) => state.setRange);
+  const [activeTab, setActiveTab] = useState("upcoming");
+  const [range, setRange] = useState("week");
+  const { events } = useEvents();
 
   const today = new Date();
   today.setHours(0, 0, 0, 0);
 
-  const upcoming = mockEvents
+  const upcoming = events
     .filter((event) => event.registeredCount > 0)
     .filter((event) => {
       const eventDate = new Date(event.date);
@@ -106,7 +110,7 @@ export default function MyEventsPage() {
                   return (
                     <div
                       key={event.id}
-                      className={`border-border-light bg-surface-light flex items-center gap-4 rounded-md border border-l-4 p-4 ${eventTypeBorderClass[event.type]}`}
+                      className={`border-border-light bg-surface-light flex items-center gap-4 rounded-md border border-l-4 p-4 ${eventTypeBorderClass(event.type)}`}
                     >
                       <div className="w-12 shrink-0 text-center">
                         <p className="text-small text-text-secondary font-semibold uppercase">
@@ -117,22 +121,12 @@ export default function MyEventsPage() {
                         </p>
                       </div>
                       <div className="min-w-0 flex-1 space-y-1">
-                        <div className="flex flex-wrap gap-2">
-                          <Badge size="sm" tone={eventTypeTone[event.type]}>
-                            {event.type}
-                          </Badge>
-                          <Badge size="sm" tone="neutral">
-                            {event.mode}
-                          </Badge>
-                          <Badge
-                            size="sm"
-                            tone={
-                              event.price === "Free" ? "success" : "neutral"
-                            }
-                          >
-                            {event.price}
-                          </Badge>
-                        </div>
+                        <EventBadgeRow
+                          type={event.type}
+                          mode={event.mode}
+                          price={event.price}
+                          typeTone={eventTypeTone(event.type)}
+                        />
                         <p className="text-body text-text-primary truncate font-semibold">
                           {event.title}
                         </p>
