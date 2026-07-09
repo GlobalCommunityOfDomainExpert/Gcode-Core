@@ -18,11 +18,7 @@ export interface EventListItem {
   cover_image_url: string | null;
   banner_image_url: string | null;
   participation_link: string | null;
-}
-
-export interface EventCategory {
-  category_id: number;
-  category_name: string;
+  registered_count: number;
 }
 
 export interface EventDetail extends EventListItem {
@@ -34,7 +30,15 @@ export interface EventDetail extends EventListItem {
   created_on: string;
   updated_by: string | null;
   updated_on: string | null;
-  categories?: EventCategory[];
+  organizer_id: number | null;
+  organizer_name: string | null;
+  organizer_email: string | null;
+  max_tickets_per_registration: number | null;
+  // JSON-array-as-string from JSON_ARRAYAGG, e.g. "[1,2]" — parse before use.
+  category_ids: string | null;
+  category_names: string | null;
+  terms: string | null;
+  eligibility: string | null;
 }
 
 export interface ApiListResponse<T> {
@@ -94,6 +98,33 @@ export interface CreateEventPayload {
   is_external?: number;
   external_url?: string;
   created_by?: string;
+  organizer_id?: number;
+  max_tickets_per_registration?: number;
+  terms?: string;
+  eligibility?: string;
 }
 
 export type UpdateEventPayload = Partial<CreateEventPayload>;
+
+// Mirrors the ORDS POST /events/:id/participants binds ->
+// GCODE_EVENT_PARTICIPANTS_API.create_participant. Guest registration:
+// finds-or-creates the GCODE_USERS row by email server-side.
+export interface CreateParticipantPayload {
+  email: string;
+  full_name: string;
+  quantity: number;
+}
+
+// Mirrors GCODE_EVENT_PARTICIPANTS_API.list_by_event's refcursor row.
+export interface ParticipantApi {
+  id: number;
+  event_id: number;
+  user_id: number | null;
+  user_name: string;
+  quantity: number;
+  status: string | null;
+  active: string;
+  applied_on: string;
+  email: string | null;
+  role_name: string | null;
+}

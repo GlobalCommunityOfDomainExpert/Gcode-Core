@@ -87,10 +87,11 @@ export interface Event {
   date: string; // derived from EventListItem.start_date
   time: string; // derived from EventListItem.start_date
   location: string; // derived from EventListItem.city + address
-  registeredCount: number; // no backend column — adapter hardcodes 0, needs a registrations count source
+  registeredCount: number; // EventListItem.registered_count — live SUM(quantity) from GCODE_EVENT_PARTICIPANTS
   interestedCount?: number; // no backend column — never set
-  spotsLeft?: number; // derivable from max_attendees - registeredCount, unset until registeredCount is real
+  spotsLeft?: number; // max_attendees - registeredCount
   capacity?: number; // EventListItem.max_attendees
+  maxTicketsPerRegistration?: number; // EventDetail.max_tickets_per_registration — organizer cap per single booking, unset = no cap
   featured?: boolean; // EventListItem.is_featured
   registrationCloses: string; // EventDetail.registration_deadline, falls back to start_date
   duration: string; // EventListItem.end_date exists but adapter doesn't derive duration from start/end yet — always ""
@@ -99,7 +100,8 @@ export interface Event {
   description: string[]; // EventDetail.description (detail fetch only), wrapped in array
   timeline: EventTimelineItem[]; // EVENT_TIMELINE rows — adapter hardcodes [] for now
   organizer: EventOrganizer; // see EventOrganizer — only .name is backed
-  terms: string[]; // no backend column — adapter hardcodes []
+  terms: string[]; // EventDetail.terms, split on newline — falls back to DEFAULT_TERMS when blank
+  eligibility: string[]; // EventDetail.eligibility, split on newline — falls back to DEFAULT_ELIGIBILITY when blank
   tags?: string[]; // EventDetail.categories (detail fetch only)
   socialLinks?: EventSocialLink[]; // no backend column — adapter never sets this
   coverImageUrl?: string; // EventListItem.cover_image_url

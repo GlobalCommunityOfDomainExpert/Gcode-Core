@@ -6,7 +6,8 @@ import {
   CommunityRequestStatus,
   StakeholderCategory,
 } from "@/lib/community-requests";
-import { EventDetail, EventListItem, CreateEventPayload } from "./types";
+import { Attendee, AttendeeRole } from "@/lib/attendees";
+import { EventDetail, EventListItem, CreateEventPayload, ParticipantApi } from "./types";
 import { CommunityRequestApi } from "./community";
 import { API_BASE_URL } from "./client";
 
@@ -15,6 +16,26 @@ import { API_BASE_URL } from "./client";
 function resolveImageUrl(url: string | null): string | undefined {
   if (!url) return undefined;
   return url.startsWith("http") ? url : `${API_BASE_URL}${url}`;
+}
+
+// Shown when an organizer hasn't set custom terms/eligibility for an event.
+export const DEFAULT_TERMS = [
+  "Registration confirms your agreement to attend and follow the event's code of conduct.",
+  "GCODE reserves the right to modify event details or cancel the event due to unforeseen circumstances.",
+  "No refunds for paid tickets unless the event is cancelled by the organizer.",
+];
+
+export const DEFAULT_ELIGIBILITY = [
+  "Open to all professionals, students, and enthusiasts interested in the topic.",
+  "Participants must be 18 years or older, or attend with a guardian.",
+];
+
+// Organizer text is stored newline-separated (like DESCRIPTION); split into
+// bullet lines, falling back to the defaults above when blank/unset.
+function splitBullets(raw: string | null, fallback: string[]): string[] {
+  if (!raw) return fallback;
+  const lines = raw.split("\n").filter((line) => line.trim() !== "");
+  return lines.length > 0 ? lines : fallback;
 }
 
 // EVENT_TIMELINE row -> UI timeline item. Splits the ISO start/end into the
@@ -27,6 +48,50 @@ export function adaptTimelineItem(row: EventTimelineApi): EventTimelineItem {
     title: row.title,
     description: row.description ?? "",
     location: row.location ?? undefined,
+  };
+}
+
+const ROLE_NAME_MAP: Record<string, AttendeeRole> = {
+  FRESHER: "Fresher",
+  STARTUP: "Startup Founder",
+  EXPERT: "Domain Expert",
+  INSTITUTION: "Institution",
+};
+
+// "Jane Doe" -> "JD". Guest registrants only ever give a full name, no
+// avatar image, so initials are all we can show.
+function initialsOf(name: string): string {
+  return (
+    name
+      .trim()
+      .split(/\s+/)
+      .slice(0, 2)
+      .map((part) => part[0]?.toUpperCase())
+      .join("") || "?"
+  );
+}
+
+// GCODE_EVENT_PARTICIPANTS row -> UI Attendee. Status collapses to
+// "registered" for now — the participants table has no attended/no-show
+// tracking yet. ticketType/amountPaid come from the event's single price
+// (no per-attendee ticket tiers exist).
+export function adaptParticipant(
+  row: ParticipantApi,
+  eventTicketPrice: number,
+): Attendee {
+  return {
+    id: String(row.id),
+    eventId: String(row.event_id),
+    name: row.user_name,
+    email: row.email ?? "",
+    avatarInitials: initialsOf(row.user_name),
+    role: (row.role_name && ROLE_NAME_MAP[row.role_name]) || "Guest",
+    ticketType: eventTicketPrice > 0 ? "Paid" : "Free",
+    quantity: row.quantity,
+    amountPaid:
+      eventTicketPrice > 0 ? eventTicketPrice * row.quantity : undefined,
+    status: "registered",
+    registeredAt: row.applied_on,
   };
 }
 
@@ -61,6 +126,7 @@ function toIsoTimestamp(date: string, time?: string): string | undefined {
 export function toCreatePayload(
   data: EventDetailData,
   createdBy?: string,
+  organizerId?: number,
 ): CreateEventPayload {
   if (data.type === null) {
     throw new Error("Event type is required before creating an event");
@@ -81,7 +147,22 @@ export function toCreatePayload(
     ticket_price: data.priceAmount,
     certificate_offered: data.certificate ? 1 : 0,
     created_by: createdBy,
+    organizer_id: organizerId,
+    max_tickets_per_registration: data.maxTicketsPerRegistration || undefined,
+    terms: data.terms.trim() || undefined,
+    eligibility: data.eligibility.trim() || undefined,
   };
+}
+
+// JSON_ARRAYAGG columns arrive as a JSON-array-shaped string (or null when
+// the event has no categories) rather than a real array.
+function parseJsonArray<T>(raw: string | null): T[] {
+  if (!raw) return [];
+  try {
+    return JSON.parse(raw) as T[];
+  } catch {
+    return [];
+  }
 }
 
 // Raw event detail + timeline -> wizard EventDetailData (with FK ids intact),
@@ -97,6 +178,10 @@ export function toEventDraft(
     description: detail.description ?? "",
     priceAmount: detail.ticket_price ?? 0,
     capacity: detail.max_attendees ?? 0,
+    maxTicketsPerRegistration: detail.max_tickets_per_registration ?? 0,
+    categoryIds: parseJsonArray<number>(detail.category_ids),
+    terms: detail.terms ?? "",
+    eligibility: detail.eligibility ?? "",
     mode: detail.mode_of_event_id,
     date: detail.start_date ? istDate(detail.start_date) : "",
     time: detail.start_date ? istTime(detail.start_date) : "",
@@ -273,9 +358,13 @@ export function adaptApiEvent(
     date: formatDate(event.start_date),
     time: formatTime(event.start_date),
     location: resolveLocation(event.city, event.address),
-    registeredCount: 0,
+    registeredCount: event.registered_count,
     capacity: event.max_attendees ?? undefined,
-    spotsLeft: undefined,
+    spotsLeft:
+      event.max_attendees != null
+        ? Math.max(event.max_attendees - event.registered_count, 0)
+        : undefined,
+    maxTicketsPerRegistration: detail?.max_tickets_per_registration ?? undefined,
     featured: event.is_featured === 1,
     registrationCloses: detail?.registration_deadline
       ? formatDate(detail.registration_deadline)
@@ -289,14 +378,17 @@ export function adaptApiEvent(
       : [],
     timeline: [],
     organizer: {
-      name: detail?.created_by || "GCODE Team",
+      name: detail?.organizer_name || detail?.created_by || "GCODE Team",
       title: "Organizer",
       verified: false,
       eventsHosted: 0,
       attendees: 0,
     },
-    terms: [],
-    tags: detail?.categories?.map((c) => c.category_name),
+    terms: splitBullets(detail?.terms ?? null, DEFAULT_TERMS),
+    eligibility: splitBullets(detail?.eligibility ?? null, DEFAULT_ELIGIBILITY),
+    tags: detail?.category_names
+      ? parseJsonArray<string>(detail.category_names)
+      : undefined,
     coverImageUrl: resolveImageUrl(event.cover_image_url),
     mediaUrls: event.banner_image_url ? [event.banner_image_url] : [],
     participationLink: event.participation_link ?? undefined,
