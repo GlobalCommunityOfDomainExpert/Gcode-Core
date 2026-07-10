@@ -10,6 +10,7 @@ import { StepEventType } from "./step-event-type";
 import { StepDetails } from "./step-details";
 import { StepScheduleMode } from "@/app/(app)/my-organized-events/_components/step-schedule-mode";
 import { StepTimelineLinks } from "./step-timeline-links";
+import { StepTerms } from "./step-terms";
 import { StepCommunityRequest } from "./step-community-request";
 import { StepReview } from "@/app/(app)/my-organized-events/_components/step-review";
 import { EventDetailData } from "@/lib/zod/event";
@@ -20,6 +21,8 @@ import {
   replaceEventMedia,
   replaceEventTimeline,
   uploadCoverImage,
+  assignCategory,
+  removeCategory,
 } from "@/lib/api/events";
 import { toCreatePayload, toTimelinePayload } from "@/lib/api/adapters";
 import { createCommunityRequests } from "@/lib/api/community";
@@ -29,6 +32,7 @@ const createStepLabels = [
   "Details",
   "Schedule & Mode",
   "Timeline & Media",
+  "Terms",
   "Community",
   "Review",
 ];
@@ -37,6 +41,7 @@ const editStepLabels = [
   "Details",
   "Schedule & Mode",
   "Timeline & Media",
+  "Terms",
   "Review",
 ];
 
@@ -100,6 +105,17 @@ export function EventWizard({ mode, eventId, initialData }: EventWizardProps) {
     return true;
   }
 
+  async function persistCategories(id: number | string, originalIds: number[]) {
+    const original = new Set(originalIds);
+    const current = new Set(data.categoryIds);
+    const toAdd = data.categoryIds.filter((c) => !original.has(c));
+    const toRemove = originalIds.filter((c) => !current.has(c));
+    await Promise.all([
+      ...toAdd.map((categoryId) => assignCategory(id, categoryId)),
+      ...toRemove.map((categoryId) => removeCategory(id, categoryId)),
+    ]);
+  }
+
   async function persistChildCollections(id: number | string) {
     const links = data.socialLinks.filter((l) => l.url.trim() !== "");
     if (links.length > 0) await replaceEventSocialLinks(id, links);
@@ -125,6 +141,7 @@ export function EventWizard({ mode, eventId, initialData }: EventWizardProps) {
     try {
       const { id } = await createEvent(toCreatePayload(data));
       await persistChildCollections(id);
+      await persistCategories(id, []);
       if (selectedStakeholders.length > 0) {
         await createCommunityRequests(
           id,
@@ -149,6 +166,7 @@ export function EventWizard({ mode, eventId, initialData }: EventWizardProps) {
     try {
       await updateEvent(eventId, toCreatePayload(data));
       await persistChildCollections(eventId);
+      await persistCategories(eventId, initialData?.categoryIds ?? []);
       router.push(`/my-organized-events/${eventId}`);
     } catch (error) {
       console.error("Failed to update event", error);
@@ -157,7 +175,7 @@ export function EventWizard({ mode, eventId, initialData }: EventWizardProps) {
   }
 
   const isLastStep = stepIndex === stepLabels.length - 1;
-  const isCommunityStep = mode === "create" && stepIndex === 4;
+  const isCommunityStep = mode === "create" && stepIndex === 5;
 
   return (
     <div className="mx-auto max-w-3xl space-y-6">
@@ -186,6 +204,7 @@ export function EventWizard({ mode, eventId, initialData }: EventWizardProps) {
         {stepIndex === 1 && <StepDetails data={data} onChange={update} />}
         {stepIndex === 2 && <StepScheduleMode data={data} onChange={update} />}
         {stepIndex === 3 && <StepTimelineLinks data={data} onChange={update} />}
+        {stepIndex === 4 && <StepTerms data={data} onChange={update} />}
         {isCommunityStep && (
           <StepCommunityRequest
             selected={selectedStakeholders}

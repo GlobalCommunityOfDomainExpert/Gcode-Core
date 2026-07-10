@@ -22,6 +22,10 @@ export const eventDetailDataSchema = z.object({
   description: z.string().default(""),
   priceAmount: z.number().default(0),
   capacity: z.number().default(0),
+  maxTicketsPerRegistration: z.number().default(0), // 0 = no per-booking cap, only capacity applies
+  categoryIds: z.array(z.number()).default([]), // FK -> EVENT_CATEGORIES.ID, via EVENT_CATEGORY_MAP
+  terms: z.string().default(""), // one point per line; blank -> UI shows defaults
+  eligibility: z.string().default(""), // one point per line; blank -> UI shows defaults
   mode: z.number().default(1), // FK -> MODE_OF_EVENT_ID
   date: z.string().default(""),
   time: z.string().default(""),

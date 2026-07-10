@@ -1,5 +1,9 @@
 export type AttendeeRole =
-  "Fresher" | "Startup Founder" | "Domain Expert" | "Institution";
+  | "Fresher"
+  | "Startup Founder"
+  | "Domain Expert"
+  | "Institution"
+  | "Guest";
 export type AttendanceStatus =
   "registered" | "attended" | "missed" | "cancelled";
 
@@ -11,6 +15,7 @@ export interface Attendee {
   avatarInitials: string;
   role: AttendeeRole;
   ticketType: "Free" | "Paid";
+  quantity?: number; // ticket count for this registration; unset in mock data, defaults to 1
   amountPaid?: number;
   status: AttendanceStatus;
   registeredAt: string;
@@ -290,6 +295,7 @@ export function attendeesCsvRows(attendees: Attendee[]): string[][] {
     attendee.role,
     new Date(attendee.registeredAt).toLocaleDateString("en-IN"),
     attendee.ticketType,
+    String(attendee.quantity ?? 1),
     attendee.status,
   ]);
 }
@@ -300,5 +306,6 @@ export const ATTENDEES_CSV_HEADERS = [
   "Role",
   "Registered",
   "Payment",
+  "Tickets",
   "Status",
 ];

@@ -19,7 +19,7 @@ export async function listEvents(
   params: ListEventsParams = {},
 ): Promise<EventListItem[]> {
   const { items } = await apiRequest<ApiListResponse<EventListItem>>(
-    "/events",
+    "/events/",
     { query: params },
   );
   return items;
@@ -41,7 +41,7 @@ export async function getEvent(
 export function createEvent(
   payload: CreateEventPayload,
 ): Promise<{ id: number }> {
-  return apiRequest<{ id: number }>("/events", {
+  return apiRequest<{ id: number }>("/events/", {
     method: "POST",
     body: payload,
   });

@@ -293,13 +293,23 @@ export default function EventDetailPage() {
             </div>
           )}
 
-          <div className="border-border-light bg-surface-light space-y-3 rounded-md border p-6">
-            <SectionLabel>Terms &amp; Eligibility</SectionLabel>
-            <ul className="text-body text-text-secondary list-disc space-y-1.5 pl-5">
-              {event.terms.map((term) => (
-                <li key={term}>{term}</li>
-              ))}
-            </ul>
+          <div className="border-border-light bg-surface-light space-y-4 rounded-md border p-6">
+            <div className="space-y-2">
+              <SectionLabel>Eligibility</SectionLabel>
+              <ul className="text-body text-text-secondary list-disc space-y-1.5 pl-5">
+                {event.eligibility.map((point) => (
+                  <li key={point}>{point}</li>
+                ))}
+              </ul>
+            </div>
+            <div className="space-y-2">
+              <SectionLabel>Terms &amp; Conditions</SectionLabel>
+              <ul className="text-body text-text-secondary list-disc space-y-1.5 pl-5">
+                {event.terms.map((term) => (
+                  <li key={term}>{term}</li>
+                ))}
+              </ul>
+            </div>
           </div>
         </div>
 
@@ -330,7 +340,7 @@ export default function EventDetailPage() {
               </Button>
             ) : (
               <ButtonLink
-                href={`/events/${event.id}/registered`}
+                href={`/events/${event.id}/register`}
                 variant="primary"
                 className="w-full"
               >
