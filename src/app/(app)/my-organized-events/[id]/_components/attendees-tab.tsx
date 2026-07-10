@@ -150,6 +150,13 @@ export function AttendeesTab({
       ),
     },
     {
+      key: "tickets",
+      header: "Tickets",
+      render: (row) => (
+        <span className="text-text-secondary">{row.quantity ?? 1}</span>
+      ),
+    },
+    {
       key: "status",
       header: "Status",
       render: (row) => (
@@ -304,6 +311,10 @@ export function AttendeesTab({
               {viewingAttendee.amountPaid
                 ? ` · ₹${viewingAttendee.amountPaid}`
                 : ""}
+            </p>
+            <p>
+              <span className="text-text-secondary">Tickets:</span>{" "}
+              {viewingAttendee.quantity ?? 1}
             </p>
             <p>
               <span className="text-text-secondary">Status:</span>{" "}

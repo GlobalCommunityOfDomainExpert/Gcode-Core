@@ -1,8 +1,10 @@
 import { useRef, useState } from "react";
 import { Upload, X } from "lucide-react";
 import { Button, Icon, Input, Textarea } from "@/components/atoms";
-import { FormField, ToggleGroup } from "@/components/molecules";
+import { Chip, FormField, ToggleGroup } from "@/components/molecules";
 import { UpdateEventDetailData, EventDetailData } from "@/lib/zod/event";
+import { useLookup } from "@/hooks/use-lookup";
+import { getCategories } from "@/lib/api/lookups";
 
 const priceOptions = [
   { value: "Free", label: "Free" },
@@ -19,6 +21,14 @@ export function StepDetails({ data, onChange }: StepDetailsProps) {
   // Paid/Free is tracked locally so clearing the amount field to retype it
   // doesn't snap the toggle back to Free (priceAmount briefly 0).
   const [isPaid, setIsPaid] = useState(data.priceAmount > 0);
+  const { data: categories } = useLookup(getCategories);
+
+  function toggleCategory(id: number) {
+    const next = data.categoryIds.includes(id)
+      ? data.categoryIds.filter((c) => c !== id)
+      : [...data.categoryIds, id];
+    onChange("categoryIds", next);
+  }
 
   function handleFileChange(event: React.ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0];
@@ -158,7 +168,44 @@ export function StepDetails({ data, onChange }: StepDetailsProps) {
             placeholder="200"
           />
         </FormField>
+        <FormField
+          label="Max Tickets Per Registration"
+          htmlFor="event-max-tickets"
+          hint="Leave blank for no per-booking limit."
+        >
+          <Input
+            id="event-max-tickets"
+            type="number"
+            min={0}
+            value={data.maxTicketsPerRegistration || ""}
+            onChange={(event) =>
+              onChange(
+                "maxTicketsPerRegistration",
+                Number(event.target.value) || 0,
+              )
+            }
+            placeholder="4"
+          />
+        </FormField>
       </div>
+
+      <FormField
+        label="Category Tags"
+        htmlFor="event-categories"
+        hint="Shown as tags on the event's public page."
+      >
+        <div id="event-categories" className="flex flex-wrap gap-2">
+          {categories.map((category) => (
+            <Chip
+              key={category.id}
+              selected={data.categoryIds.includes(category.id)}
+              onClick={() => toggleCategory(category.id)}
+            >
+              {category.category_name}
+            </Chip>
+          ))}
+        </div>
+      </FormField>
     </div>
   );
 }

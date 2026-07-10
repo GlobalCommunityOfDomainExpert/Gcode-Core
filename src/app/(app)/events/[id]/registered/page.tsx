@@ -1,15 +1,9 @@
 "use client";
 
-import { useState } from "react";
-import { useParams } from "next/navigation";
-import {
-  Calendar,
-  CalendarPlus,
-  Check,
-  Compass,
-  MessageCircle,
-  MapPin,
-} from "lucide-react";
+import { useEffect, useState } from "react";
+import { useParams, useSearchParams } from "next/navigation";
+import QRCode from "qrcode";
+import { Calendar, Check, Compass, MapPin } from "lucide-react";
 import {
   Badge,
   BookingRef,
@@ -20,41 +14,94 @@ import {
   SectionLabel,
 } from "@/components/atoms";
 import { EventBadgeRow, NotFoundState } from "@/components/molecules";
-import { downloadIcs } from "@/lib/calendar";
 import { useEvent } from "@/hooks/use-event";
+import { getParticipant } from "@/lib/api/participants";
+import { ParticipantApi } from "@/lib/api/types";
 
 export default function EventRegisteredPage() {
   const params = useParams<{ id: string }>();
-  const { event, status } = useEvent(params.id);
-  const [joinedCommunity, setJoinedCommunity] = useState(false);
+  const searchParams = useSearchParams();
+  const participantId = searchParams.get("pid");
+  const { event, status: eventStatus } = useEvent(params.id);
 
-  if (!event) {
+  const [participant, setParticipant] = useState<ParticipantApi | undefined>();
+  const [participantStatus, setParticipantStatus] = useState<
+    "loading" | "error" | "ready"
+  >("loading");
+  const [qrDataUrl, setQrDataUrl] = useState<string | undefined>();
+
+  useEffect(() => {
+    if (!participantId) {
+      setParticipantStatus("error");
+      return;
+    }
+    let cancelled = false;
+    void (async () => {
+      try {
+        const row = await getParticipant(participantId);
+        if (cancelled) return;
+        if (!row) {
+          setParticipantStatus("error");
+          return;
+        }
+        setParticipant(row);
+        setParticipantStatus("ready");
+      } catch {
+        if (!cancelled) setParticipantStatus("error");
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [participantId]);
+
+  // One QR per booking (not per ticket) — a single scan checks in every
+  // ticket in this registration's quantity. Encodes an opaque reference the
+  // check-in flow can look up server-side; nothing sensitive.
+  useEffect(() => {
+    if (!participant) return;
+    const payload = `GCODE-PARTICIPANT-${participant.id}`;
+    void QRCode.toDataURL(payload, { width: 200, margin: 1 }).then(
+      setQrDataUrl,
+    );
+  }, [participant]);
+
+  if (!event || participantStatus === "loading") {
     return (
       <NotFoundState
         icon={Compass}
-        title={status === "loading" ? "Loading event…" : "Event not found"}
-        description={
-          status === "loading"
-            ? "Fetching this event."
-            : "This event may not exist, or it couldn't be loaded."
-        }
+        title="Loading your registration…"
+        description="Fetching your ticket details."
         actionHref="/events"
         actionLabel="Browse Events"
       />
     );
   }
 
-  const bookingRef = `GCODE-2026-${event.id.slice(-6).toUpperCase()}`;
+  if (participantStatus === "error" || !participant) {
+    return (
+      <NotFoundState
+        icon={Compass}
+        title="Registration not found"
+        description="We couldn't find this registration. If you just signed up, check your email for confirmation."
+        actionHref={`/events/${event.id}`}
+        actionLabel="Back to Event"
+      />
+    );
+  }
+
+  const quantity = participant.quantity;
+  const bookingRef = `GCODE-P${participant.id}`;
 
   function downloadTicket() {
-    if (!event) return;
     const ticketText = [
       "GCODE EVENT TICKET",
       "",
-      `Event: ${event.title}`,
-      `Date: ${event.date} · ${event.time}`,
-      `Location: ${event.location}`,
+      `Event: ${event!.title}`,
+      `Date: ${event!.date} · ${event!.time}`,
+      `Location: ${event!.location}`,
       `Booking Reference: ${bookingRef}`,
+      `Tickets: ${quantity}`,
       "",
       "Present this ticket at the event check-in.",
     ].join("\n");
@@ -68,32 +115,6 @@ export default function EventRegisteredPage() {
     document.body.removeChild(link);
     URL.revokeObjectURL(url);
   }
-
-  const nextSteps = [
-    {
-      label: "Registration complete",
-      description: "Confirmation sent to your email",
-      done: true,
-    },
-    {
-      label: "Save the date",
-      description: "Add to your calendar so you don't miss it",
-      action: "Add",
-      icon: CalendarPlus,
-      onAction: () => downloadIcs(event),
-      done: false,
-    },
-    {
-      label: "Join the community",
-      description: joinedCommunity
-        ? "You're in the GCODE WhatsApp group for this event"
-        : "GCODE WhatsApp group for this event",
-      action: joinedCommunity ? "Joined" : "Join",
-      icon: MessageCircle,
-      onAction: () => setJoinedCommunity(true),
-      done: joinedCommunity,
-    },
-  ];
 
   return (
     <div className="mx-auto max-w-2xl space-y-6">
@@ -109,7 +130,7 @@ export default function EventRegisteredPage() {
             A confirmation has been sent to your email address.
           </p>
           <p className="text-small text-text-secondary">
-            Registration confirmed
+            {quantity} ticket{quantity === 1 ? "" : "s"} confirmed
           </p>
         </div>
       </div>
@@ -148,54 +169,18 @@ export default function EventRegisteredPage() {
       <div className="border-border-light bg-surface-light space-y-4 rounded-md border p-6">
         <SectionLabel>Your Ticket</SectionLabel>
         <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center">
-          <QrPlaceholder />
+          <QrPlaceholder src={qrDataUrl} loading={!qrDataUrl} />
           <div className="space-y-2">
             <p className="text-small text-text-secondary">Booking Reference</p>
             <BookingRef>{bookingRef}</BookingRef>
             <p className="text-small text-text-secondary">
-              Present this at the event check-in or share your QR code.
+              {quantity} ticket{quantity === 1 ? "" : "s"} · one QR code
+              covers this whole booking — present it once at check-in.
             </p>
             <Button variant="primary" size="sm" onClick={downloadTicket}>
               Download Ticket
             </Button>
           </div>
-        </div>
-      </div>
-
-      <div className="border-border-light bg-surface-light space-y-3 rounded-md border p-6">
-        <SectionLabel>What&apos;s Next</SectionLabel>
-        <div className="space-y-3">
-          {nextSteps.map((step) => (
-            <div key={step.label} className="flex items-center gap-3">
-              <div
-                className={`flex size-6 shrink-0 items-center justify-center rounded-full ${
-                  step.done
-                    ? "bg-success text-white"
-                    : "border-border-light text-text-secondary border"
-                }`}
-              >
-                {step.done && <Icon icon={Check} size="sm" />}
-              </div>
-              <div className="flex-1">
-                <p className="text-body text-text-primary font-medium">
-                  {step.label}
-                </p>
-                <p className="text-small text-text-secondary">
-                  {step.description}
-                </p>
-              </div>
-              {step.action && (
-                <Button
-                  variant="secondary"
-                  size="sm"
-                  disabled={step.done && step.label === "Join the community"}
-                  onClick={step.onAction}
-                >
-                  {step.action}
-                </Button>
-              )}
-            </div>
-          ))}
         </div>
       </div>
 
