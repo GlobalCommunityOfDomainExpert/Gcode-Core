@@ -1,29 +1,33 @@
 "use client";
 
 import { useState } from "react";
+import { Button } from "@/components/atoms";
 import { OtpInput } from "./otp-input";
 import { verifyOtp } from "@/lib/api/auth";
 import { ApiError } from "@/lib/api/client";
 
+const OTP_LENGTH = 6;
+
 export interface StepVerifyOtpProps {
-  userId: number;
+  email: string;
   testOtp: string;
   onVerified: () => void;
 }
 
 export function StepVerifyOtp({
-  userId,
+  email,
   testOtp,
   onVerified,
 }: StepVerifyOtpProps) {
+  const [code, setCode] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [checking, setChecking] = useState(false);
 
-  async function handleComplete(code: string) {
+  async function handleVerify() {
     setChecking(true);
     setError(null);
     try {
-      await verifyOtp(userId, code, "REGISTRATION");
+      await verifyOtp(email, code, "REGISTRATION");
       onVerified();
     } catch (err) {
       setError(
@@ -45,14 +49,26 @@ export function StepVerifyOtp({
       </p>
 
       <OtpInput
+        length={OTP_LENGTH}
         error={!!error}
         disabled={checking}
-        onComplete={handleComplete}
+        onChange={setCode}
       />
 
       {error && (
         <p className="text-danger text-small text-center">{error}</p>
       )}
+
+      <Button
+        type="button"
+        variant="primary"
+        className="w-full"
+        loading={checking}
+        disabled={code.length !== OTP_LENGTH}
+        onClick={handleVerify}
+      >
+        Verify OTP
+      </Button>
     </div>
   );
 }

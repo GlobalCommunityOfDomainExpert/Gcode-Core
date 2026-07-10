@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { AuthCard } from "./auth-card";
 import { AccountDetails, StepAccountDetails } from "./step-account-details";
 import { StepVerifyOtp } from "./step-verify-otp";
@@ -9,7 +9,7 @@ import {
   StakeholderRole,
   StepSelectStakeholder,
 } from "./step-select-stakeholder";
-import { selectStakeholder, signIn, signUp } from "@/lib/api/auth";
+import { selectStakeholder, signUp } from "@/lib/api/auth";
 import { setSession } from "@/lib/auth/session";
 import { ApiError } from "@/lib/api/client";
 
@@ -17,6 +17,11 @@ type Step = 0 | 1 | 2;
 
 export function SignUpFlow() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const isOauth = searchParams.get("oauth") === "1";
+  const oauthUserId = isOauth ? Number(searchParams.get("userId")) : null;
+  const oauthEmail = isOauth ? (searchParams.get("email") ?? "") : "";
+
   const [stepIndex, setStepIndex] = useState<Step>(0);
   const [account, setAccount] = useState<AccountDetails | null>(null);
   const [userId, setUserId] = useState<number | null>(null);
@@ -24,6 +29,9 @@ export function SignUpFlow() {
   const [role, setRole] = useState<StakeholderRole>("expert");
   const [completing, setCompleting] = useState(false);
   const [completeError, setCompleteError] = useState<string | null>(null);
+
+  const effectiveStepIndex: Step = oauthUserId !== null ? 2 : stepIndex;
+  const effectiveUserId = oauthUserId ?? userId;
 
   async function handleAccountSubmit(details: AccountDetails) {
     const { user_id, test_otp } = await signUp(
@@ -38,16 +46,16 @@ export function SignUpFlow() {
   }
 
   async function handleComplete() {
-    if (userId === null || !account) return;
+    if (effectiveUserId === null) return;
     setCompleting(true);
     setCompleteError(null);
     try {
-      await selectStakeholder(userId, role);
-      const { token, user_id, role_name } = await signIn(
-        account.email,
-        account.password,
+      const { token } = await selectStakeholder(
+        effectiveUserId,
+        account?.email ?? oauthEmail,
+        role,
       );
-      setSession(token, user_id, role_name);
+      setSession(token);
       router.push("/");
     } catch (err) {
       setCompleteError(
@@ -71,17 +79,20 @@ export function SignUpFlow() {
   };
 
   return (
-    <AuthCard {...titles[stepIndex]}>
-      {stepIndex === 0 && <StepAccountDetails onSubmit={handleAccountSubmit} />}
-      {stepIndex === 1 && userId !== null && (
+    <AuthCard {...titles[effectiveStepIndex]}>
+      {effectiveStepIndex === 0 && (
+        <StepAccountDetails onSubmit={handleAccountSubmit} />
+      )}
+      {effectiveStepIndex === 1 && account !== null && (
         <StepVerifyOtp
-          userId={userId}
+          email={account.email}
           testOtp={testOtp}
           onVerified={() => setStepIndex(2)}
         />
       )}
-      {stepIndex === 2 && (
+      {effectiveStepIndex === 2 && (
         <StepSelectStakeholder
+          email={account?.email ?? oauthEmail}
           value={role}
           onChange={setRole}
           onComplete={handleComplete}

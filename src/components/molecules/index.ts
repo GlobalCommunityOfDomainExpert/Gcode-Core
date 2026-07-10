@@ -18,6 +18,7 @@ export * from "./modal";
 export * from "./not-found-state";
 export * from "./notification-item";
 export * from "./pagination";
+export * from "./password-strength-meter";
 export * from "./problem-card";
 export * from "./role-cta";
 export * from "./search-bar";

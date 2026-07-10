@@ -39,6 +39,7 @@ const roleOptions: {
 ];
 
 export interface StepSelectStakeholderProps {
+  email?: string;
   value: StakeholderRole;
   onChange: (role: StakeholderRole) => void;
   onComplete: () => Promise<void>;

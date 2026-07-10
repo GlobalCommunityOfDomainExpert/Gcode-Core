@@ -3,11 +3,13 @@
 import { FormEvent, useState } from "react";
 import NextLink from "next/link";
 import { useRouter } from "next/navigation";
-import { Button, Divider, Input } from "@/components/atoms";
+import { Button, Divider, Input, PasswordInput } from "@/components/atoms";
 import { FormField } from "@/components/molecules";
 import { GoogleButton } from "./google-button";
-import { signIn } from "@/lib/api/auth";
+import { oauthLoginGoogle, signIn } from "@/lib/api/auth";
 import { setSession } from "@/lib/auth/session";
+import { decodeGoogleEmail, useGoogleIdToken } from "@/lib/auth/use-google-id-token";
+import { hashPassword } from "@/lib/auth/hash-password";
 import { ApiError } from "@/lib/api/client";
 
 const linkClasses =
@@ -17,6 +19,7 @@ export function SignInForm() {
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  const { hiddenButton, requestGoogleIdToken } = useGoogleIdToken();
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -27,8 +30,8 @@ export function SignInForm() {
     setSubmitting(true);
     setError(null);
     try {
-      const { token, user_id, role_name } = await signIn(email, password);
-      setSession(token, user_id, role_name);
+      const { token } = await signIn(email, await hashPassword(password));
+      setSession(token);
       router.push("/");
     } catch (err) {
       setError(
@@ -39,8 +42,26 @@ export function SignInForm() {
     }
   }
 
+  async function handleGoogleClick() {
+    setError(null);
+    try {
+      const idToken = await requestGoogleIdToken();
+      const { user_id, role_name, token } = await oauthLoginGoogle(idToken);
+      setSession(token);
+      if (role_name === "NONE") {
+        const email = encodeURIComponent(decodeGoogleEmail(idToken));
+        router.push(`/sign-up?oauth=1&userId=${user_id}&email=${email}`);
+      } else {
+        router.push("/");
+      }
+    } catch {
+      setError("Could not sign in with Google");
+    }
+  }
+
   return (
     <>
+      {hiddenButton}
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         <FormField label="Email" htmlFor="email">
           <Input
@@ -52,10 +73,9 @@ export function SignInForm() {
           />
         </FormField>
         <FormField label="Password" htmlFor="password">
-          <Input
+          <PasswordInput
             id="password"
             name="password"
-            type="password"
             placeholder="••••••••"
             required
           />
@@ -84,7 +104,7 @@ export function SignInForm() {
           <Divider />
         </div>
 
-        <GoogleButton />
+        <GoogleButton onClick={handleGoogleClick} />
       </form>
 
       <p className="text-sm text-text-secondary mt-6 text-center">
