@@ -35,11 +35,11 @@ const defaultResourcesItems: DropdownItem[] = [];
 export function Navbar({
   logo = (
     <Image
-      src={"/Logo.png"}
-      width={120}
-      height={50}
+      src={"/app-logo.png"}
+      width={100}
+      height={20}
       alt="logo"
-      className="mt-2"
+      className="mt-2 object-contain mb-2z"
     />
   ),
   links = defaultLinks,

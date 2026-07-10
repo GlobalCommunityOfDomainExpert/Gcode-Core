@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { ButtonLink, Icon } from "@/components/atoms";
 import {
@@ -14,6 +14,7 @@ import {
 import { getAttendeesByEvent } from "@/lib/attendees";
 import { priceTone } from "@/lib/event";
 import { useEvents } from "@/hooks/use-events";
+import { getSession, isAdmin, Session } from "@/lib/auth/session";
 
 const categoryTabs = [
   { value: "all", label: "All" },
@@ -33,6 +34,11 @@ export default function EventsPage() {
   const [featuredCarouselState, setFeaturedCarouselState] =
     useState<CarouselState>({ canScrollPrev: false, canScrollNext: false });
   const { events, status } = useEvents();
+  const [session, setSession] = useState<Session | null>(null);
+
+  useEffect(() => {
+    setSession(getSession());
+  }, []);
 
   function toggleFilter(filter: string) {
     setActiveFilters((prev) =>
@@ -67,13 +73,15 @@ export default function EventsPage() {
             place.
           </p>
         </div>
-        <ButtonLink
-          href="/my-organized-events/new"
-          variant="secondary"
-          className="shrink-0"
-        >
-          + Host / Submit Event
-        </ButtonLink>
+        {isAdmin(session) && (
+          <ButtonLink
+            href="/my-organized-events/new"
+            variant="secondary"
+            className="shrink-0"
+          >
+            + Host / Submit Event
+          </ButtonLink>
+        )}
       </div>
 
       <div className="border-border-light bg-surface-light space-y-3 rounded-md border p-4">
