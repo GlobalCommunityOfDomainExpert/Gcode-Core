@@ -6,18 +6,23 @@ import { CalendarCheck } from "lucide-react";
 import { AppShell } from "./app-shell";
 import { Navbar } from "./navbar";
 import { Sidebar, SidebarLink } from "./sidebar";
-import { clearSession, Session } from "@/lib/auth/session";
+import { clearSession, isAdmin, Session } from "@/lib/auth/session";
 
-const sidebarLinks: SidebarLink[] = [
-  {
-    label: "My Events",
-    icon: CalendarCheck,
-    children: [
-      { label: "Attending", href: "/my-events" },
-      { label: "Organizing", href: "/my-organized-events" },
-    ],
-  },
-];
+function buildSidebarLinks(session: Session): SidebarLink[] {
+  if (isAdmin(session)) {
+    return [
+      {
+        label: "My Events",
+        icon: CalendarCheck,
+        children: [
+          { label: "Attending", href: "/my-events" },
+          { label: "Organizing", href: "/my-organized-events" },
+        ],
+      },
+    ];
+  }
+  return [{ label: "My Events", icon: CalendarCheck, href: "/my-events" }];
+}
 
 function initials(fullName: string): string {
   return fullName
@@ -35,6 +40,7 @@ export interface AuthedShellProps {
 
 export function AuthedShell({ session, children }: AuthedShellProps) {
   const router = useRouter();
+  const sidebarLinks = buildSidebarLinks(session);
 
   const sidebarUser = {
     name: session.fullName,

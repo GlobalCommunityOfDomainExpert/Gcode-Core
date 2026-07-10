@@ -1,7 +1,7 @@
 "use client";
 
 import { ReactNode, useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { AuthedShell } from "@/components/layout";
 import {
   getCategories,
@@ -9,10 +9,11 @@ import {
   getModes,
   getStatuses,
 } from "@/lib/api/lookups";
-import { getSession, Session } from "@/lib/auth/session";
+import { getSession, isAdmin, Session } from "@/lib/auth/session";
 
 export default function AppLayout({ children }: { children: ReactNode }) {
   const router = useRouter();
+  const pathname = usePathname();
   const [session, setSessionState] = useState<Session | null | "loading">(
     "loading",
   );
@@ -23,8 +24,12 @@ export default function AppLayout({ children }: { children: ReactNode }) {
       router.replace("/sign-in");
       return;
     }
+    if (!isAdmin(current) && pathname.startsWith("/my-organized-events")) {
+      router.replace("/my-events");
+      return;
+    }
     setSessionState(current);
-  }, [router]);
+  }, [router, pathname]);
 
   useEffect(() => {
     // Warm the lookup-table caches immediately so components that need

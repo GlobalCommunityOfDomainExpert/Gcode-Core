@@ -37,3 +37,9 @@ export function getSession(): Session | null {
 export function clearSession(): void {
   localStorage.removeItem(TOKEN_KEY);
 }
+
+export const ADMIN_ROLE = "ADMIN";
+
+export function isAdmin(session: Session | null): boolean {
+  return session?.roleName === ADMIN_ROLE;
+}
