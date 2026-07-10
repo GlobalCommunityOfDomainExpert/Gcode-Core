@@ -1,63 +1,41 @@
 "use client";
 
-import NextLink from "next/link";
 import { FormEvent, useState } from "react";
+import NextLink from "next/link";
 import { useRouter } from "next/navigation";
-import { Button, Checkbox, Divider, Input, PasswordInput } from "@/components/atoms";
-import { FormField, PasswordStrengthMeter } from "@/components/molecules";
+import { Button, Divider, Input, PasswordInput } from "@/components/atoms";
+import { FormField } from "@/components/molecules";
 import { GoogleButton } from "./google-button";
-import { oauthLoginGoogle } from "@/lib/api/auth";
+import { oauthLoginGoogle, signIn } from "@/lib/api/auth";
 import { setSession } from "@/lib/auth/session";
 import { decodeGoogleEmail, useGoogleIdToken } from "@/lib/auth/use-google-id-token";
 import { hashPassword } from "@/lib/auth/hash-password";
-import { isPasswordValid } from "@/lib/auth/password-strength";
 import { ApiError } from "@/lib/api/client";
 
 const linkClasses =
   "text-primary text-sm font-medium underline-offset-2 hover:underline";
 
-export interface AccountDetails {
-  fullName: string;
-  email: string;
-  password: string;
-}
-
-export interface StepAccountDetailsProps {
-  onSubmit: (details: AccountDetails) => Promise<void>;
-}
-
-export function StepAccountDetails({ onSubmit }: StepAccountDetailsProps) {
+export function SignInForm() {
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
-  const [fullName, setFullName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [termsAccepted, setTermsAccepted] = useState(false);
   const { hiddenButton, requestGoogleIdToken } = useGoogleIdToken();
-
-  const canSubmit =
-    termsAccepted && fullName.trim() !== "" && email.trim() !== "" && password !== "";
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-
-    if (!isPasswordValid(password)) {
-      setError("Password does not meet the requirements below");
-      return;
-    }
+    const data = new FormData(event.currentTarget);
+    const email = String(data.get("email") ?? "");
+    const password = String(data.get("password") ?? "");
 
     setSubmitting(true);
     setError(null);
     try {
-      await onSubmit({
-        fullName,
-        email,
-        password: await hashPassword(password),
-      });
+      const { token } = await signIn(email, await hashPassword(password));
+      setSession(token);
+      router.push("/");
     } catch (err) {
       setError(
-        err instanceof ApiError ? err.message : "Could not create account",
+        err instanceof ApiError ? err.message : "Could not sign in",
       );
     } finally {
       setSubmitting(false);
@@ -69,7 +47,6 @@ export function StepAccountDetails({ onSubmit }: StepAccountDetailsProps) {
     try {
       const idToken = await requestGoogleIdToken();
       const { user_id, role_name, token } = await oauthLoginGoogle(idToken);
-      console.log(user_id);
       setSession(token);
       if (role_name === "NONE") {
         const email = encodeURIComponent(decodeGoogleEmail(idToken));
@@ -86,46 +63,29 @@ export function StepAccountDetails({ onSubmit }: StepAccountDetailsProps) {
     <>
       {hiddenButton}
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-        <FormField label="Full Name" required={true} htmlFor="name">
-          <Input
-            id="name"
-            name="fullName"
-            placeholder="John Doe"
-            value={fullName}
-            onChange={(event) => setFullName(event.target.value)}
-            required
-          />
-        </FormField>
-        <FormField label="Email" required={true} htmlFor="email">
+        <FormField label="Email" htmlFor="email">
           <Input
             id="email"
             name="email"
             type="email"
             placeholder="you@example.com"
-            value={email}
-            onChange={(event) => setEmail(event.target.value)}
             required
           />
         </FormField>
-        <FormField label="Password" required={true} htmlFor="password">
+        <FormField label="Password" htmlFor="password">
           <PasswordInput
             id="password"
             name="password"
-            placeholder="Create a strong password"
-            value={password}
-            onChange={(event) => setPassword(event.target.value)}
+            placeholder="••••••••"
             required
           />
         </FormField>
 
-        <PasswordStrengthMeter password={password} />
-
-        <Checkbox
-          id="terms"
-          label="I agree to the Terms of Service and Privacy Policy"
-          checked={termsAccepted}
-          onChange={(event) => setTermsAccepted(event.target.checked)}
-        />
+        <div className="text-right">
+          <NextLink href="/forgot-password" className={linkClasses}>
+            Forgot password?
+          </NextLink>
+        </div>
 
         {error && <p className="text-danger text-small">{error}</p>}
 
@@ -134,9 +94,8 @@ export function StepAccountDetails({ onSubmit }: StepAccountDetailsProps) {
           variant="primary"
           className="w-full"
           loading={submitting}
-          disabled={!canSubmit}
         >
-          Continue to Verify Email
+          Sign In
         </Button>
 
         <div className="flex items-center gap-3">
@@ -149,9 +108,9 @@ export function StepAccountDetails({ onSubmit }: StepAccountDetailsProps) {
       </form>
 
       <p className="text-sm text-text-secondary mt-6 text-center">
-        Already have an account?{" "}
-        <NextLink href="/sign-in" className={linkClasses}>
-          Sign in
+        Don&apos;t have an account?{" "}
+        <NextLink href="/sign-up" className={linkClasses}>
+          Create one
         </NextLink>
       </p>
     </>

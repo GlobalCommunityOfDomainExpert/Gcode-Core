@@ -1,0 +1,27 @@
+- generic [ref=f1e1]:
+  - generic [ref=f1e4]:
+    - generic [ref=f1e5]:
+      - heading "Who are you?" [level=1] [ref=f1e55]
+      - paragraph [ref=f1e7]: Tell us how you'll be using GCODE
+    - generic [ref=f1e56]:
+      - radiogroup "Choose your role" [ref=f1e57]:
+        - radio "Domain Expert Share expertise & mentor" [ref=f1e58]:
+          - img [ref=f1e59]
+          - generic [ref=f1e62]: Domain Expert
+          - generic [ref=f1e63]: Share expertise & mentor
+        - radio "Fresher / Intern Learn and grow" [checked] [active] [ref=f1e64]:
+          - img [ref=f1e65]
+          - generic [ref=f1e68]: Fresher / Intern
+          - generic [ref=f1e69]: Learn and grow
+        - radio "Startup / MSME Build and scale" [ref=f1e70]:
+          - img [ref=f1e71]
+          - generic [ref=f1e76]: Startup / MSME
+          - generic [ref=f1e77]: Build and scale
+        - radio "Institution Partner with GCODE" [ref=f1e78]:
+          - img [ref=f1e79]
+          - generic [ref=f1e83]: Institution
+          - generic [ref=f1e84]: Partner with GCODE
+      - button "Complete Setup" [ref=f1e85]
+  - button "Open Next.js Dev Tools" [ref=f1e39] [cursor=pointer]:
+    - img [ref=f1e40]
+  - alert [ref=f1e43]
