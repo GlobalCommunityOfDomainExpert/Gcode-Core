@@ -79,7 +79,7 @@ export function replaceEventMedia(
 export interface EventTimelineApi {
   title: string;
   description: string | null;
-  start_time: string;
+  start_time: string | null;
   end_time: string | null;
   location: string | null;
   sort_order: number;
@@ -99,7 +99,7 @@ export function replaceEventTimeline(
   items: {
     title: string;
     description: string;
-    startTime: string;
+    startTime: string | null;
     endTime: string | null;
     location: string | null;
     sortOrder: number;

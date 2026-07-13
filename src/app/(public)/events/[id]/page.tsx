@@ -3,7 +3,6 @@
 import { useParams } from "next/navigation";
 import { Calendar, Clock, MapPin, Award, Users, Compass } from "lucide-react";
 import {
-  Avatar,
   Badge,
   Button,
   ButtonLink,
@@ -20,7 +19,7 @@ import {
 import { Timeline } from "@/components/molecules";
 import { getAttendeesByEvent } from "@/lib/attendees";
 import { getEventColor } from "@/lib/event-color";
-import { eventTypeTone, EventTimelineItem } from "@/lib/event";
+import { eventTypeTone, Event, EventTimelineItem } from "@/lib/event";
 import { useEvent } from "@/hooks/use-event";
 import { ShareEventCard } from "./_components/share-event-card";
 
@@ -60,6 +59,22 @@ function groupByDay(items: EventTimelineItem[]) {
         : "",
     items: buckets.get(day)!,
   }));
+}
+
+// Whole days between now and an ISO deadline. Null if no deadline is set.
+function daysUntil(iso: string | null | undefined): number | null {
+  if (!iso) return null;
+  const diffMs = new Date(iso).getTime() - Date.now();
+  return Math.ceil(diffMs / 86_400_000);
+}
+
+// event.time (if set) -> earliest agenda item's time (more descriptive) ->
+// the organizer's free-text duration -> blank.
+function resolveDisplayTime(event: Event): string {
+  if (event.time) return event.time;
+  const firstTimedItem = event.timeline.find((item) => item.time);
+  if (firstTimedItem) return firstTimedItem.time;
+  return event.durationText ?? "";
 }
 
 function DetailItem({
@@ -196,19 +211,19 @@ export default function EventDetailPage() {
                 icon={Calendar}
                 label="Date & Time"
                 value={event.date}
-                description={event.time}
+                description={resolveDisplayTime(event)}
               />
               <DetailItem
                 icon={Clock}
                 label="Duration"
-                value={event.duration || "TBD"}
+                value={event.duration || event.durationText || "TBD"}
                 description=""
               />
               <DetailItem
                 icon={MapPin}
-                label="Mode"
-                value={event.mode}
-                description={event.location}
+                label="Venue"
+                value={event.location}
+                description={event.mode}
               />
               <DetailItem
                 icon={Users}
@@ -221,7 +236,7 @@ export default function EventDetailPage() {
 
           {event.timeline.length > 0 && (
             <div className="border-border-light bg-surface-light space-y-5 rounded-md border p-6">
-              <SectionLabel>Timeline</SectionLabel>
+              <SectionLabel>Agenda</SectionLabel>
               {groupByDay(event.timeline).map((group, groupIndex) => (
                 <div key={group.day} className="space-y-3">
                   {group.label && (
@@ -248,30 +263,25 @@ export default function EventDetailPage() {
             </div>
           )}
 
-          <div className="border-border-light bg-surface-light space-y-3 rounded-md border p-6">
-            <SectionLabel>Organized By</SectionLabel>
-            <div className="flex items-center justify-between gap-4">
-              <div className="flex items-center gap-3">
-                <Avatar alt={event.organizer.name} initials="GC" size="md" />
-                <div>
-                  <div className="flex items-center gap-2">
-                    <p className="text-body text-text-primary font-semibold">
-                      {event.organizer.name}
-                    </p>
-                    {event.organizer.verified && (
-                      <Badge tone="success" variant="muted" size="sm">
-                        Verified
-                      </Badge>
-                    )}
-                  </div>
-                  <p className="text-small text-text-secondary">
-                    {event.organizer.eventsHosted} events hosted ·{" "}
-                    {event.organizer.attendees.toLocaleString()} attendees ·{" "}
-                    {event.organizer.title}
-                  </p>
-                </div>
-              </div>
-            </div>
+          <div className="bg-primary space-y-3 rounded-md p-6">
+            <p className="text-small font-bold tracking-widest text-white/70 uppercase">
+              About organizer
+            </p>
+            <img
+              src="/app-logo.png"
+              alt="GCODE"
+              className="h-10 w-auto object-contain"
+            />
+            <p className="text-body text-white/80">
+              GCODE, the Global Community of Domain Experts, is dedicated to
+              fostering collaboration between startups, industry, and
+              academia. We focus on creating unique partnerships by involving
+              domain experts and interns to facilitate innovation and
+              knowledge sharing. We offer advisory services and support
+              connections between industry and academia to drive impactful
+              collaborations. If you&apos;d like to learn more about
+              scheduling with our domain experts, feel free to reach out.
+            </p>
           </div>
 
           {event.socialLinks && event.socialLinks.length > 0 && (
@@ -325,9 +335,17 @@ export default function EventDetailPage() {
                 </span>
               )}
             </div>
-            <p className="text-small text-text-secondary">
-              Registration closes {event.registrationCloses}
-            </p>
+            {(() => {
+              const days = daysUntil(event.registrationDeadlineIso);
+              if (days === null) return null;
+              return (
+                <p className="text-small text-text-secondary">
+                  {days <= 0
+                    ? "Registration closed"
+                    : `Registration closes in ${days} day${days === 1 ? "" : "s"}`}
+                </p>
+              );
+            })()}
             {attendees.length > 0 && (
               <AvatarGroup
                 items={attendees}
@@ -344,13 +362,13 @@ export default function EventDetailPage() {
                 variant="primary"
                 className="w-full"
               >
-                Register Now
+                Book Tickets
               </ButtonLink>
             )}
             {event.capacity && (
               <p className="text-small text-text-secondary text-center">
                 {event.capacity} total capacity · {event.registeredCount}{" "}
-                registered · {event.spotsLeft} open
+                registered
               </p>
             )}
           </div>
@@ -362,13 +380,13 @@ export default function EventDetailPage() {
                 icon={Calendar}
                 label=""
                 value={event.date}
-                description={event.time}
+                description={resolveDisplayTime(event)}
               />
               <DetailItem
                 icon={MapPin}
                 label=""
-                value={event.mode}
-                description={event.location}
+                value={event.location}
+                description={event.mode}
               />
               {event.certificate && (
                 <DetailItem

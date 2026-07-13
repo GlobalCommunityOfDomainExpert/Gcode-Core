@@ -1,13 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import {
-  ArrowRight,
-  Award,
-  Calendar,
-  CalendarX,
-  IndianRupee,
-} from "lucide-react";
+import { ArrowRight, Calendar, CalendarX, IndianRupee } from "lucide-react";
 import { Badge, BadgeTone, ButtonLink, Icon } from "@/components/atoms";
 import {
   EmptyState,
@@ -16,7 +10,6 @@ import {
   ToggleGroup,
 } from "@/components/molecules";
 import {
-  mockPastEvents,
   mockPurchases,
   mockRefundRequests,
   RefundRequest,
@@ -26,7 +19,7 @@ import {
   eventTypeTone,
   formatDateBadge,
 } from "@/lib/event";
-import { useEvents } from "@/hooks/use-events";
+import { useMyTickets } from "@/hooks/use-my-tickets";
 
 const tabItems = [
   { value: "upcoming", label: "Upcoming" },
@@ -62,19 +55,21 @@ function isSameMonth(date: Date, today: Date): boolean {
 export default function MyEventsPage() {
   const [activeTab, setActiveTab] = useState("upcoming");
   const [range, setRange] = useState("week");
-  const { events } = useEvents();
+  const { tickets } = useMyTickets();
 
   const today = new Date();
   today.setHours(0, 0, 0, 0);
 
-  const upcoming = events
-    .filter((event) => event.registeredCount > 0)
-    .filter((event) => {
-      const eventDate = new Date(event.date);
+  const upcoming = tickets
+    .filter((ticket) => new Date(ticket.date) >= today)
+    .filter((ticket) => {
+      const eventDate = new Date(ticket.date);
       if (range === "week") return isWithinDays(eventDate, today, 7);
       if (range === "month") return isSameMonth(eventDate, today);
       return true;
     });
+
+  const past = tickets.filter((ticket) => new Date(ticket.date) < today);
 
   return (
     <div className="space-y-6">
@@ -105,12 +100,12 @@ export default function MyEventsPage() {
               />
             ) : (
               <div className="space-y-3">
-                {upcoming.map((event) => {
-                  const { day, month } = formatDateBadge(event.date);
+                {upcoming.map((ticket) => {
+                  const { day, month } = formatDateBadge(ticket.date);
                   return (
                     <div
-                      key={event.id}
-                      className={`border-border-light bg-surface-light flex items-center gap-4 rounded-md border border-l-4 p-4 ${eventTypeBorderClass(event.type)}`}
+                      key={ticket.participantId}
+                      className={`border-border-light bg-surface-light flex items-center gap-4 rounded-md border border-l-4 p-4 ${eventTypeBorderClass(ticket.type)}`}
                     >
                       <div className="w-12 shrink-0 text-center">
                         <p className="text-small text-text-secondary font-semibold uppercase">
@@ -122,21 +117,25 @@ export default function MyEventsPage() {
                       </div>
                       <div className="min-w-0 flex-1 space-y-1">
                         <EventBadgeRow
-                          type={event.type}
-                          mode={event.mode}
-                          price={event.price}
-                          typeTone={eventTypeTone(event.type)}
+                          type={ticket.type}
+                          mode={ticket.mode}
+                          price={ticket.price}
+                          typeTone={eventTypeTone(ticket.type)}
                         />
                         <p className="text-body text-text-primary truncate font-semibold">
-                          {event.title}
+                          {ticket.title}
                         </p>
                         <p className="text-small text-text-secondary flex items-center gap-2">
                           <Icon icon={Calendar} size="sm" />
-                          {event.time} · {event.registeredCount} registered
+                          {ticket.time} · {ticket.quantity} ticket
+                          {ticket.quantity === 1 ? "" : "s"}
+                          {ticket.amountPaid
+                            ? ` · ₹${ticket.amountPaid} paid`
+                            : ""}
                         </p>
                       </div>
                       <ButtonLink
-                        href={`/events/${event.id}`}
+                        href={`/events/${ticket.eventId}`}
                         variant="secondary"
                         size="sm"
                         className="shrink-0"
@@ -152,7 +151,7 @@ export default function MyEventsPage() {
         )}
 
         {activeTab === "past" &&
-          (mockPastEvents.length === 0 ? (
+          (past.length === 0 ? (
             <EmptyState
               icon={CalendarX}
               title="Nothing here yet"
@@ -160,33 +159,28 @@ export default function MyEventsPage() {
             />
           ) : (
             <div className="space-y-3">
-              {mockPastEvents.map((event) => (
+              {past.map((ticket) => (
                 <div
-                  key={event.id}
+                  key={ticket.participantId}
                   className="border-border-light bg-surface-light flex items-center gap-4 rounded-md border p-4"
                 >
                   <div className="min-w-0 flex-1 space-y-1">
                     <div className="flex flex-wrap gap-2">
                       <Badge size="sm" tone="neutral">
-                        {event.type}
+                        {ticket.type}
                       </Badge>
                       <Badge size="sm" tone="neutral">
-                        {event.mode}
+                        {ticket.mode}
                       </Badge>
                     </div>
                     <p className="text-body text-text-primary truncate font-semibold">
-                      {event.title}
+                      {ticket.title}
                     </p>
                     <p className="text-small text-text-secondary flex items-center gap-2">
                       <Icon icon={Calendar} size="sm" />
-                      {event.date}
+                      {ticket.date}
                     </p>
                   </div>
-                  {event.certificateEarned && (
-                    <Badge variant="muted" tone="success" size="sm">
-                      <Icon icon={Award} size="sm" /> Certificate
-                    </Badge>
-                  )}
                 </div>
               ))}
             </div>

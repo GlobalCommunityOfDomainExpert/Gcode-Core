@@ -23,7 +23,6 @@ export * from "./problem-card";
 export * from "./role-cta";
 export * from "./search-bar";
 export * from "./selectable-card";
-export * from "./stakeholder-card";
 export * from "./stat-card";
 export * from "./step-indicator";
 export * from "./table";

@@ -70,3 +70,4 @@ export function resetPassword(
     body: { token, new_password: newPassword },
   });
 }
+

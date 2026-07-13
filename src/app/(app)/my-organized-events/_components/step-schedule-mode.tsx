@@ -51,7 +51,11 @@ export function StepScheduleMode({ data, onChange }: StepScheduleModeProps) {
       </FormField>
 
       <div className="grid gap-4 sm:grid-cols-2">
-        <FormField label="Date" htmlFor="event-date" required>
+        <FormField
+          label="Date"
+          htmlFor="event-date"
+          hint="Leave blank to show as Coming Soon — set it later once confirmed."
+        >
           <Input
             id="event-date"
             type="date"
@@ -59,7 +63,11 @@ export function StepScheduleMode({ data, onChange }: StepScheduleModeProps) {
             onChange={(event) => onChange("date", event.target.value)}
           />
         </FormField>
-        <FormField label="Time" htmlFor="event-time" required>
+        <FormField
+          label="Time"
+          htmlFor="event-time"
+          hint="Leave blank to show as TBD."
+        >
           <Input
             id="event-time"
             type="time"
@@ -110,6 +118,7 @@ export function StepScheduleMode({ data, onChange }: StepScheduleModeProps) {
         <FormField
           label="Registration closes"
           htmlFor="event-registration-closes"
+          hint="Optional — decide later. Defaults to the event date if left blank."
         >
           <Input
             id="event-registration-closes"
@@ -120,7 +129,11 @@ export function StepScheduleMode({ data, onChange }: StepScheduleModeProps) {
             }
           />
         </FormField>
-        <FormField label="Duration" htmlFor="event-duration">
+        <FormField
+          label="Duration"
+          htmlFor="event-duration"
+          hint="Shown in place of Time on the event page when Time is left blank."
+        >
           <Input
             id="event-duration"
             value={data.duration}

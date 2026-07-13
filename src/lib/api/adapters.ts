@@ -1,14 +1,14 @@
-import { EventType, EventStatus, Event, EventTimelineItem } from "@/lib/event";
+import { EventType, EventStatus, Event, EventTimelineItem, MyTicket } from "@/lib/event";
 import { EventDetailData } from "@/lib/zod/event";
 import { EventTimelineApi } from "./events";
-import {
-  CommunityRequest,
-  CommunityRequestStatus,
-  StakeholderCategory,
-} from "@/lib/community-requests";
 import { Attendee, AttendeeRole } from "@/lib/attendees";
-import { EventDetail, EventListItem, CreateEventPayload, ParticipantApi } from "./types";
-import { CommunityRequestApi } from "./community";
+import {
+  EventDetail,
+  EventListItem,
+  CreateEventPayload,
+  ParticipantApi,
+  MyParticipationApi,
+} from "./types";
 import { API_BASE_URL } from "./client";
 
 // Cover/banner URLs may be stored as an API-relative path (DB-hosted image) or
@@ -42,8 +42,8 @@ function splitBullets(raw: string | null, fallback: string[]): string[] {
 // date + time fields the UI uses.
 export function adaptTimelineItem(row: EventTimelineApi): EventTimelineItem {
   return {
-    date: istDate(row.start_time),
-    time: istTime(row.start_time),
+    date: row.start_time ? istDate(row.start_time) : "",
+    time: row.start_time ? istTime(row.start_time) : "",
     endTime: row.end_time ? istTime(row.end_time) : undefined,
     title: row.title,
     description: row.description ?? "",
@@ -95,23 +95,6 @@ export function adaptParticipant(
   };
 }
 
-export function adaptCommunityRequest(
-  r: CommunityRequestApi,
-): CommunityRequest {
-  return {
-    id: String(r.id),
-    eventId: String(r.event_id),
-    stakeholderId: r.stakeholder_id,
-    category: r.category as StakeholderCategory,
-    message: r.message ?? "",
-    status: r.status as CommunityRequestStatus,
-    responseMessage: r.response_message ?? undefined,
-    createdAt: r.created_at,
-    respondedAt: r.responded_at ?? undefined,
-    remindedAt: r.reminded_at ?? undefined,
-  };
-}
-
 // Combine the wizard's separate date ("2026-08-01") + time ("14:30") inputs
 // into one ISO timestamp for the DB. Missing time -> midnight.
 // Wall-clock date+time typed by the user is IST -> stamp with +05:30 so the
@@ -151,6 +134,7 @@ export function toCreatePayload(
     max_tickets_per_registration: data.maxTicketsPerRegistration || undefined,
     terms: data.terms.trim() || undefined,
     eligibility: data.eligibility.trim() || undefined,
+    duration_text: data.duration.trim() || undefined,
   };
 }
 
@@ -191,7 +175,7 @@ export function toEventDraft(
     registrationCloses: detail.registration_deadline
       ? istDate(detail.registration_deadline)
       : "",
-    duration: "",
+    duration: detail.duration_text ?? "",
     coverImageUrl: resolveImageUrl(detail.cover_image_url) ?? "",
     mediaUrls: detail.banner_image_url ? [detail.banner_image_url] : [],
     socialLinks: [],
@@ -213,28 +197,28 @@ export function toEventDraft(
 export interface TimelinePayloadItem {
   title: string;
   description: string;
-  startTime: string;
+  startTime: string | null;
   endTime: string | null;
   location: string | null;
   sortOrder: number;
 }
 
-// Wizard timeline items -> EVENT_TIMELINE rows. Each item's own date (falls
-// back to the event date) + start/end times become ISO timestamps.
+// Wizard timeline items -> EVENT_TIMELINE rows. Each item's own date + time
+// become an ISO timestamp. No date on the item itself -> real NULL (not a
+// placeholder, and NOT the event's own date either — an item with times
+// hidden must stay genuinely timeless even though the event has a date).
 export function toTimelinePayload(
   data: EventDetailData,
 ): TimelinePayloadItem[] {
   return data.timeline
-    .filter((item) => item.title.trim() !== "" && (item.date || data.date))
+    .filter((item) => item.title.trim() !== "")
     .map((item, index) => {
-      const day = item.date || data.date;
+      const day = item.date || null;
       return {
         title: item.title,
         description: item.description,
-        startTime: toIsoTimestamp(day, item.time) as string,
-        endTime: item.endTime
-          ? (toIsoTimestamp(day, item.endTime) ?? null)
-          : null,
+        startTime: day ? (toIsoTimestamp(day, item.time) ?? null) : null,
+        endTime: item.endTime && day ? (toIsoTimestamp(day, item.endTime) ?? null) : null,
         location: item.location || null,
         sortOrder: index,
       };
@@ -294,7 +278,7 @@ function istTime(iso: string): string {
 }
 
 function formatDate(iso: string | null): string {
-  if (!iso) return "TBD";
+  if (!iso) return "Coming Soon";
   return new Intl.DateTimeFormat("en-IN", {
     day: "numeric",
     month: "short",
@@ -369,7 +353,9 @@ export function adaptApiEvent(
     registrationCloses: detail?.registration_deadline
       ? formatDate(detail.registration_deadline)
       : formatDate(event.start_date),
+    registrationDeadlineIso: detail?.registration_deadline ?? null,
     duration: formatDuration(event.start_date, event.end_date),
+    durationText: detail?.duration_text ?? undefined,
     // No team-size columns yet — default to individual attendance.
     teamSize: "Individual",
     certificate: false,
@@ -392,5 +378,32 @@ export function adaptApiEvent(
     coverImageUrl: resolveImageUrl(event.cover_image_url),
     mediaUrls: event.banner_image_url ? [event.banner_image_url] : [],
     participationLink: event.participation_link ?? undefined,
+  };
+}
+
+// Maps a GCODE_EVENT_PARTICIPANTS_API.list_by_user row (the signed-in user's
+// own registration, joined to its event) onto the UI's MyTicket shape.
+export function adaptMyParticipation(
+  row: MyParticipationApi,
+  eventTypeNames: Record<number, string>,
+  modeNames: Record<number, string>,
+  statusCodes: Record<number, string>,
+): MyTicket {
+  return {
+    participantId: String(row.participant_id),
+    eventId: String(row.event_id),
+    title: row.event_name,
+    type: resolveEventType(eventTypeNames[row.event_type_id]),
+    mode: resolveMode(modeNames[row.mode_of_event_id]),
+    status: resolveStatus(statusCodes[row.status_id]),
+    date: formatDate(row.start_date),
+    time: formatTime(row.start_date),
+    location: resolveLocation(row.city, row.address),
+    coverImageUrl: resolveImageUrl(row.cover_image_url),
+    price: row.ticket_price === 0 ? "Free" : `₹${row.ticket_price}`,
+    quantity: row.quantity,
+    amountPaid:
+      row.ticket_price > 0 ? row.ticket_price * row.quantity : undefined,
+    appliedOn: row.applied_on,
   };
 }

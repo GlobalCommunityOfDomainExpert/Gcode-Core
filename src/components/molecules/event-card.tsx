@@ -90,7 +90,7 @@ export function EventCard({
   attendees,
   attendeesLabel,
   urgencyLabel,
-  actionLabel = "Register",
+  actionLabel = "Book Tickets",
   onAction,
 }: EventCardProps) {
   const action = href ? (
