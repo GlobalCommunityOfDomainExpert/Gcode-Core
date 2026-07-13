@@ -1,5 +1,4 @@
 import z from "zod";
-import { StakeholderCategory } from "@/lib/community-requests";
 
 const eventTimelineItemSchema = z.object({
   date: z.string().default(""), // yyyy-mm-dd — enables multi-day agendas
@@ -51,9 +50,3 @@ export type UpdateEventDetailData = <K extends keyof EventDetailData>(
 export const initialEventData: EventDetailData = eventDetailDataSchema.parse(
   {},
 );
-
-export interface SelectedStakeholder {
-  stakeholderId: string;
-  category: StakeholderCategory;
-  message: string;
-}

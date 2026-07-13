@@ -113,14 +113,7 @@ export function AttendeesTab({
     {
       key: "name",
       header: "Name",
-      render: (row) => (
-        <Blurred
-          label={`Attendee ${row.id}`}
-          className="text-text-primary font-semibold"
-        >
-          {row.name}
-        </Blurred>
-      ),
+      render: (row) => <span className="text-text-primary">{row.name}</span>,
     },
     {
       key: "role",
@@ -168,20 +161,6 @@ export function AttendeesTab({
           {attendanceStatusLabel[row.status]}
         </Badge>
       ),
-    },
-    {
-      key: "actions",
-      header: "",
-      render: (row) => (
-        <button
-          type="button"
-          onClick={() => setViewingAttendee(row)}
-          className="text-small text-text-secondary hover:text-text-primary focus-visible:ring-primary rounded-sm focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
-        >
-          View →
-        </button>
-      ),
-      className: "text-right",
     },
   ];
 

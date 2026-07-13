@@ -48,9 +48,13 @@ export default function EventsPage() {
     );
   }
 
-  const featured = events.filter((event) => event.featured);
+  // Drafts aren't public yet — organizers still see them under
+  // /my-organized-events.
+  const visibleEvents = events.filter((event) => event.status !== "DRAFT");
 
-  const filtered = events.filter((event) => {
+  const featured = visibleEvents.filter((event) => event.featured);
+
+  const filtered = visibleEvents.filter((event) => {
     if (activeTab !== "all" && event.type !== activeTab) return false;
     if (activeFilters.includes("Free") && event.price !== "Free") return false;
     if (activeFilters.includes("Paid") && event.price === "Free") return false;

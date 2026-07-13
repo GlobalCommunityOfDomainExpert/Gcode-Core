@@ -39,6 +39,7 @@ export interface EventDetail extends EventListItem {
   category_names: string | null;
   terms: string | null;
   eligibility: string | null;
+  duration_text: string | null;
 }
 
 export interface ApiListResponse<T> {
@@ -102,13 +103,15 @@ export interface CreateEventPayload {
   max_tickets_per_registration?: number;
   terms?: string;
   eligibility?: string;
+  duration_text?: string;
 }
 
 export type UpdateEventPayload = Partial<CreateEventPayload>;
 
 // Mirrors the ORDS POST /events/:id/participants binds ->
-// GCODE_EVENT_PARTICIPANTS_API.create_participant. Guest registration:
-// finds-or-creates the GCODE_USERS row by email server-side.
+// GCODE_EVENT_PARTICIPANTS_API.create_participant. Always finds-or-creates
+// the GCODE_USERS row by email/full_name server-side, signed-in or not —
+// both binds are required regardless of the Authorization header.
 export interface CreateParticipantPayload {
   email: string;
   full_name: string;
@@ -127,4 +130,24 @@ export interface ParticipantApi {
   applied_on: string;
   email: string | null;
   role_name: string | null;
+}
+
+// Mirrors GCODE_EVENT_PARTICIPANTS_API.list_by_user's refcursor row — the
+// signed-in user's own registrations, joined to the event they're for.
+export interface MyParticipationApi {
+  participant_id: number;
+  event_id: number;
+  event_name: string;
+  event_type_id: number;
+  mode_of_event_id: number;
+  status_id: number;
+  start_date: string | null;
+  city: string;
+  address: string | null;
+  ticket_price: number;
+  cover_image_url: string | null;
+  quantity: number;
+  status: string | null;
+  active: string;
+  applied_on: string;
 }

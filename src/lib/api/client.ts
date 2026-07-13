@@ -1,3 +1,5 @@
+import { getSession } from "@/lib/auth/session";
+
 const DEFAULT_BASE_URL =
   "https://g39bc7cd4ecbbbb-gcdev01.adb.ap-hyderabad-1.oraclecloudapps.com/ords/wksp_gcode2/v1";
 
@@ -33,9 +35,17 @@ export async function apiRequest<T>(
     }
   }
 
+  // Auth endpoints (sign-in, sign-up, etc.) run before a session exists;
+  // everything else that needs the caller's identity (e.g. /participants/me)
+  // relies on the backend decoding this token server-side.
+  const session = typeof window !== "undefined" ? getSession() : null;
+  const headers: Record<string, string> = {};
+  if (body) headers["Content-Type"] = "application/json";
+  if (session) headers["Authorization"] = `Bearer ${session.token}`;
+
   const res = await fetch(url, {
     method,
-    headers: body ? { "Content-Type": "application/json" } : undefined,
+    headers,
     body: body ? JSON.stringify(body) : undefined,
   });
 

@@ -68,6 +68,25 @@ export type EventStatus =
   | "COMPLETED"
   | "CANCELLED";
 
+// One of the signed-in user's own registrations, joined to its event —
+// backed by GCODE_EVENT_PARTICIPANTS_API.list_by_user.
+export interface MyTicket {
+  participantId: string;
+  eventId: string;
+  title: string;
+  type: EventType;
+  mode: "Online" | "In-Person" | "Hybrid";
+  status?: EventStatus;
+  date: string;
+  time: string;
+  location: string;
+  coverImageUrl?: string;
+  price: "Free" | string;
+  quantity: number;
+  amountPaid?: number;
+  appliedOn: string;
+}
+
 export interface EventOrganizer {
   name: string; // backed by EventDetail.created_by; falls back to "GCODE Team"
   title: string; // no backend column — adapter hardcodes "Organizer"
@@ -94,7 +113,9 @@ export interface Event {
   maxTicketsPerRegistration?: number; // EventDetail.max_tickets_per_registration — organizer cap per single booking, unset = no cap
   featured?: boolean; // EventListItem.is_featured
   registrationCloses: string; // EventDetail.registration_deadline, falls back to start_date
-  duration: string; // EventListItem.end_date exists but adapter doesn't derive duration from start/end yet — always ""
+  registrationDeadlineIso?: string | null; // EventDetail.registration_deadline, raw ISO for computing "days left"
+  duration: string; // derived from start_date/end_date span, or the timeline's own span as fallback
+  durationText?: string; // EventDetail.duration_text — organizer's free-text duration (e.g. "3 hours"), used as a display fallback when time is TBD
   teamSize: string; // no backend column — adapter hardcodes ""
   certificate: boolean; // no backend column — adapter hardcodes false
   description: string[]; // EventDetail.description (detail fetch only), wrapped in array

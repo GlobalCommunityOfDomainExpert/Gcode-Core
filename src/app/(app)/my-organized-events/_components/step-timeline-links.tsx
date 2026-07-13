@@ -1,13 +1,17 @@
 "use client";
 
+import { useState } from "react";
 import {
   Button,
   Card,
+  Icon,
   Input,
   RemoveIconButton,
   SectionLabel,
+  Switch,
   Textarea,
 } from "@/components/atoms";
+import { ChevronDown, ChevronUp } from "lucide-react";
 import { FormField } from "@/components/molecules";
 import { EventTimelineItem, EventSocialLink } from "@/lib/event";
 import { UpdateEventDetailData, EventDetailData } from "@/lib/zod/event";
@@ -30,17 +34,40 @@ function withRemovedItem<T>(list: T[], index: number): T[] {
   return list.filter((_, itemIndex) => itemIndex !== index);
 }
 
+// Swaps item at `index` with its neighbor in the given direction. Order here
+// becomes EVENT_TIMELINE.sort_order on save, so this is how organizers
+// control display order for a plain title+description agenda.
+function withMovedItem<T>(
+  list: T[],
+  index: number,
+  direction: "up" | "down",
+): T[] {
+  const target = direction === "up" ? index - 1 : index + 1;
+  if (target < 0 || target >= list.length) return list;
+  const next = [...list];
+  [next[index], next[target]] = [next[target], next[index]];
+  return next;
+}
+
 export interface StepTimelineLinksProps {
   data: EventDetailData;
   onChange: UpdateEventDetailData;
 }
 
 export function StepTimelineLinks({ data, onChange }: StepTimelineLinksProps) {
+  // Local UI-only toggle — doesn't touch stored data. Off = a plain ordered
+  // title+description agenda with no date/time inputs shown at all.
+  const [showTimes, setShowTimes] = useState(true);
+
+  function moveTimelineItem(index: number, direction: "up" | "down") {
+    onChange("timeline", withMovedItem(data.timeline, index, direction));
+  }
+
   function addTimelineItem() {
     onChange(
       "timeline",
       withAddedItem(data.timeline, {
-        date: data.date || "",
+        date: showTimes ? data.date || "" : "",
         time: "",
         endTime: "",
         title: "",
@@ -121,50 +148,102 @@ export function StepTimelineLinks({ data, onChange }: StepTimelineLinksProps) {
       </div>
 
       <div className="space-y-3">
-        <SectionLabel>Timeline</SectionLabel>
+        <div className="flex items-center justify-between gap-2">
+          <SectionLabel>Timeline</SectionLabel>
+          <Switch
+            label="Show specific times"
+            checked={showTimes}
+            onChange={(event) => {
+              const next = event.target.checked;
+              setShowTimes(next);
+              // Turning times off: clear any date/time already on existing
+              // items too, not just hide the inputs — otherwise a stale
+              // date silently produces a fake "00:00" timestamp on save.
+              if (!next) {
+                onChange(
+                  "timeline",
+                  data.timeline.map((item) => ({
+                    ...item,
+                    date: "",
+                    time: "",
+                    endTime: "",
+                  })),
+                );
+              }
+            }}
+          />
+        </div>
+        {!showTimes && (
+          <p className="text-small text-text-secondary">
+            Times are hidden — items show as a plain title &amp; description
+            agenda, in the order below. Use the arrows to reorder.
+          </p>
+        )}
         {data.timeline.map((item, index) => (
           <Card key={index} className="space-y-2">
             <div className="flex items-center justify-between gap-2">
               <p className="text-body text-text-primary font-semibold">
                 Item {index + 1}
               </p>
-              <RemoveIconButton
-                onClick={() => removeTimelineItem(index)}
-                ariaLabel={`Remove timeline item ${index + 1}`}
-              />
+              <div className="flex items-center gap-1">
+                <button
+                  type="button"
+                  onClick={() => moveTimelineItem(index, "up")}
+                  disabled={index === 0}
+                  aria-label={`Move timeline item ${index + 1} up`}
+                  className="text-text-secondary hover:text-text-primary disabled:cursor-not-allowed disabled:opacity-30"
+                >
+                  <Icon icon={ChevronUp} size="sm" />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => moveTimelineItem(index, "down")}
+                  disabled={index === data.timeline.length - 1}
+                  aria-label={`Move timeline item ${index + 1} down`}
+                  className="text-text-secondary hover:text-text-primary disabled:cursor-not-allowed disabled:opacity-30"
+                >
+                  <Icon icon={ChevronDown} size="sm" />
+                </button>
+                <RemoveIconButton
+                  onClick={() => removeTimelineItem(index)}
+                  ariaLabel={`Remove timeline item ${index + 1}`}
+                />
+              </div>
             </div>
-            <div className="grid gap-4 sm:grid-cols-3">
-              <FormField label="Date" htmlFor={`timeline-date-${index}`}>
-                <Input
-                  id={`timeline-date-${index}`}
-                  type="date"
-                  value={item.date}
-                  onChange={(event) =>
-                    updateTimelineItem(index, "date", event.target.value)
-                  }
-                />
-              </FormField>
-              <FormField label="Start" htmlFor={`timeline-time-${index}`}>
-                <Input
-                  id={`timeline-time-${index}`}
-                  type="time"
-                  value={item.time}
-                  onChange={(event) =>
-                    updateTimelineItem(index, "time", event.target.value)
-                  }
-                />
-              </FormField>
-              <FormField label="End" htmlFor={`timeline-endtime-${index}`}>
-                <Input
-                  id={`timeline-endtime-${index}`}
-                  type="time"
-                  value={item.endTime}
-                  onChange={(event) =>
-                    updateTimelineItem(index, "endTime", event.target.value)
-                  }
-                />
-              </FormField>
-            </div>
+            {showTimes && (
+              <div className="grid gap-4 sm:grid-cols-3">
+                <FormField label="Date" htmlFor={`timeline-date-${index}`}>
+                  <Input
+                    id={`timeline-date-${index}`}
+                    type="date"
+                    value={item.date}
+                    onChange={(event) =>
+                      updateTimelineItem(index, "date", event.target.value)
+                    }
+                  />
+                </FormField>
+                <FormField label="Start" htmlFor={`timeline-time-${index}`}>
+                  <Input
+                    id={`timeline-time-${index}`}
+                    type="time"
+                    value={item.time}
+                    onChange={(event) =>
+                      updateTimelineItem(index, "time", event.target.value)
+                    }
+                  />
+                </FormField>
+                <FormField label="End" htmlFor={`timeline-endtime-${index}`}>
+                  <Input
+                    id={`timeline-endtime-${index}`}
+                    type="time"
+                    value={item.endTime}
+                    onChange={(event) =>
+                      updateTimelineItem(index, "endTime", event.target.value)
+                    }
+                  />
+                </FormField>
+              </div>
+            )}
             <FormField label="Title" htmlFor={`timeline-title-${index}`}>
               <Input
                 id={`timeline-title-${index}`}

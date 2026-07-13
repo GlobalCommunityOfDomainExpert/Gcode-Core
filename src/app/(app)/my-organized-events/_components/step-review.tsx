@@ -1,6 +1,5 @@
-import { Badge, Card, SectionLabel } from "@/components/atoms";
-import { getStakeholderById } from "@/lib/community-requests";
-import { SelectedStakeholder, EventDetailData } from "@/lib/zod/event";
+import { Card, SectionLabel } from "@/components/atoms";
+import { EventDetailData } from "@/lib/zod/event";
 
 function ReviewRow({ label, value }: { label: string; value: string }) {
   if (!value) return null;
@@ -14,15 +13,9 @@ function ReviewRow({ label, value }: { label: string; value: string }) {
 
 export interface StepReviewProps {
   data: EventDetailData;
-  selectedStakeholders: SelectedStakeholder[];
-  showCommunityRequests?: boolean;
 }
 
-export function StepReview({
-  data,
-  selectedStakeholders,
-  showCommunityRequests = true,
-}: StepReviewProps) {
+export function StepReview({ data }: StepReviewProps) {
   const price = data.priceAmount > 0 ? `₹${data.priceAmount}` : "Free";
 
   return (
@@ -115,38 +108,6 @@ export function StepReview({
         </Card>
       )}
 
-      {showCommunityRequests && (
-        <Card className="space-y-2">
-          <SectionLabel>
-            Community requests ({selectedStakeholders.length})
-          </SectionLabel>
-          {selectedStakeholders.length === 0 ? (
-            <p className="text-body text-text-secondary">
-              No stakeholders requested — you can skip this and add none.
-            </p>
-          ) : (
-            <ul className="space-y-2">
-              {selectedStakeholders.map((item) => {
-                const stakeholder = getStakeholderById(item.stakeholderId);
-                if (!stakeholder) return null;
-                return (
-                  <li
-                    key={item.stakeholderId}
-                    className="flex items-center justify-between gap-2"
-                  >
-                    <span className="text-body text-text-primary">
-                      {stakeholder.name}
-                    </span>
-                    <Badge variant="muted" tone="primary" size="sm">
-                      {item.category}
-                    </Badge>
-                  </li>
-                );
-              })}
-            </ul>
-          )}
-        </Card>
-      )}
     </div>
   );
 }

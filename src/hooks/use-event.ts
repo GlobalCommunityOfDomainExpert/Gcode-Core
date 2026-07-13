@@ -48,11 +48,13 @@ export function useEvent(id: string | undefined) {
         // Fall back to timeline span when the event has no explicit end date.
         let duration = adapted.duration;
         if (!duration && timeline.length > 0) {
-          const starts = timeline.map((t) => new Date(t.start_time).getTime());
+          const starts = timeline
+            .filter((t) => t.start_time)
+            .map((t) => new Date(t.start_time as string).getTime());
           const ends = timeline
             .filter((t) => t.end_time)
             .map((t) => new Date(t.end_time as string).getTime());
-          if (ends.length > 0) {
+          if (starts.length > 0 && ends.length > 0) {
             duration = formatDuration(
               new Date(Math.min(...starts)).toISOString(),
               new Date(Math.max(...ends)).toISOString(),

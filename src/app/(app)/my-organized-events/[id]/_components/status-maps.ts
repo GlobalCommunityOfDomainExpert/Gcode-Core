@@ -1,6 +1,5 @@
 import { BadgeTone } from "@/components/atoms";
 import { AttendanceStatus } from "@/lib/attendees";
-import { CommunityRequestStatus } from "@/lib/community-requests";
 
 export const attendanceStatusTone: Record<AttendanceStatus, BadgeTone> = {
   registered: "primary",
@@ -14,18 +13,6 @@ export const attendanceStatusLabel: Record<AttendanceStatus, string> = {
   attended: "Attended",
   missed: "Missed",
   cancelled: "Cancelled",
-};
-
-export const communityStatusTone: Record<CommunityRequestStatus, BadgeTone> = {
-  interested: "primary",
-  helping: "success",
-  passed: "neutral",
-};
-
-export const communityStatusLabel: Record<CommunityRequestStatus, string> = {
-  interested: "Interested",
-  helping: "Helping",
-  passed: "Passed",
 };
 
 export const ticketTypeTone: Record<"Free" | "Paid", BadgeTone> = {

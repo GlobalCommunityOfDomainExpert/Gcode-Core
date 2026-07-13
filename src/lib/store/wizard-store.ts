@@ -2,7 +2,6 @@ import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 import {
   initialEventData,
-  SelectedStakeholder,
   eventDetailDataSchema,
   EventDetailData,
 } from "@/lib/zod/event";
@@ -10,7 +9,6 @@ import {
 interface WizardState {
   stepIndex: number;
   data: EventDetailData;
-  selectedStakeholders: SelectedStakeholder[];
   submitting: boolean;
 }
 
@@ -20,7 +18,6 @@ interface WizardActions {
     key: K,
     value: EventDetailData[K],
   ) => void;
-  setSelectedStakeholders: (selected: SelectedStakeholder[]) => void;
   setSubmitting: (submitting: boolean) => void;
   reset: (initialData?: EventDetailData) => void;
 }
@@ -30,7 +27,6 @@ export const useWizardStore = create<WizardState & WizardActions>()(
     (set) => ({
       stepIndex: 0,
       data: initialEventData,
-      selectedStakeholders: [],
       submitting: false,
 
       setStep: (index) => set({ stepIndex: index }, false, "setStep"),
@@ -40,13 +36,6 @@ export const useWizardStore = create<WizardState & WizardActions>()(
           (state) => ({ data: { ...state.data, [key]: value } }),
           false,
           "update",
-        ),
-
-      setSelectedStakeholders: (selected) =>
-        set(
-          { selectedStakeholders: selected },
-          false,
-          "setSelectedStakeholders",
         ),
 
       setSubmitting: (submitting) =>
@@ -59,7 +48,6 @@ export const useWizardStore = create<WizardState & WizardActions>()(
             data: initialData
               ? eventDetailDataSchema.parse(initialData)
               : initialEventData,
-            selectedStakeholders: [],
             submitting: false,
           },
           false,

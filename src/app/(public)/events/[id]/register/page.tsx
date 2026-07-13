@@ -8,15 +8,19 @@ import { Banner, NotFoundState } from "@/components/molecules";
 import { useEvent } from "@/hooks/use-event";
 import { registerForEvent } from "@/lib/api/participants";
 import { ApiError } from "@/lib/api/client";
+import { getSession } from "@/lib/auth/session";
 
-// Guest registration — no sign-in required. Only email + full name are
-// collected; the account (GCODE_USERS row) is created server-side and
-// completed later when the guest verifies their email and sets a password.
+// create_participant always finds-or-creates the GCODE_USERS row by
+// full_name + email — both binds are required regardless of the
+// Authorization header, so they're always sent. full_name comes from the
+// JWT when signed in (every route under (app) requires sign-in) and isn't
+// asked again; email has no JWT claim, so it's still asked for.
 export default function EventRegisterPage() {
   const params = useParams<{ id: string }>();
   const router = useRouter();
   const { event, status } = useEvent(params.id);
-  const [fullName, setFullName] = useState("");
+  const session = getSession();
+  const [fullName, setFullName] = useState(session?.fullName ?? "");
   const [email, setEmail] = useState("");
   // Kept as free text while typing (see clampQuantity) — clamping on every
   // keystroke snaps a cleared/partial field back to "1", making it
@@ -101,15 +105,23 @@ export default function EventRegisterPage() {
           </Banner>
         ) : (
           <>
-            <div className="space-y-1">
-              <Label htmlFor="full-name">Full Name</Label>
-              <Input
-                id="full-name"
-                value={fullName}
-                onChange={(event) => setFullName(event.target.value)}
-                placeholder="Your full name"
-              />
-            </div>
+            {session ? (
+              <div className="space-y-1">
+                <p className="text-body text-text-primary font-semibold">
+                  {session.fullName}
+                </p>
+              </div>
+            ) : (
+              <div className="space-y-1">
+                <Label htmlFor="full-name">Full Name</Label>
+                <Input
+                  id="full-name"
+                  value={fullName}
+                  onChange={(event) => setFullName(event.target.value)}
+                  placeholder="Your full name"
+                />
+              </div>
+            )}
             <div className="space-y-1">
               <Label htmlFor="email">Email Address</Label>
               <Input
@@ -148,10 +160,12 @@ export default function EventRegisterPage() {
             >
               Confirm Registration
             </Button>
-            <p className="text-small text-text-secondary text-center">
-              No account needed — you can create a password later to manage your
-              registrations.
-            </p>
+            {!session && (
+              <p className="text-small text-text-secondary text-center">
+                No account needed — you can create a password later to manage
+                your registrations.
+              </p>
+            )}
           </>
         )}
       </Card>

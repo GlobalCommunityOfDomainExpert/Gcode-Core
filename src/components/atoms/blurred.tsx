@@ -14,7 +14,7 @@ export function Blurred({
     <span className="inline-flex items-center">
       <span
         aria-hidden="true"
-        className={`bg-bg-light rounded-sm px-1 text-transparent blur-sm select-none ${className}`}
+        className={`rounded-sm px-1 select-none ${className}`}
         {...props}
       >
         {children}

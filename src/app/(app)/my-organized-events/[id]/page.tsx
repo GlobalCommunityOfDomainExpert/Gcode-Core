@@ -13,23 +13,14 @@ import {
 } from "@/components/molecules";
 import { eventTypeTone, priceTone } from "@/lib/event";
 import { useEvent } from "@/hooks/use-event";
-import { useCommunityRequests } from "@/hooks/use-community-requests";
 import { useAttendees } from "@/hooks/use-attendees";
 import { AttendeesTab } from "./_components/attendees-tab";
 import { CommunicationTab } from "./_components/communication-tab";
-import { CommunityTab } from "./_components/community-tab";
 import { OverviewTab } from "./_components/overview-tab";
 
 export default function OrganizedEventDetailPage() {
   const params = useParams<{ id: string }>();
   const { event, status: eventStatus } = useEvent(params.id);
-  const {
-    requests,
-    addRequests: handleAddRequests,
-    nudge: handleNudge,
-    confirm: handleConfirmRequest,
-    remove: handleRemoveRequest,
-  } = useCommunityRequests(params.id);
   const { attendees } = useAttendees(params.id, event?.priceAmount ?? 0);
 
   const [activeTab, setActiveTab] = useState("overview");
@@ -61,7 +52,6 @@ export default function OrganizedEventDetailPage() {
     { value: "overview", label: "Overview" },
     { value: "attendees", label: `Attendees (${attendees.length})` },
     { value: "communication", label: "Communication" },
-    { value: "community", label: `Community (${requests.length})` },
   ];
 
   function handleConfirmCancel() {
@@ -198,16 +188,6 @@ export default function OrganizedEventDetailPage() {
                 event={event}
                 attendees={attendees}
                 selectedIds={selectedAttendeeIds}
-              />
-            )}
-            {activeTab === "community" && (
-              <CommunityTab
-                event={event}
-                requests={requests}
-                onNudge={handleNudge}
-                onConfirm={handleConfirmRequest}
-                onRemove={handleRemoveRequest}
-                onAddRequests={handleAddRequests}
               />
             )}
           </div>
