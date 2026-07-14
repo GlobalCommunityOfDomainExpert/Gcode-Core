@@ -20,83 +20,17 @@ import {
 } from "@/lib/event";
 import { useEvent } from "@/hooks/use-event";
 import { ShareEventCard } from "./_components/share-event-card";
-
-// "14:30" / "00:00" -> "2:30 PM" / "12:00 AM". Handles the 12/0 hour edge.
-function to12Hour(hhmm: string): string {
-  if (!hhmm) return "";
-  const [h, m] = hhmm.split(":").map(Number);
-  const period = h < 12 ? "AM" : "PM";
-  const hour12 = h % 12 === 0 ? 12 : h % 12;
-  return `${hour12}:${String(m).padStart(2, "0")} ${period}`;
-}
-
-// Bucket timeline items by calendar date so multi-day agendas get a header per
-// day. Single-day agendas produce one group with no label.
-function groupByDay(items: EventTimelineItem[]) {
-  const order: string[] = [];
-  const buckets = new Map<string, EventTimelineItem[]>();
-  for (const item of items) {
-    const key = item.date || "";
-    if (!buckets.has(key)) {
-      buckets.set(key, []);
-      order.push(key);
-    }
-    buckets.get(key)!.push(item);
-  }
-  const multiDay = order.filter((d) => d).length > 1;
-  return order.map((day) => ({
-    day,
-    label:
-      multiDay && day
-        ? new Intl.DateTimeFormat("en-IN", {
-            weekday: "short",
-            day: "numeric",
-            month: "short",
-            timeZone: "UTC",
-          }).format(new Date(day))
-        : "",
-    items: buckets.get(day)!,
-  }));
-}
-
-// Whole days between now and an ISO deadline. Null if no deadline is set.
-function daysUntil(iso: string | null | undefined): number | null {
-  if (!iso) return null;
-  const diffMs = new Date(iso).getTime() - Date.now();
-  return Math.ceil(diffMs / 86_400_000);
-}
-
-// event.time (if set) -> earliest agenda item's time (more descriptive) ->
-// the organizer's free-text duration -> blank.
-function resolveDisplayTime(event: Event): string {
-  if (event.time) return event.time;
-  const firstTimedItem = event.timeline.find((item) => item.time);
-  if (firstTimedItem) return firstTimedItem.time;
-  return event.durationText ?? "";
-}
-
-function DetailItem({
-  icon,
-  label,
-  value,
-  description,
-}: {
-  icon: typeof Calendar;
-  label: string;
-  value: string;
-  description: string;
-}) {
-  return (
-    <div className="flex items-start gap-3">
-      <Icon icon={icon} size="sm" className="text-text-secondary mt-0.5" />
-      <div>
-        <p className="text-small text-text-secondary">{label}</p>
-        <p className="text-body text-text-primary font-semibold">{value}</p>
-        <p className="text-small text-text-secondary">{description}</p>
-      </div>
-    </div>
-  );
-}
+import { EventHero } from "./_components/event-hero";
+import { EventOverviewCard } from "./_components/event-overview-card";
+import { EventDetailsCard } from "./_components/event-details-card";
+import { EventAgendaCard } from "./_components/event-agenda-card";
+import { OrganizerCard } from "./_components/organizer-card";
+import { EventLinksCard } from "./_components/event-links-card";
+import { EligibilityTermsCard } from "./_components/eligibility-terms-card";
+import { RegistrationCard } from "./_components/registration-card";
+import { EventInfoCard } from "./_components/event-info-card";
+import { DetailItem } from "./_components/detail-item";
+import { daysUntil, groupByDay, resolveDisplayTime, to12Hour } from "./_components/format";
 
 export default function EventDetailPage() {
   const params = useParams<{ id: string }>();
@@ -403,22 +337,7 @@ export default function EventDetailPage() {
           )}
 
           {event.socialLinks && event.socialLinks.length > 0 && (
-            <div className="border-border-light bg-surface-light space-y-3 rounded-md border p-6">
-              <SectionLabel>Social Links</SectionLabel>
-              <div className="flex flex-wrap gap-2">
-                {event.socialLinks.map((link, index) => (
-                  <a
-                    key={index}
-                    href={link.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="border-border-light text-body text-text-primary hover:bg-bg-light rounded-sm border px-3 py-1.5 font-medium"
-                  >
-                    {link.platform || link.url}
-                  </a>
-                ))}
-              </div>
-            </div>
+            <EventLinksCard links={event.socialLinks} />
           )}
 
           <div className="border-border-light bg-surface-light space-y-4 rounded-md border p-6">

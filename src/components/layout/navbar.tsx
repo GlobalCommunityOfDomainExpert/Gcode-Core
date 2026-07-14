@@ -3,14 +3,16 @@
 import { ReactNode, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Bell, Menu, X } from "lucide-react";
+import { Bell, ChevronDown, Menu, X } from "lucide-react";
 import { Button, Icon } from "@/components/atoms";
-import { DropdownItem } from "@/components/molecules";
+import { Dropdown, DropdownItem } from "@/components/molecules";
 import Image from "next/image";
 
 export interface NavLink {
   label: string;
-  href: string;
+  href?: string;
+  /** Renders this link as a dropdown with these items instead of a plain link. */
+  children?: { label: string; href: string }[];
 }
 
 export interface NavbarProps {
@@ -26,6 +28,8 @@ export interface NavbarProps {
   onNotificationClick?: () => void;
   /** Extra content appended to the mobile menu panel below the primary links (e.g. a "bare" Sidebar). */
   mobileFooter?: ReactNode;
+  /** Right-aligned desktop slot (e.g. a profile dropdown) that replaces the CTA buttons when provided. Also suppresses the mobile collapsed-bar CTA. */
+  accountMenu?: ReactNode;
 }
 
 const defaultLinks: NavLink[] = [{ label: "Events", href: "/events" }];
@@ -51,11 +55,12 @@ export function Navbar({
   hasUnreadNotifications = false,
   onNotificationClick,
   mobileFooter,
+  accountMenu,
 }: NavbarProps) {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
   return (
-    <header className="bg-primary relative">
+    <header className="bg-primary relative z-20 shadow-sm">
       <div className="mx-2 flex h-16 items-center justify-between gap-4">
         <div className="flex items-center gap-8">
           <Link href="/">{logo}</Link>
@@ -64,11 +69,37 @@ export function Navbar({
             className="hidden items-center gap-6 md:flex"
           >
             {links.map((link) => {
+              if (link.children) {
+                const hasActiveChild = link.children.some(
+                  (child) => child.href === pathname,
+                );
+                return (
+                  <Dropdown
+                    key={link.label}
+                    trigger={
+                      <span
+                        className={`text-body focus-visible:ring-offset-primary flex items-center gap-1 font-medium transition-colors focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:outline-none ${
+                          hasActiveChild
+                            ? "text-white"
+                            : "text-white/70 hover:text-white"
+                        }`}
+                      >
+                        {link.label}
+                        <Icon icon={ChevronDown} size="sm" />
+                      </span>
+                    }
+                    items={link.children.map((child) => ({
+                      label: child.label,
+                      href: child.href,
+                    }))}
+                  />
+                );
+              }
               const isActive = pathname === link.href;
               return (
                 <Link
-                  key={link.href}
-                  href={link.href}
+                  key={link.label}
+                  href={link.href ?? "#"}
                   aria-current={isActive ? "page" : undefined}
                   className={`text-body focus-visible:ring-offset-primary font-medium transition-colors focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:outline-none ${
                     isActive ? "text-white" : "text-white/70 hover:text-white"
@@ -82,15 +113,22 @@ export function Navbar({
         </div>
 
         <div className="hidden items-center gap-3 mr-5 md:flex">
-          {secondaryCtaLabel && (
-            <Button
-              variant="ghost"
-              size="sm"
-              className="text-white hover:bg-white/10"
-              onClick={onSecondaryCtaClick}
-            >
-              {secondaryCtaLabel}
-            </Button>
+          {accountMenu ?? (
+            <>
+              {secondaryCtaLabel && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="text-white hover:bg-white/10"
+                  onClick={onSecondaryCtaClick}
+                >
+                  {secondaryCtaLabel}
+                </Button>
+              )}
+              <Button variant="accent" size="sm" onClick={onCtaClick}>
+                {ctaLabel}
+              </Button>
+            </>
           )}
           {ctaLabel && (
             <Button variant="accent" size="sm" onClick={onCtaClick}>
@@ -111,7 +149,7 @@ export function Navbar({
               <span className="bg-danger absolute top-1.5 right-1.5 size-2 rounded-full" />
             )}
           </button>
-          {ctaLabel && (
+          {!accountMenu && (
             <Button variant="accent" size="sm" onClick={onCtaClick}>
               {ctaLabel}
             </Button>
@@ -137,16 +175,34 @@ export function Navbar({
           />
           <div className="bg-primary absolute inset-x-0 top-full z-40 max-h-[calc(100vh-4rem)] overflow-y-auto border-t border-white/10 shadow-lg md:hidden">
             <nav aria-label="Primary" className="space-y-1 px-4 py-3">
-              {links.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  onClick={() => setMobileOpen(false)}
-                  className="text-body block rounded-sm px-2 py-2 font-medium text-white/80 hover:bg-white/10 hover:text-white"
-                >
-                  {link.label}
-                </Link>
-              ))}
+              {links.map((link) =>
+                link.children ? (
+                  <div key={link.label}>
+                    <p className="text-small px-2 pt-2 font-semibold tracking-wide text-white/50 uppercase">
+                      {link.label}
+                    </p>
+                    {link.children.map((child) => (
+                      <Link
+                        key={child.href}
+                        href={child.href}
+                        onClick={() => setMobileOpen(false)}
+                        className="text-body block rounded-sm px-4 py-2 font-medium text-white/80 hover:bg-white/10 hover:text-white"
+                      >
+                        {child.label}
+                      </Link>
+                    ))}
+                  </div>
+                ) : (
+                  <Link
+                    key={link.label}
+                    href={link.href ?? "#"}
+                    onClick={() => setMobileOpen(false)}
+                    className="text-body block rounded-sm px-2 py-2 font-medium text-white/80 hover:bg-white/10 hover:text-white"
+                  >
+                    {link.label}
+                  </Link>
+                ),
+              )}
               {resourcesItems
                 .filter(
                   (item): item is DropdownItem & { href: string } =>

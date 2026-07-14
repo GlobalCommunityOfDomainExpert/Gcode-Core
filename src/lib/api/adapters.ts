@@ -255,7 +255,7 @@ export function toEventDraft(
         location: item.location ?? "",
       };
     }),
-    certificate: detail.certificate_offered === 1,
+    certificate: Number(detail.certificate_offered) === 1,
   };
 }
 
@@ -465,6 +465,14 @@ export function adaptApiEvent(
     attendeeRegistration,
     participantRegistration,
     featured: event.is_featured === 1,
+    maxTicketsPerRegistration: detail?.max_tickets_per_registration ?? undefined,
+    // ORDS can serialize NUMBER columns as JSON strings depending on config,
+    // so this can arrive as "1" rather than 1 — coerce before comparing.
+    is_featured: Number(event.is_featured) === 1,
+    registrationCloses: detail?.registration_deadline
+      ? formatDate(detail.registration_deadline)
+      : formatDate(event.start_date),
+    registrationDeadlineIso: detail?.registration_deadline ?? null,
     duration: formatDuration(event.start_date, event.end_date),
     durationText: detail?.duration_text ?? undefined,
     // No team-size columns yet — default to individual attendance.

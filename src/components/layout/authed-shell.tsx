@@ -7,6 +7,7 @@ import { AppShell } from "./app-shell";
 import { Navbar } from "./navbar";
 import { Sidebar, SidebarLink } from "./sidebar";
 import { clearSession, isAdmin, Session } from "@/lib/auth/session";
+import { initials } from "@/lib/auth/format";
 
 function buildSidebarLinks(session: Session): SidebarLink[] {
   if (isAdmin(session)) {
@@ -22,15 +23,6 @@ function buildSidebarLinks(session: Session): SidebarLink[] {
     ];
   }
   return [{ label: "My Events", icon: CalendarCheck, href: "/my-events" }];
-}
-
-function initials(fullName: string): string {
-  return fullName
-    .trim()
-    .split(/\s+/)
-    .slice(0, 2)
-    .map((part) => part[0]?.toUpperCase() ?? "")
-    .join("");
 }
 
 export interface AuthedShellProps {

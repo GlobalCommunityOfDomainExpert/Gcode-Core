@@ -28,6 +28,8 @@ export interface CarouselProps {
   className?: string;
   hideArrows?: boolean;
   onStateChange?: (state: CarouselState) => void;
+  /** Overrides each slide's width classes (default: full width, 50% from sm, 33.333% from lg). */
+  itemClassName?: string;
 }
 
 function computeStops(track: HTMLDivElement): number[] {
@@ -45,7 +47,13 @@ function computeStops(track: HTMLDivElement): number[] {
 
 export const Carousel = forwardRef<CarouselHandle, CarouselProps>(
   function Carousel(
-    { children, className = "", hideArrows = false, onStateChange },
+    {
+      children,
+      className = "",
+      hideArrows = false,
+      onStateChange,
+      itemClassName = "w-full shrink-0 snap-start sm:w-[calc(50%-0.5rem)] lg:w-[calc(33.333%-0.667rem)]",
+    },
     ref,
   ) {
     const trackRef = useRef<HTMLDivElement>(null);
@@ -126,10 +134,7 @@ export const Carousel = forwardRef<CarouselHandle, CarouselProps>(
           className="flex snap-x snap-mandatory [scrollbar-width:none] gap-4 overflow-x-auto scroll-smooth pb-1 [&::-webkit-scrollbar]:hidden"
         >
           {items.map((item, index) => (
-            <div
-              key={index}
-              className="w-full shrink-0 snap-start sm:w-[calc(50%-0.5rem)] lg:w-[calc(33.333%-0.667rem)]"
-            >
+            <div key={index} className={itemClassName}>
               {item}
             </div>
           ))}

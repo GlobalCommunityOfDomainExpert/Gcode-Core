@@ -11,10 +11,10 @@ import { useLookup } from "@/hooks/use-lookup";
 import { StepEventType } from "./step-event-type";
 import { StepDetails } from "./step-details";
 import { StepRegistration } from "./step-registration";
-import { StepScheduleMode } from "@/app/(app)/my-organized-events/_components/step-schedule-mode";
+// import { StepScheduleMode } from "@/app/(app)/my-organized-events/_components/step-schedule-mode";
 import { StepTimelineLinks } from "./step-timeline-links";
 import { StepTerms } from "./step-terms";
-import { StepReview } from "@/app/(app)/my-organized-events/_components/step-review";
+import { StepReview } from "@/app/(app)/(events)/my-organized-events/_components/step-review";
 import { EventDetailData, initialEventData } from "@/lib/zod/event";
 import {
   createEvent,
