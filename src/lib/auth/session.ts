@@ -12,6 +12,7 @@ export function setSession(token: string): void {
 }
 
 export function getSession(): Session | null {
+  if (typeof window === "undefined") return null;
   const token = localStorage.getItem(TOKEN_KEY);
   if (!token) return null;
   try {

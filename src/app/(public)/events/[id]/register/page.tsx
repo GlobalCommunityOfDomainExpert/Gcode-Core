@@ -4,11 +4,20 @@ import { useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { Compass } from "lucide-react";
 import { Button, Card, Input, Label, SectionLabel } from "@/components/atoms";
-import { Banner, NotFoundState } from "@/components/molecules";
+import {
+  Banner,
+  CheckoutSummary,
+  NotFoundState,
+} from "@/components/molecules";
 import { useEvent } from "@/hooks/use-event";
 import { registerForEvent } from "@/lib/api/participants";
+import { createRazorpayOrder, verifyRazorpayPayment } from "@/lib/api/payments";
 import { ApiError } from "@/lib/api/client";
 import { getSession } from "@/lib/auth/session";
+import {
+  loadRazorpayCheckout,
+  openRazorpayCheckout,
+} from "@/lib/payments/razorpay";
 
 // create_participant always finds-or-creates the GCODE_USERS row by
 // full_name + email — both binds are required regardless of the
@@ -60,6 +69,9 @@ export default function EventRegisterPage() {
       : withMin;
   }
 
+  const isPaid = event.price !== "Free";
+  const total = (event.priceAmount ?? 0) * clampQuantity(Number(quantityInput));
+
   async function submit() {
     if (!fullName.trim() || !email.trim()) {
       setError("Full name and email are required.");
@@ -69,12 +81,16 @@ export default function EventRegisterPage() {
     setSubmitting(true);
     setError("");
     try {
-      const { participant_id } = await registerForEvent(params.id, {
-        full_name: fullName.trim(),
-        email: email.trim(),
-        quantity,
-      });
-      router.push(`/events/${params.id}/registered?pid=${participant_id}`);
+      if (isPaid) {
+        await payWithRazorpay(quantity);
+      } else {
+        const { participant_id } = await registerForEvent(params.id, {
+          full_name: fullName.trim(),
+          email: email.trim(),
+          quantity,
+        });
+        router.push(`/events/${params.id}/registered?pid=${participant_id}`);
+      }
     } catch (err) {
       setError(
         err instanceof ApiError
@@ -83,6 +99,50 @@ export default function EventRegisterPage() {
       );
       setSubmitting(false);
     }
+  }
+
+  // Order is created (and later verified) server-side, where the Razorpay
+  // key secret lives — this only opens Checkout and hands the signed
+  // response back for the backend to verify before it creates the ticket.
+  async function payWithRazorpay(quantity: number) {
+    const order = await createRazorpayOrder(params.id, {
+      email: email.trim(),
+      full_name: fullName.trim(),
+      quantity,
+    });
+    await loadRazorpayCheckout();
+    await new Promise<void>((resolve, reject) => {
+      openRazorpayCheckout({
+        key: order.key_id,
+        order_id: order.order_id,
+        amount: order.amount,
+        currency: order.currency,
+        name: "GCODE",
+        description: event!.title,
+        prefill: { name: fullName.trim(), email: email.trim() },
+        handler: (response) => {
+          verifyRazorpayPayment({
+            razorpay_order_id: response.razorpay_order_id,
+            razorpay_payment_id: response.razorpay_payment_id,
+            razorpay_signature: response.razorpay_signature,
+          })
+            .then(({ participant_id }) => {
+              router.push(
+                `/events/${params.id}/registered?pid=${participant_id}`,
+              );
+              resolve();
+            })
+            .catch(reject);
+        },
+        modal: {
+          // User closed the Checkout modal without paying — not an error.
+          ondismiss: () => {
+            setSubmitting(false);
+            resolve();
+          },
+        },
+      });
+    });
   }
 
   return (
@@ -152,14 +212,27 @@ export default function EventRegisterPage() {
                 </p>
               )}
             </div>
-            <Button
-              variant="primary"
-              className="w-full"
-              loading={submitting}
-              onClick={submit}
-            >
-              Confirm Registration
-            </Button>
+            {isPaid ? (
+              <CheckoutSummary
+                items={[
+                  { label: "Ticket price", value: event.price },
+                  { label: "Quantity", value: quantityInput },
+                ]}
+                total={`₹${total}`}
+                actionLabel="Pay & Register"
+                onAction={submit}
+                processing={submitting}
+              />
+            ) : (
+              <Button
+                variant="primary"
+                className="w-full"
+                loading={submitting}
+                onClick={submit}
+              >
+                Confirm Registration
+              </Button>
+            )}
             {!session && (
               <p className="text-small text-text-secondary text-center">
                 No account needed — you can create a password later to manage
