@@ -132,6 +132,40 @@ export interface ParticipantApi {
   role_name: string | null;
 }
 
+// Mirrors ORDS POST /events/:id/razorpay-order binds ->
+// GCODE_PAYMENTS_API.create_order. Amount is computed server-side from
+// ticket_price * quantity — never trust a client-sent amount. email/full_name
+// are stored on the order row so the webhook path (no client request to pull
+// them from) can still finalize registration on its own.
+export interface CreateRazorpayOrderPayload {
+  email: string;
+  full_name: string;
+  quantity: number;
+}
+
+// Mirrors GCODE_PAYMENTS_API.create_order's response. key_id is Razorpay's
+// public key (safe client-side) — echoed back so the frontend doesn't need
+// its own env var; the key *secret* never leaves the backend.
+export interface RazorpayOrderApi {
+  order_id: string; // Razorpay order_xxx id
+  amount: number; // paise
+  currency: string; // "INR"
+  key_id: string;
+}
+
+// Mirrors ORDS POST /participants/razorpay binds ->
+// GCODE_PAYMENTS_API.verify_and_register. No event_id, email, full_name, or
+// quantity — the backend already has all of that on the GCODE_PAYMENT_ORDERS
+// row keyed by razorpay_order_id. This only carries what the backend needs
+// to verify the signature (HMAC-SHA256 of order_id|payment_id using the key
+// secret) before it creates the participant row — never trust a
+// client-reported "paid" status.
+export interface VerifyRazorpayPaymentPayload {
+  razorpay_order_id: string;
+  razorpay_payment_id: string;
+  razorpay_signature: string;
+}
+
 // Mirrors GCODE_EVENT_PARTICIPANTS_API.list_by_user's refcursor row — the
 // signed-in user's own registrations, joined to the event they're for.
 export interface MyParticipationApi {

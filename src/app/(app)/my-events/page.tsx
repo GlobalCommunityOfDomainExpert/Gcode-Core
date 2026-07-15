@@ -54,7 +54,7 @@ function isSameMonth(date: Date, today: Date): boolean {
 
 export default function MyEventsPage() {
   const [activeTab, setActiveTab] = useState("upcoming");
-  const [range, setRange] = useState("week");
+  const [range, setRange] = useState("all");
   const { tickets } = useMyTickets();
 
   const today = new Date();
@@ -134,14 +134,22 @@ export default function MyEventsPage() {
                             : ""}
                         </p>
                       </div>
-                      <ButtonLink
-                        href={`/events/${ticket.eventId}`}
-                        variant="secondary"
-                        size="sm"
-                        className="shrink-0"
-                      >
-                        View Event <Icon size="sm" icon={ArrowRight} />
-                      </ButtonLink>
+                      <div className="flex shrink-0 flex-col gap-2">
+                        <ButtonLink
+                          href={`/events/${ticket.eventId}/registered?pid=${ticket.participantId}`}
+                          variant="primary"
+                          size="sm"
+                        >
+                          View Ticket
+                        </ButtonLink>
+                        <ButtonLink
+                          href={`/events/${ticket.eventId}`}
+                          variant="secondary"
+                          size="sm"
+                        >
+                          View Event <Icon size="sm" icon={ArrowRight} />
+                        </ButtonLink>
+                      </div>
                     </div>
                   );
                 })}
@@ -178,9 +186,21 @@ export default function MyEventsPage() {
                     </p>
                     <p className="text-small text-text-secondary flex items-center gap-2">
                       <Icon icon={Calendar} size="sm" />
-                      {ticket.date}
+                      {ticket.date} · {ticket.quantity} ticket
+                      {ticket.quantity === 1 ? "" : "s"}
+                      {ticket.amountPaid
+                        ? ` · ₹${ticket.amountPaid} paid`
+                        : ""}
                     </p>
                   </div>
+                  <ButtonLink
+                    href={`/events/${ticket.eventId}/registered?pid=${ticket.participantId}`}
+                    variant="secondary"
+                    size="sm"
+                    className="shrink-0"
+                  >
+                    View Ticket
+                  </ButtonLink>
                 </div>
               ))}
             </div>
