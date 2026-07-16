@@ -10,13 +10,11 @@ const OTP_LENGTH = 6;
 
 export interface StepVerifyOtpProps {
   email: string;
-  testOtp: string;
   onVerified: () => void;
 }
 
 export function StepVerifyOtp({
   email,
-  testOtp,
   onVerified,
 }: StepVerifyOtpProps) {
   const [code, setCode] = useState("");
@@ -42,10 +40,6 @@ export function StepVerifyOtp({
     <div className="flex flex-col gap-4">
       <p className="text-body text-text-secondary text-center">
         Enter the 6-digit code sent to your email
-      </p>
-
-      <p className="text-small text-text-secondary text-center">
-        Dev OTP: <span className="font-semibold">{testOtp}</span>
       </p>
 
       <OtpInput

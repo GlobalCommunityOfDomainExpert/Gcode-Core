@@ -1,4 +1,4 @@
-import { Check, LucideIcon } from "lucide-react";
+import { Check, Lock, LucideIcon } from "lucide-react";
 import { Icon } from "@/components/atoms";
 
 export interface SelectableCardProps {
@@ -29,8 +29,8 @@ export function SelectableCard({
   const borderClasses = disabled
     ? "border-border-light bg-bg-light opacity-60 cursor-not-allowed"
     : selected
-      ? "border-primary bg-primary-light"
-      : "border-border-light bg-surface-light hover:border-border-hover";
+      ? "border-primary bg-primary-light cursor-pointer"
+      : "border-border-light bg-surface-light hover:border-border-hover cursor-pointer";
 
   if (layout === "horizontal") {
     return (
@@ -54,10 +54,18 @@ export function SelectableCard({
         </div>
         <span
           className={`flex size-6 shrink-0 items-center justify-center rounded-full ${
-            selected ? "bg-primary text-white" : "border-border-light border"
+            disabled
+              ? "border-border-light border text-text-secondary"
+              : selected
+                ? "bg-primary text-white"
+                : "border-border-light border"
           }`}
         >
-          {selected && <Icon icon={Check} size="sm" />}
+          {disabled ? (
+            <Icon icon={Lock} size="sm" />
+          ) : (
+            selected && <Icon icon={Check} size="sm" />
+          )}
         </span>
       </button>
     );
