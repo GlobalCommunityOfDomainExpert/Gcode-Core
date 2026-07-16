@@ -1,6 +1,6 @@
 "use client";
 
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { Calendar, Clock, MapPin, Award, Users, Compass } from "lucide-react";
 import {
   Badge,
@@ -10,16 +10,20 @@ import {
   SectionLabel,
 } from "@/components/atoms";
 import {
-  AvatarGroup,
   Banner,
   Breadcrumb,
   EventBadgeRow,
   NotFoundState,
+  SelectableCard,
 } from "@/components/molecules";
 import { Timeline } from "@/components/molecules";
-import { getAttendeesByEvent } from "@/lib/attendees";
 import { getEventColor } from "@/lib/event-color";
-import { eventTypeTone, Event, EventTimelineItem } from "@/lib/event";
+import {
+  eventTypeTone,
+  Event,
+  EventTimelineItem,
+  isRegistrationOpen,
+} from "@/lib/event";
 import { useEvent } from "@/hooks/use-event";
 import { ShareEventCard } from "./_components/share-event-card";
 
@@ -102,15 +106,8 @@ function DetailItem({
 
 export default function EventDetailPage() {
   const params = useParams<{ id: string }>();
+  const router = useRouter();
   const { event, status } = useEvent(params.id);
-  const attendees = event
-    ? getAttendeesByEvent(event.id)
-        .slice(0, 3)
-        .map((attendee) => ({
-          alt: attendee.name,
-          initials: attendee.avatarInitials,
-        }))
-    : [];
 
   if (!event) {
     return (
@@ -274,13 +271,13 @@ export default function EventDetailPage() {
             />
             <p className="text-body text-white/80">
               GCODE, the Global Community of Domain Experts, is dedicated to
-              fostering collaboration between startups, industry, and
-              academia. We focus on creating unique partnerships by involving
-              domain experts and interns to facilitate innovation and
-              knowledge sharing. We offer advisory services and support
-              connections between industry and academia to drive impactful
-              collaborations. If you&apos;d like to learn more about
-              scheduling with our domain experts, feel free to reach out.
+              fostering collaboration between startups, industry, and academia.
+              We focus on creating unique partnerships by involving domain
+              experts and interns to facilitate innovation and knowledge
+              sharing. We offer advisory services and support connections
+              between industry and academia to drive impactful collaborations.
+              If you&apos;d like to learn more about scheduling with our domain
+              experts, feel free to reach out.
             </p>
           </div>
 
@@ -325,52 +322,165 @@ export default function EventDetailPage() {
 
         <div className="space-y-6 lg:sticky lg:top-6 lg:self-start">
           <div className="border-border-light bg-surface-light space-y-4 rounded-md border p-4">
-            <div className="flex items-center justify-between">
-              <span className="text-heading text-text-primary font-extrabold">
-                {event.price}
-              </span>
-              {event.spotsLeft !== undefined && (
-                <span className="text-small text-warning font-semibold">
-                  {event.spotsLeft} spots left
-                </span>
-              )}
-            </div>
             {(() => {
-              const days = daysUntil(event.registrationDeadlineIso);
-              if (days === null) return null;
+              // "enabled" (organizer offers this pass at all) is separate
+              // from "open right now" (within its own registration window) —
+              // an enabled-but-not-yet-open or enabled-but-closed pass still
+              // shows up here, just greyed out, instead of disappearing.
+              const enabledPasses = [
+                {
+                  category: "PARTICIPANT" as const,
+                  data: event.participantRegistration,
+                },
+
+                {
+                  category: "ATTENDEE" as const,
+                  data: event.attendeeRegistration,
+                },
+              ].filter((p) => p.data.enabled);
+              const registrationClosed = enabledPasses.length === 0;
+              const singlePass =
+                enabledPasses.length === 1 ? enabledPasses[0].data : undefined;
+
+              type WindowStatus =
+                | { state: "not-open-yet"; days: number }
+                | { state: "closed" }
+                | { state: "closing-soon"; days: number }
+                | { state: "open" };
+
+              function windowStatus(
+                data: Event["attendeeRegistration"],
+              ): WindowStatus {
+                const opensDays = daysUntil(data.registrationOpensIso);
+                if (opensDays !== null && opensDays > 0) {
+                  return { state: "not-open-yet", days: opensDays };
+                }
+                const closesDays = daysUntil(data.registrationDeadlineIso);
+                if (closesDays !== null) {
+                  return closesDays <= 0
+                    ? { state: "closed" }
+                    : { state: "closing-soon", days: closesDays };
+                }
+                return { state: "open" };
+              }
+
+              function windowStatusMeta(
+                status: WindowStatus,
+              ): string | undefined {
+                if (status.state === "not-open-yet")
+                  return `opens in ${status.days}d`;
+                if (status.state === "closed") return "closed";
+                if (status.state === "closing-soon")
+                  return `closes in ${status.days}d`;
+                return undefined;
+              }
+
+              function windowStatusMessage(
+                status: WindowStatus,
+              ): string | undefined {
+                if (status.state === "not-open-yet")
+                  return `Registration opens in ${status.days} day${status.days === 1 ? "" : "s"}`;
+                if (status.state === "closed") return "Registration closed";
+                if (status.state === "closing-soon")
+                  return `Registration closes in ${status.days} day${status.days === 1 ? "" : "s"}`;
+                return undefined;
+              }
+
               return (
-                <p className="text-small text-text-secondary">
-                  {days <= 0
-                    ? "Registration closed"
-                    : `Registration closes in ${days} day${days === 1 ? "" : "s"}`}
-                </p>
+                <>
+                  {singlePass ? (
+                    <div className="flex items-center justify-between">
+                      <span className="text-heading text-text-primary font-extrabold">
+                        {singlePass.priceLabel}
+                      </span>
+                      {singlePass.spotsLeft !== undefined && (
+                        <span className="text-small text-warning font-semibold">
+                          {singlePass.spotsLeft} spots left
+                        </span>
+                      )}
+                    </div>
+                  ) : enabledPasses.length > 1 ? (
+                    <>
+                      <p className="text-body text-text-primary font-semibold">
+                        How would you like to join?
+                      </p>
+                      <div className="space-y-3">
+                        {enabledPasses.map(({ category, data }) => {
+                          const status = windowStatus(data);
+                          return (
+                            <SelectableCard
+                              key={category}
+                              layout="horizontal"
+                              title={data.label}
+                              subtitle={data.description || undefined}
+                              disabled={
+                                status.state === "not-open-yet" ||
+                                status.state === "closed"
+                              }
+                              meta={[
+                                data.spotsLeft !== undefined
+                                  ? `${data.priceLabel} · ${data.spotsLeft} left`
+                                  : data.priceLabel,
+                                windowStatusMeta(status),
+                              ]
+                                .filter(Boolean)
+                                .join(" · ")}
+                              onSelect={() =>
+                                router.push(
+                                  `/events/${event.id}/register?category=${category}`,
+                                )
+                              }
+                            />
+                          );
+                        })}
+                      </div>
+                    </>
+                  ) : null}
+
+                  {singlePass &&
+                    (() => {
+                      const message = windowStatusMessage(
+                        windowStatus(singlePass),
+                      );
+                      if (!message) return null;
+                      return (
+                        <p className="text-small text-text-secondary">
+                          {message}
+                        </p>
+                      );
+                    })()}
+                  {event.status === "CANCELLED" ? (
+                    <Button variant="secondary" className="w-full" disabled>
+                      Event Cancelled
+                    </Button>
+                  ) : registrationClosed ? (
+                    <Button variant="secondary" className="w-full" disabled>
+                      Registration Closed
+                    </Button>
+                  ) : singlePass && !isRegistrationOpen(singlePass) ? (
+                    <Button variant="secondary" className="w-full" disabled>
+                      {windowStatus(singlePass).state === "not-open-yet"
+                        ? "Registration Not Yet Open"
+                        : "Registration Closed"}
+                    </Button>
+                  ) : singlePass ? (
+                    <ButtonLink
+                      href={`/events/${event.id}/register`}
+                      variant="primary"
+                      className="w-full"
+                    >
+                      Book Tickets
+                    </ButtonLink>
+                  ) : null}
+                  {singlePass?.capacity && (
+                    <p className="text-small text-text-secondary text-center">
+                      {singlePass.capacity} total capacity ·{" "}
+                      {singlePass.registeredCount} registered
+                    </p>
+                  )}
+                </>
               );
             })()}
-            {attendees.length > 0 && (
-              <AvatarGroup
-                items={attendees}
-                overflowLabel={`+${event.registeredCount} already registered`}
-              />
-            )}
-            {event.status === "CANCELLED" ? (
-              <Button variant="secondary" className="w-full" disabled>
-                Event Cancelled
-              </Button>
-            ) : (
-              <ButtonLink
-                href={`/events/${event.id}/register`}
-                variant="primary"
-                className="w-full"
-              >
-                Book Tickets
-              </ButtonLink>
-            )}
-            {event.capacity && (
-              <p className="text-small text-text-secondary text-center">
-                {event.capacity} total capacity · {event.registeredCount}{" "}
-                registered
-              </p>
-            )}
           </div>
 
           <div className="border-border-light bg-surface-light space-y-3 rounded-md border p-4">

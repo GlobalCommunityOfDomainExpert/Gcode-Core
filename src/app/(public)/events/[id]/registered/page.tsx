@@ -13,16 +13,18 @@ import {
   QrPlaceholder,
   SectionLabel,
 } from "@/components/atoms";
-import { EventBadgeRow, NotFoundState } from "@/components/molecules";
+import { Banner, EventBadgeRow, NotFoundState } from "@/components/molecules";
 import { useEvent } from "@/hooks/use-event";
 import { getParticipant } from "@/lib/api/participants";
 import { ParticipantApi } from "@/lib/api/types";
+import { getSession } from "@/lib/auth/session";
 
 export default function EventRegisteredPage() {
   const params = useParams<{ id: string }>();
   const searchParams = useSearchParams();
   const participantId = searchParams.get("pid");
   const { event, status: eventStatus } = useEvent(params.id);
+  const session = getSession();
 
   const [participant, setParticipant] = useState<ParticipantApi | undefined>();
   const [participantStatus, setParticipantStatus] = useState<
@@ -92,6 +94,10 @@ export default function EventRegisteredPage() {
 
   const quantity = participant.quantity;
   const bookingRef = `GCODE-P${participant.id}`;
+  const categoryLabel =
+    participant.category === "PARTICIPANT"
+      ? event.participantRegistration.label
+      : event.attendeeRegistration.label;
 
   function downloadTicket() {
     const ticketText = [
@@ -148,13 +154,18 @@ export default function EventRegisteredPage() {
               mode={event.mode}
               price={event.price}
             />
-            <ButtonLink href={`/events/${event.id}`} variant="ghost" size="sm">
-              View Event →
-            </ButtonLink>
+            {session && (
+              <ButtonLink href={`/events/${event.id}`} variant="ghost" size="sm">
+                View Event →
+              </ButtonLink>
+            )}
           </div>
           <h2 className="text-body text-text-primary font-semibold">
             {event.title}
           </h2>
+          <Badge variant="muted" tone="primary">
+            {categoryLabel}
+          </Badge>
           <p className="text-small text-text-secondary flex items-center gap-2">
             <Icon icon={Calendar} size="sm" />
             {event.date} · {event.time}
@@ -184,14 +195,34 @@ export default function EventRegisteredPage() {
         </div>
       </div>
 
-      <div className="flex flex-col gap-3 sm:flex-row">
-        <ButtonLink href="/my-events" variant="primary" className="flex-1">
-          View My Events →
-        </ButtonLink>
-        <ButtonLink href="/events" variant="secondary" className="flex-1">
-          Browse More Events
-        </ButtonLink>
-      </div>
+      {participant.category === "PARTICIPANT" && (
+        <Banner tone="warning">
+          <p>
+            You registered as a Participant — submit your audio submission
+            URL within 24 hours of registration or your entry will be
+            disqualified.
+          </p>
+          <ButtonLink
+            href={`/events/${event.id}/additional-info?pid=${participant.id}`}
+            variant="primary"
+            size="sm"
+            className="mt-2"
+          >
+            Additional Info →
+          </ButtonLink>
+        </Banner>
+      )}
+
+      {session && (
+        <div className="flex flex-col gap-3 sm:flex-row">
+          <ButtonLink href="/my-events" variant="primary" className="flex-1">
+            View My Events →
+          </ButtonLink>
+          <ButtonLink href="/events" variant="secondary" className="flex-1">
+            Browse More Events
+          </ButtonLink>
+        </div>
+      )}
     </div>
   );
 }

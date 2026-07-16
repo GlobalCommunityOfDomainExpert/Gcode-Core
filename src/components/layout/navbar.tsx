@@ -44,7 +44,7 @@ export function Navbar({
   ),
   links = defaultLinks,
   resourcesItems = defaultResourcesItems,
-  ctaLabel = "Get Started",
+  ctaLabel,
   onCtaClick,
   secondaryCtaLabel,
   onSecondaryCtaClick,
@@ -92,9 +92,11 @@ export function Navbar({
               {secondaryCtaLabel}
             </Button>
           )}
-          <Button variant="accent" size="sm" onClick={onCtaClick}>
-            {ctaLabel}
-          </Button>
+          {ctaLabel && (
+            <Button variant="accent" size="sm" onClick={onCtaClick}>
+              {ctaLabel}
+            </Button>
+          )}
         </div>
 
         <div className="flex items-center gap-2 md:hidden">
@@ -109,9 +111,11 @@ export function Navbar({
               <span className="bg-danger absolute top-1.5 right-1.5 size-2 rounded-full" />
             )}
           </button>
-          <Button variant="accent" size="sm" onClick={onCtaClick}>
-            {ctaLabel}
-          </Button>
+          {ctaLabel && (
+            <Button variant="accent" size="sm" onClick={onCtaClick}>
+              {ctaLabel}
+            </Button>
+          )}
           <button
             type="button"
             onClick={() => setMobileOpen((prev) => !prev)}

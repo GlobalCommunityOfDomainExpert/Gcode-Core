@@ -5,6 +5,10 @@ export interface Session {
   userId: number;
   roleName: string;
   fullName: string;
+  // No `email` JWT claim exists on the live backend yet — undefined until
+  // AUTH_PKG's token issuance (sign-in/sign-up/oauth/select-stakeholder)
+  // adds one. Decoded here so every caller starts working the moment it does.
+  email?: string;
 }
 
 export function setSession(token: string): void {
@@ -28,6 +32,7 @@ export function getSession(): Session | null {
       userId: Number(payload.sub),
       roleName: payload.role ?? "NONE",
       fullName: payload.full_name ?? "",
+      email: payload.email || undefined,
     };
   } catch {
     clearSession();

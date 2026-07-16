@@ -17,6 +17,7 @@ export interface TableProps<T> {
   selectedKeys?: Set<string>;
   onToggleRow?: (key: string) => void;
   onToggleAll?: (checked: boolean) => void;
+  onRowClick?: (row: T) => void;
   emptyState?: ReactNode;
 }
 
@@ -28,6 +29,7 @@ export function Table<T>({
   selectedKeys,
   onToggleRow,
   onToggleAll,
+  onRowClick,
   emptyState,
 }: TableProps<T>) {
   if (rows.length === 0) {
@@ -72,10 +74,13 @@ export function Table<T>({
             return (
               <tr
                 key={key}
-                className="border-border-light hover:bg-bg-light border-b last:border-0"
+                onClick={() => onRowClick?.(row)}
+                className={`border-border-light hover:bg-bg-light border-b last:border-0 ${
+                  onRowClick ? "cursor-pointer" : ""
+                }`}
               >
                 {selectable && (
-                  <td className="px-3 py-3">
+                  <td className="px-3 py-3" onClick={(e) => e.stopPropagation()}>
                     <Checkbox
                       aria-label="Select row"
                       checked={selectedKeys?.has(key) ?? false}

@@ -1,4 +1,11 @@
-import { EventType, EventStatus, Event, EventTimelineItem, MyTicket } from "@/lib/event";
+import {
+  EventType,
+  EventStatus,
+  Event,
+  EventTimelineItem,
+  MyTicket,
+  RegistrationCategory,
+} from "@/lib/event";
 import { EventDetailData } from "@/lib/zod/event";
 import { EventTimelineApi } from "./events";
 import { Attendee, AttendeeRole } from "@/lib/attendees";
@@ -73,25 +80,31 @@ function initialsOf(name: string): string {
 
 // GCODE_EVENT_PARTICIPANTS row -> UI Attendee. Status collapses to
 // "registered" for now — the participants table has no attended/no-show
-// tracking yet. ticketType/amountPaid come from the event's single price
-// (no per-attendee ticket tiers exist).
+// tracking yet. ticketType/amountPaid are priced off whichever category this
+// row registered under (row.category missing/undefined -> treated as
+// Attendee, for rows from a backend that hasn't added the column yet).
 export function adaptParticipant(
   row: ParticipantApi,
-  eventTicketPrice: number,
+  prices: { attendee: number; participant: number },
 ): Attendee {
+  const isParticipant = row.category === "PARTICIPANT";
+  const price = isParticipant ? prices.participant : prices.attendee;
   return {
     id: String(row.id),
     eventId: String(row.event_id),
     name: row.user_name,
     email: row.email ?? "",
+    phone: row.phone,
     avatarInitials: initialsOf(row.user_name),
     role: (row.role_name && ROLE_NAME_MAP[row.role_name]) || "Guest",
-    ticketType: eventTicketPrice > 0 ? "Paid" : "Free",
+    ticketType: price > 0 ? "Paid" : "Free",
     quantity: row.quantity,
-    amountPaid:
-      eventTicketPrice > 0 ? eventTicketPrice * row.quantity : undefined,
+    amountPaid: price > 0 ? price * row.quantity : undefined,
     status: "registered",
     registeredAt: row.applied_on,
+    category: isParticipant ? "Participant" : "Attendee",
+    audioSubmissionUrl: row.audio_submission_url,
+    audioSubmittedOn: row.audio_submitted_on,
   };
 }
 
@@ -120,9 +133,20 @@ export function toCreatePayload(
     mode_of_event_id: data.mode,
     description: data.description || undefined,
     start_date: toIsoTimestamp(data.date, data.time),
-    registration_deadline: data.registrationCloses
-      ? toIsoTimestamp(data.registrationCloses)
+    registration_start: data.attendeeRegistrationOpens
+      ? toIsoTimestamp(data.attendeeRegistrationOpens)
       : undefined,
+    registration_deadline: data.attendeeRegistrationCloses
+      ? toIsoTimestamp(data.attendeeRegistrationCloses)
+      : undefined,
+    participant_registration_start:
+      data.participantRegistrationEnabled && data.participantRegistrationOpens
+        ? toIsoTimestamp(data.participantRegistrationOpens)
+        : undefined,
+    participant_registration_deadline:
+      data.participantRegistrationEnabled && data.participantRegistrationCloses
+        ? toIsoTimestamp(data.participantRegistrationCloses)
+        : undefined,
     city: data.city || undefined,
     venue_address: data.location || undefined,
     participation_link: data.participationLink || undefined,
@@ -131,10 +155,32 @@ export function toCreatePayload(
     certificate_offered: data.certificate ? 1 : 0,
     created_by: createdBy,
     organizer_id: organizerId,
-    max_tickets_per_registration: data.maxTicketsPerRegistration || undefined,
+    max_tickets_per_registration:
+      data.attendeeMaxTicketsPerRegistration || undefined,
+    participant_max_tickets_per_registration: data.participantRegistrationEnabled
+      ? data.participantMaxTicketsPerRegistration || undefined
+      : undefined,
     terms: data.terms.trim() || undefined,
     eligibility: data.eligibility.trim() || undefined,
     duration_text: data.duration.trim() || undefined,
+    attendee_label: data.attendeeLabel.trim() || undefined,
+    attendee_description: data.attendeeDescription.trim() || undefined,
+    attendee_registration_enabled: data.attendeeRegistrationEnabled ? 1 : 0,
+    participant_registration_enabled: data.participantRegistrationEnabled
+      ? 1
+      : 0,
+    participant_price: data.participantRegistrationEnabled
+      ? data.participantPriceAmount
+      : undefined,
+    participant_capacity: data.participantRegistrationEnabled
+      ? data.participantCapacity || undefined
+      : undefined,
+    participant_label: data.participantRegistrationEnabled
+      ? data.participantLabel.trim() || undefined
+      : undefined,
+    participant_description: data.participantRegistrationEnabled
+      ? data.participantDescription.trim() || undefined
+      : undefined,
   };
 }
 
@@ -149,8 +195,8 @@ function parseJsonArray<T>(raw: string | null): T[] {
   }
 }
 
-// Raw event detail + timeline -> wizard EventDetailData (with FK ids intact),
-// for prefilling the edit wizard.
+// Raw event detail + timeline -> wizard EventDetailData (with FK ids
+// intact), for prefilling the edit wizard.
 export function toEventDraft(
   detail: EventDetail,
   timeline: EventTimelineApi[] = [],
@@ -162,7 +208,17 @@ export function toEventDraft(
     description: detail.description ?? "",
     priceAmount: detail.ticket_price ?? 0,
     capacity: detail.max_attendees ?? 0,
-    maxTicketsPerRegistration: detail.max_tickets_per_registration ?? 0,
+    attendeeMaxTicketsPerRegistration: detail.max_tickets_per_registration ?? 0,
+    participantMaxTicketsPerRegistration:
+      detail.participant_max_tickets_per_registration ?? 0,
+    attendeeLabel: detail.attendee_label ?? "",
+    attendeeDescription: detail.attendee_description ?? "",
+    attendeeRegistrationEnabled: detail.attendee_registration_enabled !== 0,
+    participantRegistrationEnabled: detail.participant_registration_enabled === 1,
+    participantLabel: detail.participant_label ?? "",
+    participantDescription: detail.participant_description ?? "",
+    participantPriceAmount: detail.participant_price ?? 0,
+    participantCapacity: detail.participant_capacity ?? 0,
     categoryIds: parseJsonArray<number>(detail.category_ids),
     terms: detail.terms ?? "",
     eligibility: detail.eligibility ?? "",
@@ -172,8 +228,17 @@ export function toEventDraft(
     location: detail.address ?? "",
     city: detail.city ?? "",
     participationLink: detail.participation_link ?? "",
-    registrationCloses: detail.registration_deadline
+    attendeeRegistrationOpens: detail.registration_start
+      ? istDate(detail.registration_start)
+      : "",
+    attendeeRegistrationCloses: detail.registration_deadline
       ? istDate(detail.registration_deadline)
+      : "",
+    participantRegistrationOpens: detail.participant_registration_start
+      ? istDate(detail.participant_registration_start)
+      : "",
+    participantRegistrationCloses: detail.participant_registration_deadline
+      ? istDate(detail.participant_registration_deadline)
       : "",
     duration: detail.duration_text ?? "",
     coverImageUrl: resolveImageUrl(detail.cover_image_url) ?? "",
@@ -331,6 +396,55 @@ export function adaptApiEvent(
   const detail = "description" in event ? event : undefined;
   const price = event.ticket_price === 0 ? "Free" : `₹${event.ticket_price}`;
 
+  // Missing/undefined attendee_registration_enabled -> treated as enabled
+  // (matches today's implicit always-on behavior on a backend that hasn't
+  // added the column yet). Missing/undefined participant_registration_enabled
+  // -> treated as disabled (the Participant category is opt-in).
+  const attendeeRegistration: RegistrationCategory = {
+    enabled: detail?.attendee_registration_enabled !== 0,
+    label: detail?.attendee_label || "Attendee",
+    description: detail?.attendee_description || "",
+    price: event.ticket_price,
+    priceLabel: price,
+    capacity: event.max_attendees ?? undefined,
+    registeredCount: event.registered_count,
+    spotsLeft:
+      event.max_attendees != null
+        ? Math.max(event.max_attendees - event.registered_count, 0)
+        : undefined,
+    maxTicketsPerRegistration: detail?.max_tickets_per_registration ?? undefined,
+    registrationCloses: detail?.registration_deadline
+      ? formatDate(detail.registration_deadline)
+      : formatDate(event.start_date),
+    registrationDeadlineIso: detail?.registration_deadline ?? null,
+    registrationOpensIso: detail?.registration_start ?? null,
+  };
+
+  const participantPrice = detail?.participant_price ?? 0;
+  const participantRegistration: RegistrationCategory = {
+    enabled: detail?.participant_registration_enabled === 1,
+    label: detail?.participant_label || "Participant",
+    description: detail?.participant_description || "",
+    price: participantPrice,
+    priceLabel: participantPrice === 0 ? "Free" : `₹${participantPrice}`,
+    capacity: detail?.participant_capacity ?? undefined,
+    registeredCount: detail?.participant_registered_count ?? 0,
+    spotsLeft:
+      detail?.participant_capacity != null
+        ? Math.max(
+            detail.participant_capacity - (detail?.participant_registered_count ?? 0),
+            0,
+          )
+        : undefined,
+    maxTicketsPerRegistration:
+      detail?.participant_max_tickets_per_registration ?? undefined,
+    registrationCloses: detail?.participant_registration_deadline
+      ? formatDate(detail.participant_registration_deadline)
+      : formatDate(event.start_date),
+    registrationDeadlineIso: detail?.participant_registration_deadline ?? null,
+    registrationOpensIso: detail?.participant_registration_start ?? null,
+  };
+
   return {
     id: String(event.id),
     title: event.event_name,
@@ -348,12 +462,9 @@ export function adaptApiEvent(
       event.max_attendees != null
         ? Math.max(event.max_attendees - event.registered_count, 0)
         : undefined,
-    maxTicketsPerRegistration: detail?.max_tickets_per_registration ?? undefined,
+    attendeeRegistration,
+    participantRegistration,
     featured: event.is_featured === 1,
-    registrationCloses: detail?.registration_deadline
-      ? formatDate(detail.registration_deadline)
-      : formatDate(event.start_date),
-    registrationDeadlineIso: detail?.registration_deadline ?? null,
     duration: formatDuration(event.start_date, event.end_date),
     durationText: detail?.duration_text ?? undefined,
     // No team-size columns yet — default to individual attendance.
@@ -389,6 +500,8 @@ export function adaptMyParticipation(
   modeNames: Record<number, string>,
   statusCodes: Record<number, string>,
 ): MyTicket {
+  const isParticipant = row.category === "PARTICIPANT";
+  const price = isParticipant ? (row.participant_price ?? 0) : row.ticket_price;
   return {
     participantId: String(row.participant_id),
     eventId: String(row.event_id),
@@ -400,10 +513,10 @@ export function adaptMyParticipation(
     time: formatTime(row.start_date),
     location: resolveLocation(row.city, row.address),
     coverImageUrl: resolveImageUrl(row.cover_image_url),
-    price: row.ticket_price === 0 ? "Free" : `₹${row.ticket_price}`,
+    price: price === 0 ? "Free" : `₹${price}`,
     quantity: row.quantity,
-    amountPaid:
-      row.ticket_price > 0 ? row.ticket_price * row.quantity : undefined,
+    amountPaid: price > 0 ? price * row.quantity : undefined,
     appliedOn: row.applied_on,
+    category: isParticipant ? "Participant" : "Attendee",
   };
 }

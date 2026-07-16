@@ -19,6 +19,7 @@ const linkClasses =
 export interface AccountDetails {
   fullName: string;
   email: string;
+  phone: string;
   password: string;
 }
 
@@ -32,12 +33,17 @@ export function StepAccountDetails({ onSubmit }: StepAccountDetailsProps) {
   const [submitting, setSubmitting] = useState(false);
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [termsAccepted, setTermsAccepted] = useState(false);
   const { hiddenButton, requestGoogleIdToken } = useGoogleIdToken();
 
   const canSubmit =
-    termsAccepted && fullName.trim() !== "" && email.trim() !== "" && password !== "";
+    termsAccepted &&
+    fullName.trim() !== "" &&
+    email.trim() !== "" &&
+    phone.trim() !== "" &&
+    password !== "";
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -53,6 +59,7 @@ export function StepAccountDetails({ onSubmit }: StepAccountDetailsProps) {
       await onSubmit({
         fullName,
         email,
+        phone,
         password: await hashPassword(password),
       });
     } catch (err) {
@@ -104,6 +111,17 @@ export function StepAccountDetails({ onSubmit }: StepAccountDetailsProps) {
             placeholder="you@example.com"
             value={email}
             onChange={(event) => setEmail(event.target.value)}
+            required
+          />
+        </FormField>
+        <FormField label="Phone" required={true} htmlFor="phone">
+          <Input
+            id="phone"
+            name="phone"
+            type="tel"
+            placeholder="9876543210"
+            value={phone}
+            onChange={(event) => setPhone(event.target.value)}
             required
           />
         </FormField>

@@ -1,19 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import { ArrowRight, Calendar, CalendarX, IndianRupee } from "lucide-react";
-import { Badge, BadgeTone, ButtonLink, Icon } from "@/components/atoms";
+import { ArrowRight, Calendar, CalendarX } from "lucide-react";
+import { Badge, ButtonLink, Icon } from "@/components/atoms";
 import {
   EmptyState,
   EventBadgeRow,
   Tabs,
   ToggleGroup,
 } from "@/components/molecules";
-import {
-  mockPurchases,
-  mockRefundRequests,
-  RefundRequest,
-} from "@/lib/attendee-history";
 import {
   eventTypeBorderClass,
   eventTypeTone,
@@ -24,8 +19,6 @@ import { useMyTickets } from "@/hooks/use-my-tickets";
 const tabItems = [
   { value: "upcoming", label: "Upcoming" },
   { value: "past", label: "Past" },
-  { value: "purchases", label: "Purchase History" },
-  { value: "refunds", label: "Refund Requests" },
 ];
 
 const rangeOptions = [
@@ -33,12 +26,6 @@ const rangeOptions = [
   { value: "month", label: "This Month" },
   { value: "all", label: "All Upcoming" },
 ];
-
-const refundStatusTone: Record<RefundRequest["status"], BadgeTone> = {
-  pending: "warning",
-  approved: "success",
-  rejected: "danger",
-};
 
 function isWithinDays(date: Date, today: Date, days: number): boolean {
   const diffMs = date.getTime() - today.getTime();
@@ -116,12 +103,17 @@ export default function MyEventsPage() {
                         </p>
                       </div>
                       <div className="min-w-0 flex-1 space-y-1">
-                        <EventBadgeRow
-                          type={ticket.type}
-                          mode={ticket.mode}
-                          price={ticket.price}
-                          typeTone={eventTypeTone(ticket.type)}
-                        />
+                        <div className="flex flex-wrap items-center gap-2">
+                          <EventBadgeRow
+                            type={ticket.type}
+                            mode={ticket.mode}
+                            price={ticket.price}
+                            typeTone={eventTypeTone(ticket.type)}
+                          />
+                          <Badge variant="muted" tone="primary" size="sm">
+                            {ticket.category}
+                          </Badge>
+                        </div>
                         <p className="text-body text-text-primary truncate font-semibold">
                           {ticket.title}
                         </p>
@@ -180,6 +172,9 @@ export default function MyEventsPage() {
                       <Badge size="sm" tone="neutral">
                         {ticket.mode}
                       </Badge>
+                      <Badge variant="muted" tone="primary" size="sm">
+                        {ticket.category}
+                      </Badge>
                     </div>
                     <p className="text-body text-text-primary truncate font-semibold">
                       {ticket.title}
@@ -201,84 +196,6 @@ export default function MyEventsPage() {
                   >
                     View Ticket
                   </ButtonLink>
-                </div>
-              ))}
-            </div>
-          ))}
-
-        {activeTab === "purchases" &&
-          (mockPurchases.length === 0 ? (
-            <EmptyState
-              icon={CalendarX}
-              title="Nothing here yet"
-              description="This list will fill up as you pay for events."
-            />
-          ) : (
-            <div className="space-y-3">
-              {mockPurchases.map((purchase) => (
-                <div
-                  key={purchase.id}
-                  className="border-border-light bg-surface-light flex items-center justify-between gap-4 rounded-md border p-4"
-                >
-                  <div className="min-w-0 flex-1 space-y-1">
-                    <p className="text-body text-text-primary truncate font-semibold">
-                      {purchase.eventTitle}
-                    </p>
-                    <p className="text-small text-text-secondary flex items-center gap-2">
-                      <Icon icon={Calendar} size="sm" />
-                      {purchase.purchasedAt}
-                    </p>
-                  </div>
-                  <div className="flex shrink-0 items-center gap-3">
-                    <span className="text-body text-text-primary flex items-center font-semibold">
-                      <Icon icon={IndianRupee} size="sm" />
-                      {purchase.amount}
-                    </span>
-                    <Badge variant="muted" tone="success" size="sm">
-                      Paid
-                    </Badge>
-                  </div>
-                </div>
-              ))}
-            </div>
-          ))}
-
-        {activeTab === "refunds" &&
-          (mockRefundRequests.length === 0 ? (
-            <EmptyState
-              icon={CalendarX}
-              title="Nothing here yet"
-              description="Refund requests you submit will show up here."
-            />
-          ) : (
-            <div className="space-y-3">
-              {mockRefundRequests.map((refund) => (
-                <div
-                  key={refund.id}
-                  className="border-border-light bg-surface-light flex items-center justify-between gap-4 rounded-md border p-4"
-                >
-                  <div className="min-w-0 flex-1 space-y-1">
-                    <p className="text-body text-text-primary truncate font-semibold">
-                      {refund.eventTitle}
-                    </p>
-                    <p className="text-small text-text-secondary flex items-center gap-2">
-                      <Icon icon={Calendar} size="sm" />
-                      Requested {refund.requestedAt}
-                    </p>
-                  </div>
-                  <div className="flex shrink-0 items-center gap-3">
-                    <span className="text-body text-text-primary flex items-center font-semibold">
-                      <Icon icon={IndianRupee} size="sm" />
-                      {refund.amount}
-                    </span>
-                    <Badge
-                      variant="muted"
-                      tone={refundStatusTone[refund.status]}
-                      size="sm"
-                    >
-                      {refund.status[0].toUpperCase() + refund.status.slice(1)}
-                    </Badge>
-                  </div>
                 </div>
               ))}
             </div>

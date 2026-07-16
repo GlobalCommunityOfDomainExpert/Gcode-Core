@@ -16,8 +16,6 @@ export interface StepReviewProps {
 }
 
 export function StepReview({ data }: StepReviewProps) {
-  const price = data.priceAmount > 0 ? `₹${data.priceAmount}` : "Free";
-
   return (
     <div className="space-y-5">
       <div>
@@ -35,11 +33,6 @@ export function StepReview({ data }: StepReviewProps) {
           value={data.type !== null ? String(data.type) : ""}
         />
         <ReviewRow label="Title" value={data.title} />
-        <ReviewRow label="Price" value={price} />
-        <ReviewRow
-          label="Capacity"
-          value={data.capacity ? `${data.capacity} attendees` : "Unlimited"}
-        />
         <ReviewRow
           label="Certificate"
           value={data.certificate ? "Yes" : "No"}
@@ -50,11 +43,71 @@ export function StepReview({ data }: StepReviewProps) {
         <ReviewRow label="City" value={data.city} />
         <ReviewRow label="Venue address" value={data.location} />
         <ReviewRow label="Participation link" value={data.participationLink} />
-        <ReviewRow
-          label="Registration closes"
-          value={data.registrationCloses}
-        />
         <ReviewRow label="Duration" value={data.duration} />
+      </Card>
+
+      <Card className="divide-border-light space-y-1 divide-y">
+        <SectionLabel>{data.attendeeLabel || "Attendee"} pass</SectionLabel>
+        <ReviewRow
+          label="Status"
+          value={data.attendeeRegistrationEnabled ? "Enabled" : "Disabled"}
+        />
+        {data.attendeeRegistrationEnabled && (
+          <>
+            <ReviewRow
+              label="Price"
+              value={data.priceAmount > 0 ? `₹${data.priceAmount}` : "Free"}
+            />
+            <ReviewRow
+              label="Capacity"
+              value={data.capacity ? `${data.capacity} attendees` : "Unlimited"}
+            />
+            <ReviewRow
+              label="Registration opens"
+              value={data.attendeeRegistrationOpens || "Immediately"}
+            />
+            <ReviewRow
+              label="Registration closes"
+              value={data.attendeeRegistrationCloses || "Event date"}
+            />
+          </>
+        )}
+      </Card>
+
+      <Card className="divide-border-light space-y-1 divide-y">
+        <SectionLabel>{data.participantLabel || "Participant"} pass</SectionLabel>
+        <ReviewRow
+          label="Status"
+          value={data.participantRegistrationEnabled ? "Enabled" : "Disabled"}
+        />
+        {data.participantRegistrationEnabled && (
+          <>
+            <ReviewRow
+              label="Price"
+              value={
+                data.participantPriceAmount > 0
+                  ? `₹${data.participantPriceAmount}`
+                  : "Free"
+              }
+            />
+            <ReviewRow
+              label="Capacity"
+              value={
+                data.participantCapacity
+                  ? `${data.participantCapacity} participants`
+                  : "Unlimited"
+              }
+            />
+            <ReviewRow
+              label="Registration opens"
+              value={data.participantRegistrationOpens || "Immediately"}
+            />
+            <ReviewRow
+              label="Registration closes"
+              value={data.participantRegistrationCloses || "Event date"}
+            />
+          </>
+        )}
       </Card>
 
       {data.description && (

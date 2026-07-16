@@ -3,11 +3,25 @@ import { apiRequest } from "./client";
 export function signUp(
   email: string,
   fullName: string,
+  phone: string,
   password: string,
 ): Promise<{ user_id: number; test_otp: string }> {
   return apiRequest("/auth/sign-up", {
     method: "POST",
-    body: { email, full_name: fullName, password },
+    body: { email, full_name: fullName, phone, password },
+  });
+}
+
+// Guest checkout email verification — no account is created, just an
+// OTP row in the same GCODE_PENDING_USERS table sign-up uses
+// (AUTH_PKG.send_guest_otp), password_hash left untouched/null.
+export function sendGuestOtp(
+  email: string,
+  fullName?: string,
+): Promise<{ dev_test_otp: string }> {
+  return apiRequest("/auth/guest-otp", {
+    method: "POST",
+    body: { email, full_name: fullName },
   });
 }
 

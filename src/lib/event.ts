@@ -85,6 +85,46 @@ export interface MyTicket {
   quantity: number;
   amountPaid?: number;
   appliedOn: string;
+  category: "Attendee" | "Participant";
+}
+
+// One of the event's two registration categories (Attendee / Participant).
+// Both blocks always exist now — `enabled` is what the organizer toggles,
+// independently and at any time (wizard, or a runtime open/close control on
+// the organizer's event page), including after registration_deadline has
+// passed. A disabled category still carries its historical registeredCount;
+// it's just not offered on the register page.
+export interface RegistrationCategory {
+  enabled: boolean; // organizer toggle — can flip any time, not locked by registration_deadline
+  label: string; // organizer text, falls back to "Attendee"/"Participant"
+  description: string; // organizer text, falls back to ""
+  price: number;
+  priceLabel: "Free" | string;
+  capacity?: number;
+  registeredCount: number;
+  spotsLeft?: number;
+  maxTicketsPerRegistration?: number; // organizer cap per single booking, unset = no cap
+  registrationCloses: string; // this category's own deadline, falls back to the event's start_date
+  registrationDeadlineIso?: string | null; // raw ISO for computing "days left"
+  registrationOpensIso?: string | null; // raw ISO — unset = open immediately, no start gate
+}
+
+// A pass can be organizer-enabled but still outside its own booking window
+// (before registrationOpensIso, or after registrationDeadlineIso) — this is
+// what the register page/event page use to grey out a pass without hiding
+// it, instead of the organizer's `enabled` toggle (which only means "offered
+// at all", not "bookable right now").
+export function isRegistrationOpen(
+  category: RegistrationCategory,
+  now: Date = new Date(),
+): boolean {
+  if (category.registrationOpensIso) {
+    if (now < new Date(category.registrationOpensIso)) return false;
+  }
+  if (category.registrationDeadlineIso) {
+    if (now > new Date(category.registrationDeadlineIso)) return false;
+  }
+  return true;
 }
 
 export interface EventOrganizer {
@@ -110,10 +150,9 @@ export interface Event {
   interestedCount?: number; // no backend column — never set
   spotsLeft?: number; // max_attendees - registeredCount
   capacity?: number; // EventListItem.max_attendees
-  maxTicketsPerRegistration?: number; // EventDetail.max_tickets_per_registration — organizer cap per single booking, unset = no cap
+  attendeeRegistration: RegistrationCategory; // always present, mirrors price/priceAmount/capacity/spotsLeft/registeredCount above; .enabled toggleable by the organizer
+  participantRegistration: RegistrationCategory; // always present too — check .enabled, not presence, to see if the organizer has turned it on
   featured?: boolean; // EventListItem.is_featured
-  registrationCloses: string; // EventDetail.registration_deadline, falls back to start_date
-  registrationDeadlineIso?: string | null; // EventDetail.registration_deadline, raw ISO for computing "days left"
   duration: string; // derived from start_date/end_date span, or the timeline's own span as fallback
   durationText?: string; // EventDetail.duration_text — organizer's free-text duration (e.g. "3 hours"), used as a display fallback when time is TBD
   teamSize: string; // no backend column — adapter hardcodes ""

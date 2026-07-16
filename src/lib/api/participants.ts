@@ -48,3 +48,19 @@ export async function listMyParticipations(
   );
   return items;
 }
+
+// A hosted link (Google Drive share URL, etc.), not a binary upload — keeps
+// this a plain JSON PUT instead of adding blob storage for large audio
+// files. The ORDS handler only defines PUT for this template, not PATCH.
+// Unlike the read-side degrade-to-default convention elsewhere in this
+// file, a failure here must reach the caller — the participant needs to
+// know their submission didn't save before the 24h deadline passes.
+export function submitParticipantAudio(
+  id: number | string,
+  audioUrl: string,
+): Promise<{ audio_submission_url: string; audio_submitted_on: string }> {
+  return apiRequest(`/participants/${id}/audio-submission`, {
+    method: "PUT",
+    body: { audio_submission_url: audioUrl },
+  });
+}
