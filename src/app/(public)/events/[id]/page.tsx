@@ -262,22 +262,32 @@ export default function EventDetailPage() {
 
           <div className="bg-primary space-y-3 rounded-md p-6">
             <p className="text-small font-bold tracking-widest text-white/70 uppercase">
-              About organizer
+              The GCODE Talent Ethos
             </p>
             <img
               src="/app-logo.png"
               alt="GCODE"
               className="h-10 w-auto object-contain"
             />
+            <p className="text-body font-semibold text-white/90">
+              Discover. Perform. Connect. Grow.
+            </p>
             <p className="text-body text-white/80">
-              GCODE, the Global Community of Domain Experts, is dedicated to
-              fostering collaboration between startups, industry, and academia.
-              We focus on creating unique partnerships by involving domain
-              experts and interns to facilitate innovation and knowledge
-              sharing. We offer advisory services and support connections
-              between industry and academia to drive impactful collaborations.
-              If you&apos;d like to learn more about scheduling with our domain
-              experts, feel free to reach out.
+              At GCODE, we believe talent is just the beginning. Every
+              performance is an opportunity to build confidence, every
+              interaction is a chance to create meaningful connections, and
+              every event opens doors to new opportunities.
+            </p>
+            <p className="text-body text-white/80">
+              We provide a professional platform where individuals can
+              showcase their talent, receive valuable recognition, learn from
+              experienced mentors, connect with like-minded people, and become
+              part of a thriving ecosystem that celebrates passion, creativity
+              and continuous growth.
+            </p>
+            <p className="text-body text-white/80">
+              Because at GCODE, talent doesn&apos;t end with applause—it
+              begins with opportunity.
             </p>
           </div>
 

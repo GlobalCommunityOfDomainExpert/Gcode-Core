@@ -25,7 +25,6 @@ export function SignUpFlow() {
   const [stepIndex, setStepIndex] = useState<Step>(0);
   const [account, setAccount] = useState<AccountDetails | null>(null);
   const [userId, setUserId] = useState<number | null>(null);
-  const [testOtp, setTestOtp] = useState("");
   const [role, setRole] = useState<StakeholderRole>("expert");
   const [completing, setCompleting] = useState(false);
   const [completeError, setCompleteError] = useState<string | null>(null);
@@ -34,7 +33,7 @@ export function SignUpFlow() {
   const effectiveUserId = oauthUserId ?? userId;
 
   async function handleAccountSubmit(details: AccountDetails) {
-    const { user_id, test_otp } = await signUp(
+    const { user_id } = await signUp(
       details.email,
       details.fullName,
       details.phone,
@@ -42,7 +41,6 @@ export function SignUpFlow() {
     );
     setAccount(details);
     setUserId(user_id);
-    setTestOtp(test_otp);
     setStepIndex(1);
   }
 
@@ -87,7 +85,6 @@ export function SignUpFlow() {
       {effectiveStepIndex === 1 && account !== null && (
         <StepVerifyOtp
           email={account.email}
-          testOtp={testOtp}
           onVerified={() => setStepIndex(2)}
         />
       )}

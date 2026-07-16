@@ -29,7 +29,6 @@ export function VerifyEmailModal({
   onVerified,
 }: VerifyEmailModalProps) {
   const [code, setCode] = useState("");
-  const [testOtp, setTestOtp] = useState("");
   const [sending, setSending] = useState(false);
   const [checking, setChecking] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -40,7 +39,6 @@ export function VerifyEmailModal({
     setError(null);
     setSending(true);
     sendGuestOtp(email, fullName)
-      .then(({ dev_test_otp }) => setTestOtp(dev_test_otp))
       .catch((err) =>
         setError(
           err instanceof ApiError ? err.message : "Could not send code",
@@ -72,12 +70,6 @@ export function VerifyEmailModal({
             ? `Sending a code to ${email}…`
             : `Enter the 6-digit code sent to ${email}`}
         </p>
-
-        {testOtp && (
-          <p className="text-small text-text-secondary text-center">
-            Dev OTP: <span className="font-semibold">{testOtp}</span>
-          </p>
-        )}
 
         <OtpInput
           length={OTP_LENGTH}

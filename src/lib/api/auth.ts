@@ -5,7 +5,7 @@ export function signUp(
   fullName: string,
   phone: string,
   password: string,
-): Promise<{ user_id: number; test_otp: string }> {
+): Promise<{ user_id: number }> {
   return apiRequest("/auth/sign-up", {
     method: "POST",
     body: { email, full_name: fullName, phone, password },
@@ -18,7 +18,7 @@ export function signUp(
 export function sendGuestOtp(
   email: string,
   fullName?: string,
-): Promise<{ dev_test_otp: string }> {
+): Promise<{ message: string }> {
   return apiRequest("/auth/guest-otp", {
     method: "POST",
     body: { email, full_name: fullName },
