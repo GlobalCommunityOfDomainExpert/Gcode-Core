@@ -116,20 +116,6 @@ export function StepScheduleMode({ data, onChange }: StepScheduleModeProps) {
 
       <div className="grid gap-4 sm:grid-cols-2">
         <FormField
-          label="Registration closes"
-          htmlFor="event-registration-closes"
-          hint="Optional — decide later. Defaults to the event date if left blank."
-        >
-          <Input
-            id="event-registration-closes"
-            type="date"
-            value={data.registrationCloses}
-            onChange={(event) =>
-              onChange("registrationCloses", event.target.value)
-            }
-          />
-        </FormField>
-        <FormField
           label="Duration"
           htmlFor="event-duration"
           hint="Shown in place of Time on the event page when Time is left blank."

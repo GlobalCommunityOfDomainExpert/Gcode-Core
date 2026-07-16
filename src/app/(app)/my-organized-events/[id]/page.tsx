@@ -20,8 +20,11 @@ import { OverviewTab } from "./_components/overview-tab";
 
 export default function OrganizedEventDetailPage() {
   const params = useParams<{ id: string }>();
-  const { event, status: eventStatus } = useEvent(params.id);
-  const { attendees } = useAttendees(params.id, event?.priceAmount ?? 0);
+  const { event, status: eventStatus, refresh: refreshEvent } = useEvent(params.id);
+  const { attendees } = useAttendees(params.id, {
+    attendee: event?.attendeeRegistration.price ?? 0,
+    participant: event?.participantRegistration?.price ?? 0,
+  });
 
   const [activeTab, setActiveTab] = useState("overview");
   const [selectedAttendeeIds, setSelectedAttendeeIds] = useState<Set<string>>(
@@ -172,6 +175,7 @@ export default function OrganizedEventDetailPage() {
                 event={event}
                 attendees={attendees}
                 onNavigateToCommunication={() => setActiveTab("communication")}
+                onEventChanged={refreshEvent}
               />
             )}
             {activeTab === "attendees" && (

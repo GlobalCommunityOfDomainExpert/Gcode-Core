@@ -10,6 +10,7 @@ import { useLookup } from "@/hooks/use-lookup";
 
 import { StepEventType } from "./step-event-type";
 import { StepDetails } from "./step-details";
+import { StepRegistration } from "./step-registration";
 import { StepScheduleMode } from "@/app/(app)/my-organized-events/_components/step-schedule-mode";
 import { StepTimelineLinks } from "./step-timeline-links";
 import { StepTerms } from "./step-terms";
@@ -31,6 +32,7 @@ import { toCreatePayload, toTimelinePayload } from "@/lib/api/adapters";
 const stepLabels = [
   "Type",
   "Details",
+  "Registration & Passes",
   "Schedule & Mode",
   "Timeline & Media",
   "Terms",
@@ -224,9 +226,10 @@ export function EventWizard({ mode, eventId, initialData }: EventWizardProps) {
           />
         )}
         {stepIndex === 1 && <StepDetails data={data} onChange={update} />}
-        {stepIndex === 2 && <StepScheduleMode data={data} onChange={update} />}
-        {stepIndex === 3 && <StepTimelineLinks data={data} onChange={update} />}
-        {stepIndex === 4 && <StepTerms data={data} onChange={update} />}
+        {stepIndex === 2 && <StepRegistration data={data} onChange={update} />}
+        {stepIndex === 3 && <StepScheduleMode data={data} onChange={update} />}
+        {stepIndex === 4 && <StepTimelineLinks data={data} onChange={update} />}
+        {stepIndex === 5 && <StepTerms data={data} onChange={update} />}
         {isLastStep && <StepReview data={data} />}
       </Card>
 

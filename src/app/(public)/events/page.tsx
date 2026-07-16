@@ -11,7 +11,6 @@ import {
   EventCard,
   Tabs,
 } from "@/components/molecules";
-import { getAttendeesByEvent } from "@/lib/attendees";
 import { priceTone } from "@/lib/event";
 import { useEvents } from "@/hooks/use-events";
 import { getSession, isAdmin, Session } from "@/lib/auth/session";
@@ -139,12 +138,6 @@ export default function EventsPage() {
             onStateChange={setFeaturedCarouselState}
           >
             {featured.map((event) => {
-              const attendees = getAttendeesByEvent(event.id)
-                .slice(0, 3)
-                .map((attendee) => ({
-                  alt: attendee.name,
-                  initials: attendee.avatarInitials,
-                }));
               return (
                 <EventCard
                   key={event.id}
@@ -165,7 +158,6 @@ export default function EventsPage() {
                   location={
                     event.mode === "In-Person" ? event.location : undefined
                   }
-                  attendees={attendees}
                   attendeesLabel={
                     event.registeredCount
                       ? `+${event.registeredCount} registered`

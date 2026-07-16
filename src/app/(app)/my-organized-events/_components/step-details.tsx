@@ -1,15 +1,10 @@
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import { Upload, X } from "lucide-react";
 import { Button, Icon, Input, Textarea } from "@/components/atoms";
-import { Chip, FormField, ToggleGroup } from "@/components/molecules";
+import { Chip, FormField } from "@/components/molecules";
 import { UpdateEventDetailData, EventDetailData } from "@/lib/zod/event";
 import { useLookup } from "@/hooks/use-lookup";
 import { getCategories } from "@/lib/api/lookups";
-
-const priceOptions = [
-  { value: "Free", label: "Free" },
-  { value: "Paid", label: "Paid" },
-];
 
 export interface StepDetailsProps {
   data: EventDetailData;
@@ -18,9 +13,6 @@ export interface StepDetailsProps {
 
 export function StepDetails({ data, onChange }: StepDetailsProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
-  // Paid/Free is tracked locally so clearing the amount field to retype it
-  // doesn't snap the toggle back to Free (priceAmount briefly 0).
-  const [isPaid, setIsPaid] = useState(data.priceAmount > 0);
   const { data: categories } = useLookup(getCategories);
 
   function toggleCategory(id: number) {
@@ -122,72 +114,6 @@ export function StepDetails({ data, onChange }: StepDetailsProps) {
           </Button>
         )}
       </FormField>
-
-      <div className="grid gap-4 sm:grid-cols-2">
-        <FormField label="Price" htmlFor="event-price">
-          <ToggleGroup
-            options={priceOptions}
-            value={isPaid ? "Paid" : "Free"}
-            onChange={(value) => {
-              const paid = value === "Paid";
-              setIsPaid(paid);
-              if (!paid) onChange("priceAmount", 0);
-            }}
-          />
-        </FormField>
-        {isPaid && (
-          <FormField label="Amount (₹)" htmlFor="event-price-amount">
-            <Input
-              id="event-price-amount"
-              type="number"
-              min={0}
-              value={data.priceAmount || ""}
-              onChange={(event) =>
-                onChange("priceAmount", Number(event.target.value) || 0)
-              }
-              placeholder="299"
-            />
-          </FormField>
-        )}
-      </div>
-
-      <div className="grid gap-4 sm:grid-cols-2">
-        <FormField
-          label="Capacity"
-          htmlFor="event-capacity"
-          hint="Leave blank for unlimited."
-        >
-          <Input
-            id="event-capacity"
-            type="number"
-            min={0}
-            value={data.capacity || ""}
-            onChange={(event) =>
-              onChange("capacity", Number(event.target.value) || 0)
-            }
-            placeholder="200"
-          />
-        </FormField>
-        <FormField
-          label="Max Tickets Per Registration"
-          htmlFor="event-max-tickets"
-          hint="Leave blank for no per-booking limit."
-        >
-          <Input
-            id="event-max-tickets"
-            type="number"
-            min={0}
-            value={data.maxTicketsPerRegistration || ""}
-            onChange={(event) =>
-              onChange(
-                "maxTicketsPerRegistration",
-                Number(event.target.value) || 0,
-              )
-            }
-            placeholder="4"
-          />
-        </FormField>
-      </div>
 
       <FormField
         label="Category Tags"

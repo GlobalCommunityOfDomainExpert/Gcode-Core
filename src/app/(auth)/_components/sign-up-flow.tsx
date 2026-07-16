@@ -37,6 +37,7 @@ export function SignUpFlow() {
     const { user_id, test_otp } = await signUp(
       details.email,
       details.fullName,
+      details.phone,
       details.password,
     );
     setAccount(details);
