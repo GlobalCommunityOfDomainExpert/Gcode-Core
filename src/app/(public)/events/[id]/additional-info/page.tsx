@@ -1,10 +1,17 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { useParams, useSearchParams } from "next/navigation";
-import { AlertTriangle, Clock, Compass, ExternalLink } from "lucide-react";
+import {
+  AlertTriangle,
+  Check,
+  Clock,
+  Compass,
+  ExternalLink,
+  LucideIcon,
+} from "lucide-react";
 import { Button, Card, Icon, Input, Label, SectionLabel } from "@/components/atoms";
-import { Banner, ChecklistItem, NotFoundState } from "@/components/molecules";
+import { Banner, NotFoundState } from "@/components/molecules";
 import { useEvent } from "@/hooks/use-event";
 import { getParticipant, submitParticipantAudio } from "@/lib/api/participants";
 import { ApiError } from "@/lib/api/client";
@@ -26,6 +33,37 @@ function isValidUrl(value: string): boolean {
   } catch {
     return false;
   }
+}
+
+// Neutral card + small tone-colored icon badge — same pattern as the
+// registered page's success/reminder cards, instead of a solid-fill
+// Banner. Used for all three submission-status states below so they read
+// as one consistent alert style rather than three different color blocks.
+const statusTone = {
+  danger: { badge: "bg-danger-light", icon: "text-danger" },
+  success: { badge: "bg-success-light", icon: "text-success" },
+  warning: { badge: "bg-warning-light", icon: "text-warning" },
+} as const;
+
+function StatusCard({
+  tone,
+  icon,
+  children,
+}: {
+  tone: keyof typeof statusTone;
+  icon: LucideIcon;
+  children: ReactNode;
+}) {
+  return (
+    <div className="border-border-light bg-surface-light flex items-center gap-4 rounded-md border p-6">
+      <div
+        className={`flex size-10 shrink-0 items-center justify-center rounded-full ${statusTone[tone].badge}`}
+      >
+        <Icon icon={icon} size="md" className={statusTone[tone].icon} />
+      </div>
+      <p className="text-body text-text-primary">{children}</p>
+    </div>
+  );
 }
 
 export default function AdditionalInfoPage() {
@@ -155,21 +193,21 @@ export default function AdditionalInfoPage() {
       </div>
 
       {isDisqualified ? (
-        <Banner tone="danger" icon={AlertTriangle}>
+        <StatusCard tone="danger" icon={AlertTriangle}>
           The 24-hour submission window closed on{" "}
           {deadline.toLocaleString()} and no audio was submitted. This entry
           is disqualified. Contact the organizer if you believe this is a
           mistake.
-        </Banner>
+        </StatusCard>
       ) : submittedUrl ? (
-        <Banner tone="success">
+        <StatusCard tone="success" icon={Check}>
           Audio submitted. You can replace it until the deadline below.
-        </Banner>
+        </StatusCard>
       ) : (
-        <Banner tone="warning" icon={Clock}>
+        <StatusCard tone="warning" icon={Clock}>
           {formatCountdown(msRemaining)} left to submit — deadline{" "}
           {deadline.toLocaleString()}.
-        </Banner>
+        </StatusCard>
       )}
 
       {error && <Banner tone="danger">{error}</Banner>}
@@ -177,20 +215,36 @@ export default function AdditionalInfoPage() {
       {!isDisqualified && (
         <Card padding="md" className="space-y-4">
           <SectionLabel>How to submit</SectionLabel>
-          <div className="space-y-3">
-            <ChecklistItem
-              label="Upload your audio file"
-              subtext="Any host works — Google Drive, Dropbox, OneDrive, etc."
-            />
-            <ChecklistItem
-              label='Set sharing to "Anyone with the link"'
-              subtext='On Google Drive: right-click the file → Share → General access → "Anyone with the link" (Viewer is enough). A private link the reviewer can&apos;t open counts as no submission.'
-            />
-            <ChecklistItem
-              label="Copy the link and paste it below, then submit"
-              subtext="Before the 24h deadline — after that the entry is disqualified regardless of the file itself."
-            />
-          </div>
+          <ol className="space-y-3">
+            <li>
+              <p className="text-body text-text-primary font-medium">
+                1. Upload your audio file
+              </p>
+              <p className="text-small text-text-secondary">
+                Any host works — Google Drive, Dropbox, OneDrive, etc.
+              </p>
+            </li>
+            <li>
+              <p className="text-body text-text-primary font-medium">
+                2. Set sharing to &quot;Anyone with the link&quot;
+              </p>
+              <p className="text-small text-text-secondary">
+                On Google Drive: right-click the file → Share → General
+                access → &quot;Anyone with the link&quot; (Viewer is enough).
+                A private link the reviewer can&apos;t open counts as no
+                submission.
+              </p>
+            </li>
+            <li>
+              <p className="text-body text-text-primary font-medium">
+                3. Copy the link and paste it below, then submit
+              </p>
+              <p className="text-small text-text-secondary">
+                Before the 24h deadline — after that the entry is
+                disqualified regardless of the file itself.
+              </p>
+            </li>
+          </ol>
 
           <SectionLabel>Additional Info</SectionLabel>
           <div className="space-y-1">
