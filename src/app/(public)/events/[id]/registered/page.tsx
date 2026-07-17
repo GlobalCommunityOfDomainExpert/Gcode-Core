@@ -3,17 +3,23 @@
 import { useEffect, useState } from "react";
 import { useParams, useSearchParams } from "next/navigation";
 import QRCode from "qrcode";
-import { Calendar, Check, Compass, MapPin } from "lucide-react";
+import {
+  AlertTriangle,
+  ArrowRight,
+  Calendar,
+  Check,
+  Compass,
+  MapPin,
+} from "lucide-react";
 import {
   Badge,
   BookingRef,
-  Button,
   ButtonLink,
   Icon,
   QrPlaceholder,
   SectionLabel,
 } from "@/components/atoms";
-import { Banner, EventBadgeRow, NotFoundState } from "@/components/molecules";
+import { EventBadgeRow, NotFoundState } from "@/components/molecules";
 import { useEvent } from "@/hooks/use-event";
 import { getParticipant } from "@/lib/api/participants";
 import { ParticipantApi } from "@/lib/api/types";
@@ -99,29 +105,6 @@ export default function EventRegisteredPage() {
       ? event.participantRegistration.label
       : event.attendeeRegistration.label;
 
-  function downloadTicket() {
-    const ticketText = [
-      "GCODE EVENT TICKET",
-      "",
-      `Event: ${event!.title}`,
-      `Date: ${event!.date} · ${event!.time}`,
-      `Location: ${event!.location}`,
-      `Booking Reference: ${bookingRef}`,
-      `Tickets: ${quantity}`,
-      "",
-      "Present this ticket at the event check-in.",
-    ].join("\n");
-    const blob = new Blob([ticketText], { type: "text/plain;charset=utf-8;" });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = `${bookingRef}-ticket.txt`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
-  }
-
   return (
     <div className="mx-auto max-w-2xl space-y-6">
       <div className="border-success/20 bg-success-light flex items-start gap-4 rounded-md border p-6">
@@ -188,29 +171,30 @@ export default function EventRegisteredPage() {
               {quantity} ticket{quantity === 1 ? "" : "s"} · one QR code
               covers this whole booking — present it once at check-in.
             </p>
-            <Button variant="primary" size="sm" onClick={downloadTicket}>
-              Download Ticket
-            </Button>
           </div>
         </div>
       </div>
 
       {participant.category === "PARTICIPANT" && (
-        <Banner tone="warning">
-          <p>
-            You registered as a Participant — submit your audio submission
-            URL within 24 hours of registration or your entry will be
-            disqualified.
-          </p>
-          <ButtonLink
-            href={`/events/${event.id}/additional-info?pid=${participant.id}`}
-            variant="primary"
-            size="sm"
-            className="mt-2"
-          >
-            Additional Info →
-          </ButtonLink>
-        </Banner>
+        <div className="border-border-light bg-surface-light flex items-start gap-4 rounded-md border p-6">
+          <div className="bg-warning-light flex size-10 shrink-0 items-center justify-center rounded-full">
+            <Icon icon={AlertTriangle} size="md" className="text-warning" />
+          </div>
+          <div className="space-y-3">
+            <p className="text-body text-text-primary">
+              You registered as a Participant — submit your audio submission
+              URL within 24 hours of registration or your entry will be
+              disqualified.
+            </p>
+            <ButtonLink
+              href={`/events/${event.id}/additional-info?pid=${participant.id}`}
+              variant="primary"
+              size="sm"
+            >
+              Additional Info <Icon icon={ArrowRight} size="sm" />
+            </ButtonLink>
+          </div>
+        </div>
       )}
 
       {session && (
