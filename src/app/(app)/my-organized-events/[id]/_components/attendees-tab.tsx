@@ -10,22 +10,34 @@ import {
   SearchBar,
   Table,
   TableColumn,
+  Tabs,
 } from "@/components/molecules";
 import {
   ATTENDEES_CSV_HEADERS,
   Attendee,
   attendeesCsvRows,
+  audioSubmissionStatus,
 } from "@/lib/attendees";
 import { downloadCsv } from "@/lib/csv";
 import { Event } from "@/lib/event";
 import {
   attendanceStatusLabel,
   attendanceStatusTone,
+  submissionStatusLabel,
+  submissionStatusTone,
   ticketTypeTone,
 } from "./status-maps";
 
 export type AttendeesFilterValue =
-  "all" | "paid" | "free" | "attended" | "missed";
+  | "all"
+  | "paid"
+  | "free"
+  | "attended"
+  | "missed"
+  | "submitted"
+  | "pending"
+  | "disqualified";
+export type AttendeesCategoryFilterValue = "all" | "Attendee" | "Participant";
 
 export interface AttendeesTabProps {
   event: Event;
@@ -50,6 +62,8 @@ export function AttendeesTab({
 }: AttendeesTabProps) {
   const [query, setQuery] = useState("");
   const [filter, setFilter] = useState<AttendeesFilterValue>("all");
+  const [categoryFilter, setCategoryFilter] =
+    useState<AttendeesCategoryFilterValue>("all");
   const [page, setPage] = useState(1);
   const [viewingAttendee, setViewingAttendee] = useState<Attendee | null>(null);
 
@@ -60,6 +74,22 @@ export function AttendeesTab({
       free: attendees.filter((a) => a.ticketType === "Free").length,
       attended: attendees.filter((a) => a.status === "attended").length,
       missed: attendees.filter((a) => a.status === "missed").length,
+      submitted: attendees.filter((a) => audioSubmissionStatus(a) === "submitted")
+        .length,
+      pending: attendees.filter((a) => audioSubmissionStatus(a) === "pending")
+        .length,
+      disqualified: attendees.filter(
+        (a) => audioSubmissionStatus(a) === "disqualified",
+      ).length,
+    }),
+    [attendees],
+  );
+
+  const categoryCounts = useMemo(
+    () => ({
+      all: attendees.length,
+      Attendee: attendees.filter((a) => a.category === "Attendee").length,
+      Participant: attendees.filter((a) => a.category === "Participant").length,
     }),
     [attendees],
   );
@@ -70,13 +100,22 @@ export function AttendeesTab({
       if (filter === "free" && attendee.ticketType !== "Free") return false;
       if (filter === "attended" && attendee.status !== "attended") return false;
       if (filter === "missed" && attendee.status !== "missed") return false;
+      if (
+        (filter === "submitted" ||
+          filter === "pending" ||
+          filter === "disqualified") &&
+        audioSubmissionStatus(attendee) !== filter
+      )
+        return false;
+      if (categoryFilter !== "all" && attendee.category !== categoryFilter)
+        return false;
       if (query.trim()) {
         const haystack = `${attendee.name} ${attendee.email}`.toLowerCase();
         if (!haystack.includes(query.trim().toLowerCase())) return false;
       }
       return true;
     });
-  }, [attendees, filter, query]);
+  }, [attendees, filter, categoryFilter, query]);
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
   const currentPage = Math.min(page, totalPages);
@@ -113,14 +152,7 @@ export function AttendeesTab({
     {
       key: "name",
       header: "Name",
-      render: (row) => (
-        <Blurred
-          label={`Attendee ${row.id}`}
-          className="text-text-primary font-semibold"
-        >
-          {row.name}
-        </Blurred>
-      ),
+      render: (row) => <span className="text-text-primary">{row.name}</span>,
     },
     {
       key: "role",
@@ -128,6 +160,19 @@ export function AttendeesTab({
       render: (row) => (
         <Badge variant="muted" tone="neutral" size="sm">
           {row.role}
+        </Badge>
+      ),
+    },
+    {
+      key: "category",
+      header: "Category",
+      render: (row) => (
+        <Badge
+          variant="muted"
+          tone={row.category === "Participant" ? "primary" : "neutral"}
+          size="sm"
+        >
+          {row.category}
         </Badge>
       ),
     },
@@ -150,6 +195,13 @@ export function AttendeesTab({
       ),
     },
     {
+      key: "tickets",
+      header: "Tickets",
+      render: (row) => (
+        <span className="text-text-secondary">{row.quantity ?? 1}</span>
+      ),
+    },
+    {
       key: "status",
       header: "Status",
       render: (row) => (
@@ -163,23 +215,40 @@ export function AttendeesTab({
       ),
     },
     {
-      key: "actions",
-      header: "",
-      render: (row) => (
-        <button
-          type="button"
-          onClick={() => setViewingAttendee(row)}
-          className="text-small text-text-secondary hover:text-text-primary focus-visible:ring-primary rounded-sm focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
-        >
-          View →
-        </button>
-      ),
-      className: "text-right",
+      key: "submission",
+      header: "Submission",
+      render: (row) => {
+        const submission = audioSubmissionStatus(row);
+        if (!submission) {
+          return <span className="text-text-secondary">—</span>;
+        }
+        return (
+          <Badge variant="muted" tone={submissionStatusTone[submission]} size="sm">
+            {submissionStatusLabel[submission]}
+          </Badge>
+        );
+      },
     },
   ];
 
   return (
     <div className="space-y-4">
+      <Tabs
+        items={[
+          { value: "all", label: `All (${categoryCounts.all})` },
+          { value: "Attendee", label: `Attendees (${categoryCounts.Attendee})` },
+          {
+            value: "Participant",
+            label: `Participants (${categoryCounts.Participant})`,
+          },
+        ]}
+        value={categoryFilter}
+        onChange={(value) => {
+          setCategoryFilter(value as AttendeesCategoryFilterValue);
+          setPage(1);
+        }}
+      />
+
       <div className="flex flex-wrap items-center gap-3">
         <SearchBar
           value={query}
@@ -217,6 +286,24 @@ export function AttendeesTab({
             onClick={() => changeFilter("missed")}
           >
             Missed ({counts.missed})
+          </Chip>
+          <Chip
+            selected={filter === "submitted"}
+            onClick={() => changeFilter("submitted")}
+          >
+            Submitted ({counts.submitted})
+          </Chip>
+          <Chip
+            selected={filter === "pending"}
+            onClick={() => changeFilter("pending")}
+          >
+            Pending Submission ({counts.pending})
+          </Chip>
+          <Chip
+            selected={filter === "disqualified"}
+            onClick={() => changeFilter("disqualified")}
+          >
+            Disqualified ({counts.disqualified})
           </Chip>
         </div>
         <button
@@ -257,6 +344,7 @@ export function AttendeesTab({
         selectedKeys={selectedIds}
         onToggleRow={toggleRow}
         onToggleAll={toggleAll}
+        onRowClick={setViewingAttendee}
         emptyState={
           <div className="border-border-light bg-surface-light rounded-md border p-8 text-center">
             <p className="text-body text-text-secondary">
@@ -291,8 +379,16 @@ export function AttendeesTab({
               {viewingAttendee.email}
             </p>
             <p>
+              <span className="text-text-secondary">Phone:</span>{" "}
+              {viewingAttendee.phone || "—"}
+            </p>
+            <p>
               <span className="text-text-secondary">Role:</span>{" "}
               {viewingAttendee.role}
+            </p>
+            <p>
+              <span className="text-text-secondary">Category:</span>{" "}
+              {viewingAttendee.category}
             </p>
             <p>
               <span className="text-text-secondary">Registered:</span>{" "}
@@ -306,9 +402,32 @@ export function AttendeesTab({
                 : ""}
             </p>
             <p>
+              <span className="text-text-secondary">Tickets:</span>{" "}
+              {viewingAttendee.quantity ?? 1}
+            </p>
+            <p>
               <span className="text-text-secondary">Status:</span>{" "}
               {attendanceStatusLabel[viewingAttendee.status]}
             </p>
+            {audioSubmissionStatus(viewingAttendee) && (
+              <p>
+                <span className="text-text-secondary">Submission:</span>{" "}
+                {submissionStatusLabel[audioSubmissionStatus(viewingAttendee)!]}
+                {viewingAttendee.audioSubmissionUrl && (
+                  <>
+                    {" · "}
+                    <a
+                      href={viewingAttendee.audioSubmissionUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-primary underline"
+                    >
+                      View submission
+                    </a>
+                  </>
+                )}
+              </p>
+            )}
           </div>
         )}
       </Modal>

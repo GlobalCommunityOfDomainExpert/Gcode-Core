@@ -1,3 +1,5 @@
+import { getSession } from "@/lib/auth/session";
+
 const DEFAULT_BASE_URL =
   "https://g39bc7cd4ecbbbb-gcdev01.adb.ap-hyderabad-1.oraclecloudapps.com/ords/wksp_gcode2/v1";
 
@@ -15,7 +17,7 @@ export class ApiError extends Error {
 }
 
 interface RequestOptions {
-  method?: "GET" | "POST" | "PUT" | "DELETE";
+  method?: "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
   body?: unknown;
   query?: Record<string, string | number | boolean | undefined>;
 }
@@ -33,9 +35,17 @@ export async function apiRequest<T>(
     }
   }
 
+  // Auth endpoints (sign-in, sign-up, etc.) run before a session exists;
+  // everything else that needs the caller's identity (e.g. /participants/me)
+  // relies on the backend decoding this token server-side.
+  const session = typeof window !== "undefined" ? getSession() : null;
+  const headers: Record<string, string> = {};
+  if (body) headers["Content-Type"] = "application/json";
+  if (session) headers["Authorization"] = `Bearer ${session.token}`;
+
   const res = await fetch(url, {
     method,
-    headers: body ? { "Content-Type": "application/json" } : undefined,
+    headers,
     body: body ? JSON.stringify(body) : undefined,
   });
 
@@ -45,11 +55,19 @@ export async function apiRequest<T>(
     !res.ok ||
     (data && typeof data === "object" && "error" in (data as object))
   ) {
-    throw new ApiError(
-      (data as { error?: string } | null)?.error ??
-        `Request failed: ${res.status}`,
-      res.status,
-    );
+    const errorBody = data as
+      | { error?: string; message?: string; cause?: string }
+      | null;
+    // RAISE_APPLICATION_ERROR text doesn't land in `message` (that's ORDS's
+    // generic "user defined resource" wrapper) — it's inside `cause`, e.g.
+    // "...SQL Error Code 20001, Error Message: ORA-20001: <our message>\nORA-06512...".
+    const causeMatch = errorBody?.cause?.match(/ORA-\d+:\s*([^\n]+)/);
+    const rawMessage =
+      errorBody?.error ??
+      causeMatch?.[1] ??
+      errorBody?.message ??
+      `Request failed: ${res.status}`;
+    throw new ApiError(rawMessage.replace(/^ORA-\d+:\s*/, ""), res.status);
   }
 
   return data as T;

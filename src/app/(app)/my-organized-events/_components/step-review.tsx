@@ -1,6 +1,5 @@
-import { Badge, Card, SectionLabel } from "@/components/atoms";
-import { getStakeholderById } from "@/lib/community-requests";
-import { SelectedStakeholder, EventDetailData } from "@/lib/zod/event";
+import { Card, SectionLabel } from "@/components/atoms";
+import { EventDetailData } from "@/lib/zod/event";
 
 function ReviewRow({ label, value }: { label: string; value: string }) {
   if (!value) return null;
@@ -14,17 +13,9 @@ function ReviewRow({ label, value }: { label: string; value: string }) {
 
 export interface StepReviewProps {
   data: EventDetailData;
-  selectedStakeholders: SelectedStakeholder[];
-  showCommunityRequests?: boolean;
 }
 
-export function StepReview({
-  data,
-  selectedStakeholders,
-  showCommunityRequests = true,
-}: StepReviewProps) {
-  const price = data.priceAmount > 0 ? `₹${data.priceAmount}` : "Free";
-
+export function StepReview({ data }: StepReviewProps) {
   return (
     <div className="space-y-5">
       <div>
@@ -42,11 +33,6 @@ export function StepReview({
           value={data.type !== null ? String(data.type) : ""}
         />
         <ReviewRow label="Title" value={data.title} />
-        <ReviewRow label="Price" value={price} />
-        <ReviewRow
-          label="Capacity"
-          value={data.capacity ? `${data.capacity} attendees` : "Unlimited"}
-        />
         <ReviewRow
           label="Certificate"
           value={data.certificate ? "Yes" : "No"}
@@ -57,11 +43,71 @@ export function StepReview({
         <ReviewRow label="City" value={data.city} />
         <ReviewRow label="Venue address" value={data.location} />
         <ReviewRow label="Participation link" value={data.participationLink} />
-        <ReviewRow
-          label="Registration closes"
-          value={data.registrationCloses}
-        />
         <ReviewRow label="Duration" value={data.duration} />
+      </Card>
+
+      <Card className="divide-border-light space-y-1 divide-y">
+        <SectionLabel>{data.attendeeLabel || "Attendee"} pass</SectionLabel>
+        <ReviewRow
+          label="Status"
+          value={data.attendeeRegistrationEnabled ? "Enabled" : "Disabled"}
+        />
+        {data.attendeeRegistrationEnabled && (
+          <>
+            <ReviewRow
+              label="Price"
+              value={data.priceAmount > 0 ? `₹${data.priceAmount}` : "Free"}
+            />
+            <ReviewRow
+              label="Capacity"
+              value={data.capacity ? `${data.capacity} attendees` : "Unlimited"}
+            />
+            <ReviewRow
+              label="Registration opens"
+              value={data.attendeeRegistrationOpens || "Immediately"}
+            />
+            <ReviewRow
+              label="Registration closes"
+              value={data.attendeeRegistrationCloses || "Event date"}
+            />
+          </>
+        )}
+      </Card>
+
+      <Card className="divide-border-light space-y-1 divide-y">
+        <SectionLabel>{data.participantLabel || "Participant"} pass</SectionLabel>
+        <ReviewRow
+          label="Status"
+          value={data.participantRegistrationEnabled ? "Enabled" : "Disabled"}
+        />
+        {data.participantRegistrationEnabled && (
+          <>
+            <ReviewRow
+              label="Price"
+              value={
+                data.participantPriceAmount > 0
+                  ? `₹${data.participantPriceAmount}`
+                  : "Free"
+              }
+            />
+            <ReviewRow
+              label="Capacity"
+              value={
+                data.participantCapacity
+                  ? `${data.participantCapacity} participants`
+                  : "Unlimited"
+              }
+            />
+            <ReviewRow
+              label="Registration opens"
+              value={data.participantRegistrationOpens || "Immediately"}
+            />
+            <ReviewRow
+              label="Registration closes"
+              value={data.participantRegistrationCloses || "Event date"}
+            />
+          </>
+        )}
       </Card>
 
       {data.description && (
@@ -115,38 +161,6 @@ export function StepReview({
         </Card>
       )}
 
-      {showCommunityRequests && (
-        <Card className="space-y-2">
-          <SectionLabel>
-            Community requests ({selectedStakeholders.length})
-          </SectionLabel>
-          {selectedStakeholders.length === 0 ? (
-            <p className="text-body text-text-secondary">
-              No stakeholders requested — you can skip this and add none.
-            </p>
-          ) : (
-            <ul className="space-y-2">
-              {selectedStakeholders.map((item) => {
-                const stakeholder = getStakeholderById(item.stakeholderId);
-                if (!stakeholder) return null;
-                return (
-                  <li
-                    key={item.stakeholderId}
-                    className="flex items-center justify-between gap-2"
-                  >
-                    <span className="text-body text-text-primary">
-                      {stakeholder.name}
-                    </span>
-                    <Badge variant="muted" tone="primary" size="sm">
-                      {item.category}
-                    </Badge>
-                  </li>
-                );
-              })}
-            </ul>
-          )}
-        </Card>
-      )}
     </div>
   );
 }

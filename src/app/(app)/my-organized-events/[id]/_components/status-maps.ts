@@ -1,6 +1,5 @@
 import { BadgeTone } from "@/components/atoms";
-import { AttendanceStatus } from "@/lib/attendees";
-import { CommunityRequestStatus } from "@/lib/community-requests";
+import { AttendanceStatus, SubmissionStatus } from "@/lib/attendees";
 
 export const attendanceStatusTone: Record<AttendanceStatus, BadgeTone> = {
   registered: "primary",
@@ -16,19 +15,19 @@ export const attendanceStatusLabel: Record<AttendanceStatus, string> = {
   cancelled: "Cancelled",
 };
 
-export const communityStatusTone: Record<CommunityRequestStatus, BadgeTone> = {
-  interested: "primary",
-  helping: "success",
-  passed: "neutral",
-};
-
-export const communityStatusLabel: Record<CommunityRequestStatus, string> = {
-  interested: "Interested",
-  helping: "Helping",
-  passed: "Passed",
-};
-
 export const ticketTypeTone: Record<"Free" | "Paid", BadgeTone> = {
   Free: "success",
   Paid: "primary",
+};
+
+export const submissionStatusTone: Record<SubmissionStatus, BadgeTone> = {
+  submitted: "success",
+  pending: "warning",
+  disqualified: "danger",
+};
+
+export const submissionStatusLabel: Record<SubmissionStatus, string> = {
+  submitted: "Submitted",
+  pending: "Pending",
+  disqualified: "Disqualified",
 };

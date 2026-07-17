@@ -1,40 +1,65 @@
 "use client";
 
-import { ChangeEvent, KeyboardEvent, useRef } from "react";
+import { ChangeEvent, ClipboardEvent, KeyboardEvent, useRef } from "react";
 
 export interface OtpInputProps {
   length?: number;
   error?: boolean;
   disabled?: boolean;
-  onComplete?: (code: string) => void;
+  onChange?: (code: string) => void;
 }
 
 export function OtpInput({
   length = 6,
   error = false,
   disabled = false,
-  onComplete,
+  onChange,
 }: OtpInputProps) {
   const inputsRef = useRef<(HTMLInputElement | null)[]>([]);
 
+  function emitChange() {
+    const code = inputsRef.current.map((el) => el?.value ?? "").join("");
+    onChange?.(code);
+  }
+
   function handleChange(event: ChangeEvent<HTMLInputElement>, index: number) {
-    const value = event.target.value.replace(/[^0-9]/g, "").slice(-1);
+    const value = event.target.value
+      .replace(/[^a-zA-Z0-9]/g, "")
+      .toUpperCase()
+      .slice(-1);
     event.target.value = value;
 
     if (value && index < length - 1) {
       inputsRef.current[index + 1]?.focus();
     }
 
-    const code = inputsRef.current.map((el) => el?.value ?? "").join("");
-    if (onComplete && code.length === length) {
-      onComplete(code);
-    }
+    emitChange();
   }
 
   function handleKeyDown(event: KeyboardEvent<HTMLInputElement>, index: number) {
     if (event.key === "Backspace" && !event.currentTarget.value && index > 0) {
       inputsRef.current[index - 1]?.focus();
     }
+  }
+
+  function handlePaste(event: ClipboardEvent<HTMLInputElement>) {
+    event.preventDefault();
+    const pasted = event.clipboardData
+      .getData("text")
+      .replace(/[^a-zA-Z0-9]/g, "")
+      .toUpperCase()
+      .slice(0, length);
+
+    if (!pasted) return;
+
+    pasted.split("").forEach((char, i) => {
+      const el = inputsRef.current[i];
+      if (el) el.value = char;
+    });
+
+    inputsRef.current[Math.min(pasted.length, length - 1)]?.focus();
+
+    emitChange();
   }
 
   return (
@@ -50,13 +75,14 @@ export function OtpInput({
             inputsRef.current[index] = el;
           }}
           type="text"
-          inputMode="numeric"
+          inputMode="text"
           maxLength={1}
           autoFocus={index === 0}
           disabled={disabled}
           aria-invalid={error || undefined}
           onChange={(event) => handleChange(event, index)}
           onKeyDown={(event) => handleKeyDown(event, index)}
+          onPaste={handlePaste}
           className={
             `bg-surface-light text-text-primary text-large size-12 rounded-sm border text-center font-semibold shadow-inner ` +
             `transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none ` +

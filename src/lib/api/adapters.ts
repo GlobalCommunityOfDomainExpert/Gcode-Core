@@ -1,13 +1,21 @@
-import { EventType, EventStatus, Event, EventTimelineItem } from "@/lib/event";
+import {
+  EventType,
+  EventStatus,
+  Event,
+  EventTimelineItem,
+  MyTicket,
+  RegistrationCategory,
+} from "@/lib/event";
 import { EventDetailData } from "@/lib/zod/event";
 import { EventTimelineApi } from "./events";
+import { Attendee, AttendeeRole } from "@/lib/attendees";
 import {
-  CommunityRequest,
-  CommunityRequestStatus,
-  StakeholderCategory,
-} from "@/lib/community-requests";
-import { EventDetail, EventListItem, CreateEventPayload } from "./types";
-import { CommunityRequestApi } from "./community";
+  EventDetail,
+  EventListItem,
+  CreateEventPayload,
+  ParticipantApi,
+  MyParticipationApi,
+} from "./types";
 import { API_BASE_URL } from "./client";
 
 // Cover/banner URLs may be stored as an API-relative path (DB-hosted image) or
@@ -17,12 +25,32 @@ function resolveImageUrl(url: string | null): string | undefined {
   return url.startsWith("http") ? url : `${API_BASE_URL}${url}`;
 }
 
+// Shown when an organizer hasn't set custom terms/eligibility for an event.
+export const DEFAULT_TERMS = [
+  "Registration confirms your agreement to attend and follow the event's code of conduct.",
+  "GCODE reserves the right to modify event details or cancel the event due to unforeseen circumstances.",
+  "No refunds for paid tickets unless the event is cancelled by the organizer.",
+];
+
+export const DEFAULT_ELIGIBILITY = [
+  "Open to all professionals, students, and enthusiasts interested in the topic.",
+  "Participants must be 18 years or older, or attend with a guardian.",
+];
+
+// Organizer text is stored newline-separated (like DESCRIPTION); split into
+// bullet lines, falling back to the defaults above when blank/unset.
+function splitBullets(raw: string | null, fallback: string[]): string[] {
+  if (!raw) return fallback;
+  const lines = raw.split("\n").filter((line) => line.trim() !== "");
+  return lines.length > 0 ? lines : fallback;
+}
+
 // EVENT_TIMELINE row -> UI timeline item. Splits the ISO start/end into the
 // date + time fields the UI uses.
 export function adaptTimelineItem(row: EventTimelineApi): EventTimelineItem {
   return {
-    date: istDate(row.start_time),
-    time: istTime(row.start_time),
+    date: row.start_time ? istDate(row.start_time) : "",
+    time: row.start_time ? istTime(row.start_time) : "",
     endTime: row.end_time ? istTime(row.end_time) : undefined,
     title: row.title,
     description: row.description ?? "",
@@ -30,20 +58,53 @@ export function adaptTimelineItem(row: EventTimelineApi): EventTimelineItem {
   };
 }
 
-export function adaptCommunityRequest(
-  r: CommunityRequestApi,
-): CommunityRequest {
+const ROLE_NAME_MAP: Record<string, AttendeeRole> = {
+  FRESHER: "Fresher",
+  STARTUP: "Startup Founder",
+  EXPERT: "Domain Expert",
+  INSTITUTION: "Institution",
+};
+
+// "Jane Doe" -> "JD". Guest registrants only ever give a full name, no
+// avatar image, so initials are all we can show.
+function initialsOf(name: string): string {
+  return (
+    name
+      .trim()
+      .split(/\s+/)
+      .slice(0, 2)
+      .map((part) => part[0]?.toUpperCase())
+      .join("") || "?"
+  );
+}
+
+// GCODE_EVENT_PARTICIPANTS row -> UI Attendee. Status collapses to
+// "registered" for now — the participants table has no attended/no-show
+// tracking yet. ticketType/amountPaid are priced off whichever category this
+// row registered under (row.category missing/undefined -> treated as
+// Attendee, for rows from a backend that hasn't added the column yet).
+export function adaptParticipant(
+  row: ParticipantApi,
+  prices: { attendee: number; participant: number },
+): Attendee {
+  const isParticipant = row.category === "PARTICIPANT";
+  const price = isParticipant ? prices.participant : prices.attendee;
   return {
-    id: String(r.id),
-    eventId: String(r.event_id),
-    stakeholderId: r.stakeholder_id,
-    category: r.category as StakeholderCategory,
-    message: r.message ?? "",
-    status: r.status as CommunityRequestStatus,
-    responseMessage: r.response_message ?? undefined,
-    createdAt: r.created_at,
-    respondedAt: r.responded_at ?? undefined,
-    remindedAt: r.reminded_at ?? undefined,
+    id: String(row.id),
+    eventId: String(row.event_id),
+    name: row.user_name,
+    email: row.email ?? "",
+    phone: row.phone,
+    avatarInitials: initialsOf(row.user_name),
+    role: (row.role_name && ROLE_NAME_MAP[row.role_name]) || "Guest",
+    ticketType: price > 0 ? "Paid" : "Free",
+    quantity: row.quantity,
+    amountPaid: price > 0 ? price * row.quantity : undefined,
+    status: "registered",
+    registeredAt: row.applied_on,
+    category: isParticipant ? "Participant" : "Attendee",
+    audioSubmissionUrl: row.audio_submission_url,
+    audioSubmittedOn: row.audio_submitted_on,
   };
 }
 
@@ -61,6 +122,7 @@ function toIsoTimestamp(date: string, time?: string): string | undefined {
 export function toCreatePayload(
   data: EventDetailData,
   createdBy?: string,
+  organizerId?: number,
 ): CreateEventPayload {
   if (data.type === null) {
     throw new Error("Event type is required before creating an event");
@@ -71,9 +133,20 @@ export function toCreatePayload(
     mode_of_event_id: data.mode,
     description: data.description || undefined,
     start_date: toIsoTimestamp(data.date, data.time),
-    registration_deadline: data.registrationCloses
-      ? toIsoTimestamp(data.registrationCloses)
+    registration_start: data.attendeeRegistrationOpens
+      ? toIsoTimestamp(data.attendeeRegistrationOpens)
       : undefined,
+    registration_deadline: data.attendeeRegistrationCloses
+      ? toIsoTimestamp(data.attendeeRegistrationCloses)
+      : undefined,
+    participant_registration_start:
+      data.participantRegistrationEnabled && data.participantRegistrationOpens
+        ? toIsoTimestamp(data.participantRegistrationOpens)
+        : undefined,
+    participant_registration_deadline:
+      data.participantRegistrationEnabled && data.participantRegistrationCloses
+        ? toIsoTimestamp(data.participantRegistrationCloses)
+        : undefined,
     city: data.city || undefined,
     venue_address: data.location || undefined,
     participation_link: data.participationLink || undefined,
@@ -81,11 +154,49 @@ export function toCreatePayload(
     ticket_price: data.priceAmount,
     certificate_offered: data.certificate ? 1 : 0,
     created_by: createdBy,
+    organizer_id: organizerId,
+    max_tickets_per_registration:
+      data.attendeeMaxTicketsPerRegistration || undefined,
+    participant_max_tickets_per_registration: data.participantRegistrationEnabled
+      ? data.participantMaxTicketsPerRegistration || undefined
+      : undefined,
+    terms: data.terms.trim() || undefined,
+    eligibility: data.eligibility.trim() || undefined,
+    duration_text: data.duration.trim() || undefined,
+    attendee_label: data.attendeeLabel.trim() || undefined,
+    attendee_description: data.attendeeDescription.trim() || undefined,
+    attendee_registration_enabled: data.attendeeRegistrationEnabled ? 1 : 0,
+    participant_registration_enabled: data.participantRegistrationEnabled
+      ? 1
+      : 0,
+    participant_price: data.participantRegistrationEnabled
+      ? data.participantPriceAmount
+      : undefined,
+    participant_capacity: data.participantRegistrationEnabled
+      ? data.participantCapacity || undefined
+      : undefined,
+    participant_label: data.participantRegistrationEnabled
+      ? data.participantLabel.trim() || undefined
+      : undefined,
+    participant_description: data.participantRegistrationEnabled
+      ? data.participantDescription.trim() || undefined
+      : undefined,
   };
 }
 
-// Raw event detail + timeline -> wizard EventDetailData (with FK ids intact),
-// for prefilling the edit wizard.
+// JSON_ARRAYAGG columns arrive as a JSON-array-shaped string (or null when
+// the event has no categories) rather than a real array.
+function parseJsonArray<T>(raw: string | null): T[] {
+  if (!raw) return [];
+  try {
+    return JSON.parse(raw) as T[];
+  } catch {
+    return [];
+  }
+}
+
+// Raw event detail + timeline -> wizard EventDetailData (with FK ids
+// intact), for prefilling the edit wizard.
 export function toEventDraft(
   detail: EventDetail,
   timeline: EventTimelineApi[] = [],
@@ -97,16 +208,39 @@ export function toEventDraft(
     description: detail.description ?? "",
     priceAmount: detail.ticket_price ?? 0,
     capacity: detail.max_attendees ?? 0,
+    attendeeMaxTicketsPerRegistration: detail.max_tickets_per_registration ?? 0,
+    participantMaxTicketsPerRegistration:
+      detail.participant_max_tickets_per_registration ?? 0,
+    attendeeLabel: detail.attendee_label ?? "",
+    attendeeDescription: detail.attendee_description ?? "",
+    attendeeRegistrationEnabled: detail.attendee_registration_enabled !== 0,
+    participantRegistrationEnabled: detail.participant_registration_enabled === 1,
+    participantLabel: detail.participant_label ?? "",
+    participantDescription: detail.participant_description ?? "",
+    participantPriceAmount: detail.participant_price ?? 0,
+    participantCapacity: detail.participant_capacity ?? 0,
+    categoryIds: parseJsonArray<number>(detail.category_ids),
+    terms: detail.terms ?? "",
+    eligibility: detail.eligibility ?? "",
     mode: detail.mode_of_event_id,
     date: detail.start_date ? istDate(detail.start_date) : "",
     time: detail.start_date ? istTime(detail.start_date) : "",
     location: detail.address ?? "",
     city: detail.city ?? "",
     participationLink: detail.participation_link ?? "",
-    registrationCloses: detail.registration_deadline
+    attendeeRegistrationOpens: detail.registration_start
+      ? istDate(detail.registration_start)
+      : "",
+    attendeeRegistrationCloses: detail.registration_deadline
       ? istDate(detail.registration_deadline)
       : "",
-    duration: "",
+    participantRegistrationOpens: detail.participant_registration_start
+      ? istDate(detail.participant_registration_start)
+      : "",
+    participantRegistrationCloses: detail.participant_registration_deadline
+      ? istDate(detail.participant_registration_deadline)
+      : "",
+    duration: detail.duration_text ?? "",
     coverImageUrl: resolveImageUrl(detail.cover_image_url) ?? "",
     mediaUrls: detail.banner_image_url ? [detail.banner_image_url] : [],
     socialLinks: [],
@@ -128,28 +262,28 @@ export function toEventDraft(
 export interface TimelinePayloadItem {
   title: string;
   description: string;
-  startTime: string;
+  startTime: string | null;
   endTime: string | null;
   location: string | null;
   sortOrder: number;
 }
 
-// Wizard timeline items -> EVENT_TIMELINE rows. Each item's own date (falls
-// back to the event date) + start/end times become ISO timestamps.
+// Wizard timeline items -> EVENT_TIMELINE rows. Each item's own date + time
+// become an ISO timestamp. No date on the item itself -> real NULL (not a
+// placeholder, and NOT the event's own date either — an item with times
+// hidden must stay genuinely timeless even though the event has a date).
 export function toTimelinePayload(
   data: EventDetailData,
 ): TimelinePayloadItem[] {
   return data.timeline
-    .filter((item) => item.title.trim() !== "" && (item.date || data.date))
+    .filter((item) => item.title.trim() !== "")
     .map((item, index) => {
-      const day = item.date || data.date;
+      const day = item.date || null;
       return {
         title: item.title,
         description: item.description,
-        startTime: toIsoTimestamp(day, item.time) as string,
-        endTime: item.endTime
-          ? (toIsoTimestamp(day, item.endTime) ?? null)
-          : null,
+        startTime: day ? (toIsoTimestamp(day, item.time) ?? null) : null,
+        endTime: item.endTime && day ? (toIsoTimestamp(day, item.endTime) ?? null) : null,
         location: item.location || null,
         sortOrder: index,
       };
@@ -209,7 +343,7 @@ function istTime(iso: string): string {
 }
 
 function formatDate(iso: string | null): string {
-  if (!iso) return "TBD";
+  if (!iso) return "Coming Soon";
   return new Intl.DateTimeFormat("en-IN", {
     day: "numeric",
     month: "short",
@@ -262,6 +396,55 @@ export function adaptApiEvent(
   const detail = "description" in event ? event : undefined;
   const price = event.ticket_price === 0 ? "Free" : `₹${event.ticket_price}`;
 
+  // Missing/undefined attendee_registration_enabled -> treated as enabled
+  // (matches today's implicit always-on behavior on a backend that hasn't
+  // added the column yet). Missing/undefined participant_registration_enabled
+  // -> treated as disabled (the Participant category is opt-in).
+  const attendeeRegistration: RegistrationCategory = {
+    enabled: detail?.attendee_registration_enabled !== 0,
+    label: detail?.attendee_label || "Attendee",
+    description: detail?.attendee_description || "",
+    price: event.ticket_price,
+    priceLabel: price,
+    capacity: event.max_attendees ?? undefined,
+    registeredCount: event.registered_count,
+    spotsLeft:
+      event.max_attendees != null
+        ? Math.max(event.max_attendees - event.registered_count, 0)
+        : undefined,
+    maxTicketsPerRegistration: detail?.max_tickets_per_registration ?? undefined,
+    registrationCloses: detail?.registration_deadline
+      ? formatDate(detail.registration_deadline)
+      : formatDate(event.start_date),
+    registrationDeadlineIso: detail?.registration_deadline ?? null,
+    registrationOpensIso: detail?.registration_start ?? null,
+  };
+
+  const participantPrice = detail?.participant_price ?? 0;
+  const participantRegistration: RegistrationCategory = {
+    enabled: detail?.participant_registration_enabled === 1,
+    label: detail?.participant_label || "Participant",
+    description: detail?.participant_description || "",
+    price: participantPrice,
+    priceLabel: participantPrice === 0 ? "Free" : `₹${participantPrice}`,
+    capacity: detail?.participant_capacity ?? undefined,
+    registeredCount: detail?.participant_registered_count ?? 0,
+    spotsLeft:
+      detail?.participant_capacity != null
+        ? Math.max(
+            detail.participant_capacity - (detail?.participant_registered_count ?? 0),
+            0,
+          )
+        : undefined,
+    maxTicketsPerRegistration:
+      detail?.participant_max_tickets_per_registration ?? undefined,
+    registrationCloses: detail?.participant_registration_deadline
+      ? formatDate(detail.participant_registration_deadline)
+      : formatDate(event.start_date),
+    registrationDeadlineIso: detail?.participant_registration_deadline ?? null,
+    registrationOpensIso: detail?.participant_registration_start ?? null,
+  };
+
   return {
     id: String(event.id),
     title: event.event_name,
@@ -273,14 +456,17 @@ export function adaptApiEvent(
     date: formatDate(event.start_date),
     time: formatTime(event.start_date),
     location: resolveLocation(event.city, event.address),
-    registeredCount: 0,
+    registeredCount: event.registered_count,
     capacity: event.max_attendees ?? undefined,
-    spotsLeft: undefined,
+    spotsLeft:
+      event.max_attendees != null
+        ? Math.max(event.max_attendees - event.registered_count, 0)
+        : undefined,
+    attendeeRegistration,
+    participantRegistration,
     featured: event.is_featured === 1,
-    registrationCloses: detail?.registration_deadline
-      ? formatDate(detail.registration_deadline)
-      : formatDate(event.start_date),
     duration: formatDuration(event.start_date, event.end_date),
+    durationText: detail?.duration_text ?? undefined,
     // No team-size columns yet — default to individual attendance.
     teamSize: "Individual",
     certificate: false,
@@ -289,16 +475,48 @@ export function adaptApiEvent(
       : [],
     timeline: [],
     organizer: {
-      name: detail?.created_by || "GCODE Team",
+      name: detail?.organizer_name || detail?.created_by || "GCODE Team",
       title: "Organizer",
       verified: false,
       eventsHosted: 0,
       attendees: 0,
     },
-    terms: [],
-    tags: detail?.categories?.map((c) => c.category_name),
+    terms: splitBullets(detail?.terms ?? null, DEFAULT_TERMS),
+    eligibility: splitBullets(detail?.eligibility ?? null, DEFAULT_ELIGIBILITY),
+    tags: detail?.category_names
+      ? parseJsonArray<string>(detail.category_names)
+      : undefined,
     coverImageUrl: resolveImageUrl(event.cover_image_url),
     mediaUrls: event.banner_image_url ? [event.banner_image_url] : [],
     participationLink: event.participation_link ?? undefined,
+  };
+}
+
+// Maps a GCODE_EVENT_PARTICIPANTS_API.list_by_user row (the signed-in user's
+// own registration, joined to its event) onto the UI's MyTicket shape.
+export function adaptMyParticipation(
+  row: MyParticipationApi,
+  eventTypeNames: Record<number, string>,
+  modeNames: Record<number, string>,
+  statusCodes: Record<number, string>,
+): MyTicket {
+  const isParticipant = row.category === "PARTICIPANT";
+  const price = isParticipant ? (row.participant_price ?? 0) : row.ticket_price;
+  return {
+    participantId: String(row.participant_id),
+    eventId: String(row.event_id),
+    title: row.event_name,
+    type: resolveEventType(eventTypeNames[row.event_type_id]),
+    mode: resolveMode(modeNames[row.mode_of_event_id]),
+    status: resolveStatus(statusCodes[row.status_id]),
+    date: formatDate(row.start_date),
+    time: formatTime(row.start_date),
+    location: resolveLocation(row.city, row.address),
+    coverImageUrl: resolveImageUrl(row.cover_image_url),
+    price: price === 0 ? "Free" : `₹${price}`,
+    quantity: row.quantity,
+    amountPaid: price > 0 ? price * row.quantity : undefined,
+    appliedOn: row.applied_on,
+    category: isParticipant ? "Participant" : "Attendee",
   };
 }

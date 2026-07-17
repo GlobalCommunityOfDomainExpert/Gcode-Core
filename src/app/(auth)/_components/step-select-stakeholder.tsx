@@ -1,5 +1,7 @@
+"use client";
+
 import { Building2, GraduationCap, Rocket, User } from "lucide-react";
-import { ButtonLink } from "@/components/atoms";
+import { Button } from "@/components/atoms";
 import { SelectableCard } from "@/components/molecules";
 
 export type StakeholderRole = "expert" | "fresher" | "startup" | "institution";
@@ -37,13 +39,20 @@ const roleOptions: {
 ];
 
 export interface StepSelectStakeholderProps {
+  email?: string;
   value: StakeholderRole;
   onChange: (role: StakeholderRole) => void;
+  onComplete: () => Promise<void>;
+  submitting?: boolean;
+  error?: string | null;
 }
 
 export function StepSelectStakeholder({
   value,
   onChange,
+  onComplete,
+  submitting = false,
+  error,
 }: StepSelectStakeholderProps) {
   return (
     <div className="flex flex-col gap-6">
@@ -64,9 +73,16 @@ export function StepSelectStakeholder({
         ))}
       </div>
 
-      <ButtonLink href="/create-password" variant="primary" className="w-full">
+      {error && <p className="text-danger text-small">{error}</p>}
+
+      <Button
+        variant="primary"
+        className="w-full"
+        loading={submitting}
+        onClick={onComplete}
+      >
         Complete Setup
-      </ButtonLink>
+      </Button>
     </div>
   );
 }

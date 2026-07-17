@@ -11,26 +11,20 @@ import {
   NotFoundState,
   Tabs,
 } from "@/components/molecules";
-import { Attendee, getAttendeesByEvent } from "@/lib/attendees";
-import { eventTypeTone, Event, priceTone } from "@/lib/event";
+import { eventTypeTone, priceTone } from "@/lib/event";
 import { useEvent } from "@/hooks/use-event";
-import { useCommunityRequests } from "@/hooks/use-community-requests";
+import { useAttendees } from "@/hooks/use-attendees";
 import { AttendeesTab } from "./_components/attendees-tab";
 import { CommunicationTab } from "./_components/communication-tab";
-import { CommunityTab } from "./_components/community-tab";
 import { OverviewTab } from "./_components/overview-tab";
-import { SettingsTab } from "./_components/settings-tab";
 
 export default function OrganizedEventDetailPage() {
   const params = useParams<{ id: string }>();
-  const { event, status: eventStatus } = useEvent(params.id);
-  const {
-    requests,
-    addRequests: handleAddRequests,
-    nudge: handleNudge,
-    confirm: handleConfirmRequest,
-    remove: handleRemoveRequest,
-  } = useCommunityRequests(params.id);
+  const { event, status: eventStatus, refresh: refreshEvent } = useEvent(params.id);
+  const { attendees } = useAttendees(params.id, {
+    attendee: event?.attendeeRegistration.price ?? 0,
+    participant: event?.participantRegistration?.price ?? 0,
+  });
 
   const [activeTab, setActiveTab] = useState("overview");
   const [selectedAttendeeIds, setSelectedAttendeeIds] = useState<Set<string>>(
@@ -55,21 +49,13 @@ export default function OrganizedEventDetailPage() {
   }
 
   const eventId = event.id;
-  const attendees: Attendee[] = getAttendeesByEvent(event.id);
   const isCancelled = event.status === "CANCELLED";
 
   const tabItems = [
     { value: "overview", label: "Overview" },
     { value: "attendees", label: `Attendees (${attendees.length})` },
     { value: "communication", label: "Communication" },
-    { value: "settings", label: "Settings" },
-    { value: "community", label: `Community (${requests.length})` },
   ];
-
-  function handleSave(updates: Partial<Event>) {
-    void updates;
-    // TODO: call src/lib/api/events.ts updateEvent(eventId, ...)
-  }
 
   function handleConfirmCancel() {
     // TODO: call src/lib/api/events.ts updateEvent(eventId, { status_id: <cancelled> })
@@ -189,6 +175,7 @@ export default function OrganizedEventDetailPage() {
                 event={event}
                 attendees={attendees}
                 onNavigateToCommunication={() => setActiveTab("communication")}
+                onEventChanged={refreshEvent}
               />
             )}
             {activeTab === "attendees" && (
@@ -205,23 +192,6 @@ export default function OrganizedEventDetailPage() {
                 event={event}
                 attendees={attendees}
                 selectedIds={selectedAttendeeIds}
-              />
-            )}
-            {activeTab === "settings" && (
-              <SettingsTab
-                event={event}
-                onSave={handleSave}
-                onRequestCancel={() => setShowCancelModal(true)}
-              />
-            )}
-            {activeTab === "community" && (
-              <CommunityTab
-                event={event}
-                requests={requests}
-                onNudge={handleNudge}
-                onConfirm={handleConfirmRequest}
-                onRemove={handleRemoveRequest}
-                onAddRequests={handleAddRequests}
               />
             )}
           </div>

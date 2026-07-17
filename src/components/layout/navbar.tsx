@@ -20,6 +20,8 @@ export interface NavbarProps {
   resourcesItems?: DropdownItem[];
   ctaLabel?: string;
   onCtaClick?: () => void;
+  secondaryCtaLabel?: string;
+  onSecondaryCtaClick?: () => void;
   hasUnreadNotifications?: boolean;
   onNotificationClick?: () => void;
   /** Extra content appended to the mobile menu panel below the primary links (e.g. a "bare" Sidebar). */
@@ -33,17 +35,19 @@ const defaultResourcesItems: DropdownItem[] = [];
 export function Navbar({
   logo = (
     <Image
-      src={"/Logo.png"}
-      width={120}
-      height={50}
+      src={"/app-logo.png"}
+      width={100}
+      height={20}
       alt="logo"
-      className="mt-2"
+      className="mt-2 object-contain mb-2z"
     />
   ),
   links = defaultLinks,
   resourcesItems = defaultResourcesItems,
-  ctaLabel = "Get Started",
+  ctaLabel,
   onCtaClick,
+  secondaryCtaLabel,
+  onSecondaryCtaClick,
   hasUnreadNotifications = false,
   onNotificationClick,
   mobileFooter,
@@ -52,7 +56,7 @@ export function Navbar({
   const [mobileOpen, setMobileOpen] = useState(false);
   return (
     <header className="bg-primary relative">
-      <div className="mx-auto flex h-16 items-center justify-between gap-4">
+      <div className="mx-2 flex h-16 items-center justify-between gap-4">
         <div className="flex items-center gap-8">
           <Link href="/">{logo}</Link>
           <nav
@@ -77,6 +81,24 @@ export function Navbar({
           </nav>
         </div>
 
+        <div className="hidden items-center gap-3 mr-5 md:flex">
+          {secondaryCtaLabel && (
+            <Button
+              variant="ghost"
+              size="sm"
+              className="text-white hover:bg-white/10"
+              onClick={onSecondaryCtaClick}
+            >
+              {secondaryCtaLabel}
+            </Button>
+          )}
+          {ctaLabel && (
+            <Button variant="accent" size="sm" onClick={onCtaClick}>
+              {ctaLabel}
+            </Button>
+          )}
+        </div>
+
         <div className="flex items-center gap-2 md:hidden">
           <button
             type="button"
@@ -89,9 +111,11 @@ export function Navbar({
               <span className="bg-danger absolute top-1.5 right-1.5 size-2 rounded-full" />
             )}
           </button>
-          <Button variant="accent" size="sm" onClick={onCtaClick}>
-            {ctaLabel}
-          </Button>
+          {ctaLabel && (
+            <Button variant="accent" size="sm" onClick={onCtaClick}>
+              {ctaLabel}
+            </Button>
+          )}
           <button
             type="button"
             onClick={() => setMobileOpen((prev) => !prev)}
@@ -138,6 +162,18 @@ export function Navbar({
                     {item.label}
                   </Link>
                 ))}
+              {secondaryCtaLabel && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setMobileOpen(false);
+                    onSecondaryCtaClick?.();
+                  }}
+                  className="text-body block w-full rounded-sm px-2 py-2 text-left font-medium text-white/80 hover:bg-white/10 hover:text-white"
+                >
+                  {secondaryCtaLabel}
+                </button>
+              )}
             </nav>
             {mobileFooter && (
               <div className="bg-bg-light border-t border-white/10">

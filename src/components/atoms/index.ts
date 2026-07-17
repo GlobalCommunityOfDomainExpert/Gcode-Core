@@ -11,6 +11,7 @@ export * from "./icon";
 export * from "./input";
 export * from "./label";
 export * from "./link";
+export * from "./password-input";
 export * from "./progress";
 export * from "./qr-placeholder";
 export * from "./radio";

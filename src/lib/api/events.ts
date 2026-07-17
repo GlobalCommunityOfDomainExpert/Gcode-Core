@@ -19,7 +19,7 @@ export async function listEvents(
   params: ListEventsParams = {},
 ): Promise<EventListItem[]> {
   const { items } = await apiRequest<ApiListResponse<EventListItem>>(
-    "/events",
+    "/events/",
     { query: params },
   );
   return items;
@@ -41,7 +41,7 @@ export async function getEvent(
 export function createEvent(
   payload: CreateEventPayload,
 ): Promise<{ id: number }> {
-  return apiRequest<{ id: number }>("/events", {
+  return apiRequest<{ id: number }>("/events/", {
     method: "POST",
     body: payload,
   });
@@ -79,7 +79,7 @@ export function replaceEventMedia(
 export interface EventTimelineApi {
   title: string;
   description: string | null;
-  start_time: string;
+  start_time: string | null;
   end_time: string | null;
   location: string | null;
   sort_order: number;
@@ -99,7 +99,7 @@ export function replaceEventTimeline(
   items: {
     title: string;
     description: string;
-    startTime: string;
+    startTime: string | null;
     endTime: string | null;
     location: string | null;
     sortOrder: number;

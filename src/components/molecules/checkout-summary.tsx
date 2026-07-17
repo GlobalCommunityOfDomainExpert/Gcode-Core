@@ -25,10 +25,12 @@ export function CheckoutSummary({
       {items.map((item) => (
         <div
           key={item.label}
-          className="text-body text-text-secondary flex items-center justify-between"
+          className="text-body text-text-secondary flex items-start justify-between gap-4"
         >
-          <span>{item.label}</span>
-          <span>{item.value}</span>
+          <span className="shrink-0">{item.label}</span>
+          <span className="text-text-primary text-right font-semibold">
+            {item.value}
+          </span>
         </div>
       ))}
       <Divider />

@@ -68,6 +68,65 @@ export type EventStatus =
   | "COMPLETED"
   | "CANCELLED";
 
+// One of the signed-in user's own registrations, joined to its event —
+// backed by GCODE_EVENT_PARTICIPANTS_API.list_by_user.
+export interface MyTicket {
+  participantId: string;
+  eventId: string;
+  title: string;
+  type: EventType;
+  mode: "Online" | "In-Person" | "Hybrid";
+  status?: EventStatus;
+  date: string;
+  time: string;
+  location: string;
+  coverImageUrl?: string;
+  price: "Free" | string;
+  quantity: number;
+  amountPaid?: number;
+  appliedOn: string;
+  category: "Attendee" | "Participant";
+}
+
+// One of the event's two registration categories (Attendee / Participant).
+// Both blocks always exist now — `enabled` is what the organizer toggles,
+// independently and at any time (wizard, or a runtime open/close control on
+// the organizer's event page), including after registration_deadline has
+// passed. A disabled category still carries its historical registeredCount;
+// it's just not offered on the register page.
+export interface RegistrationCategory {
+  enabled: boolean; // organizer toggle — can flip any time, not locked by registration_deadline
+  label: string; // organizer text, falls back to "Attendee"/"Participant"
+  description: string; // organizer text, falls back to ""
+  price: number;
+  priceLabel: "Free" | string;
+  capacity?: number;
+  registeredCount: number;
+  spotsLeft?: number;
+  maxTicketsPerRegistration?: number; // organizer cap per single booking, unset = no cap
+  registrationCloses: string; // this category's own deadline, falls back to the event's start_date
+  registrationDeadlineIso?: string | null; // raw ISO for computing "days left"
+  registrationOpensIso?: string | null; // raw ISO — unset = open immediately, no start gate
+}
+
+// A pass can be organizer-enabled but still outside its own booking window
+// (before registrationOpensIso, or after registrationDeadlineIso) — this is
+// what the register page/event page use to grey out a pass without hiding
+// it, instead of the organizer's `enabled` toggle (which only means "offered
+// at all", not "bookable right now").
+export function isRegistrationOpen(
+  category: RegistrationCategory,
+  now: Date = new Date(),
+): boolean {
+  if (category.registrationOpensIso) {
+    if (now < new Date(category.registrationOpensIso)) return false;
+  }
+  if (category.registrationDeadlineIso) {
+    if (now > new Date(category.registrationDeadlineIso)) return false;
+  }
+  return true;
+}
+
 export interface EventOrganizer {
   name: string; // backed by EventDetail.created_by; falls back to "GCODE Team"
   title: string; // no backend column — adapter hardcodes "Organizer"
@@ -87,19 +146,22 @@ export interface Event {
   date: string; // derived from EventListItem.start_date
   time: string; // derived from EventListItem.start_date
   location: string; // derived from EventListItem.city + address
-  registeredCount: number; // no backend column — adapter hardcodes 0, needs a registrations count source
+  registeredCount: number; // EventListItem.registered_count — live SUM(quantity) from GCODE_EVENT_PARTICIPANTS
   interestedCount?: number; // no backend column — never set
-  spotsLeft?: number; // derivable from max_attendees - registeredCount, unset until registeredCount is real
+  spotsLeft?: number; // max_attendees - registeredCount
   capacity?: number; // EventListItem.max_attendees
+  attendeeRegistration: RegistrationCategory; // always present, mirrors price/priceAmount/capacity/spotsLeft/registeredCount above; .enabled toggleable by the organizer
+  participantRegistration: RegistrationCategory; // always present too — check .enabled, not presence, to see if the organizer has turned it on
   featured?: boolean; // EventListItem.is_featured
-  registrationCloses: string; // EventDetail.registration_deadline, falls back to start_date
-  duration: string; // EventListItem.end_date exists but adapter doesn't derive duration from start/end yet — always ""
+  duration: string; // derived from start_date/end_date span, or the timeline's own span as fallback
+  durationText?: string; // EventDetail.duration_text — organizer's free-text duration (e.g. "3 hours"), used as a display fallback when time is TBD
   teamSize: string; // no backend column — adapter hardcodes ""
   certificate: boolean; // no backend column — adapter hardcodes false
   description: string[]; // EventDetail.description (detail fetch only), wrapped in array
   timeline: EventTimelineItem[]; // EVENT_TIMELINE rows — adapter hardcodes [] for now
   organizer: EventOrganizer; // see EventOrganizer — only .name is backed
-  terms: string[]; // no backend column — adapter hardcodes []
+  terms: string[]; // EventDetail.terms, split on newline — falls back to DEFAULT_TERMS when blank
+  eligibility: string[]; // EventDetail.eligibility, split on newline — falls back to DEFAULT_ELIGIBILITY when blank
   tags?: string[]; // EventDetail.categories (detail fetch only)
   socialLinks?: EventSocialLink[]; // no backend column — adapter never sets this
   coverImageUrl?: string; // EventListItem.cover_image_url
