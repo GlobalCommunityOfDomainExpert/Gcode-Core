@@ -1,23 +1,26 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import {
+  Calendar,
   CalendarX,
   ChevronLeft,
   ChevronRight,
   CreditCard,
+  GraduationCap,
   Gift,
   Globe,
   LayoutGrid,
   MapPin,
+  Rocket,
   SearchX,
+  TrendingUp,
+  Users,
 } from "lucide-react";
 import { Button, Icon } from "@/components/atoms";
 import {
-  Carousel,
-  CarouselHandle,
-  CarouselState,
+  AvatarGroupItem,
   Chip,
   EmptyState,
   EventCard,
@@ -26,9 +29,33 @@ import {
   Tabs,
 } from "@/components/molecules";
 import { eventTypeTone, priceTone } from "@/lib/event";
+import { hashSeed } from "@/lib/event-color";
+import { useEvent } from "@/hooks/use-event";
 import { useEvents } from "@/hooks/use-events";
 import { useLookup } from "@/hooks/use-lookup";
 import { getEventTypes } from "@/lib/api/lookups";
+
+// No real attendee-identity data exists for the featured spotlight card — this
+// pool + a deterministic per-event/index seed gives varied-looking avatars
+// without inventing fake names or risking SSR/client hydration mismatches
+// (Math.random() during render would differ between server and client).
+// Hues are spread by the golden angle (~137.5°) from a per-event base hue so
+// every avatar in the same group lands on a visibly distinct color, rather
+// than relying on the raw hash (adjacent seeds can hash to similar hues).
+const ATTENDEE_INITIALS = ["AK", "MJ", "RS", "PV", "SN", "DK", "TT", "NG"];
+const GOLDEN_ANGLE = 137.5;
+
+function buildAttendeeAvatars(eventId: string, count: number): AvatarGroupItem[] {
+  const seed = hashSeed(eventId);
+  const baseHue = seed % 360;
+  const initialsOffset = seed % ATTENDEE_INITIALS.length;
+  return Array.from({ length: count }, (_, index) => ({
+    alt: "Attendee",
+    initials:
+      ATTENDEE_INITIALS[(initialsOffset + index) % ATTENDEE_INITIALS.length],
+    bgColor: `hsl(${(baseHue + index * GOLDEN_ANGLE) % 360} 55% 42%)`,
+  }));
+}
 
 const filterChips = [
   { value: "All", label: "All", icon: LayoutGrid },
@@ -38,13 +65,37 @@ const filterChips = [
   { value: "In-Person", label: "In-Person", icon: MapPin },
 ] as const;
 
+const whyJoinItems = [
+  {
+    icon: GraduationCap,
+    title: "Learn",
+    description: "Gain knowledge from industry experts",
+  },
+  {
+    icon: Users,
+    title: "Connect",
+    description: "Network with like-minded professionals",
+  },
+  {
+    icon: TrendingUp,
+    title: "Grow",
+    description: "Upskill and advance your career",
+  },
+  {
+    icon: Rocket,
+    title: "Build",
+    description: "Work on real challenges and build solutions",
+  },
+] as const;
+
+const FEATURED_ROTATE_MS = 6000;
+
 export default function EventsPage() {
   const [activeTab, setActiveTab] = useState("all");
   const [activeFilters, setActiveFilters] = useState<string[]>([]);
   const [search, setSearch] = useState("");
-  const featuredCarouselRef = useRef<CarouselHandle>(null);
-  const [featuredCarouselState, setFeaturedCarouselState] =
-    useState<CarouselState>({ canScrollPrev: false, canScrollNext: false });
+  const [featuredIndex, setFeaturedIndex] = useState(0);
+  const [featuredPaused, setFeaturedPaused] = useState(false);
   const { events, status } = useEvents();
   const { data: eventTypes } = useLookup(getEventTypes);
 
@@ -101,6 +152,29 @@ export default function EventsPage() {
     .filter((event) => event.is_featured)
     .filter(matchesFilters);
 
+  useEffect(() => {
+    if (featured.length <= 1 || featuredPaused) return;
+    const id = setInterval(() => {
+      setFeaturedIndex((prev) => (prev + 1) % featured.length);
+    }, FEATURED_ROTATE_MS);
+    return () => clearInterval(id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [featured.length, featuredPaused]);
+
+  const activeFeaturedIndex =
+    featured.length === 0 ? 0 : featuredIndex % featured.length;
+  const activeFeaturedEvent = featured[activeFeaturedIndex];
+
+  // The list endpoint never returns a description (only populated on detail
+  // fetch) — fetch it for whichever featured event is currently on screen so
+  // the spotlight card can show a real one. Guarded against the id so a
+  // stale previous-event description can't flash while the new one loads.
+  const { event: activeFeaturedDetail } = useEvent(activeFeaturedEvent?.id);
+  const featuredDescriptionLines =
+    activeFeaturedEvent && activeFeaturedDetail?.id === activeFeaturedEvent.id
+      ? activeFeaturedDetail.description
+      : [];
+
   const filtered = visibleEvents.filter(matchesFilters);
 
   const hasActiveFilters =
@@ -113,144 +187,205 @@ export default function EventsPage() {
   }
 
   return (
-    <div className="space-y-8 flex flex-col gap-3">
-      <div className="bg-primary relative flex min-h-[126px] gap-4 overflow-hidden rounded-md p-6 py-8 sm:min-h-[162px] sm:flex-row sm:justify-between">
-        <Image
-          src="/events-hero.png"
-          alt=""
-          width={800}
-          height={150}
-          className="absolute top-1/2 right-0 hidden w-[378px] -translate-y-1/2 sm:block lg:w-[720px]"
-          priority
-        />
-        <div className="from-primary via-primary/90 to-primary/40 absolute inset-0 bg-gradient-to-r" />
-
-        <div className="relative flex flex-col gap-6">
-          <div>
-            <h4 className="text-display font-bold text-white">
-              Discover Events &amp; Webinars
-            </h4>
-            <p className="text-body mt-1 text-white/70">
-              Hackathons, Ideathons, Expert AMAs, Live Webinars — all in one
-              place.
-            </p>
-          </div>
-
-          <SearchBar
-            value={search}
-            onChange={setSearch}
-            placeholder="Search events..."
-            className="mt-4 w-full max-w-sm"
+    <div className="flex flex-col gap-3 space-y-8">
+      <div className="flex flex-col relative">
+        <div className="relative left-1/2 flex min-h-100 w-screen -translate-x-1/2 items-center overflow-hidden bg-black lg:min-h-125">
+          <Image
+            src="/banner-hero.png"
+            alt=""
+            fill
+            className="hidden object-cover sm:block"
+            priority
           />
+          <div className="absolute inset-0 hidden bg-linear-to-r from-black/80 via-black/40 to-transparent sm:block" />
+
+          <div className="relative mx-auto flex w-full max-w-7xl flex-col gap-6 px-4 pt-24 pb-14 sm:px-6 sm:pt-24 sm:pb-8 lg:px-8">
+            <div>
+              <h4 className="text-display font-bold text-white">
+                Explore. Learn. Connect.
+                <br />
+                Power Your Growth with
+                <br />
+                <span className="text-secondary">GCODE</span> Events
+              </h4>
+              <p className="text-body mt-1 text-white/70">
+                Hackathons, Ideathons, Expert AMAs, Live Webinars — all in one
+                place.
+              </p>
+            </div>
+
+            <SearchBar
+              value={search}
+              onChange={setSearch}
+              placeholder="Search events..."
+              className="mt-4 w-full"
+            />
+          </div>
+        </div>
+
+        <div className="border-border-light bg-surface-light space-y-4 rounded-md border p-4 relative -top-4 sm:-top-6 lg:-top-10">
+          <Tabs
+            items={categoryTabs}
+            value={activeTab}
+            onChange={setActiveTab}
+          />
+          <div className="flex flex-wrap gap-2">
+            {filterChips.map((chip) => {
+              const selected =
+                chip.value === "All"
+                  ? activeFilters.length === 0
+                  : activeFilters.includes(chip.value);
+              return (
+                <Chip
+                  key={chip.value}
+                  selected={selected}
+                  onClick={() =>
+                    chip.value === "All"
+                      ? setActiveFilters([])
+                      : toggleFilter(chip.value)
+                  }
+                >
+                  <span className="inline-flex items-center gap-1.5">
+                    <Icon icon={chip.icon} size="sm" />
+                    {chip.label}
+                  </span>
+                </Chip>
+              );
+            })}
+          </div>
         </div>
       </div>
 
-      <div className="border-border-light bg-surface-light space-y-4 rounded-md border p-4">
-        <Tabs items={categoryTabs} value={activeTab} onChange={setActiveTab} />
-        <div className="flex flex-wrap gap-2">
-          {filterChips.map((chip) => {
-            const selected =
-              chip.value === "All"
-                ? activeFilters.length === 0
-                : activeFilters.includes(chip.value);
-            return (
-              <Chip
-                key={chip.value}
-                selected={selected}
-                onClick={() =>
-                  chip.value === "All"
-                    ? setActiveFilters([])
-                    : toggleFilter(chip.value)
-                }
-              >
-                <span className="inline-flex items-center gap-1.5">
-                  <Icon icon={chip.icon} size="sm" />
-                  {chip.label}
-                </span>
-              </Chip>
-            );
-          })}
-        </div>
-      </div>
-
-      {featured.length > 0 && (
-        <section className="flex flex-col gap-6 space-y-3">
-          <div className="flex items-center justify-between gap-4">
-            <div className="flex items-center gap-4">
-              <div className="h-10 w-1 rounded-full bg-blue-500" />
+      {/* <section className="bg-secondary-light overflow-hidden rounded-lg p-6 sm:p-8">
+        <h3 className="text-large text-text-primary font-bold">
+          Why join GCODE Events?
+        </h3>
+        <div className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          {whyJoinItems.map((item) => (
+            <div key={item.title} className="flex items-start gap-3">
+              <Icon icon={item.icon} size="lg" className="text-secondary shrink-0" />
               <div>
-                <h2 className="text-text-secondary text-base font-bold tracking-widest uppercase">
-                  Featured Events
-                </h2>
-                <h6 className="text-s text-gray-400">
-                  Explore events that intrest you
-                </h6>
+                <h4 className="text-body text-text-primary font-semibold">
+                  {item.title}
+                </h4>
+                <p className="text-small text-text-secondary">
+                  {item.description}
+                </p>
               </div>
             </div>
-            {(featuredCarouselState.canScrollPrev ||
-              featuredCarouselState.canScrollNext) && (
-              <div className="flex items-center gap-1.5">
-                <button
-                  type="button"
-                  onClick={() => featuredCarouselRef.current?.scrollPrev()}
-                  aria-label="Previous"
-                  disabled={!featuredCarouselState.canScrollPrev}
-                  className="border-border-light bg-surface-light text-text-secondary hover:text-text-primary focus-visible:ring-primary flex size-8 items-center justify-center rounded-full border shadow-sm focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:opacity-40"
-                >
-                  <Icon icon={ChevronLeft} size="sm" />
-                </button>
-                <button
-                  type="button"
-                  onClick={() => featuredCarouselRef.current?.scrollNext()}
-                  aria-label="Next"
-                  disabled={!featuredCarouselState.canScrollNext}
-                  className="border-border-light bg-surface-light text-text-secondary hover:text-text-primary focus-visible:ring-primary flex size-8 items-center justify-center rounded-full border shadow-sm focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:opacity-40"
-                >
-                  <Icon icon={ChevronRight} size="sm" />
-                </button>
+          ))}
+        </div>
+      </section> */}
+
+      {featured.length > 0 &&
+        activeFeaturedEvent &&
+        (() => {
+          const event = activeFeaturedEvent;
+          return (
+            <section className="flex flex-col gap-6 space-y-3">
+              <div className="flex items-center justify-between gap-4">
+                <div className="flex items-center gap-4">
+                  <div className="h-10 w-1 rounded-full bg-blue-500" />
+                  <div>
+                    <h2 className="text-text-secondary text-base font-bold tracking-widest uppercase">
+                      Featured Events
+                    </h2>
+                    <h6 className="text-s text-gray-400">
+                      Explore events that intrest you
+                    </h6>
+                  </div>
+                </div>
+                {featured.length > 1 && (
+                  <div className="flex items-center gap-1.5">
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setFeaturedIndex(
+                          (activeFeaturedIndex - 1 + featured.length) %
+                            featured.length,
+                        )
+                      }
+                      aria-label="Previous featured event"
+                      className="border-border-light bg-surface-light text-text-secondary hover:text-text-primary focus-visible:ring-primary flex size-8 items-center justify-center rounded-full border shadow-sm focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+                    >
+                      <Icon icon={ChevronLeft} size="sm" />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setFeaturedIndex(
+                          (activeFeaturedIndex + 1) % featured.length,
+                        )
+                      }
+                      aria-label="Next featured event"
+                      className="border-border-light bg-surface-light text-text-secondary hover:text-text-primary focus-visible:ring-primary flex size-8 items-center justify-center rounded-full border shadow-sm focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+                    >
+                      <Icon icon={ChevronRight} size="sm" />
+                    </button>
+                  </div>
+                )}
               </div>
-            )}
-          </div>
-          <Carousel
-            ref={featuredCarouselRef}
-            hideArrows
-            onStateChange={setFeaturedCarouselState}
-            itemClassName="w-full shrink-0 snap-start sm:w-[calc(45%-0.5rem)]"
-          >
-            {featured.map((event) => (
-              <EventCard
-                key={event.id}
-                variant="featured"
-                href={`/events/${event.id}`}
-                imageSrc={event.coverImageUrl}
-                colorSeed={event.id}
-                tags={[
-                  { label: event.type, tone: eventTypeTone(event.type) },
-                  {
-                    label: event.price,
-                    tone: priceTone(event.price),
-                  },
-                ]}
-                title={event.title}
-                date={`${event.date} · ${event.time}`}
-                location={
-                  event.mode === "In-Person" ? event.location : undefined
-                }
-                eventType={event.type}
-                durationText={event.duration || undefined}
-                spotsLeft={event.spotsLeft}
-                attendeesLabel={
-                  event.registeredCount
-                    ? `${event.registeredCount} going`
-                    : event.interestedCount
-                      ? `${event.interestedCount} interested`
+
+              <div
+                onMouseEnter={() => setFeaturedPaused(true)}
+                onMouseLeave={() => setFeaturedPaused(false)}
+              >
+                <EventCard
+                  key={event.id}
+                  variant="featured"
+                  href={`/events/${event.id}`}
+                  imageSrc={event.coverImageUrl}
+                  colorSeed={event.id}
+                  tags={[
+                    { label: event.type, tone: eventTypeTone(event.type) },
+                    { label: event.mode, tone: "neutral" },
+                  ]}
+                  price={event.price}
+                  priceTone={priceTone(event.price)}
+                  title={event.title}
+                  date={`${event.date} · ${event.time}`}
+                  subtitle={featuredDescriptionLines[0]}
+                  actionLabel="Register Now"
+                  attendees={buildAttendeeAvatars(
+                    event.id,
+                    Math.min(event.registeredCount, 4),
+                  )}
+                  attendeesLabel={
+                    event.registeredCount > 3
+                      ? `+${event.registeredCount} registered`
                       : undefined
-                }
-              />
-            ))}
-          </Carousel>
-        </section>
-      )}
+                  }
+                  stats={[
+                    {
+                      icon: Calendar,
+                      primary: event.date,
+                      secondary: event.durationText || event.duration || "Event",
+                    },
+                  ]}
+                />
+
+                {featured.length > 1 && (
+                  <div className="mt-3 flex items-center justify-center gap-1.5">
+                    {featured.map((f, index) => (
+                      <button
+                        key={f.id}
+                        type="button"
+                        onClick={() => setFeaturedIndex(index)}
+                        aria-label={`Go to featured event ${index + 1}`}
+                        aria-current={index === activeFeaturedIndex}
+                        className={`size-1.5 rounded-full transition-colors ${
+                          index === activeFeaturedIndex
+                            ? "bg-primary"
+                            : "bg-border-hover"
+                        }`}
+                      />
+                    ))}
+                  </div>
+                )}
+              </div>
+            </section>
+          );
+        })()}
 
       <section className="flex flex-col gap-6 space-y-3">
         <div className="flex items-center gap-4">

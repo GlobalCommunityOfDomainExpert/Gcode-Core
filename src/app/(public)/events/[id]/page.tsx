@@ -31,22 +31,23 @@ import { RegistrationCard } from "./_components/registration-card";
 import { EventInfoCard } from "./_components/event-info-card";
 import { DetailItem } from "./_components/detail-item";
 import { daysUntil, groupByDay, resolveDisplayTime, to12Hour } from "./_components/format";
+import { EventDetailSkeleton } from "./_components/event-detail-skeleton";
 
 export default function EventDetailPage() {
   const params = useParams<{ id: string }>();
   const router = useRouter();
   const { event, status } = useEvent(params.id);
 
+  if (status === "loading") {
+    return <EventDetailSkeleton />;
+  }
+
   if (!event) {
     return (
       <NotFoundState
         icon={Compass}
-        title={status === "loading" ? "Loading event…" : "Event not found"}
-        description={
-          status === "loading"
-            ? "Fetching this event."
-            : "This event may not exist, or it couldn't be loaded."
-        }
+        title="Event not found"
+        description="This event may not exist, or it couldn't be loaded."
         actionHref="/events"
         actionLabel="Browse Events"
       />
