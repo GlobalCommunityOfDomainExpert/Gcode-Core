@@ -49,12 +49,10 @@ export async function listMyParticipations(
   return items;
 }
 
-// A hosted link (Google Drive share URL, etc.), not a binary upload — keeps
-// this a plain JSON PUT instead of adding blob storage for large audio
-// files. The ORDS handler only defines PUT for this template, not PATCH.
-// Unlike the read-side degrade-to-default convention elsewhere in this
-// file, a failure here must reach the caller — the participant needs to
-// know their submission didn't save before the 24h deadline passes.
+// Persists the final audio location on the participant row. Unlike the
+// read-side degrade-to-default convention elsewhere in this file, a failure
+// here must reach the caller — the participant needs to know their
+// submission didn't save before the 24h deadline passes.
 export function submitParticipantAudio(
   id: number | string,
   audioUrl: string,
@@ -63,4 +61,23 @@ export function submitParticipantAudio(
     method: "PUT",
     body: { audio_submission_url: audioUrl },
   });
+}
+
+// Sends the recorded blob to our own Next.js API route, which uploads it to
+// OCI Object Storage server-side and persists the resulting URL — avoids a
+// direct browser-to-OCI PUT, which needs a CORS rule on the bucket that
+// wasn't available to set up.
+export async function uploadParticipantAudio(
+  id: number | string,
+  blob: Blob,
+): Promise<{ audio_submission_url: string; audio_submitted_on: string }> {
+  const res = await fetch(`/api/participants/${id}/audio-submission`, {
+    method: "POST",
+    headers: { "Content-Type": blob.type || "audio/webm" },
+    body: blob,
+  });
+  if (!res.ok) {
+    throw new Error("Couldn't save your submission. Please try again.");
+  }
+  return res.json();
 }

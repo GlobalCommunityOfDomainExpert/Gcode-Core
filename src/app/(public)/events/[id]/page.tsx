@@ -2,13 +2,7 @@
 
 import { useParams, useRouter } from "next/navigation";
 import { Calendar, Clock, MapPin, Award, Users, Compass } from "lucide-react";
-import {
-  Badge,
-  Button,
-  ButtonLink,
-  Icon,
-  SectionLabel,
-} from "@/components/atoms";
+import { Button, ButtonLink, Icon, SectionLabel } from "@/components/atoms";
 import {
   Banner,
   Breadcrumb,
@@ -144,7 +138,7 @@ export default function EventDetailPage() {
       <div className="grid gap-6 lg:grid-cols-[1fr_320px]">
         <div className="space-y-6">
           <div
-            className="relative flex aspect-3/1 items-end overflow-hidden rounded-md p-4"
+            className="relative flex aspect-8/3 items-end overflow-hidden rounded-md p-4"
             style={
               event.coverImageUrl
                 ? undefined
@@ -158,26 +152,6 @@ export default function EventDetailPage() {
                 alt={event.title}
                 className="absolute inset-0 h-full w-full object-cover"
               />
-            )}
-            <div className="relative flex flex-wrap gap-2">
-              <Badge variant="solid" tone="neutral">
-                {event.type}
-              </Badge>
-              <Badge variant="solid" tone="neutral">
-                {event.mode}
-              </Badge>
-              <Badge variant="solid" tone="success">
-                {event.price}
-              </Badge>
-            </div>
-            {event.featured && (
-              <Badge
-                variant="solid"
-                tone="warning"
-                className="absolute top-4 right-4"
-              >
-                Featured
-              </Badge>
             )}
           </div>
 
@@ -279,15 +253,15 @@ export default function EventDetailPage() {
               every event opens doors to new opportunities.
             </p>
             <p className="text-body text-white/80">
-              We provide a professional platform where individuals can
-              showcase their talent, receive valuable recognition, learn from
-              experienced mentors, connect with like-minded people, and become
-              part of a thriving ecosystem that celebrates passion, creativity
-              and continuous growth.
+              We provide a professional platform where individuals can showcase
+              their talent, receive valuable recognition, learn from experienced
+              mentors, connect with like-minded people, and become part of a
+              thriving ecosystem that celebrates passion, creativity and
+              continuous growth.
             </p>
             <p className="text-body text-white/80">
-              Because at GCODE, talent doesn&apos;t end with applause—it
-              begins with opportunity.
+              Because at GCODE, talent doesn&apos;t end with applause—it begins
+              with opportunity.
             </p>
           </div>
 
@@ -519,7 +493,10 @@ export default function EventDetailPage() {
             </div>
           </div>
 
-          <ShareEventCard url={`https://gcode.in/events/${event.id}`} />
+          <ShareEventCard
+            url={`https://gcode.in/events/${event.id}`}
+            title={event.title}
+          />
         </div>
       </div>
     </div>

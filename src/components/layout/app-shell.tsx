@@ -1,5 +1,4 @@
 import { ReactNode } from "react";
-import { AskAiButton } from "./ask-ai-button";
 
 export interface AppShellProps {
   navbar: ReactNode;
@@ -19,7 +18,6 @@ export function AppShell({ navbar, sidebar, children }: AppShellProps) {
           </div>
         </main>
       </div>
-      <AskAiButton />
     </div>
   );
 }
