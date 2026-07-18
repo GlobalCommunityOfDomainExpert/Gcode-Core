@@ -22,7 +22,7 @@ export function Chip({
         `focus-visible:ring-primary focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none ` +
         `hover:cursor-pointer disabled:cursor-not-allowed disabled:opacity-50 ` +
         (selected
-          ? "border-primary bg-primary text-white"
+          ? "border-secondary bg-secondary text-white"
           : "border-border-light bg-surface-light text-text-primary hover:bg-bg-light") +
         ` ${className}`
       }

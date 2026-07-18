@@ -46,6 +46,15 @@ export interface EventCardProps {
   durationText?: string;
   /** Remaining capacity — shown for competitive/limited-entry formats when eventType is one of those. */
   spotsLeft?: number;
+  /** One-line description under the title — "featured" variant only. */
+  subtitle?: string;
+  /** Paragraph description — "featured" variant only. */
+  description?: string;
+  /** Up to 4 icon+stat blocks (e.g. date, participants) — "featured" variant only. */
+  stats?: { icon: LucideIcon; primary: string; secondary: string }[];
+  /** Shown as a badge next to the action button (not in the top tags row) — "featured" variant only. */
+  price?: string;
+  priceTone?: BadgeTone;
 }
 
 // Different event formats care about different secondary info: a webinar's
@@ -113,6 +122,14 @@ function EventCardMedia({
   );
 }
 
+const priceTextToneClass: Record<BadgeTone, string> = {
+  neutral: "text-text-primary",
+  primary: "text-primary",
+  success: "text-success",
+  warning: "text-warning",
+  danger: "text-danger",
+};
+
 function EventCardTitle({
   title,
   href,
@@ -131,19 +148,6 @@ function EventCardTitle({
   }
   return <h4 className={className}>{title}</h4>;
 }
-
-// Translucent-on-image pill colors for the "featured" variant's tags — kept
-// separate from the shared Badge component since appending a className to
-// override Badge's own bg-* utility isn't reliable (Tailwind resolves
-// conflicting same-specificity classes by compiled rule order, not by
-// position in the class string).
-const overlayTagToneClass: Record<BadgeTone, string> = {
-  neutral: "bg-white/15 text-white",
-  primary: "bg-primary/80 text-white",
-  success: "bg-success/90 text-white",
-  warning: "bg-warning/90 text-text-primary",
-  danger: "bg-danger/90 text-white",
-};
 
 export function EventCard({
   variant = "default",
@@ -164,6 +168,11 @@ export function EventCard({
   eventType,
   durationText,
   spotsLeft,
+  subtitle,
+  description,
+  stats,
+  price,
+  priceTone,
 }: EventCardProps) {
   const action = href ? (
     <ButtonLink href={href} variant="primary">
@@ -183,57 +192,111 @@ export function EventCard({
   });
 
   if (variant === "featured") {
-    const featuredClassName =
-      "group relative block aspect-[12/5] h-full w-full overflow-hidden rounded-md transition-shadow hover:shadow-lg";
-
     const featuredContent = (
       <>
-        <EventCardMedia
-          src={imageSrc}
-          alt={imageAlt ?? title}
-          colorSeed={colorSeed}
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-black/10" />
+        <div className="relative aspect-video shrink-0 overflow-hidden rounded-t-md sm:aspect-auto sm:w-3/5 sm:rounded-l-md sm:rounded-tr-none">
+          <EventCardMedia
+            src={imageSrc}
+            alt={imageAlt ?? title}
+            colorSeed={colorSeed}
+          />
+        </div>
 
-        <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-3 p-4">
-          <div className="flex min-w-0 flex-col gap-2">
-            <div className="flex flex-wrap gap-2">
-          
+        <div className="flex flex-1 flex-col gap-4 p-6">
+          <div className="flex flex-wrap items-center gap-2">
+            <Badge variant="solid" tone="warning">
+              Featured
+            </Badge>
+            {tags.map((tag) => (
+              <Badge
+                key={tag.label}
+                variant="outline"
+                tone={tag.tone ?? "neutral"}
+                size="sm"
+              >
+                {tag.label}
+              </Badge>
+            ))}
+          </div>
+
+          <div>
+            <EventCardTitle
+              title={title}
+              href={href}
+              className="text-large text-text-primary font-bold"
+            />
+            {subtitle && (
+              <p className="text-body text-text-secondary mt-1 line-clamp-2">
+                {subtitle}
+              </p>
+            )}
+          </div>
+
+          {stats && stats.length > 0 && (
+            <div className="flex flex-wrap gap-x-6 gap-y-3">
+              {stats.map((stat, index) => (
+                <div key={index} className="flex items-center gap-2">
+                  <Icon icon={stat.icon} size="md" className="text-primary" />
+                  <div className="text-small">
+                    <p className="text-text-primary font-semibold">
+                      {stat.primary}
+                    </p>
+                    <p className="text-text-secondary">{stat.secondary}</p>
+                  </div>
+                </div>
+              ))}
             </div>
-            <h4 className="text-large font-bold text-white group-hover:underline">
-              {title}
-            </h4>
+          )}
+
+          {description && (
+            <p className="text-body text-text-secondary">{description}</p>
+          )}
+
+          {!stats && (
             <div className="space-y-1">
-              <p className="text-small flex items-center gap-2 text-white/85">
+              <p className="text-small text-text-secondary flex items-center gap-2">
                 <Icon icon={Calendar} size="sm" />
                 {date}
               </p>
               {location && (
-                <p className="text-small flex items-center gap-2 text-white/85">
+                <p className="text-small text-text-secondary flex items-center gap-2">
                   <Icon icon={MapPin} size="sm" />
                   {location}
                 </p>
               )}
-            </div>
-          </div>
-          {secondaryInfo && (
-            <div className="text-small flex shrink-0 items-center gap-1.5 rounded-lg bg-black/40 px-3 py-2 font-semibold text-white backdrop-blur-sm">
-              <Icon icon={secondaryInfo.icon} size="sm" />
-              {secondaryInfo.text}
+              {secondaryInfo && (
+                <p className="text-small text-text-secondary flex items-center gap-2">
+                  <Icon icon={secondaryInfo.icon} size="sm" />
+                  {secondaryInfo.text}
+                </p>
+              )}
             </div>
           )}
+
+          <div className="mt-auto flex flex-wrap items-center justify-between gap-3 pt-1">
+            <div className="flex flex-wrap items-center gap-3">
+              {action}
+              {price && (
+                <span
+                  className={`text-body font-semibold ${priceTextToneClass[priceTone ?? "neutral"]}`}
+                >
+                  {price}
+                </span>
+              )}
+            </div>
+            {attendees && attendees.length > 0 && (
+              <AvatarGroup items={attendees} size="sm" overflowLabel={attendeesLabel} />
+            )}
+          </div>
         </div>
       </>
     );
 
-    if (href) {
-      return (
-        <NextLink href={href} className={featuredClassName}>
-          {featuredContent}
-        </NextLink>
-      );
-    }
-    return <div className={featuredClassName}>{featuredContent}</div>;
+    return (
+      <div className="border-border-light bg-surface-light flex flex-col overflow-hidden rounded-md border transition-shadow hover:shadow-md sm:min-h-80 sm:flex-row">
+        {featuredContent}
+      </div>
+    );
   }
 
   return (
