@@ -191,7 +191,15 @@ export default function AdditionalInfoPage() {
     const file = e.target.files?.[0];
     e.target.value = "";
     if (!file) return;
-    if (!file.type.startsWith("audio/")) {
+    // iOS often reports an empty or non-"audio/" MIME type for Voice Memos
+    // exports (.m4a/.caf) picked via the share sheet — fall back to the file
+    // extension instead of hard-rejecting a file the browser mislabeled.
+    const looksLikeAudio =
+      file.type.startsWith("audio/") ||
+      /\.(mp3|wav|m4a|aac|ogg|oga|webm|flac|caf|amr|3gp|3gpp)$/i.test(
+        file.name,
+      );
+    if (!looksLikeAudio) {
       setError("Please choose an audio file.");
       return;
     }
@@ -304,7 +312,7 @@ export default function AdditionalInfoPage() {
               <input
                 ref={fileInputRef}
                 type="file"
-                accept="audio/*"
+                accept="audio/*,.m4a,.caf,.aac,.mp3,.wav,.ogg,.flac"
                 onChange={handleFileChange}
                 className="hidden"
               />
