@@ -26,7 +26,7 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
     return (
       <label
         htmlFor={id}
-        className="text-body text-text-primary inline-flex cursor-pointer items-center gap-2 has-[:disabled]:cursor-not-allowed has-[:disabled]:opacity-50"
+        className="text-body text-text-primary flex cursor-pointer items-start gap-2 has-[:disabled]:cursor-not-allowed has-[:disabled]:opacity-50"
       >
         <input
           id={id}
@@ -36,10 +36,10 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
             if (typeof forwardedRef === "function") forwardedRef(node);
             else if (forwardedRef) forwardedRef.current = node;
           }}
-          className={`border-border-light accent-primary focus-visible:ring-primary size-5 shrink-0 rounded-sm border focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:cursor-not-allowed ${className}`}
+          className={`border-border-light accent-primary focus-visible:ring-primary mt-0.5 size-5 shrink-0 rounded-sm border focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:cursor-not-allowed ${className}`}
           {...props}
         />
-        {label}
+        {label && <span className="min-w-0">{label}</span>}
       </label>
     );
   },
