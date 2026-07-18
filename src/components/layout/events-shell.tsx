@@ -2,7 +2,7 @@
 
 import { ReactNode } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { AppShell } from "./app-shell";
 import { Navbar, NavLink } from "./navbar";
 import { ProfileMenu, ProfileMenuUser } from "@/components/molecules";
@@ -34,7 +34,9 @@ export interface EventsShellProps {
 
 export function EventsShell({ session, children }: EventsShellProps) {
   const router = useRouter();
+  const pathname = usePathname();
   const links = buildEventsNavLinks(session);
+  const transparent = pathname === "/events";
 
   if (!session) {
     return (
@@ -46,6 +48,7 @@ export function EventsShell({ session, children }: EventsShellProps) {
             onCtaClick={() => router.push("/sign-up")}
             secondaryCtaLabel="Sign In"
             onSecondaryCtaClick={() => router.push("/sign-in")}
+            transparent={transparent}
           />
         }
         sidebar={null}
@@ -72,6 +75,7 @@ export function EventsShell({ session, children }: EventsShellProps) {
         <Navbar
           links={links}
           hasUnreadNotifications
+          transparent={transparent}
           accountMenu={
             <div className="flex items-center gap-4">
               {isAdmin(session) && (

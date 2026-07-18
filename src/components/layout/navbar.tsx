@@ -1,6 +1,6 @@
 "use client";
 
-import { ReactNode, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Bell, ChevronDown, Menu, X } from "lucide-react";
@@ -18,7 +18,6 @@ export interface NavLink {
 export interface NavbarProps {
   logo?: ReactNode;
   links?: NavLink[];
-  resourcesLabel?: string;
   resourcesItems?: DropdownItem[];
   ctaLabel?: string;
   onCtaClick?: () => void;
@@ -30,11 +29,232 @@ export interface NavbarProps {
   mobileFooter?: ReactNode;
   /** Right-aligned desktop slot (e.g. a profile dropdown) that replaces the CTA buttons when provided. Also suppresses the mobile collapsed-bar CTA. */
   accountMenu?: ReactNode;
+  /** Renders transparent-over-content and floats above the page, picking up the solid background once the page scrolls. */
+  transparent?: boolean;
 }
 
 const defaultLinks: NavLink[] = [{ label: "Events", href: "/events" }];
 
 const defaultResourcesItems: DropdownItem[] = [];
+
+/** Header height, in one place — every other measurement below (mobile backdrop
+ * offset, mobile panel max-height) is derived from this so they can't drift apart. */
+const HEADER_HEIGHT_CLASS = "h-20";
+const HEADER_HEIGHT_REM = 5; // matches h-20 (5rem)
+
+function navLinkClass(isActive: boolean) {
+  return `text-body focus-visible:ring-offset-primary font-medium transition-colors focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:outline-none ${
+    isActive ? "text-white" : "text-white/70 hover:text-white"
+  }`;
+}
+
+/**
+ * Tracks whether `elementId` (the app's scroll container — see `id="app-scroll-region"`
+ * in app-shell.tsx) has been scrolled past `threshold`. Only attaches a listener while
+ * `enabled` is true, so it's a no-op for every navbar that isn't in transparent mode.
+ */
+function useScrolledPast(
+  elementId: string,
+  threshold: number,
+  enabled: boolean,
+) {
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    if (!enabled) return;
+    const el = document.getElementById(elementId);
+    if (!el) return;
+    const onScroll = () => setScrolled(el.scrollTop > threshold);
+    onScroll();
+    el.addEventListener("scroll", onScroll, { passive: true });
+    return () => el.removeEventListener("scroll", onScroll);
+  }, [elementId, threshold, enabled]);
+
+  return scrolled;
+}
+
+interface DesktopNavLinksProps {
+  links: NavLink[];
+  pathname: string;
+}
+
+/** The left-side primary links — sits next to the logo, inside the left flex group. */
+function DesktopNavLinks({ links, pathname }: DesktopNavLinksProps) {
+  return (
+    <nav aria-label="Primary" className="hidden items-center gap-6 md:flex">
+      {links.map((link) => {
+        if (link.children) {
+          const hasActiveChild = link.children.some(
+            (child) => child.href === pathname,
+          );
+          return (
+            <Dropdown
+              key={link.label}
+              trigger={
+                <span
+                  className={`flex items-center gap-1 ${navLinkClass(hasActiveChild)}`}
+                >
+                  {link.label}
+                  <Icon icon={ChevronDown} size="sm" />
+                </span>
+              }
+              items={link.children.map((child) => ({
+                label: child.label,
+                href: child.href,
+              }))}
+            />
+          );
+        }
+        return (
+          <Link
+            key={link.label}
+            href={link.href ?? "#"}
+            aria-current={pathname === link.href ? "page" : undefined}
+            className={navLinkClass(pathname === link.href)}
+          >
+            {link.label}
+          </Link>
+        );
+      })}
+    </nav>
+  );
+}
+
+interface DesktopActionsProps {
+  accountMenu?: ReactNode;
+  secondaryCtaLabel?: string;
+  onSecondaryCtaClick?: () => void;
+  ctaLabel: string;
+  onCtaClick?: () => void;
+}
+
+/** The right-aligned account/CTA area — a sibling of the left group, not nested inside it,
+ * so the header's `justify-between` row actually pushes it to the far right. */
+function DesktopActions({
+  accountMenu,
+  secondaryCtaLabel,
+  onSecondaryCtaClick,
+  ctaLabel,
+  onCtaClick,
+}: DesktopActionsProps) {
+  return (
+    <div className="mr-5 hidden items-center gap-3 md:flex">
+      {accountMenu ?? (
+        <>
+          {secondaryCtaLabel && (
+            <Button
+              variant="ghost"
+              size="sm"
+              className="text-white hover:bg-white/10"
+              onClick={onSecondaryCtaClick}
+            >
+              {secondaryCtaLabel}
+            </Button>
+          )}
+          <Button variant="accent" size="sm" onClick={onCtaClick}>
+            {ctaLabel}
+          </Button>
+        </>
+      )}
+    </div>
+  );
+}
+
+interface MobileMenuPanelProps {
+  links: NavLink[];
+  resourcesItems: DropdownItem[];
+  secondaryCtaLabel?: string;
+  onSecondaryCtaClick?: () => void;
+  mobileFooter?: ReactNode;
+  onClose: () => void;
+}
+
+function MobileMenuPanel({
+  links,
+  resourcesItems,
+  secondaryCtaLabel,
+  onSecondaryCtaClick,
+  mobileFooter,
+  onClose,
+}: MobileMenuPanelProps) {
+  return (
+    <>
+      <div
+        className={`bg-primary/40 fixed inset-x-0 bottom-0 z-30 md:hidden`}
+        style={{ top: `${HEADER_HEIGHT_REM}rem` }}
+        onClick={onClose}
+        aria-hidden="true"
+      />
+      <div
+        className="bg-primary absolute inset-x-0 top-full z-40 overflow-y-auto border-t border-white/10 shadow-lg md:hidden"
+        style={{ maxHeight: `calc(100vh - ${HEADER_HEIGHT_REM}rem)` }}
+      >
+        <nav aria-label="Primary" className="space-y-1 px-4 py-3">
+          {links.map((link) =>
+            link.children ? (
+              <div key={link.label}>
+                <p className="text-small px-2 pt-2 font-semibold tracking-wide text-white/50 uppercase">
+                  {link.label}
+                </p>
+                {link.children.map((child) => (
+                  <Link
+                    key={child.href}
+                    href={child.href}
+                    onClick={onClose}
+                    className="text-body block rounded-sm px-4 py-2 font-medium text-white/80 hover:bg-white/10 hover:text-white"
+                  >
+                    {child.label}
+                  </Link>
+                ))}
+              </div>
+            ) : (
+              <Link
+                key={link.label}
+                href={link.href ?? "#"}
+                onClick={onClose}
+                className="text-body block rounded-sm px-2 py-2 font-medium text-white/80 hover:bg-white/10 hover:text-white"
+              >
+                {link.label}
+              </Link>
+            ),
+          )}
+          {resourcesItems
+            .filter(
+              (item): item is DropdownItem & { href: string } =>
+                !item.divider && !!item.href,
+            )
+            .map((item) => (
+              <Link
+                key={item.label}
+                href={item.href}
+                onClick={onClose}
+                className="text-body block rounded-sm px-2 py-2 font-medium text-white/80 hover:bg-white/10 hover:text-white"
+              >
+                {item.label}
+              </Link>
+            ))}
+          {secondaryCtaLabel && (
+            <button
+              type="button"
+              onClick={() => {
+                onClose();
+                onSecondaryCtaClick?.();
+              }}
+              className="text-body block w-full rounded-sm px-2 py-2 text-left font-medium text-white/80 hover:bg-white/10 hover:text-white"
+            >
+              {secondaryCtaLabel}
+            </button>
+          )}
+        </nav>
+        {mobileFooter && (
+          <div className="bg-bg-light border-t border-white/10">
+            {mobileFooter}
+          </div>
+        )}
+      </div>
+    </>
+  );
+}
 
 export function Navbar({
   logo = (
@@ -56,86 +276,33 @@ export function Navbar({
   onNotificationClick,
   mobileFooter,
   accountMenu,
+  transparent = false,
 }: NavbarProps) {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const scrolled = useScrolledPast("app-scroll-region", 8, transparent);
+
+  const headerClass = transparent
+    ? `fixed inset-x-0 top-0 ${scrolled ? "bg-primary shadow-sm" : "bg-transparent shadow-none"}`
+    : "bg-primary relative shadow-sm";
+
   return (
-    <header className="bg-primary relative z-20 shadow-sm">
-      <div className="mx-2 flex h-16 items-center justify-between gap-4">
+    <header className={`z-20 transition-colors duration-300 ${headerClass}`}>
+      <div
+        className={`mx-4 flex items-center justify-between gap-4 ${HEADER_HEIGHT_CLASS}`}
+      >
         <div className="flex items-center gap-8">
           <Link href="/">{logo}</Link>
-          <nav
-            aria-label="Primary"
-            className="hidden items-center gap-6 md:flex"
-          >
-            {links.map((link) => {
-              if (link.children) {
-                const hasActiveChild = link.children.some(
-                  (child) => child.href === pathname,
-                );
-                return (
-                  <Dropdown
-                    key={link.label}
-                    trigger={
-                      <span
-                        className={`text-body focus-visible:ring-offset-primary flex items-center gap-1 font-medium transition-colors focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:outline-none ${
-                          hasActiveChild
-                            ? "text-white"
-                            : "text-white/70 hover:text-white"
-                        }`}
-                      >
-                        {link.label}
-                        <Icon icon={ChevronDown} size="sm" />
-                      </span>
-                    }
-                    items={link.children.map((child) => ({
-                      label: child.label,
-                      href: child.href,
-                    }))}
-                  />
-                );
-              }
-              const isActive = pathname === link.href;
-              return (
-                <Link
-                  key={link.label}
-                  href={link.href ?? "#"}
-                  aria-current={isActive ? "page" : undefined}
-                  className={`text-body focus-visible:ring-offset-primary font-medium transition-colors focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:outline-none ${
-                    isActive ? "text-white" : "text-white/70 hover:text-white"
-                  }`}
-                >
-                  {link.label}
-                </Link>
-              );
-            })}
-          </nav>
+          <DesktopNavLinks links={links} pathname={pathname} />
         </div>
 
-        <div className="hidden items-center gap-3 mr-5 md:flex">
-          {accountMenu ?? (
-            <>
-              {secondaryCtaLabel && (
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="text-white hover:bg-white/10"
-                  onClick={onSecondaryCtaClick}
-                >
-                  {secondaryCtaLabel}
-                </Button>
-              )}
-              <Button variant="accent" size="sm" onClick={onCtaClick}>
-                {ctaLabel}
-              </Button>
-            </>
-          )}
-          {ctaLabel && (
-            <Button variant="accent" size="sm" onClick={onCtaClick}>
-              {ctaLabel}
-            </Button>
-          )}
-        </div>
+        <DesktopActions
+          accountMenu={accountMenu}
+          secondaryCtaLabel={secondaryCtaLabel}
+          onSecondaryCtaClick={onSecondaryCtaClick}
+          ctaLabel={ctaLabel}
+          onCtaClick={onCtaClick}
+        />
 
         <div className="flex items-center gap-2 md:hidden">
           <button
@@ -167,77 +334,14 @@ export function Navbar({
       </div>
 
       {mobileOpen && (
-        <>
-          <div
-            className="bg-primary/40 fixed inset-x-0 top-16 bottom-0 z-30 md:hidden"
-            onClick={() => setMobileOpen(false)}
-            aria-hidden="true"
-          />
-          <div className="bg-primary absolute inset-x-0 top-full z-40 max-h-[calc(100vh-4rem)] overflow-y-auto border-t border-white/10 shadow-lg md:hidden">
-            <nav aria-label="Primary" className="space-y-1 px-4 py-3">
-              {links.map((link) =>
-                link.children ? (
-                  <div key={link.label}>
-                    <p className="text-small px-2 pt-2 font-semibold tracking-wide text-white/50 uppercase">
-                      {link.label}
-                    </p>
-                    {link.children.map((child) => (
-                      <Link
-                        key={child.href}
-                        href={child.href}
-                        onClick={() => setMobileOpen(false)}
-                        className="text-body block rounded-sm px-4 py-2 font-medium text-white/80 hover:bg-white/10 hover:text-white"
-                      >
-                        {child.label}
-                      </Link>
-                    ))}
-                  </div>
-                ) : (
-                  <Link
-                    key={link.label}
-                    href={link.href ?? "#"}
-                    onClick={() => setMobileOpen(false)}
-                    className="text-body block rounded-sm px-2 py-2 font-medium text-white/80 hover:bg-white/10 hover:text-white"
-                  >
-                    {link.label}
-                  </Link>
-                ),
-              )}
-              {resourcesItems
-                .filter(
-                  (item): item is DropdownItem & { href: string } =>
-                    !item.divider && !!item.href,
-                )
-                .map((item) => (
-                  <Link
-                    key={item.label}
-                    href={item.href}
-                    onClick={() => setMobileOpen(false)}
-                    className="text-body block rounded-sm px-2 py-2 font-medium text-white/80 hover:bg-white/10 hover:text-white"
-                  >
-                    {item.label}
-                  </Link>
-                ))}
-              {secondaryCtaLabel && (
-                <button
-                  type="button"
-                  onClick={() => {
-                    setMobileOpen(false);
-                    onSecondaryCtaClick?.();
-                  }}
-                  className="text-body block w-full rounded-sm px-2 py-2 text-left font-medium text-white/80 hover:bg-white/10 hover:text-white"
-                >
-                  {secondaryCtaLabel}
-                </button>
-              )}
-            </nav>
-            {mobileFooter && (
-              <div className="bg-bg-light border-t border-white/10">
-                {mobileFooter}
-              </div>
-            )}
-          </div>
-        </>
+        <MobileMenuPanel
+          links={links}
+          resourcesItems={resourcesItems}
+          secondaryCtaLabel={secondaryCtaLabel}
+          onSecondaryCtaClick={onSecondaryCtaClick}
+          mobileFooter={mobileFooter}
+          onClose={() => setMobileOpen(false)}
+        />
       )}
     </header>
   );
