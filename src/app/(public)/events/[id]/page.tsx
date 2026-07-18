@@ -494,7 +494,7 @@ export default function EventDetailPage() {
           </div>
 
           <ShareEventCard
-            url={`https://gcode.in/events/${event.id}`}
+            url={`${typeof window !== "undefined" ? window.location.origin : ""}/events/${event.id}`}
             title={event.title}
           />
         </div>
