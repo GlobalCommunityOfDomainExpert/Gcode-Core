@@ -1,6 +1,6 @@
 "use client";
 
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode, useEffect, useRef, useState } from "react";
 import { useParams, useSearchParams } from "next/navigation";
 import {
   AlertTriangle,
@@ -8,7 +8,9 @@ import {
   Clock,
   Compass,
   ExternalLink,
+  FileAudio,
   LucideIcon,
+  Upload,
 } from "lucide-react";
 import {
   Button,
@@ -35,12 +37,15 @@ import { ParticipantApi } from "@/lib/api/types";
 
 const SUBMISSION_WINDOW_MS = 24 * 60 * 60 * 1000;
 
-type SubmissionMode = "record" | "link";
+type SubmissionMode = "record" | "upload" | "link";
 
 const SUBMISSION_MODE_OPTIONS: { value: SubmissionMode; label: string }[] = [
   { value: "record", label: "Record Audio" },
+  { value: "upload", label: "Upload File" },
   { value: "link", label: "Paste a Link" },
 ];
+
+const MAX_UPLOAD_BYTES = 20 * 1024 * 1024;
 
 function formatCountdown(ms: number): string {
   const totalMinutes = Math.max(0, Math.floor(ms / 60000));
@@ -104,6 +109,7 @@ export default function AdditionalInfoPage() {
   const [audioBlob, setAudioBlob] = useState<Blob | null>(null);
   const [audioUrl, setAudioUrl] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const [error, setError] = useState("");
   const [submittedUrl, setSubmittedUrl] = useState<string | null>(null);
   // Re-renders every 30s so the countdown/disqualification state stays live
@@ -181,22 +187,45 @@ export default function AdditionalInfoPage() {
   const isPastDeadline = msRemaining <= 0;
   const isDisqualified = isPastDeadline && !submittedUrl;
 
+  function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    e.target.value = "";
+    if (!file) return;
+    if (!file.type.startsWith("audio/")) {
+      setError("Please choose an audio file.");
+      return;
+    }
+    if (file.size > MAX_UPLOAD_BYTES) {
+      setError("File too large — max 20MB.");
+      return;
+    }
+    setError("");
+    setAudioBlob(file);
+  }
+
+  function handleModeChange(value: SubmissionMode) {
+    setMode(value);
+    setAudioBlob(null);
+    setAudioUrl("");
+    setError("");
+  }
+
   async function handleSubmit() {
-    if (mode === "record") {
-      if (!audioBlob) return;
-    } else {
+    if (mode === "link") {
       if (!isValidUrl(audioUrl.trim())) {
         setError("Enter a valid link (e.g. a Google Drive or YouTube URL).");
         return;
       }
+    } else if (!audioBlob) {
+      return;
     }
     setSubmitting(true);
     setError("");
     try {
       const { audio_submission_url } =
-        mode === "record"
-          ? await uploadParticipantAudio(participant!.id, audioBlob!)
-          : await submitParticipantAudio(participant!.id, audioUrl.trim());
+        mode === "link"
+          ? await submitParticipantAudio(participant!.id, audioUrl.trim())
+          : await uploadParticipantAudio(participant!.id, audioBlob!);
       setSubmittedUrl(audio_submission_url);
       setAudioBlob(null);
       setAudioUrl("");
@@ -248,10 +277,10 @@ export default function AdditionalInfoPage() {
           <ToggleGroup
             options={SUBMISSION_MODE_OPTIONS}
             value={mode}
-            onChange={(value) => setMode(value as SubmissionMode)}
+            onChange={(value) => handleModeChange(value as SubmissionMode)}
           />
 
-          {mode === "record" ? (
+          {mode === "record" && (
             <>
               <p className="text-small text-text-secondary">
                 Up to 3 minutes. Record right here in the browser, then submit
@@ -264,7 +293,67 @@ export default function AdditionalInfoPage() {
                 disabled={submitting}
               />
             </>
-          ) : (
+          )}
+
+          {mode === "upload" && (
+            <>
+              <p className="text-small text-text-secondary">
+                Choose an audio file already on your device — MP3, WAV, M4A,
+                etc. Up to 20MB.
+              </p>
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="audio/*"
+                onChange={handleFileChange}
+                className="hidden"
+              />
+              {audioBlob instanceof File ? (
+                <div className="border-border-light bg-surface-light flex flex-wrap items-center gap-3 rounded-md border p-4">
+                  <div className="flex min-w-0 items-center gap-2">
+                    <Icon
+                      icon={FileAudio}
+                      size="sm"
+                      className="text-text-secondary shrink-0"
+                    />
+                    <span className="text-small text-text-primary truncate">
+                      {audioBlob.name}
+                    </span>
+                    <span className="text-small text-text-secondary shrink-0">
+                      ({(audioBlob.size / (1024 * 1024)).toFixed(1)} MB)
+                    </span>
+                  </div>
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    className="ml-auto"
+                    disabled={submitting}
+                    onClick={() => {
+                      setAudioBlob(null);
+                      fileInputRef.current?.click();
+                    }}
+                  >
+                    Choose Different File
+                  </Button>
+                </div>
+              ) : (
+                <div>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    disabled={submitting}
+                    onClick={() => fileInputRef.current?.click()}
+                  >
+                    <Icon icon={Upload} size="sm" />
+                    Choose File
+                  </Button>
+                </div>
+              )}
+            </>
+          )}
+
+          {mode === "link" && (
             <>
               <p className="text-small text-text-secondary">
                 Upload to Google Drive or YouTube (unlisted is fine), set
@@ -290,7 +379,7 @@ export default function AdditionalInfoPage() {
             onClick={handleSubmit}
             disabled={
               submitting ||
-              (mode === "record" ? !audioBlob : audioUrl.trim() === "")
+              (mode === "link" ? audioUrl.trim() === "" : !audioBlob)
             }
           >
             {submitting
