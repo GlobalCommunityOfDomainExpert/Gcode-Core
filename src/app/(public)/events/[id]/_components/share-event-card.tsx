@@ -1,10 +1,20 @@
 "use client";
 
 import { useState } from "react";
-import { Button, Card, SectionLabel } from "@/components/atoms";
+import { Mail, MessageCircle, Share2 } from "lucide-react";
+import { Button, Card, Icon, SectionLabel } from "@/components/atoms";
+import { Modal } from "@/components/molecules";
 
-export function ShareEventCard({ url }: { url: string }) {
+interface ShareEventCardProps {
+  url: string;
+  title: string;
+}
+
+export function ShareEventCard({ url, title }: ShareEventCardProps) {
+  const [open, setOpen] = useState(false);
   const [copied, setCopied] = useState(false);
+  const canNativeShare =
+    typeof navigator !== "undefined" && "share" in navigator;
 
   async function handleCopy() {
     try {
@@ -16,38 +26,117 @@ export function ShareEventCard({ url }: { url: string }) {
     }
   }
 
+  async function handleNativeShare() {
+    try {
+      await navigator.share({ title, url });
+    } catch {
+      // user cancelled or unsupported — no-op
+    }
+  }
+
+  function openShareWindow(shareUrl: string) {
+    window.open(shareUrl, "_blank", "noopener,noreferrer");
+  }
+
   return (
-    <Card className="space-y-3">
-      <SectionLabel>Share Event</SectionLabel>
-      <div className="flex flex-wrap gap-2">
-        <Button
-          variant="secondary"
-          size="sm"
-          onClick={() =>
-            window.open(
-              `https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}`,
-              "_blank",
-            )
-          }
-        >
-          Twitter / X
+    <>
+      <Card className="space-y-3">
+        <SectionLabel>Share Event</SectionLabel>
+        <Button variant="secondary" size="sm" onClick={() => setOpen(true)}>
+          <Icon icon={Share2} size="sm" />
+          Share
         </Button>
-        <Button
-          variant="secondary"
-          size="sm"
-          onClick={() =>
-            window.open(
-              `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`,
-              "_blank",
-            )
-          }
-        >
-          LinkedIn
-        </Button>
-        <Button variant="secondary" size="sm" onClick={handleCopy}>
-          {copied ? "Copied!" : "Copy Link"}
-        </Button>
-      </div>
-    </Card>
+      </Card>
+
+      <Modal open={open} onClose={() => setOpen(false)} title="Share Event">
+        <div className="space-y-4">
+          <div className="border-border-light bg-bg-light flex items-center gap-2 rounded-sm border px-3 py-2">
+            <span className="text-small text-text-secondary flex-1 truncate">
+              {url}
+            </span>
+            <Button variant="secondary" size="xs" onClick={handleCopy}>
+              {copied ? "Copied!" : "Copy"}
+            </Button>
+          </div>
+
+          <div className="flex flex-wrap gap-2">
+            <Button
+              variant="secondary"
+              size="sm"
+              onClick={() =>
+                openShareWindow(
+                  `mailto:?subject=${encodeURIComponent(title)}&body=${encodeURIComponent(url)}`,
+                )
+              }
+            >
+              <Icon icon={Mail} size="sm" />
+              Email
+            </Button>
+            <Button
+              variant="secondary"
+              size="sm"
+              onClick={() =>
+                openShareWindow(
+                  `https://wa.me/?text=${encodeURIComponent(`${title} ${url}`)}`,
+                )
+              }
+            >
+              <Icon icon={MessageCircle} size="sm" />
+              WhatsApp
+            </Button>
+            <Button
+              variant="secondary"
+              size="sm"
+              onClick={() =>
+                openShareWindow(
+                  `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`,
+                )
+              }
+            >
+              Facebook
+            </Button>
+            <Button
+              variant="secondary"
+              size="sm"
+              onClick={() =>
+                openShareWindow(
+                  `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`,
+                )
+              }
+            >
+              LinkedIn
+            </Button>
+            <Button
+              variant="secondary"
+              size="sm"
+              onClick={() =>
+                openShareWindow(
+                  `https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent(title)}`,
+                )
+              }
+            >
+              Twitter / X
+            </Button>
+            <Button
+              variant="secondary"
+              size="sm"
+              onClick={() =>
+                openShareWindow(
+                  `https://www.reddit.com/submit?url=${encodeURIComponent(url)}&title=${encodeURIComponent(title)}`,
+                )
+              }
+            >
+              Reddit
+            </Button>
+            {canNativeShare && (
+              <Button variant="secondary" size="sm" onClick={handleNativeShare}>
+                <Icon icon={Share2} size="sm" />
+                More
+              </Button>
+            )}
+          </div>
+        </div>
+      </Modal>
+    </>
   );
 }

@@ -10,14 +10,37 @@ import {
   ExternalLink,
   LucideIcon,
 } from "lucide-react";
-import { Button, Card, Icon, Input, Label, SectionLabel } from "@/components/atoms";
-import { Banner, NotFoundState } from "@/components/molecules";
+import {
+  Button,
+  Card,
+  Icon,
+  Input,
+  Label,
+  SectionLabel,
+} from "@/components/atoms";
+import {
+  AudioRecorder,
+  Banner,
+  NotFoundState,
+  ToggleGroup,
+} from "@/components/molecules";
 import { useEvent } from "@/hooks/use-event";
-import { getParticipant, submitParticipantAudio } from "@/lib/api/participants";
+import {
+  getParticipant,
+  submitParticipantAudio,
+  uploadParticipantAudio,
+} from "@/lib/api/participants";
 import { ApiError } from "@/lib/api/client";
 import { ParticipantApi } from "@/lib/api/types";
 
 const SUBMISSION_WINDOW_MS = 24 * 60 * 60 * 1000;
+
+type SubmissionMode = "record" | "link";
+
+const SUBMISSION_MODE_OPTIONS: { value: SubmissionMode; label: string }[] = [
+  { value: "record", label: "Record Audio" },
+  { value: "link", label: "Paste a Link" },
+];
 
 function formatCountdown(ms: number): string {
   const totalMinutes = Math.max(0, Math.floor(ms / 60000));
@@ -77,6 +100,8 @@ export default function AdditionalInfoPage() {
     "loading" | "error" | "ready"
   >(participantId ? "loading" : "error");
 
+  const [mode, setMode] = useState<SubmissionMode>("record");
+  const [audioBlob, setAudioBlob] = useState<Blob | null>(null);
   const [audioUrl, setAudioUrl] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
@@ -157,21 +182,27 @@ export default function AdditionalInfoPage() {
   const isDisqualified = isPastDeadline && !submittedUrl;
 
   async function handleSubmit() {
-    if (!isValidUrl(audioUrl.trim())) {
-      setError("Enter a valid link (e.g. a Google Drive share URL).");
-      return;
+    if (mode === "record") {
+      if (!audioBlob) return;
+    } else {
+      if (!isValidUrl(audioUrl.trim())) {
+        setError("Enter a valid link (e.g. a Google Drive or YouTube URL).");
+        return;
+      }
     }
     setSubmitting(true);
     setError("");
     try {
-      const { audio_submission_url } = await submitParticipantAudio(
-        participant!.id,
-        audioUrl.trim(),
-      );
+      const { audio_submission_url } =
+        mode === "record"
+          ? await uploadParticipantAudio(participant!.id, audioBlob!)
+          : await submitParticipantAudio(participant!.id, audioUrl.trim());
       setSubmittedUrl(audio_submission_url);
+      setAudioBlob(null);
+      setAudioUrl("");
     } catch (err) {
       setError(
-        err instanceof ApiError
+        err instanceof ApiError || err instanceof Error
           ? err.message
           : "Couldn't save your submission. Please try again.",
       );
@@ -187,17 +218,16 @@ export default function AdditionalInfoPage() {
           Additional Info — {event.title}
         </h1>
         <p className="text-small text-text-secondary">
-          Participants must submit their audio submission URL within 24
-          hours of registration, or the entry is disqualified.
+          Participants must submit their audio submission URL within 24 hours of
+          registration, or the entry is disqualified.
         </p>
       </div>
 
       {isDisqualified ? (
         <StatusCard tone="danger" icon={AlertTriangle}>
-          The 24-hour submission window closed on{" "}
-          {deadline.toLocaleString()} and no audio was submitted. This entry
-          is disqualified. Contact the organizer if you believe this is a
-          mistake.
+          The 24-hour submission window closed on {deadline.toLocaleString()}{" "}
+          and no audio was submitted. This entry is disqualified. Contact the
+          organizer if you believe this is a mistake.
         </StatusCard>
       ) : submittedUrl ? (
         <StatusCard tone="success" icon={Check}>
@@ -214,53 +244,54 @@ export default function AdditionalInfoPage() {
 
       {!isDisqualified && (
         <Card padding="md" className="space-y-4">
-          <SectionLabel>How to submit</SectionLabel>
-          <ol className="space-y-3">
-            <li>
-              <p className="text-body text-text-primary font-medium">
-                1. Upload your audio file
-              </p>
+          <SectionLabel>Submit your audio</SectionLabel>
+          <ToggleGroup
+            options={SUBMISSION_MODE_OPTIONS}
+            value={mode}
+            onChange={(value) => setMode(value as SubmissionMode)}
+          />
+
+          {mode === "record" ? (
+            <>
               <p className="text-small text-text-secondary">
-                Any host works — Google Drive, Dropbox, OneDrive, etc.
+                Up to 3 minutes. Record right here in the browser, then submit
+                before the 24h deadline — after that the entry is disqualified
+                regardless of the recording itself.
               </p>
-            </li>
-            <li>
-              <p className="text-body text-text-primary font-medium">
-                2. Set sharing to &quot;Anyone with the link&quot;
-              </p>
+              <AudioRecorder
+                onRecordingComplete={setAudioBlob}
+                onClear={() => setAudioBlob(null)}
+                disabled={submitting}
+              />
+            </>
+          ) : (
+            <>
               <p className="text-small text-text-secondary">
-                On Google Drive: right-click the file → Share → General
-                access → &quot;Anyone with the link&quot; (Viewer is enough).
-                A private link the reviewer can&apos;t open counts as no
+                Upload to Google Drive or YouTube (unlisted is fine), set
+                sharing to &quot;Anyone with the link&quot;, then paste it
+                below. A private link the reviewer can&apos;t open counts as no
                 submission.
               </p>
-            </li>
-            <li>
-              <p className="text-body text-text-primary font-medium">
-                3. Copy the link and paste it below, then submit
-              </p>
-              <p className="text-small text-text-secondary">
-                Before the 24h deadline — after that the entry is
-                disqualified regardless of the file itself.
-              </p>
-            </li>
-          </ol>
+              <div className="space-y-1">
+                <Label htmlFor="audio-url">Audio Submission URL</Label>
+                <Input
+                  id="audio-url"
+                  type="url"
+                  value={audioUrl}
+                  onChange={(e) => setAudioUrl(e.target.value)}
+                  placeholder="https://drive.google.com/file/d/... or https://youtu.be/..."
+                />
+              </div>
+            </>
+          )}
 
-          <SectionLabel>Additional Info</SectionLabel>
-          <div className="space-y-1">
-            <Label htmlFor="audio-url">Audio Submission URL</Label>
-            <Input
-              id="audio-url"
-              type="url"
-              value={audioUrl}
-              onChange={(e) => setAudioUrl(e.target.value)}
-              placeholder="https://drive.google.com/file/d/..."
-            />
-          </div>
           <Button
             variant="primary"
             onClick={handleSubmit}
-            disabled={submitting || audioUrl.trim() === ""}
+            disabled={
+              submitting ||
+              (mode === "record" ? !audioBlob : audioUrl.trim() === "")
+            }
           >
             {submitting
               ? "Saving…"
