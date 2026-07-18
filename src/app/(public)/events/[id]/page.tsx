@@ -1,7 +1,7 @@
 "use client";
 
 import { useParams, useRouter } from "next/navigation";
-import { Calendar, Clock, MapPin, Award, Users, Compass } from "lucide-react";
+import { Calendar, Clock, MapPin, Users, Compass } from "lucide-react";
 import { Button, ButtonLink, Icon, SectionLabel } from "@/components/atoms";
 import {
   Banner,
@@ -119,6 +119,165 @@ export default function EventDetailPage() {
     );
   }
 
+  // Rendered twice: inline right after the header on mobile (so price/CTA
+  // isn't buried below the full details/agenda/eligibility scroll), and in
+  // the sticky sidebar on desktop. Same node, two responsive placements.
+  const bookingCard = (
+    <div className="border-border-light bg-surface-light space-y-4 rounded-md border p-4">
+      {(() => {
+        // "enabled" (organizer offers this pass at all) is separate
+        // from "open right now" (within its own registration window) —
+        // an enabled-but-not-yet-open or enabled-but-closed pass still
+        // shows up here, just greyed out, instead of disappearing.
+        const enabledPasses = [
+          {
+            category: "PARTICIPANT" as const,
+            data: event.participantRegistration,
+          },
+
+          {
+            category: "ATTENDEE" as const,
+            data: event.attendeeRegistration,
+          },
+        ].filter((p) => p.data.enabled);
+        const registrationClosed = enabledPasses.length === 0;
+        const singlePass =
+          enabledPasses.length === 1 ? enabledPasses[0].data : undefined;
+
+        type WindowStatus =
+          | { state: "not-open-yet"; days: number }
+          | { state: "closed" }
+          | { state: "closing-soon"; days: number }
+          | { state: "open" };
+
+        function windowStatus(
+          data: Event["attendeeRegistration"],
+        ): WindowStatus {
+          const opensDays = daysUntil(data.registrationOpensIso);
+          if (opensDays !== null && opensDays > 0) {
+            return { state: "not-open-yet", days: opensDays };
+          }
+          const closesDays = daysUntil(data.registrationDeadlineIso);
+          if (closesDays !== null) {
+            return closesDays <= 0
+              ? { state: "closed" }
+              : { state: "closing-soon", days: closesDays };
+          }
+          return { state: "open" };
+        }
+
+        function windowStatusMeta(status: WindowStatus): string | undefined {
+          if (status.state === "not-open-yet")
+            return `opens in ${status.days}d`;
+          if (status.state === "closed") return "closed";
+          if (status.state === "closing-soon")
+            return `closes in ${status.days}d`;
+          return undefined;
+        }
+
+        function windowStatusMessage(status: WindowStatus): string | undefined {
+          if (status.state === "not-open-yet")
+            return `Registration opens in ${status.days} day${status.days === 1 ? "" : "s"}`;
+          if (status.state === "closed") return "Registration closed";
+          if (status.state === "closing-soon")
+            return `Registration closes in ${status.days} day${status.days === 1 ? "" : "s"}`;
+          return undefined;
+        }
+
+        return (
+          <>
+            {singlePass ? (
+              <div className="flex items-center justify-between">
+                <span className="text-heading text-text-primary font-extrabold">
+                  {singlePass.priceLabel}
+                </span>
+                {singlePass.spotsLeft !== undefined && (
+                  <span className="text-small text-warning font-semibold">
+                    {singlePass.spotsLeft} spots left
+                  </span>
+                )}
+              </div>
+            ) : enabledPasses.length > 1 ? (
+              <>
+                <p className="text-body text-text-primary font-semibold">
+                  How would you like to join?
+                </p>
+                <div className="space-y-3">
+                  {enabledPasses.map(({ category, data }) => {
+                    const status = windowStatus(data);
+                    return (
+                      <SelectableCard
+                        key={category}
+                        layout="horizontal"
+                        title={data.label}
+                        subtitle={data.description || undefined}
+                        disabled={
+                          status.state === "not-open-yet" ||
+                          status.state === "closed"
+                        }
+                        meta={[
+                          data.spotsLeft !== undefined
+                            ? `${data.priceLabel} · ${data.spotsLeft} left`
+                            : data.priceLabel,
+                          windowStatusMeta(status),
+                        ]
+                          .filter(Boolean)
+                          .join(" · ")}
+                        onSelect={() =>
+                          router.push(
+                            `/events/${event.id}/register?category=${category}`,
+                          )
+                        }
+                      />
+                    );
+                  })}
+                </div>
+              </>
+            ) : null}
+
+            {singlePass &&
+              (() => {
+                const message = windowStatusMessage(windowStatus(singlePass));
+                if (!message) return null;
+                return (
+                  <p className="text-small text-text-secondary">{message}</p>
+                );
+              })()}
+            {event.status === "CANCELLED" ? (
+              <Button variant="secondary" className="w-full" disabled>
+                Event Cancelled
+              </Button>
+            ) : registrationClosed ? (
+              <Button variant="secondary" className="w-full" disabled>
+                Registration Closed
+              </Button>
+            ) : singlePass && !isRegistrationOpen(singlePass) ? (
+              <Button variant="secondary" className="w-full" disabled>
+                {windowStatus(singlePass).state === "not-open-yet"
+                  ? "Registration Not Yet Open"
+                  : "Registration Closed"}
+              </Button>
+            ) : singlePass ? (
+              <ButtonLink
+                href={`/events/${event.id}/register`}
+                variant="primary"
+                className="w-full"
+              >
+                Book Tickets
+              </ButtonLink>
+            ) : null}
+            {singlePass?.capacity && (
+              <p className="text-small text-text-secondary text-center">
+                {singlePass.capacity} total capacity ·{" "}
+                {singlePass.registeredCount} registered
+              </p>
+            )}
+          </>
+        );
+      })()}
+    </div>
+  );
+
   return (
     <div className="space-y-6">
       <Breadcrumb
@@ -174,6 +333,15 @@ export default function EventDetailPage() {
               ))}
             </div>
           </div>
+
+          <div className="lg:hidden">
+            <ShareEventCard
+              url={`${typeof window !== "undefined" ? window.location.origin : ""}/events/${event.id}`}
+              title={event.title}
+            />
+          </div>
+
+          <div className="lg:hidden">{bookingCard}</div>
 
           <div className="border-border-light bg-surface-light space-y-4 rounded-md border p-6">
             <SectionLabel>Event Details</SectionLabel>
@@ -234,37 +402,6 @@ export default function EventDetailPage() {
             </div>
           )}
 
-          <div className="bg-primary space-y-3 rounded-md p-6">
-            <p className="text-small font-bold tracking-widest text-white/70 uppercase">
-              The GCODE Talent Ethos
-            </p>
-            <img
-              src="/app-logo.png"
-              alt="GCODE"
-              className="h-10 w-auto object-contain"
-            />
-            <p className="text-body font-semibold text-white/90">
-              Discover. Perform. Connect. Grow.
-            </p>
-            <p className="text-body text-white/80">
-              At GCODE, we believe talent is just the beginning. Every
-              performance is an opportunity to build confidence, every
-              interaction is a chance to create meaningful connections, and
-              every event opens doors to new opportunities.
-            </p>
-            <p className="text-body text-white/80">
-              We provide a professional platform where individuals can showcase
-              their talent, receive valuable recognition, learn from experienced
-              mentors, connect with like-minded people, and become part of a
-              thriving ecosystem that celebrates passion, creativity and
-              continuous growth.
-            </p>
-            <p className="text-body text-white/80">
-              Because at GCODE, talent doesn&apos;t end with applause—it begins
-              with opportunity.
-            </p>
-          </div>
-
           {event.socialLinks && event.socialLinks.length > 0 && (
             <div className="border-border-light bg-surface-light space-y-3 rounded-md border p-6">
               <SectionLabel>Social Links</SectionLabel>
@@ -302,197 +439,41 @@ export default function EventDetailPage() {
               </ul>
             </div>
           </div>
+
+          <div className="bg-primary space-y-3 rounded-md p-6">
+            <p className="text-small font-bold tracking-widest text-white/70 uppercase">
+              The GCODE Talent Ethos
+            </p>
+            <img
+              src="/app-logo.png"
+              alt="GCODE"
+              className="h-10 w-auto object-contain"
+            />
+            <p className="text-body font-semibold text-white/90">
+              Discover. Perform. Connect. Grow.
+            </p>
+            <p className="text-body text-white/80">
+              At GCODE, we believe talent is just the beginning. Every
+              performance is an opportunity to build confidence, every
+              interaction is a chance to create meaningful connections, and
+              every event opens doors to new opportunities.
+            </p>
+            <p className="text-body text-white/80">
+              We provide a professional platform where individuals can showcase
+              their talent, receive valuable recognition, learn from experienced
+              mentors, connect with like-minded people, and become part of a
+              thriving ecosystem that celebrates passion, creativity and
+              continuous growth.
+            </p>
+            <p className="text-body text-white/80">
+              Because at GCODE, talent doesn&apos;t end with applause—it begins
+              with opportunity.
+            </p>
+          </div>
         </div>
 
-        <div className="space-y-6 lg:sticky lg:top-6 lg:self-start">
-          <div className="border-border-light bg-surface-light space-y-4 rounded-md border p-4">
-            {(() => {
-              // "enabled" (organizer offers this pass at all) is separate
-              // from "open right now" (within its own registration window) —
-              // an enabled-but-not-yet-open or enabled-but-closed pass still
-              // shows up here, just greyed out, instead of disappearing.
-              const enabledPasses = [
-                {
-                  category: "PARTICIPANT" as const,
-                  data: event.participantRegistration,
-                },
-
-                {
-                  category: "ATTENDEE" as const,
-                  data: event.attendeeRegistration,
-                },
-              ].filter((p) => p.data.enabled);
-              const registrationClosed = enabledPasses.length === 0;
-              const singlePass =
-                enabledPasses.length === 1 ? enabledPasses[0].data : undefined;
-
-              type WindowStatus =
-                | { state: "not-open-yet"; days: number }
-                | { state: "closed" }
-                | { state: "closing-soon"; days: number }
-                | { state: "open" };
-
-              function windowStatus(
-                data: Event["attendeeRegistration"],
-              ): WindowStatus {
-                const opensDays = daysUntil(data.registrationOpensIso);
-                if (opensDays !== null && opensDays > 0) {
-                  return { state: "not-open-yet", days: opensDays };
-                }
-                const closesDays = daysUntil(data.registrationDeadlineIso);
-                if (closesDays !== null) {
-                  return closesDays <= 0
-                    ? { state: "closed" }
-                    : { state: "closing-soon", days: closesDays };
-                }
-                return { state: "open" };
-              }
-
-              function windowStatusMeta(
-                status: WindowStatus,
-              ): string | undefined {
-                if (status.state === "not-open-yet")
-                  return `opens in ${status.days}d`;
-                if (status.state === "closed") return "closed";
-                if (status.state === "closing-soon")
-                  return `closes in ${status.days}d`;
-                return undefined;
-              }
-
-              function windowStatusMessage(
-                status: WindowStatus,
-              ): string | undefined {
-                if (status.state === "not-open-yet")
-                  return `Registration opens in ${status.days} day${status.days === 1 ? "" : "s"}`;
-                if (status.state === "closed") return "Registration closed";
-                if (status.state === "closing-soon")
-                  return `Registration closes in ${status.days} day${status.days === 1 ? "" : "s"}`;
-                return undefined;
-              }
-
-              return (
-                <>
-                  {singlePass ? (
-                    <div className="flex items-center justify-between">
-                      <span className="text-heading text-text-primary font-extrabold">
-                        {singlePass.priceLabel}
-                      </span>
-                      {singlePass.spotsLeft !== undefined && (
-                        <span className="text-small text-warning font-semibold">
-                          {singlePass.spotsLeft} spots left
-                        </span>
-                      )}
-                    </div>
-                  ) : enabledPasses.length > 1 ? (
-                    <>
-                      <p className="text-body text-text-primary font-semibold">
-                        How would you like to join?
-                      </p>
-                      <div className="space-y-3">
-                        {enabledPasses.map(({ category, data }) => {
-                          const status = windowStatus(data);
-                          return (
-                            <SelectableCard
-                              key={category}
-                              layout="horizontal"
-                              title={data.label}
-                              subtitle={data.description || undefined}
-                              disabled={
-                                status.state === "not-open-yet" ||
-                                status.state === "closed"
-                              }
-                              meta={[
-                                data.spotsLeft !== undefined
-                                  ? `${data.priceLabel} · ${data.spotsLeft} left`
-                                  : data.priceLabel,
-                                windowStatusMeta(status),
-                              ]
-                                .filter(Boolean)
-                                .join(" · ")}
-                              onSelect={() =>
-                                router.push(
-                                  `/events/${event.id}/register?category=${category}`,
-                                )
-                              }
-                            />
-                          );
-                        })}
-                      </div>
-                    </>
-                  ) : null}
-
-                  {singlePass &&
-                    (() => {
-                      const message = windowStatusMessage(
-                        windowStatus(singlePass),
-                      );
-                      if (!message) return null;
-                      return (
-                        <p className="text-small text-text-secondary">
-                          {message}
-                        </p>
-                      );
-                    })()}
-                  {event.status === "CANCELLED" ? (
-                    <Button variant="secondary" className="w-full" disabled>
-                      Event Cancelled
-                    </Button>
-                  ) : registrationClosed ? (
-                    <Button variant="secondary" className="w-full" disabled>
-                      Registration Closed
-                    </Button>
-                  ) : singlePass && !isRegistrationOpen(singlePass) ? (
-                    <Button variant="secondary" className="w-full" disabled>
-                      {windowStatus(singlePass).state === "not-open-yet"
-                        ? "Registration Not Yet Open"
-                        : "Registration Closed"}
-                    </Button>
-                  ) : singlePass ? (
-                    <ButtonLink
-                      href={`/events/${event.id}/register`}
-                      variant="primary"
-                      className="w-full"
-                    >
-                      Book Tickets
-                    </ButtonLink>
-                  ) : null}
-                  {singlePass?.capacity && (
-                    <p className="text-small text-text-secondary text-center">
-                      {singlePass.capacity} total capacity ·{" "}
-                      {singlePass.registeredCount} registered
-                    </p>
-                  )}
-                </>
-              );
-            })()}
-          </div>
-
-          <div className="border-border-light bg-surface-light space-y-3 rounded-md border p-4">
-            <SectionLabel>Event Info</SectionLabel>
-            <div className="space-y-3">
-              <DetailItem
-                icon={Calendar}
-                label=""
-                value={event.date}
-                description={resolveDisplayTime(event)}
-              />
-              <DetailItem
-                icon={MapPin}
-                label=""
-                value={event.location}
-                description={event.mode}
-              />
-              {event.certificate && (
-                <DetailItem
-                  icon={Award}
-                  label=""
-                  value="Certificate"
-                  description="Issued on completion"
-                />
-              )}
-            </div>
-          </div>
-
+        <div className="hidden space-y-6 lg:sticky lg:top-6 lg:block lg:self-start">
+          {bookingCard}
           <ShareEventCard
             url={`${typeof window !== "undefined" ? window.location.origin : ""}/events/${event.id}`}
             title={event.title}

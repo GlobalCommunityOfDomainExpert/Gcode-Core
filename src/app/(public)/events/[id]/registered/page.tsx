@@ -138,8 +138,12 @@ export default function EventRegisteredPage() {
               price={event.price}
             />
             {session && (
-              <ButtonLink href={`/events/${event.id}`} variant="ghost" size="sm">
-                View Event →
+              <ButtonLink
+                href={`/events/${event.id}`}
+                variant="outline"
+                size="sm"
+              >
+                View Event <Icon icon={ArrowRight} size="sm" />
               </ButtonLink>
             )}
           </div>
@@ -160,21 +164,6 @@ export default function EventRegisteredPage() {
         </div>
       </div>
 
-      <div className="border-border-light bg-surface-light space-y-4 rounded-md border p-6">
-        <SectionLabel>Your Ticket</SectionLabel>
-        <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center">
-          <QrPlaceholder src={qrDataUrl} loading={!qrDataUrl} />
-          <div className="space-y-2">
-            <p className="text-small text-text-secondary">Booking Reference</p>
-            <BookingRef>{bookingRef}</BookingRef>
-            <p className="text-small text-text-secondary">
-              {quantity} ticket{quantity === 1 ? "" : "s"} · one QR code
-              covers this whole booking — present it once at check-in.
-            </p>
-          </div>
-        </div>
-      </div>
-
       {participant.category === "PARTICIPANT" && (
         <div className="border-border-light bg-surface-light flex items-start gap-4 rounded-md border p-6">
           <div className="bg-warning-light flex size-10 shrink-0 items-center justify-center rounded-full">
@@ -182,8 +171,8 @@ export default function EventRegisteredPage() {
           </div>
           <div className="space-y-3">
             <p className="text-body text-text-primary">
-              You registered as a Participant — submit your audio submission
-              URL within 24 hours of registration or your entry will be
+              You registered as a Participant — submit your audio submission URL
+              within 24 hours of registration or your entry will be
               disqualified.
             </p>
             <ButtonLink
@@ -196,6 +185,21 @@ export default function EventRegisteredPage() {
           </div>
         </div>
       )}
+
+      <div className="border-border-light bg-surface-light space-y-4 rounded-md border p-6">
+        <SectionLabel>Your Ticket</SectionLabel>
+        <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center">
+          <QrPlaceholder src={qrDataUrl} loading={!qrDataUrl} />
+          <div className="space-y-2">
+            <p className="text-small text-text-secondary">Booking Reference</p>
+            <BookingRef>{bookingRef}</BookingRef>
+            <p className="text-small text-text-secondary">
+              {quantity} ticket{quantity === 1 ? "" : "s"} · one QR code covers
+              this whole booking — present it once at check-in.
+            </p>
+          </div>
+        </div>
+      </div>
 
       {session && (
         <div className="flex flex-col gap-3 sm:flex-row">

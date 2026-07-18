@@ -123,8 +123,8 @@ export function AudioRecorder({
     if (audioUrl) URL.revokeObjectURL(audioUrl);
     setAudioUrl(null);
     setIsPlaying(false);
-    setState("idle");
     onClear?.();
+    void startRecording();
   }
 
   function togglePlayback() {
@@ -152,15 +152,17 @@ export function AudioRecorder({
       )}
 
       {state === "recording" && (
-        <div className="border-border-light bg-surface-light flex items-center gap-4 rounded-md border p-4">
-          <span
-            className="bg-danger size-2.5 shrink-0 animate-pulse rounded-full"
-            aria-hidden
-          />
-          <span className="text-body text-text-primary font-medium tabular-nums">
-            {formatElapsed(elapsedMs)}
-          </span>
-          <span className="text-small text-text-secondary">Recording…</span>
+        <div className="border-border-light bg-surface-light flex flex-wrap items-center gap-3 rounded-md border p-4">
+          <div className="flex min-w-0 items-center gap-3">
+            <span
+              className="bg-danger size-2.5 shrink-0 animate-pulse rounded-full"
+              aria-hidden
+            />
+            <span className="text-body text-text-primary font-medium tabular-nums">
+              {formatElapsed(elapsedMs)}
+            </span>
+            <span className="text-small text-text-secondary">Recording…</span>
+          </div>
           <Button
             type="button"
             variant="danger"
@@ -175,7 +177,7 @@ export function AudioRecorder({
       )}
 
       {state === "recorded" && audioUrl && (
-        <div className="border-border-light bg-surface-light flex items-center gap-4 rounded-md border p-4">
+        <div className="border-border-light bg-surface-light flex flex-wrap items-center gap-3 rounded-md border p-4">
           <audio
             ref={audioElRef}
             src={audioUrl}
@@ -184,18 +186,20 @@ export function AudioRecorder({
             onEnded={() => setIsPlaying(false)}
             className="hidden"
           />
-          <Button
-            type="button"
-            variant="secondary"
-            size="sm"
-            onClick={togglePlayback}
-          >
-            <Icon icon={isPlaying ? Pause : Play} size="sm" />
-            {isPlaying ? "Pause" : "Play"}
-          </Button>
-          <span className="text-small text-text-secondary">
-            {formatElapsed(recordedMs)} recorded
-          </span>
+          <div className="flex min-w-0 items-center gap-3">
+            <Button
+              type="button"
+              variant="secondary"
+              size="sm"
+              onClick={togglePlayback}
+            >
+              <Icon icon={isPlaying ? Pause : Play} size="sm" />
+              {isPlaying ? "Pause" : "Play"}
+            </Button>
+            <span className="text-small text-text-secondary">
+              {formatElapsed(recordedMs)} recorded
+            </span>
+          </div>
           <Button
             type="button"
             variant="ghost"
