@@ -162,7 +162,7 @@ function DesktopActions({
 
 interface MobileMenuPanelProps {
   links: NavLink[];
-  resourcesItems: DropdownItem[];
+  resourcesItems?: DropdownItem[];
   secondaryCtaLabel?: string;
   onSecondaryCtaClick?: () => void;
   mobileFooter?: ReactNode;
@@ -218,7 +218,7 @@ function MobileMenuPanel({
               </Link>
             ),
           )}
-          {resourcesItems
+          {/* {resourcesItems
             .filter(
               (item): item is DropdownItem & { href: string } =>
                 !item.divider && !!item.href,
@@ -232,8 +232,8 @@ function MobileMenuPanel({
               >
                 {item.label}
               </Link>
-            ))}
-          {secondaryCtaLabel && (
+            ))} */}
+          {/* {secondaryCtaLabel && (
             <button
               type="button"
               onClick={() => {
@@ -244,7 +244,7 @@ function MobileMenuPanel({
             >
               {secondaryCtaLabel}
             </button>
-          )}
+          )} */}
         </nav>
         {mobileFooter && (
           <div className="bg-bg-light border-t border-white/10">
@@ -296,16 +296,16 @@ export function Navbar({
           <DesktopNavLinks links={links} pathname={pathname} />
         </div>
 
-        <DesktopActions
+        {/* <DesktopActions
           accountMenu={accountMenu}
           secondaryCtaLabel={secondaryCtaLabel}
           onSecondaryCtaClick={onSecondaryCtaClick}
           ctaLabel={ctaLabel}
           onCtaClick={onCtaClick}
-        />
+        /> */}
 
         <div className="flex items-center gap-2 md:hidden">
-          <button
+          {/* <button
             type="button"
             onClick={onNotificationClick}
             aria-label="Notifications"
@@ -315,12 +315,12 @@ export function Navbar({
             {hasUnreadNotifications && (
               <span className="bg-danger absolute top-1.5 right-1.5 size-2 rounded-full" />
             )}
-          </button>
-          {!accountMenu && (
+          </button> */}
+          {/* {!accountMenu && (
             <Button variant="accent" size="sm" onClick={onCtaClick}>
               {ctaLabel}
             </Button>
-          )}
+          )} */}
           <button
             type="button"
             onClick={() => setMobileOpen((prev) => !prev)}
@@ -337,8 +337,8 @@ export function Navbar({
         <MobileMenuPanel
           links={links}
           resourcesItems={resourcesItems}
-          secondaryCtaLabel={secondaryCtaLabel}
-          onSecondaryCtaClick={onSecondaryCtaClick}
+          // secondaryCtaLabel={secondaryCtaLabel}
+          // onSecondaryCtaClick={onSecondaryCtaClick}
           mobileFooter={mobileFooter}
           onClose={() => setMobileOpen(false)}
         />

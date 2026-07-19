@@ -11,5 +11,5 @@ export default function EventsLayout({ children }: { children: ReactNode }) {
     setSession(getSession());
   }, []);
 
-  return <EventsShell session={session}>{children}</EventsShell>;
+  return <EventsShell session={session}><div className="">{children}</div></EventsShell>;
 }

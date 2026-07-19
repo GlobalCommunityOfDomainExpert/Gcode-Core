@@ -59,7 +59,7 @@ export default function MyEventsPage() {
   const past = tickets.filter((ticket) => new Date(ticket.date) < today);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 mt-10">
       <div>
         <h1 className="text-display text-text-primary font-extrabold">
           My Events
