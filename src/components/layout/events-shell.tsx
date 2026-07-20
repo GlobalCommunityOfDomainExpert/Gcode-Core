@@ -9,25 +9,24 @@ import { ProfileMenu, ProfileMenuUser } from "@/components/molecules";
 import { clearSession, isAdmin, Session } from "@/lib/auth/session";
 import { initials } from "@/lib/auth/format";
 
+// "My Events" only shown to admins (Attending/Organizing) — hidden for
+// everyone else for now, including signed-in non-admins.
 function buildEventsNavLinks(session: Session | null): NavLink[] {
   const base: NavLink[] = [
     { label: "Home", href: "https://gcode.in" },
     { label: "Events", href: "/events" },
   ];
-  if (!session) return base;
-  if (isAdmin(session)) {
-    return [
-      ...base,
-      {
-        label: "My Events",
-        children: [
-          { label: "Attending", href: "/my-events" },
-          { label: "Organizing", href: "/my-organized-events" },
-        ],
-      },
-    ];
-  }
-  return [...base, { label: "My Events", href: "/my-events" }];
+  if (!session || !isAdmin(session)) return base;
+  return [
+    ...base,
+    {
+      label: "My Events",
+      children: [
+        { label: "Attending", href: "/my-events" },
+        { label: "Organizing", href: "/my-organized-events" },
+      ],
+    },
+  ];
 }
 
 export interface EventsShellProps {
