@@ -345,7 +345,6 @@ export default function EventsPage() {
                   title={event.title}
                   date={`${event.date} · ${event.time}`}
                   subtitle={featuredDescriptionLines[0]}
-                  actionLabel="Register Now"
                   attendees={buildAttendeeAvatars(
                     event.id,
                     Math.min(event.registeredCount, 4),

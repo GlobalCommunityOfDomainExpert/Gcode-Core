@@ -101,7 +101,6 @@ export default function MyOrganizedEventsPage() {
               }
               title={event.title}
               date={event.date}
-              actionLabel="Manage"
             />
           ))}
         </div>

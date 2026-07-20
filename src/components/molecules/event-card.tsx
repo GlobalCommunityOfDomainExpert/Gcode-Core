@@ -38,6 +38,7 @@ export interface EventCardProps {
   attendees?: AvatarGroupItem[];
   attendeesLabel?: string;
   urgencyLabel?: string;
+  /** CTA button label — "featured" variant only, the "default" variant is whole-card clickable instead. */
   actionLabel?: string;
   onAction?: () => void;
   /** Event type name (e.g. "Webinar", "Hackathon") — picks which extra field below is most relevant. */
@@ -130,25 +131,6 @@ const priceTextToneClass: Record<BadgeTone, string> = {
   danger: "text-danger",
 };
 
-function EventCardTitle({
-  title,
-  href,
-  className,
-}: {
-  title: string;
-  href?: string;
-  className: string;
-}) {
-  if (href) {
-    return (
-      <NextLink href={href} className={`${className} hover:underline`}>
-        {title}
-      </NextLink>
-    );
-  }
-  return <h4 className={className}>{title}</h4>;
-}
-
 export function EventCard({
   variant = "default",
   imageSrc,
@@ -163,7 +145,7 @@ export function EventCard({
   attendees,
   attendeesLabel,
   urgencyLabel,
-  actionLabel = "Book Tickets",
+  actionLabel = "Register Now",
   onAction,
   eventType,
   durationText,
@@ -174,16 +156,6 @@ export function EventCard({
   price,
   priceTone,
 }: EventCardProps) {
-  const action = href ? (
-    <ButtonLink href={href} variant="primary">
-      {actionLabel} <Icon size="sm" icon={ArrowRight} />{" "}
-    </ButtonLink>
-  ) : (
-    <Button variant="primary" onClick={onAction}>
-      {actionLabel} <Icon size="sm" icon={ArrowRight} />
-    </Button>
-  );
-
   const secondaryInfo = resolveSecondaryInfo({
     eventType,
     durationText,
@@ -220,11 +192,18 @@ export function EventCard({
           </div>
 
           <div>
-            <EventCardTitle
-              title={title}
-              href={href}
-              className="text-large text-text-primary font-bold"
-            />
+            {href ? (
+              <NextLink
+                href={href}
+                className="text-large text-text-primary font-bold hover:underline"
+              >
+                {title}
+              </NextLink>
+            ) : (
+              <h4 className="text-large text-text-primary font-bold">
+                {title}
+              </h4>
+            )}
             {subtitle && (
               <p className="text-body text-text-secondary mt-1 line-clamp-2">
                 {subtitle}
@@ -275,7 +254,15 @@ export function EventCard({
 
           <div className="mt-auto flex flex-wrap items-center justify-between gap-3 pt-1">
             <div className="flex flex-wrap items-center gap-3">
-              {action}
+              {href ? (
+                <ButtonLink href={href} variant="primary">
+                  {actionLabel} <Icon size="sm" icon={ArrowRight} />
+                </ButtonLink>
+              ) : (
+                <Button variant="primary" onClick={onAction}>
+                  {actionLabel} <Icon size="sm" icon={ArrowRight} />
+                </Button>
+              )}
               {price && (
                 <span
                   className={`text-body font-semibold ${priceTextToneClass[priceTone ?? "neutral"]}`}
@@ -299,8 +286,11 @@ export function EventCard({
     );
   }
 
-  return (
-    <div className="border-border-light bg-surface-light flex h-full flex-col overflow-hidden rounded-md border transition-shadow hover:shadow-md">
+  const defaultClasses =
+    "border-border-light bg-surface-light flex h-full flex-col overflow-hidden rounded-md border transition-shadow hover:shadow-md focus-visible:ring-primary focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none";
+
+  const defaultContent = (
+    <>
       <div className="relative aspect-video shrink-0">
         <EventCardMedia
           src={imageSrc}
@@ -328,11 +318,9 @@ export function EventCard({
             </Badge>
           ))}
         </div>
-        <EventCardTitle
-          title={title}
-          href={href}
-          className="text-large text-text-primary font-semibold"
-        />
+        <h4 className="text-large text-text-primary font-semibold">
+          {title}
+        </h4>
         <div className="space-y-1">
           <p className="text-small text-text-secondary flex items-center gap-2">
             <Icon icon={Calendar} size="sm" />
@@ -344,25 +332,29 @@ export function EventCard({
               {location}
             </p>
           )}
-        
         </div>
 
-        <div className="mt-auto flex items-center justify-between gap-2 pt-1">
-          {urgencyLabel && (
-            <span className="text-small text-warning font-medium">
-              {urgencyLabel}
-            </span>
-          )}
-          <span className="ml-auto">{action}</span>
-        </div>
+        {urgencyLabel && (
+          <p className="text-small text-warning mt-auto pt-1 font-medium">
+            {urgencyLabel}
+          </p>
+        )}
       </div>
-    </div>
+    </>
+  );
+
+  return href ? (
+    <NextLink href={href} className={defaultClasses}>
+      {defaultContent}
+    </NextLink>
+  ) : (
+    <div className={defaultClasses}>{defaultContent}</div>
   );
 }
 
-// Mirrors the "default" variant's layout (image, tags, title, two info lines,
-// action button) so the loading state doesn't visually jump once real cards
-// arrive — used by both /events and /my-organized-events while data loads.
+// Mirrors the "default" variant's layout (image, tags, title, two info lines)
+// so the loading state doesn't visually jump once real cards arrive — used
+// by both /events and /my-organized-events while data loads.
 export function EventCardSkeleton() {
   return (
     <div className="border-border-light bg-surface-light flex h-full flex-col overflow-hidden rounded-md border">
@@ -376,9 +368,6 @@ export function EventCardSkeleton() {
         <div className="space-y-2">
           <Skeleton className="h-4 w-1/2" />
           <Skeleton className="h-4 w-2/3" />
-        </div>
-        <div className="mt-auto flex justify-end pt-1">
-          <Skeleton className="h-9 w-28" />
         </div>
       </div>
     </div>
