@@ -1,9 +1,10 @@
 "use client";
 
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { X } from "lucide-react";
 import { Icon } from "@/components/atoms";
+import { useMounted } from "@/hooks/use-mounted";
 
 export interface ModalProps {
   open: boolean;
@@ -26,11 +27,7 @@ export function Modal({
   size = "md",
   bodyClassName = "px-6 py-4 max-h-[70vh] overflow-y-auto",
 }: ModalProps) {
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  const mounted = useMounted();
 
   useEffect(() => {
     if (!open) return;

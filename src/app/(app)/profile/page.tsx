@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { getSession } from "@/lib/auth/session";
+import { useSession } from "@/hooks/use-session";
 import { ExpertProfileView } from "./_components/expert-profile-view";
 import { FresherProfileView } from "./_components/fresher-profile-view";
 import { InstitutionProfileView } from "./_components/institution-profile-view";
@@ -15,18 +15,17 @@ export default function ProfilePage() {
   // (app)/layout.tsx already guarantees a session exists before this page
   // mounts — only the "role isn't one of the 4 stakeholder roles" case
   // needs handling here.
-  const [role, setRole] = useState<string | null>(null);
+  const session = useSession();
+  const role = session?.roleName.toLowerCase() ?? null;
+  const isValidRole = role !== null && STAKEHOLDER_ROLES.includes(role);
 
   useEffect(() => {
-    const lowerRole = getSession()?.roleName.toLowerCase() ?? "";
-    if (!STAKEHOLDER_ROLES.includes(lowerRole)) {
+    if (session && !isValidRole) {
       router.replace("/events");
-      return;
     }
-    setRole(lowerRole);
-  }, [router]);
+  }, [session, isValidRole, router]);
 
-  if (!role) return null;
+  if (!isValidRole) return null;
 
   return (
     <div className="mx-auto max-w-3xl">

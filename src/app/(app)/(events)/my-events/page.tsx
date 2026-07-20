@@ -59,7 +59,7 @@ export default function MyEventsPage() {
   const past = tickets.filter((ticket) => new Date(ticket.date) < today);
 
   return (
-    <div className="space-y-6 mt-10">
+    <div className="mt-10 space-y-6">
       <div>
         <h1 className="text-display text-text-primary font-extrabold">
           My Events
@@ -183,9 +183,7 @@ export default function MyEventsPage() {
                       <Icon icon={Calendar} size="sm" />
                       {ticket.date} · {ticket.quantity} ticket
                       {ticket.quantity === 1 ? "" : "s"}
-                      {ticket.amountPaid
-                        ? ` · ₹${ticket.amountPaid} paid`
-                        : ""}
+                      {ticket.amountPaid ? ` · ₹${ticket.amountPaid} paid` : ""}
                     </p>
                   </div>
                   <ButtonLink

@@ -263,7 +263,7 @@ export function Navbar({
       width={100}
       height={20}
       alt="logo"
-      className="mt-2 object-contain mb-2z"
+      className="mb-2z mt-2 object-contain"
     />
   ),
   links = defaultLinks,

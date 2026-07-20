@@ -35,17 +35,19 @@ export function VerifyEmailModal({
 
   useEffect(() => {
     if (!open) return;
-    setCode("");
-    setError(null);
-    setSending(true);
-    sendGuestOtp(email, fullName)
-      .catch((err) =>
-        setError(
-          err instanceof ApiError ? err.message : "Could not send code",
-        ),
-      )
-      .finally(() => setSending(false));
-  }, [open, email]);
+    void (async () => {
+      setCode("");
+      setError(null);
+      setSending(true);
+      try {
+        await sendGuestOtp(email, fullName);
+      } catch (err) {
+        setError(err instanceof ApiError ? err.message : "Could not send code");
+      } finally {
+        setSending(false);
+      }
+    })();
+  }, [open, email, fullName]);
 
   async function handleVerify() {
     setChecking(true);
@@ -54,9 +56,7 @@ export function VerifyEmailModal({
       await verifyOtp(email, code, GUEST_OTP_PURPOSE);
       onVerified();
     } catch (err) {
-      setError(
-        err instanceof ApiError ? err.message : "Could not verify code",
-      );
+      setError(err instanceof ApiError ? err.message : "Could not verify code");
     } finally {
       setChecking(false);
     }
@@ -78,9 +78,7 @@ export function VerifyEmailModal({
           onChange={setCode}
         />
 
-        {error && (
-          <p className="text-danger text-small text-center">{error}</p>
-        )}
+        {error && <p className="text-danger text-small text-center">{error}</p>}
 
         <Button
           type="button"

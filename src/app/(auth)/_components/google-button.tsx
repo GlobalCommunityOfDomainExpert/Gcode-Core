@@ -29,7 +29,11 @@ function GoogleLogo() {
   );
 }
 
-export function GoogleButton({ href, onClick, className = "" }: GoogleButtonProps) {
+export function GoogleButton({
+  href,
+  onClick,
+  className = "",
+}: GoogleButtonProps) {
   const content = (
     <>
       <GoogleLogo />
@@ -39,7 +43,11 @@ export function GoogleButton({ href, onClick, className = "" }: GoogleButtonProp
 
   if (href) {
     return (
-      <ButtonLink href={href} variant="secondary" className={`w-full ${className}`}>
+      <ButtonLink
+        href={href}
+        variant="secondary"
+        className={`w-full ${className}`}
+      >
         {content}
       </ButtonLink>
     );

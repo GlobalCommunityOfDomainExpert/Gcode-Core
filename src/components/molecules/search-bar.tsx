@@ -39,7 +39,7 @@ export function SearchBar({
         onChange={(event) => onChange(event.target.value)}
         placeholder={placeholder}
         aria-label={placeholder}
-        className="!pr-9 !pl-9 "
+        className="!pr-9 !pl-9"
       />
       {loading ? (
         <span className="text-text-secondary absolute right-3">

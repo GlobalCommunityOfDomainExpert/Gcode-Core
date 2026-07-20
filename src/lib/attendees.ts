@@ -1,9 +1,5 @@
 export type AttendeeRole =
-  | "Fresher"
-  | "Startup Founder"
-  | "Domain Expert"
-  | "Institution"
-  | "Guest";
+  "Fresher" | "Startup Founder" | "Domain Expert" | "Institution" | "Guest";
 export type AttendanceStatus =
   "registered" | "attended" | "missed" | "cancelled";
 

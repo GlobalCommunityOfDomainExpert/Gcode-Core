@@ -70,11 +70,14 @@ export function EventWizard({ mode, eventId, initialData }: EventWizardProps) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mode, eventId]);
 
-  const baselineData = mode === "edit" && initialData ? initialData : initialEventData;
+  const baselineData =
+    mode === "edit" && initialData ? initialData : initialEventData;
   const isDirty = JSON.stringify(data) !== JSON.stringify(baselineData);
 
   const cancelHref =
-    mode === "edit" ? `/my-organized-events/${eventId}` : "/my-organized-events";
+    mode === "edit"
+      ? `/my-organized-events/${eventId}`
+      : "/my-organized-events";
 
   function handleCancelClick() {
     if (isDirty) {
@@ -143,7 +146,10 @@ export function EventWizard({ mode, eventId, initialData }: EventWizardProps) {
     }
   }
 
-  async function handleCreate(statusId: number | undefined, action: "draft" | "publish") {
+  async function handleCreate(
+    statusId: number | undefined,
+    action: "draft" | "publish",
+  ) {
     if (!data.type) return;
     setPendingAction(action);
     setSubmitting(true);
@@ -163,12 +169,18 @@ export function EventWizard({ mode, eventId, initialData }: EventWizardProps) {
     }
   }
 
-  async function handleUpdate(statusId: number | undefined, action: "draft" | "publish") {
+  async function handleUpdate(
+    statusId: number | undefined,
+    action: "draft" | "publish",
+  ) {
     if (!data.type || !eventId) return;
     setPendingAction(action);
     setSubmitting(true);
     try {
-      await updateEvent(eventId, { ...toCreatePayload(data), status_id: statusId });
+      await updateEvent(eventId, {
+        ...toCreatePayload(data),
+        status_id: statusId,
+      });
       await persistChildCollections(eventId);
       await persistCategories(eventId, initialData?.categoryIds ?? []);
       router.push(`/my-organized-events/${eventId}`);
@@ -234,7 +246,11 @@ export function EventWizard({ mode, eventId, initialData }: EventWizardProps) {
       </Card>
 
       <div className="flex items-center justify-between gap-3">
-        <Button variant="ghost" onClick={handleCancelClick} disabled={submitting}>
+        <Button
+          variant="ghost"
+          onClick={handleCancelClick}
+          disabled={submitting}
+        >
           Cancel
         </Button>
         <div className="flex items-center gap-3">
@@ -277,18 +293,14 @@ export function EventWizard({ mode, eventId, initialData }: EventWizardProps) {
             >
               Keep editing
             </Button>
-            <Button
-              variant="primary"
-              onClick={() => router.push(cancelHref)}
-            >
+            <Button variant="primary" onClick={() => router.push(cancelHref)}>
               Discard changes
             </Button>
           </>
         }
       >
         <p className="text-body text-text-secondary">
-          You have unsaved changes to this event. Leaving now will discard
-          them.
+          You have unsaved changes to this event. Leaving now will discard them.
         </p>
       </Modal>
     </div>

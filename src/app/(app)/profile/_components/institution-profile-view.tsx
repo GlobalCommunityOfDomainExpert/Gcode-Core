@@ -1,6 +1,10 @@
 import { Globe, Share2 } from "lucide-react";
 import { Badge } from "@/components/atoms";
-import { ExternalLinkRow, ProfileHeader, ProfileSectionCard } from "@/components/molecules";
+import {
+  ExternalLinkRow,
+  ProfileHeader,
+  ProfileSectionCard,
+} from "@/components/molecules";
 
 export function InstitutionProfileView() {
   return (
@@ -35,8 +39,16 @@ export function InstitutionProfileView() {
       </ProfileSectionCard>
 
       <div className="flex flex-wrap gap-4">
-        <ExternalLinkRow href="https://rce.edu.in" label="Official Website" icon={Globe} />
-        <ExternalLinkRow href="https://linkedin.com/school/rce" label="Social" icon={Share2} />
+        <ExternalLinkRow
+          href="https://rce.edu.in"
+          label="Official Website"
+          icon={Globe}
+        />
+        <ExternalLinkRow
+          href="https://linkedin.com/school/rce"
+          label="Social"
+          icon={Share2}
+        />
       </div>
     </div>
   );

@@ -80,7 +80,10 @@ export function Table<T>({
                 }`}
               >
                 {selectable && (
-                  <td className="px-3 py-3" onClick={(e) => e.stopPropagation()}>
+                  <td
+                    className="px-3 py-3"
+                    onClick={(e) => e.stopPropagation()}
+                  >
                     <Checkbox
                       aria-label="Select row"
                       checked={selectedKeys?.has(key) ?? false}

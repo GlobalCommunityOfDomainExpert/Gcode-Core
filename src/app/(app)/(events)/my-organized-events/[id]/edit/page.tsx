@@ -18,16 +18,20 @@ export default function EditOrganizedEventPage() {
 
   useEffect(() => {
     let cancelled = false;
-    setStatus("loading");
-    Promise.all([getEvent(params.id), listEventTimeline(params.id)])
-      .then(([detail, timeline]) => {
+    void (async () => {
+      setStatus("loading");
+      try {
+        const [detail, timeline] = await Promise.all([
+          getEvent(params.id),
+          listEventTimeline(params.id),
+        ]);
         if (cancelled) return;
         setDraft(toEventDraft(detail, timeline));
         setStatus("ready");
-      })
-      .catch(() => {
+      } catch {
         if (!cancelled) setStatus("error");
-      });
+      }
+    })();
     return () => {
       cancelled = true;
     };

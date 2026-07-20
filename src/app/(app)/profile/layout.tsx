@@ -1,15 +1,11 @@
 "use client";
 
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode } from "react";
 import { AuthedShell } from "@/components/layout";
-import { getSession, Session } from "@/lib/auth/session";
+import { useSession } from "@/hooks/use-session";
 
 export default function ProfileLayout({ children }: { children: ReactNode }) {
-  const [session, setSession] = useState<Session | null>(null);
-
-  useEffect(() => {
-    setSession(getSession());
-  }, []);
+  const session = useSession();
 
   if (!session) return null;
 

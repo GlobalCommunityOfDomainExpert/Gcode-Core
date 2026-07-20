@@ -1,6 +1,12 @@
 import { Calendar, FileText } from "lucide-react";
 import { Icon } from "@/components/atoms";
-import { ProfileHeader, ProfileSectionCard, QuoteBlock, Timeline, TimelineItem } from "@/components/molecules";
+import {
+  ProfileHeader,
+  ProfileSectionCard,
+  QuoteBlock,
+  Timeline,
+  TimelineItem,
+} from "@/components/molecules";
 
 const TIMELINE: TimelineItem[] = [
   {
@@ -26,9 +32,9 @@ export function ExpertProfileView() {
 
       <ProfileSectionCard>
         <QuoteBlock>
-          Restructured a seed-stage SaaS startup&apos;s founder agreement with
-          a reverse-vesting clause — preventing a co-founder split before
-          their Series A term sheet.
+          Restructured a seed-stage SaaS startup&apos;s founder agreement with a
+          reverse-vesting clause — preventing a co-founder split before their
+          Series A term sheet.
         </QuoteBlock>
       </ProfileSectionCard>
 

@@ -21,7 +21,11 @@ import {
   QrPlaceholder,
   SectionLabel,
 } from "@/components/atoms";
-import { Breadcrumb, EventBadgeRow, NotFoundState } from "@/components/molecules";
+import {
+  Breadcrumb,
+  EventBadgeRow,
+  NotFoundState,
+} from "@/components/molecules";
 import { useEvent } from "@/hooks/use-event";
 import { getParticipant } from "@/lib/api/participants";
 import { ParticipantApi } from "@/lib/api/types";
@@ -43,12 +47,12 @@ export default function EventRegisteredPage() {
   const [qrDataUrl, setQrDataUrl] = useState<string | undefined>();
 
   useEffect(() => {
-    if (!participantId) {
-      setParticipantStatus("error");
-      return;
-    }
     let cancelled = false;
     void (async () => {
+      if (!participantId) {
+        setParticipantStatus("error");
+        return;
+      }
       try {
         const row = await getParticipant(participantId);
         if (cancelled) return;

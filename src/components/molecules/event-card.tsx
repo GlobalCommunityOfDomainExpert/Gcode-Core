@@ -272,7 +272,11 @@ export function EventCard({
               )}
             </div>
             {attendees && attendees.length > 0 && (
-              <AvatarGroup items={attendees} size="sm" overflowLabel={attendeesLabel} />
+              <AvatarGroup
+                items={attendees}
+                size="sm"
+                overflowLabel={attendeesLabel}
+              />
             )}
           </div>
         </div>
@@ -318,9 +322,7 @@ export function EventCard({
             </Badge>
           ))}
         </div>
-        <h4 className="text-large text-text-primary font-semibold">
-          {title}
-        </h4>
+        <h4 className="text-large text-text-primary font-semibold">{title}</h4>
         <div className="space-y-1">
           <p className="text-small text-text-secondary flex items-center gap-2">
             <Icon icon={Calendar} size="sm" />

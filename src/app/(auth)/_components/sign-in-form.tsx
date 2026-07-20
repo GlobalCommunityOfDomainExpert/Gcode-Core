@@ -8,7 +8,10 @@ import { FormField } from "@/components/molecules";
 import { GoogleButton } from "./google-button";
 import { oauthLoginGoogle, signIn } from "@/lib/api/auth";
 import { setSession } from "@/lib/auth/session";
-import { decodeGoogleEmail, useGoogleIdToken } from "@/lib/auth/use-google-id-token";
+import {
+  decodeGoogleEmail,
+  useGoogleIdToken,
+} from "@/lib/auth/use-google-id-token";
 import { hashPassword } from "@/lib/auth/hash-password";
 import { ApiError } from "@/lib/api/client";
 
@@ -34,9 +37,7 @@ export function SignInForm() {
       setSession(token);
       router.push("/");
     } catch (err) {
-      setError(
-        err instanceof ApiError ? err.message : "Could not sign in",
-      );
+      setError(err instanceof ApiError ? err.message : "Could not sign in");
     } finally {
       setSubmitting(false);
     }
@@ -107,7 +108,7 @@ export function SignInForm() {
         <GoogleButton onClick={handleGoogleClick} />
       </form>
 
-      <p className="text-sm text-text-secondary mt-6 text-center">
+      <p className="text-text-secondary mt-6 text-center text-sm">
         Don&apos;t have an account?{" "}
         <NextLink href="/sign-up" className={linkClasses}>
           Create one

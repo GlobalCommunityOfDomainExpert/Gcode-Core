@@ -20,7 +20,11 @@ import { OverviewTab } from "./_components/overview-tab";
 
 export default function OrganizedEventDetailPage() {
   const params = useParams<{ id: string }>();
-  const { event, status: eventStatus, refresh: refreshEvent } = useEvent(params.id);
+  const {
+    event,
+    status: eventStatus,
+    refresh: refreshEvent,
+  } = useEvent(params.id);
   const { attendees } = useAttendees(params.id, {
     attendee: event?.attendeeRegistration.price ?? 0,
     participant: event?.participantRegistration?.price ?? 0,

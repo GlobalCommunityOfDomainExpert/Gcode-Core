@@ -32,7 +32,7 @@ export function verifyOtp(
 ): Promise<{ message: string }> {
   return apiRequest("/auth/verify-otp", {
     method: "POST",
-    body: { email:email, otp_code: otpCode, purpose },
+    body: { email: email, otp_code: otpCode, purpose },
   });
 }
 
@@ -84,4 +84,3 @@ export function resetPassword(
     body: { token, new_password: newPassword },
   });
 }
-

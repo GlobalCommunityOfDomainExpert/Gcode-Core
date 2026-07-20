@@ -30,12 +30,11 @@ export function StepRegistration({ data, onChange }: StepRegistrationProps) {
           Registration &amp; passes
         </h2>
         <p className="text-body text-text-secondary">
-          Set up how people register. Add an Attendee pass and/or a
-          Participant pass for people who perform an activity (e.g. hackathon
-          builders) — each independently enabled, with its own price and
-          capacity. Both can be opened or closed again any time from the
-          event&apos;s Overview page, even after the registration deadline
-          passes.
+          Set up how people register. Add an Attendee pass and/or a Participant
+          pass for people who perform an activity (e.g. hackathon builders) —
+          each independently enabled, with its own price and capacity. Both can
+          be opened or closed again any time from the event&apos;s Overview
+          page, even after the registration deadline passes.
         </p>
       </div>
 
@@ -62,7 +61,9 @@ export function StepRegistration({ data, onChange }: StepRegistrationProps) {
                 <Input
                   id="attendee-label"
                   value={data.attendeeLabel}
-                  onChange={(event) => onChange("attendeeLabel", event.target.value)}
+                  onChange={(event) =>
+                    onChange("attendeeLabel", event.target.value)
+                  }
                   placeholder="Attendee"
                 />
               </FormField>
@@ -299,10 +300,7 @@ export function StepRegistration({ data, onChange }: StepRegistrationProps) {
                   type="date"
                   value={data.participantRegistrationOpens}
                   onChange={(event) =>
-                    onChange(
-                      "participantRegistrationOpens",
-                      event.target.value,
-                    )
+                    onChange("participantRegistrationOpens", event.target.value)
                   }
                 />
               </FormField>

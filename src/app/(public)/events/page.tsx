@@ -45,7 +45,10 @@ import { getEventTypes } from "@/lib/api/lookups";
 const ATTENDEE_INITIALS = ["AK", "MJ", "RS", "PV", "SN", "DK", "TT", "NG"];
 const GOLDEN_ANGLE = 137.5;
 
-function buildAttendeeAvatars(eventId: string, count: number): AvatarGroupItem[] {
+function buildAttendeeAvatars(
+  eventId: string,
+  count: number,
+): AvatarGroupItem[] {
   const seed = hashSeed(eventId);
   const baseHue = seed % 360;
   const initialsOffset = seed % ATTENDEE_INITIALS.length;
@@ -188,7 +191,7 @@ export default function EventsPage() {
 
   return (
     <div className="flex flex-col gap-3 space-y-8">
-      <div className="flex flex-col relative">
+      <div className="relative flex flex-col">
         <div className="relative left-1/2 flex min-h-100 w-screen -translate-x-1/2 items-center overflow-hidden bg-black lg:min-h-125">
           <Image
             src="/banner-hero.png"
@@ -223,7 +226,7 @@ export default function EventsPage() {
           </div>
         </div>
 
-        <div className="border-border-light bg-surface-light space-y-4 rounded-md border p-4 relative -top-4 sm:-top-6 lg:-top-10">
+        <div className="border-border-light bg-surface-light relative -top-4 space-y-4 rounded-md border p-4 sm:-top-6 lg:-top-10">
           <Tabs
             items={categoryTabs}
             value={activeTab}
@@ -358,7 +361,8 @@ export default function EventsPage() {
                     {
                       icon: Calendar,
                       primary: event.date,
-                      secondary: event.durationText || event.duration || "Event",
+                      secondary:
+                        event.durationText || event.duration || "Event",
                     },
                   ]}
                 />

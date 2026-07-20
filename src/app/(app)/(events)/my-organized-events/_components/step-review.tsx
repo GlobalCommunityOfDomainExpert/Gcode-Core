@@ -75,7 +75,9 @@ export function StepReview({ data }: StepReviewProps) {
       </Card>
 
       <Card className="divide-border-light space-y-1 divide-y">
-        <SectionLabel>{data.participantLabel || "Participant"} pass</SectionLabel>
+        <SectionLabel>
+          {data.participantLabel || "Participant"} pass
+        </SectionLabel>
         <ReviewRow
           label="Status"
           value={data.participantRegistrationEnabled ? "Enabled" : "Disabled"}
@@ -160,7 +162,6 @@ export function StepReview({ data }: StepReviewProps) {
           </ul>
         </Card>
       )}
-
     </div>
   );
 }

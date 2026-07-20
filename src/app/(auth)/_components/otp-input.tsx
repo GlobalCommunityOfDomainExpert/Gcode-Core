@@ -36,7 +36,10 @@ export function OtpInput({
     emitChange();
   }
 
-  function handleKeyDown(event: KeyboardEvent<HTMLInputElement>, index: number) {
+  function handleKeyDown(
+    event: KeyboardEvent<HTMLInputElement>,
+    index: number,
+  ) {
     if (event.key === "Backspace" && !event.currentTarget.value && index > 0) {
       inputsRef.current[index - 1]?.focus();
     }

@@ -13,7 +13,11 @@ export function ExternalLinkRow({
   icon = ExternalLink,
 }: ExternalLinkRowProps) {
   return (
-    <Link href={href} variant="secondary" className="flex w-fit items-center gap-2">
+    <Link
+      href={href}
+      variant="secondary"
+      className="flex w-fit items-center gap-2"
+    >
       <Icon icon={icon} size="sm" /> {label}
     </Link>
   );

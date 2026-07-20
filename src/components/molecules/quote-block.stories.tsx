@@ -5,8 +5,7 @@ const meta = {
   component: QuoteBlock,
   tags: ["ai-generated"],
   args: {
-    children:
-      "A B2B SaaS platform for sustainable packaging supply chains.",
+    children: "A B2B SaaS platform for sustainable packaging supply chains.",
   },
 } satisfies Meta<typeof QuoteBlock>;
 

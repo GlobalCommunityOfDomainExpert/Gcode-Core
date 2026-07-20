@@ -96,7 +96,12 @@ export default function EventRegisterPage() {
             ? "ATTENDEE"
             : null;
 
+      // One-time initialization from the URL's ?category= param (or the
+      // fallback pass-picker step) once `event` loads — the ref guard above
+      // already prevents this from re-running and fighting the user's own
+      // later choice.
       if (requestedCategory) {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setCategory(requestedCategory);
       } else if (
         event.attendeeRegistration.enabled &&
@@ -125,7 +130,10 @@ export default function EventRegisterPage() {
     );
   }
 
-  if (!event.attendeeRegistration.enabled && !event.participantRegistration.enabled) {
+  if (
+    !event.attendeeRegistration.enabled &&
+    !event.participantRegistration.enabled
+  ) {
     return (
       <NotFoundState
         icon={Compass}
@@ -187,7 +195,8 @@ export default function EventRegisterPage() {
 
   // Signed-in -> book by user_id, nothing else needed. Guest -> full name +
   // email + phone, same as always.
-  function identityPayload(): { user_id: number } | { email: string; full_name: string; phone: string } {
+  function identityPayload():
+    { user_id: number } | { email: string; full_name: string; phone: string } {
     if (session) return { user_id: session.userId };
     return {
       email: email.trim(),
@@ -451,8 +460,8 @@ export default function EventRegisterPage() {
               )}
               {!session && (
                 <p className="text-small text-text-secondary">
-                  No account needed — you can create a password later to
-                  manage your registrations.
+                  No account needed — you can create a password later to manage
+                  your registrations.
                 </p>
               )}
             </Card>
