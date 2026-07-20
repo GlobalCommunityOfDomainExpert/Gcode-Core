@@ -180,10 +180,19 @@ export default function AdditionalInfoPage() {
     );
   }
 
+  // Window closes 24h after the event's participant registration deadline,
+  // not 24h after this participant applied — falls back to applied_on if the
+  // organizer hasn't set a participant registration deadline.
+  const registrationClosesAt =
+    event.participantRegistration.registrationDeadlineIso ??
+    participant.applied_on;
   const deadline = new Date(
-    new Date(participant.applied_on).getTime() + SUBMISSION_WINDOW_MS,
+    new Date(registrationClosesAt).getTime() + SUBMISSION_WINDOW_MS,
   );
   const msRemaining = deadline.getTime() - now.getTime();
+  // Window is a hard cutoff — replacing an existing submission is blocked
+  // too, matching submit_audio's server-side check (no exemption for rows
+  // that already have an audio_submission_url).
   const isPastDeadline = msRemaining <= 0;
   const isDisqualified = isPastDeadline && !submittedUrl;
 
@@ -255,8 +264,8 @@ export default function AdditionalInfoPage() {
           Additional Info — {event.title}
         </h1>
         <p className="text-small text-text-secondary">
-          Participants must submit their audio submission URL within 24 hours of
-          registration, or the entry is disqualified.
+          Participants must submit their audio submission URL within 24 hours
+          of registration closing, or the entry is disqualified.
         </p>
       </div>
 
@@ -268,7 +277,9 @@ export default function AdditionalInfoPage() {
         </StatusCard>
       ) : submittedUrl ? (
         <StatusCard tone="success" icon={Check}>
-          Audio submitted. You can replace it until the deadline below.
+          {isPastDeadline
+            ? "Audio submitted. The submission window has closed, so this entry is locked in — no further changes."
+            : `Audio submitted. You can replace it — ${formatCountdown(msRemaining)} left, deadline ${deadline.toLocaleString()}.`}
         </StatusCard>
       ) : (
         <StatusCard tone="warning" icon={Clock}>
@@ -279,7 +290,7 @@ export default function AdditionalInfoPage() {
 
       {error && <Banner tone="danger">{error}</Banner>}
 
-      {!isDisqualified && (
+      {!isPastDeadline && (
         <Card padding="md" className="space-y-4">
           <SectionLabel>Submit your audio</SectionLabel>
           <ToggleGroup
