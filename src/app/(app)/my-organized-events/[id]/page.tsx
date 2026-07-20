@@ -16,6 +16,7 @@ import { useEvent } from "@/hooks/use-event";
 import { useAttendees } from "@/hooks/use-attendees";
 import { AttendeesTab } from "./_components/attendees-tab";
 import { CommunicationTab } from "./_components/communication-tab";
+import { LiveTab } from "./_components/live-tab";
 import { OverviewTab } from "./_components/overview-tab";
 
 export default function OrganizedEventDetailPage() {
@@ -54,6 +55,7 @@ export default function OrganizedEventDetailPage() {
   const tabItems = [
     { value: "overview", label: "Overview" },
     { value: "attendees", label: `Attendees (${attendees.length})` },
+    { value: "live", label: "Live" },
     { value: "communication", label: "Communication" },
   ];
 
@@ -174,7 +176,6 @@ export default function OrganizedEventDetailPage() {
               <OverviewTab
                 event={event}
                 attendees={attendees}
-                onNavigateToCommunication={() => setActiveTab("communication")}
                 onEventChanged={refreshEvent}
               />
             )}
@@ -186,6 +187,9 @@ export default function OrganizedEventDetailPage() {
                 onSelectedIdsChange={setSelectedAttendeeIds}
                 onNavigateToCommunication={() => setActiveTab("communication")}
               />
+            )}
+            {activeTab === "live" && (
+              <LiveTab event={event} attendees={attendees} />
             )}
             {activeTab === "communication" && (
               <CommunicationTab
