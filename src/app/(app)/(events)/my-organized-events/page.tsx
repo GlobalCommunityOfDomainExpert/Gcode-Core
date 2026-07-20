@@ -3,7 +3,12 @@
 import { useState } from "react";
 import { CalendarPlus } from "lucide-react";
 import { ButtonLink } from "@/components/atoms";
-import { EmptyState, EventCard, Tabs } from "@/components/molecules";
+import {
+  EmptyState,
+  EventCard,
+  EventCardSkeleton,
+  Tabs,
+} from "@/components/molecules";
 import { eventTypeTone, priceTone } from "@/lib/event";
 import { useEvents } from "@/hooks/use-events";
 
@@ -54,10 +59,7 @@ export default function MyOrganizedEventsPage() {
       {status === "loading" ? (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {Array.from({ length: 3 }).map((_, index) => (
-            <div
-              key={index}
-              className="border-border-light bg-surface-light h-40 animate-pulse rounded-md border"
-            />
+            <EventCardSkeleton key={index} />
           ))}
         </div>
       ) : events.length === 0 ? (
@@ -80,7 +82,7 @@ export default function MyOrganizedEventsPage() {
           {filtered.map((event) => (
             <EventCard
               key={event.id}
-              variant="compact"
+              variant="default"
               href={`/my-organized-events/${event.id}`}
               imageSrc={event.coverImageUrl}
               colorSeed={event.id}
@@ -99,7 +101,6 @@ export default function MyOrganizedEventsPage() {
               }
               title={event.title}
               date={event.date}
-              actionLabel="Manage"
             />
           ))}
         </div>

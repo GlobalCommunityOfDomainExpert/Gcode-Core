@@ -11,6 +11,8 @@ export interface AvatarProps extends HTMLAttributes<HTMLDivElement> {
   variant?: AvatarVariant;
   size?: AvatarSize;
   status?: AvatarStatus;
+  /** Overrides the fallback initials background (e.g. a per-attendee generated color). */
+  bgColor?: string;
 }
 
 const sizeClasses: Record<AvatarSize, string> = {
@@ -43,6 +45,7 @@ export function Avatar({
   variant = "circle",
   size = "md",
   status,
+  bgColor,
   className = "",
   ...props
 }: AvatarProps) {
@@ -52,7 +55,8 @@ export function Avatar({
       {...props}
     >
       <div
-        className={`bg-bg-light text-text-secondary flex h-full w-full items-center justify-center overflow-hidden font-medium ${variantClasses[variant]}`}
+        className={`${bgColor ? "text-white" : "bg-bg-light text-text-secondary"} flex h-full w-full items-center justify-center overflow-hidden font-medium ${variantClasses[variant]}`}
+        style={bgColor ? { backgroundColor: bgColor } : undefined}
       >
         {src ? (
           // eslint-disable-next-line @next/next/no-img-element

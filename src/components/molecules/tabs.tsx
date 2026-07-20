@@ -37,7 +37,7 @@ export function Tabs({ items, value, defaultValue, onChange }: TabsProps) {
             onClick={() => select(item.value)}
             className={`text-body focus-visible:ring-primary shrink-0 border-b-2 px-4 py-2 font-medium whitespace-nowrap transition-colors hover:cursor-pointer focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none ${
               isActive
-                ? "border-primary text-primary"
+                ? "border-secondary text-secondary"
                 : "text-text-secondary hover:text-text-primary border-transparent"
             }`}
           >

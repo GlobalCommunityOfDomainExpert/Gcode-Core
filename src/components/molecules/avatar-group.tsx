@@ -4,6 +4,7 @@ export interface AvatarGroupItem {
   alt: string;
   src?: string;
   initials?: string;
+  bgColor?: string;
 }
 
 export interface AvatarGroupProps {
@@ -31,6 +32,7 @@ export function AvatarGroup({
             alt={item.alt}
             src={item.src}
             initials={item.initials}
+            bgColor={item.bgColor}
             size={size}
             className="ring-border-hover rounded-full ring-2"
           />

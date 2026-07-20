@@ -6,7 +6,7 @@ import { PencilOff } from "lucide-react";
 import { NotFoundState } from "@/components/molecules";
 import { getEvent, listEventTimeline } from "@/lib/api/events";
 import { toEventDraft } from "@/lib/api/adapters";
-import { EventWizard } from "@/app/(app)/my-organized-events/_components/event-wizard";
+import { EventWizard } from "@/app/(app)/(events)/my-organized-events/_components/event-wizard";
 import { EventDetailData } from "@/lib/zod/event";
 
 type LoadStatus = "loading" | "error" | "ready";

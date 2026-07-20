@@ -1,9 +1,10 @@
 "use client";
 
 import { ReactNode, useEffect, useRef, useState } from "react";
-import { useParams, useSearchParams } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import {
   AlertTriangle,
+  ArrowLeft,
   Check,
   Clock,
   Compass,
@@ -23,6 +24,7 @@ import {
 import {
   AudioRecorder,
   Banner,
+  Breadcrumb,
   NotFoundState,
   ToggleGroup,
 } from "@/components/molecules";
@@ -96,6 +98,7 @@ function StatusCard({
 
 export default function AdditionalInfoPage() {
   const params = useParams<{ id: string }>();
+  const router = useRouter();
   const searchParams = useSearchParams();
   const participantId = searchParams.get("pid");
   const { event } = useEvent(params.id);
@@ -259,6 +262,25 @@ export default function AdditionalInfoPage() {
 
   return (
     <div className="mx-auto max-w-2xl space-y-6">
+      <div className="flex items-center justify-between gap-3">
+        <Breadcrumb
+          items={[
+            { label: "Events", href: "/events" },
+            { label: event.type, href: "/events" },
+            { label: event.title, href: `/events/${event.id}` },
+            { label: "Additional Info" },
+          ]}
+        />
+        <Button
+          variant="secondary"
+          size="sm"
+          onClick={() => router.back()}
+          className="shrink-0"
+        >
+          <Icon icon={ArrowLeft} size="sm" /> Back
+        </Button>
+      </div>
+
       <div>
         <h1 className="text-large text-text-primary font-bold">
           Additional Info — {event.title}

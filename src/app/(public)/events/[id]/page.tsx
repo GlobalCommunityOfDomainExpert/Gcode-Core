@@ -1,7 +1,18 @@
 "use client";
 
 import { useParams, useRouter } from "next/navigation";
-import { Calendar, Clock, MapPin, Users, Compass } from "lucide-react";
+import {
+  ArrowLeft,
+  Calendar,
+  Clock,
+  MapPin,
+  Users,
+  User,
+  Compass,
+  Sparkles,
+  Tag,
+  Ticket,
+} from "lucide-react";
 import { Button, ButtonLink, Icon, SectionLabel } from "@/components/atoms";
 import {
   Banner,
@@ -20,99 +31,34 @@ import {
 } from "@/lib/event";
 import { useEvent } from "@/hooks/use-event";
 import { ShareEventCard } from "./_components/share-event-card";
-
-// "14:30" / "00:00" -> "2:30 PM" / "12:00 AM". Handles the 12/0 hour edge.
-function to12Hour(hhmm: string): string {
-  if (!hhmm) return "";
-  const [h, m] = hhmm.split(":").map(Number);
-  const period = h < 12 ? "AM" : "PM";
-  const hour12 = h % 12 === 0 ? 12 : h % 12;
-  return `${hour12}:${String(m).padStart(2, "0")} ${period}`;
-}
-
-// Bucket timeline items by calendar date so multi-day agendas get a header per
-// day. Single-day agendas produce one group with no label.
-function groupByDay(items: EventTimelineItem[]) {
-  const order: string[] = [];
-  const buckets = new Map<string, EventTimelineItem[]>();
-  for (const item of items) {
-    const key = item.date || "";
-    if (!buckets.has(key)) {
-      buckets.set(key, []);
-      order.push(key);
-    }
-    buckets.get(key)!.push(item);
-  }
-  const multiDay = order.filter((d) => d).length > 1;
-  return order.map((day) => ({
-    day,
-    label:
-      multiDay && day
-        ? new Intl.DateTimeFormat("en-IN", {
-            weekday: "short",
-            day: "numeric",
-            month: "short",
-            timeZone: "UTC",
-          }).format(new Date(day))
-        : "",
-    items: buckets.get(day)!,
-  }));
-}
-
-// Whole days between now and an ISO deadline. Null if no deadline is set.
-function daysUntil(iso: string | null | undefined): number | null {
-  if (!iso) return null;
-  const diffMs = new Date(iso).getTime() - Date.now();
-  return Math.ceil(diffMs / 86_400_000);
-}
-
-// event.time (if set) -> earliest agenda item's time (more descriptive) ->
-// the organizer's free-text duration -> blank.
-function resolveDisplayTime(event: Event): string {
-  if (event.time) return event.time;
-  const firstTimedItem = event.timeline.find((item) => item.time);
-  if (firstTimedItem) return firstTimedItem.time;
-  return event.durationText ?? "";
-}
-
-function DetailItem({
-  icon,
-  label,
-  value,
-  description,
-}: {
-  icon: typeof Calendar;
-  label: string;
-  value: string;
-  description: string;
-}) {
-  return (
-    <div className="flex items-start gap-3">
-      <Icon icon={icon} size="sm" className="text-text-secondary mt-0.5" />
-      <div>
-        <p className="text-small text-text-secondary">{label}</p>
-        <p className="text-body text-text-primary font-semibold">{value}</p>
-        <p className="text-small text-text-secondary">{description}</p>
-      </div>
-    </div>
-  );
-}
+import { EventHero } from "./_components/event-hero";
+import { EventOverviewCard } from "./_components/event-overview-card";
+import { EventDetailsCard } from "./_components/event-details-card";
+import { EventAgendaCard } from "./_components/event-agenda-card";
+import { OrganizerCard } from "./_components/organizer-card";
+import { EventLinksCard } from "./_components/event-links-card";
+import { EligibilityTermsCard } from "./_components/eligibility-terms-card";
+import { RegistrationCard } from "./_components/registration-card";
+import { EventInfoCard } from "./_components/event-info-card";
+import { DetailItem } from "./_components/detail-item";
+import { daysUntil, groupByDay, resolveDisplayTime, to12Hour } from "./_components/format";
+import { EventDetailSkeleton } from "./_components/event-detail-skeleton";
 
 export default function EventDetailPage() {
   const params = useParams<{ id: string }>();
   const router = useRouter();
   const { event, status } = useEvent(params.id);
 
+  if (status === "loading") {
+    return <EventDetailSkeleton />;
+  }
+
   if (!event) {
     return (
       <NotFoundState
         icon={Compass}
-        title={status === "loading" ? "Loading event…" : "Event not found"}
-        description={
-          status === "loading"
-            ? "Fetching this event."
-            : "This event may not exist, or it couldn't be loaded."
-        }
+        title="Event not found"
+        description="This event may not exist, or it couldn't be loaded."
         actionHref="/events"
         actionLabel="Browse Events"
       />
@@ -184,6 +130,11 @@ export default function EventDetailPage() {
           return undefined;
         }
 
+        const categoryIcon = { PARTICIPANT: User, ATTENDEE: Users } as const;
+        const firstOpenCategory = enabledPasses.find(
+          ({ data }) => windowStatus(data).state === "open",
+        )?.category;
+
         return (
           <>
             {singlePass ? (
@@ -199,30 +150,60 @@ export default function EventDetailPage() {
               </div>
             ) : enabledPasses.length > 1 ? (
               <>
-                <p className="text-body text-text-primary font-semibold">
+                <p className="text-body text-text-primary flex items-center gap-2 font-semibold">
+                  <Icon icon={Sparkles} size="sm" className="text-primary" />
                   How would you like to join?
                 </p>
                 <div className="space-y-3">
                   {enabledPasses.map(({ category, data }) => {
                     const status = windowStatus(data);
+                    const notOpenYet = status.state === "not-open-yet";
+                    const closed = status.state === "closed";
                     return (
                       <SelectableCard
                         key={category}
                         layout="horizontal"
+                        icon={categoryIcon[category]}
                         title={data.label}
                         subtitle={data.description || undefined}
-                        disabled={
-                          status.state === "not-open-yet" ||
-                          status.state === "closed"
+                        selected={category === firstOpenCategory}
+                        disabled={notOpenYet || closed}
+                        statusLabel={
+                          notOpenYet || closed
+                            ? windowStatusMeta(status)
+                            : undefined
                         }
-                        meta={[
+                        lockMessage={
+                          notOpenYet
+                            ? `${data.label} registration unlocks in ${status.days} day${status.days === 1 ? "" : "s"}`
+                            : closed
+                              ? `${data.label} registration is closed`
+                              : undefined
+                        }
+                        metaItems={[
+                          {
+                            icon: Tag,
+                            label: data.priceLabel,
+                            tone: "success" as const,
+                          },
                           data.spotsLeft !== undefined
-                            ? `${data.priceLabel} · ${data.spotsLeft} left`
-                            : data.priceLabel,
-                          windowStatusMeta(status),
-                        ]
-                          .filter(Boolean)
-                          .join(" · ")}
+                            ? {
+                                icon: Ticket,
+                                label: `${data.spotsLeft} left`,
+                                tone: "warning" as const,
+                              }
+                            : undefined,
+                          status.state === "closing-soon"
+                            ? {
+                                icon: Clock,
+                                label: windowStatusMeta(status)!,
+                                tone: "warning" as const,
+                              }
+                            : undefined,
+                        ].filter(
+                          (item): item is NonNullable<typeof item> =>
+                            item !== undefined,
+                        )}
                         onSelect={() =>
                           router.push(
                             `/events/${event.id}/register?category=${category}`,
@@ -280,13 +261,23 @@ export default function EventDetailPage() {
 
   return (
     <div className="space-y-6">
-      <Breadcrumb
-        items={[
-          { label: "Events", href: "/events" },
-          { label: event.type, href: "/events" },
-          { label: event.title },
-        ]}
-      />
+      <div className="flex items-center justify-between gap-3">
+        <Breadcrumb
+          items={[
+            { label: "Events", href: "/events" },
+            { label: event.type, href: "/events" },
+            { label: event.title },
+          ]}
+        />
+        <Button
+          variant="secondary"
+          size="sm"
+          onClick={() => router.back()}
+          className="shrink-0"
+        >
+          <Icon icon={ArrowLeft} size="sm" /> Back
+        </Button>
+      </div>
 
       {event.status === "CANCELLED" && (
         <Banner tone="danger">
@@ -403,22 +394,7 @@ export default function EventDetailPage() {
           )}
 
           {event.socialLinks && event.socialLinks.length > 0 && (
-            <div className="border-border-light bg-surface-light space-y-3 rounded-md border p-6">
-              <SectionLabel>Social Links</SectionLabel>
-              <div className="flex flex-wrap gap-2">
-                {event.socialLinks.map((link, index) => (
-                  <a
-                    key={index}
-                    href={link.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="border-border-light text-body text-text-primary hover:bg-bg-light rounded-sm border px-3 py-1.5 font-medium"
-                  >
-                    {link.platform || link.url}
-                  </a>
-                ))}
-              </div>
-            </div>
+            <EventLinksCard links={event.socialLinks} />
           )}
 
           <div className="border-border-light bg-surface-light space-y-4 rounded-md border p-6">
