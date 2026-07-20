@@ -55,9 +55,11 @@ export async function apiRequest<T>(
     !res.ok ||
     (data && typeof data === "object" && "error" in (data as object))
   ) {
-    const errorBody = data as
-      | { error?: string; message?: string; cause?: string }
-      | null;
+    const errorBody = data as {
+      error?: string;
+      message?: string;
+      cause?: string;
+    } | null;
     // RAISE_APPLICATION_ERROR text doesn't land in `message` (that's ORDS's
     // generic "user defined resource" wrapper) — it's inside `cause`, e.g.
     // "...SQL Error Code 20001, Error Message: ORA-20001: <our message>\nORA-06512...".

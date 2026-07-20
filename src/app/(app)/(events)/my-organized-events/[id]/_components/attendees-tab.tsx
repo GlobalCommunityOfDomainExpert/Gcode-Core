@@ -66,7 +66,8 @@ export function AttendeesTab({
     useState<AttendeesCategoryFilterValue>("all");
   const [page, setPage] = useState(1);
   const [viewingAttendee, setViewingAttendee] = useState<Attendee | null>(null);
-  const submissionDeadlineIso = event.participantRegistration.registrationDeadlineIso;
+  const submissionDeadlineIso =
+    event.participantRegistration.registrationDeadlineIso;
 
   const counts = useMemo(
     () => ({
@@ -76,8 +77,7 @@ export function AttendeesTab({
       attended: attendees.filter((a) => a.status === "attended").length,
       missed: attendees.filter((a) => a.status === "missed").length,
       submitted: attendees.filter(
-        (a) =>
-          audioSubmissionStatus(a, submissionDeadlineIso) === "submitted",
+        (a) => audioSubmissionStatus(a, submissionDeadlineIso) === "submitted",
       ).length,
       pending: attendees.filter(
         (a) => audioSubmissionStatus(a, submissionDeadlineIso) === "pending",
@@ -228,7 +228,11 @@ export function AttendeesTab({
           return <span className="text-text-secondary">—</span>;
         }
         return (
-          <Badge variant="muted" tone={submissionStatusTone[submission]} size="sm">
+          <Badge
+            variant="muted"
+            tone={submissionStatusTone[submission]}
+            size="sm"
+          >
             {submissionStatusLabel[submission]}
           </Badge>
         );
@@ -241,7 +245,10 @@ export function AttendeesTab({
       <Tabs
         items={[
           { value: "all", label: `All (${categoryCounts.all})` },
-          { value: "Attendee", label: `Attendees (${categoryCounts.Attendee})` },
+          {
+            value: "Attendee",
+            label: `Attendees (${categoryCounts.Attendee})`,
+          },
           {
             value: "Participant",
             label: `Participants (${categoryCounts.Participant})`,
@@ -419,7 +426,10 @@ export function AttendeesTab({
                 <span className="text-text-secondary">Submission:</span>{" "}
                 {
                   submissionStatusLabel[
-                    audioSubmissionStatus(viewingAttendee, submissionDeadlineIso)!
+                    audioSubmissionStatus(
+                      viewingAttendee,
+                      submissionDeadlineIso,
+                    )!
                   ]
                 }
                 {viewingAttendee.audioSubmissionUrl && (

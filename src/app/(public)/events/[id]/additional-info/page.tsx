@@ -286,8 +286,8 @@ export default function AdditionalInfoPage() {
           Additional Info — {event.title}
         </h1>
         <p className="text-small text-text-secondary">
-          Participants must submit their audio submission URL within 24 hours
-          of registration closing, or the entry is disqualified.
+          Participants must submit their audio submission URL within 24 hours of
+          registration closing, or the entry is disqualified.
         </p>
       </div>
 

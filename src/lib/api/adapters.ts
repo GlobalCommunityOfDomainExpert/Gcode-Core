@@ -157,9 +157,10 @@ export function toCreatePayload(
     organizer_id: organizerId,
     max_tickets_per_registration:
       data.attendeeMaxTicketsPerRegistration || undefined,
-    participant_max_tickets_per_registration: data.participantRegistrationEnabled
-      ? data.participantMaxTicketsPerRegistration || undefined
-      : undefined,
+    participant_max_tickets_per_registration:
+      data.participantRegistrationEnabled
+        ? data.participantMaxTicketsPerRegistration || undefined
+        : undefined,
     terms: data.terms.trim() || undefined,
     eligibility: data.eligibility.trim() || undefined,
     duration_text: data.duration.trim() || undefined,
@@ -214,7 +215,8 @@ export function toEventDraft(
     attendeeLabel: detail.attendee_label ?? "",
     attendeeDescription: detail.attendee_description ?? "",
     attendeeRegistrationEnabled: detail.attendee_registration_enabled !== 0,
-    participantRegistrationEnabled: detail.participant_registration_enabled === 1,
+    participantRegistrationEnabled:
+      detail.participant_registration_enabled === 1,
     participantLabel: detail.participant_label ?? "",
     participantDescription: detail.participant_description ?? "",
     participantPriceAmount: detail.participant_price ?? 0,
@@ -283,7 +285,10 @@ export function toTimelinePayload(
         title: item.title,
         description: item.description,
         startTime: day ? (toIsoTimestamp(day, item.time) ?? null) : null,
-        endTime: item.endTime && day ? (toIsoTimestamp(day, item.endTime) ?? null) : null,
+        endTime:
+          item.endTime && day
+            ? (toIsoTimestamp(day, item.endTime) ?? null)
+            : null,
         location: item.location || null,
         sortOrder: index,
       };
@@ -412,7 +417,8 @@ export function adaptApiEvent(
       event.max_attendees != null
         ? Math.max(event.max_attendees - event.registered_count, 0)
         : undefined,
-    maxTicketsPerRegistration: detail?.max_tickets_per_registration ?? undefined,
+    maxTicketsPerRegistration:
+      detail?.max_tickets_per_registration ?? undefined,
     registrationCloses: detail?.registration_deadline
       ? formatDate(detail.registration_deadline)
       : formatDate(event.start_date),
@@ -432,7 +438,8 @@ export function adaptApiEvent(
     spotsLeft:
       detail?.participant_capacity != null
         ? Math.max(
-            detail.participant_capacity - (detail?.participant_registered_count ?? 0),
+            detail.participant_capacity -
+              (detail?.participant_registered_count ?? 0),
             0,
           )
         : undefined,
@@ -465,7 +472,8 @@ export function adaptApiEvent(
     attendeeRegistration,
     participantRegistration,
     featured: event.is_featured === 1,
-    maxTicketsPerRegistration: detail?.max_tickets_per_registration ?? undefined,
+    maxTicketsPerRegistration:
+      detail?.max_tickets_per_registration ?? undefined,
     // ORDS can serialize NUMBER columns as JSON strings depending on config,
     // so this can arrive as "1" rather than 1 — coerce before comparing.
     is_featured: Number(event.is_featured) === 1,

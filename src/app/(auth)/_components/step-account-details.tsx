@@ -3,12 +3,21 @@
 import NextLink from "next/link";
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Button, Checkbox, Divider, Input, PasswordInput } from "@/components/atoms";
+import {
+  Button,
+  Checkbox,
+  Divider,
+  Input,
+  PasswordInput,
+} from "@/components/atoms";
 import { FormField, PasswordStrengthMeter } from "@/components/molecules";
 import { GoogleButton } from "./google-button";
 import { oauthLoginGoogle } from "@/lib/api/auth";
 import { setSession } from "@/lib/auth/session";
-import { decodeGoogleEmail, useGoogleIdToken } from "@/lib/auth/use-google-id-token";
+import {
+  decodeGoogleEmail,
+  useGoogleIdToken,
+} from "@/lib/auth/use-google-id-token";
 import { hashPassword } from "@/lib/auth/hash-password";
 import { isPasswordValid } from "@/lib/auth/password-strength";
 import { ApiError } from "@/lib/api/client";
@@ -166,7 +175,7 @@ export function StepAccountDetails({ onSubmit }: StepAccountDetailsProps) {
         <GoogleButton onClick={handleGoogleClick} />
       </form>
 
-      <p className="text-sm text-text-secondary mt-6 text-center">
+      <p className="text-text-secondary mt-6 text-center text-sm">
         Already have an account?{" "}
         <NextLink href="/sign-in" className={linkClasses}>
           Sign in

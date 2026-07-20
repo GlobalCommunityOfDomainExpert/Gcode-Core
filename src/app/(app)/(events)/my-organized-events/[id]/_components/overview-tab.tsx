@@ -94,7 +94,8 @@ export function OverviewTab({
   // Show the Participant stat block once it has ever had activity, even if
   // the organizer has since closed it — closing shouldn't hide history.
   const showParticipantStats =
-    participantRegistration.enabled || participantRegistration.registeredCount > 0;
+    participantRegistration.enabled ||
+    participantRegistration.registeredCount > 0;
 
   return (
     <div className="space-y-6">
@@ -183,13 +184,15 @@ export function OverviewTab({
               label={`${event.participantRegistration.label} pass: ${event.participantRegistration.enabled ? "Open" : "Closed"}`}
               checked={event.participantRegistration.enabled}
               disabled={togglingCategory !== null}
-              onChange={(e) => toggleRegistration("PARTICIPANT", e.target.checked)}
+              onChange={(e) =>
+                toggleRegistration("PARTICIPANT", e.target.checked)
+              }
             />
           )}
         </div>
         <p className="text-small text-text-secondary mt-2">
-          Closing a pass stops new registrations immediately — works any
-          time, even after the registration deadline has passed.
+          Closing a pass stops new registrations immediately — works any time,
+          even after the registration deadline has passed.
         </p>
       </div>
 

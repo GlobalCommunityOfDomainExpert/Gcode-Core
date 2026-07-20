@@ -56,9 +56,7 @@ export function EventsShell({ session, children }: EventsShellProps) {
         }
         sidebar={null}
       >
-        <div className={transparent ? "" : "mt-10"}>
-          {children}
-        </div>
+        <div className={transparent ? "" : "mt-10"}>{children}</div>
       </AppShell>
     );
   }
@@ -121,9 +119,7 @@ export function EventsShell({ session, children }: EventsShellProps) {
       }
       sidebar={null}
     >
-      <div className={transparent ? "" : "mt-10"}>
-        {children}
-      </div>
+      <div className={transparent ? "" : "mt-10"}>{children}</div>
     </AppShell>
   );
 }

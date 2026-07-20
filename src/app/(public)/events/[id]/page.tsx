@@ -41,7 +41,12 @@ import { EligibilityTermsCard } from "./_components/eligibility-terms-card";
 import { RegistrationCard } from "./_components/registration-card";
 import { EventInfoCard } from "./_components/event-info-card";
 import { DetailItem } from "./_components/detail-item";
-import { daysUntil, groupByDay, resolveDisplayTime, to12Hour } from "./_components/format";
+import {
+  daysUntil,
+  groupByDay,
+  resolveDisplayTime,
+  to12Hour,
+} from "./_components/format";
 import { EventDetailSkeleton } from "./_components/event-detail-skeleton";
 
 export default function EventDetailPage() {

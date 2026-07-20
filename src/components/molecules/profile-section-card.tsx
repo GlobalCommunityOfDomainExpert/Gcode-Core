@@ -6,7 +6,10 @@ export interface ProfileSectionCardProps {
   children: ReactNode;
 }
 
-export function ProfileSectionCard({ title, children }: ProfileSectionCardProps) {
+export function ProfileSectionCard({
+  title,
+  children,
+}: ProfileSectionCardProps) {
   return (
     <div className="border-border-light bg-surface-light flex flex-col gap-3 rounded-md border p-6">
       {title && <SectionLabel>{title}</SectionLabel>}

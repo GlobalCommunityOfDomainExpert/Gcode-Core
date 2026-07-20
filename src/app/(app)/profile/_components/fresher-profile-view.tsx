@@ -34,8 +34,8 @@ export function FresherProfileView() {
 
       <ProfileSectionCard>
         <p className="text-body text-text-secondary">
-          Aspiring full-stack developer passionate about building scalable
-          web applications.
+          Aspiring full-stack developer passionate about building scalable web
+          applications.
         </p>
       </ProfileSectionCard>
 

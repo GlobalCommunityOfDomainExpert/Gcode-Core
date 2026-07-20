@@ -20,13 +20,12 @@ export function Breadcrumb({ items }: BreadcrumbProps) {
             <Fragment key={item.label}>
               <li>
                 {item.href && !isLast ? (
-                  <div className="flex gap-4"> 
-                   <Link href={item.href} variant="secondary" size="sm">
-                    {item.label} 
-                  </Link>
-                  <span className="text-text-secondary"> / </span>
+                  <div className="flex gap-4">
+                    <Link href={item.href} variant="secondary" size="sm">
+                      {item.label}
+                    </Link>
+                    <span className="text-text-secondary"> / </span>
                   </div>
-                
                 ) : (
                   <span
                     aria-current={isLast ? "page" : undefined}

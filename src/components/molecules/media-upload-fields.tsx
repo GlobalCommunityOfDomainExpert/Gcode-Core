@@ -44,7 +44,12 @@ export function MediaUploadFields({
             {photoInitials}
           </div>
           <div className="flex flex-col gap-1">
-            <Button type="button" variant="secondary" size="sm" className="w-fit">
+            <Button
+              type="button"
+              variant="secondary"
+              size="sm"
+              className="w-fit"
+            >
               {photoButtonLabel}
             </Button>
             <span className="text-small text-text-secondary">{photoHint}</span>

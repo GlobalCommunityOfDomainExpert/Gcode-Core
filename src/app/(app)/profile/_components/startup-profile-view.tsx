@@ -53,7 +53,11 @@ export function StartupProfileView() {
         </div>
       </ProfileSectionCard>
 
-      <ExternalLinkRow href="https://loopkart.com" label="Website" icon={Globe} />
+      <ExternalLinkRow
+        href="https://loopkart.com"
+        label="Website"
+        icon={Globe}
+      />
     </div>
   );
 }

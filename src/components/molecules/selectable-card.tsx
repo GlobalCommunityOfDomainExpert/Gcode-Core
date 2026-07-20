@@ -94,14 +94,12 @@ export function SelectableCard({
             </span>
           )}
           <div className="min-w-0 space-y-1">
-            <p className="text-body text-text-primary font-semibold">
-              {title}
-            </p>
+            <p className="text-body text-text-primary font-semibold">{title}</p>
             {subtitle && (
               <p className="text-small text-text-secondary">{subtitle}</p>
             )}
             {statusLabel && (
-              <span className="border-border-light text-text-secondary bg-surface-light inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-small">
+              <span className="border-border-light text-text-secondary bg-surface-light text-small inline-flex items-center gap-1 rounded-full border px-2 py-0.5">
                 <Icon icon={Lock} size="sm" />
                 {statusLabel}
               </span>
@@ -111,7 +109,7 @@ export function SelectableCard({
                 {metaItems.map((item, index) => (
                   <span
                     key={index}
-                    className={`inline-flex items-center gap-1 text-small font-semibold ${metaToneClasses[item.tone ?? "success"]}`}
+                    className={`text-small inline-flex items-center gap-1 font-semibold ${metaToneClasses[item.tone ?? "success"]}`}
                   >
                     <Icon icon={item.icon} size="sm" />
                     {item.label}

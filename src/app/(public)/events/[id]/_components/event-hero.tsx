@@ -32,7 +32,11 @@ export function EventHero({ event }: { event: Event }) {
         </Badge>
       </div>
       {event.is_featured && (
-        <Badge variant="solid" tone="warning" className="absolute top-4 right-4">
+        <Badge
+          variant="solid"
+          tone="warning"
+          className="absolute top-4 right-4"
+        >
           Featured
         </Badge>
       )}

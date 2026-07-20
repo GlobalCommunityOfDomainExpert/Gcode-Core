@@ -14,7 +14,9 @@ function strengthFor(score: number): { label: string; tone: ProgressTone } {
   return { label: "Weak", tone: "danger" };
 }
 
-export function PasswordStrengthMeter({ password }: PasswordStrengthMeterProps) {
+export function PasswordStrengthMeter({
+  password,
+}: PasswordStrengthMeterProps) {
   if (!password) return null;
 
   const score = passwordScore(password);
@@ -22,7 +24,12 @@ export function PasswordStrengthMeter({ password }: PasswordStrengthMeterProps) 
 
   return (
     <div className="flex flex-col gap-2">
-      <Progress value={score} max={PASSWORD_RULES.length} tone={tone} label={`Password strength: ${label}`} />
+      <Progress
+        value={score}
+        max={PASSWORD_RULES.length}
+        tone={tone}
+        label={`Password strength: ${label}`}
+      />
       <ul className="grid grid-cols-1 gap-1 sm:grid-cols-2">
         {PASSWORD_RULES.map((rule) => {
           const met = rule.test(password);
