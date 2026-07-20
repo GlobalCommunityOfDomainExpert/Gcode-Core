@@ -87,7 +87,6 @@ export function SignUpFlow() {
         {effectiveStepIndex === 1 && account !== null && (
           <StepVerifyOtp
             email={account.email}
-            testOtp={testOtp}
             onVerified={() => setStepIndex(2)}
           />
         )}

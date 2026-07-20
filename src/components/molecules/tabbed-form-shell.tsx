@@ -17,12 +17,7 @@ export function TabbedFormShell({
 }: TabbedFormShellProps) {
   return (
     <div className="flex gap-8">
-      <Tabs
-        items={tabs}
-        value={activeTab}
-        onChange={onTabChange}
-        orientation="vertical"
-      />
+      <Tabs items={tabs} value={activeTab} onChange={onTabChange} />
       <Card padding="md" className="min-w-0 flex-1">
         {children}
       </Card>
