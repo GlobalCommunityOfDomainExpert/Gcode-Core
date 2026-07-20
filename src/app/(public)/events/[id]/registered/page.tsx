@@ -199,7 +199,7 @@ export default function EventRegisteredPage() {
           <div className="space-y-3">
             <p className="text-body text-text-primary">
               You registered as a Participant — submit your audio submission URL
-              within 24 hours of registration or your entry will be
+              within 24 hours of registration closing or your entry will be
               disqualified.
             </p>
             <ButtonLink
