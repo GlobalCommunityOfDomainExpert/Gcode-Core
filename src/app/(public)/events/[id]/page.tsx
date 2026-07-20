@@ -1,7 +1,18 @@
 "use client";
 
 import { useParams, useRouter } from "next/navigation";
-import { Calendar, Clock, MapPin, Users, Compass } from "lucide-react";
+import {
+  ArrowLeft,
+  Calendar,
+  Clock,
+  MapPin,
+  Users,
+  User,
+  Compass,
+  Sparkles,
+  Tag,
+  Ticket,
+} from "lucide-react";
 import { Button, ButtonLink, Icon, SectionLabel } from "@/components/atoms";
 import {
   Banner,
@@ -119,6 +130,11 @@ export default function EventDetailPage() {
           return undefined;
         }
 
+        const categoryIcon = { PARTICIPANT: User, ATTENDEE: Users } as const;
+        const firstOpenCategory = enabledPasses.find(
+          ({ data }) => windowStatus(data).state === "open",
+        )?.category;
+
         return (
           <>
             {singlePass ? (
@@ -134,30 +150,60 @@ export default function EventDetailPage() {
               </div>
             ) : enabledPasses.length > 1 ? (
               <>
-                <p className="text-body text-text-primary font-semibold">
+                <p className="text-body text-text-primary flex items-center gap-2 font-semibold">
+                  <Icon icon={Sparkles} size="sm" className="text-primary" />
                   How would you like to join?
                 </p>
                 <div className="space-y-3">
                   {enabledPasses.map(({ category, data }) => {
                     const status = windowStatus(data);
+                    const notOpenYet = status.state === "not-open-yet";
+                    const closed = status.state === "closed";
                     return (
                       <SelectableCard
                         key={category}
                         layout="horizontal"
+                        icon={categoryIcon[category]}
                         title={data.label}
                         subtitle={data.description || undefined}
-                        disabled={
-                          status.state === "not-open-yet" ||
-                          status.state === "closed"
+                        selected={category === firstOpenCategory}
+                        disabled={notOpenYet || closed}
+                        statusLabel={
+                          notOpenYet || closed
+                            ? windowStatusMeta(status)
+                            : undefined
                         }
-                        meta={[
+                        lockMessage={
+                          notOpenYet
+                            ? `${data.label} registration unlocks in ${status.days} day${status.days === 1 ? "" : "s"}`
+                            : closed
+                              ? `${data.label} registration is closed`
+                              : undefined
+                        }
+                        metaItems={[
+                          {
+                            icon: Tag,
+                            label: data.priceLabel,
+                            tone: "success" as const,
+                          },
                           data.spotsLeft !== undefined
-                            ? `${data.priceLabel} · ${data.spotsLeft} left`
-                            : data.priceLabel,
-                          windowStatusMeta(status),
-                        ]
-                          .filter(Boolean)
-                          .join(" · ")}
+                            ? {
+                                icon: Ticket,
+                                label: `${data.spotsLeft} left`,
+                                tone: "warning" as const,
+                              }
+                            : undefined,
+                          status.state === "closing-soon"
+                            ? {
+                                icon: Clock,
+                                label: windowStatusMeta(status)!,
+                                tone: "warning" as const,
+                              }
+                            : undefined,
+                        ].filter(
+                          (item): item is NonNullable<typeof item> =>
+                            item !== undefined,
+                        )}
                         onSelect={() =>
                           router.push(
                             `/events/${event.id}/register?category=${category}`,
@@ -215,13 +261,23 @@ export default function EventDetailPage() {
 
   return (
     <div className="space-y-6">
-      <Breadcrumb
-        items={[
-          { label: "Events", href: "/events" },
-          { label: event.type, href: "/events" },
-          { label: event.title },
-        ]}
-      />
+      <div className="flex items-center justify-between gap-3">
+        <Breadcrumb
+          items={[
+            { label: "Events", href: "/events" },
+            { label: event.type, href: "/events" },
+            { label: event.title },
+          ]}
+        />
+        <Button
+          variant="secondary"
+          size="sm"
+          onClick={() => router.back()}
+          className="shrink-0"
+        >
+          <Icon icon={ArrowLeft} size="sm" /> Back
+        </Button>
+      </div>
 
       {event.status === "CANCELLED" && (
         <Banner tone="danger">
