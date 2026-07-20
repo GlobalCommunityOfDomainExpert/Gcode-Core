@@ -1,25 +1,20 @@
 "use client";
 
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { getSession, Session } from "@/lib/auth/session";
+import { useSession } from "@/hooks/use-session";
 
 export default function AppLayout({ children }: { children: ReactNode }) {
   const router = useRouter();
-  const [session, setSessionState] = useState<Session | null | "loading">(
-    "loading",
-  );
+  const session = useSession();
 
   useEffect(() => {
-    const current = getSession();
-    if (!current) {
+    if (!session) {
       router.replace("/sign-in");
-      return;
     }
-    setSessionState(current);
-  }, [router]);
+  }, [session, router]);
 
-  if (session === "loading" || session === null) return null;
+  if (!session) return null;
 
   return <>{children}</>;
 }
