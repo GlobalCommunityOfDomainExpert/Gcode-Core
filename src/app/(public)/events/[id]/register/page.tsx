@@ -2,19 +2,29 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
-import { ArrowRight, Compass } from "lucide-react";
+import {
+  ArrowLeft,
+  ArrowRight,
+  Compass,
+  Mail,
+  Phone,
+  Tag,
+  Ticket,
+  User,
+} from "lucide-react";
 import {
   Button,
   Card,
   Checkbox,
   Icon,
   Input,
-  Label,
   SectionLabel,
 } from "@/components/atoms";
 import {
   Banner,
+  Breadcrumb,
   CheckoutSummary,
+  FormField,
   NotFoundState,
   SelectableCard,
 } from "@/components/molecules";
@@ -29,6 +39,7 @@ import {
   openRazorpayCheckout,
 } from "@/lib/payments/razorpay";
 import { VerifyEmailModal } from "./_components/verify-email-modal";
+import { RegisterSkeleton } from "./_components/register-skeleton";
 
 type Category = "ATTENDEE" | "PARTICIPANT";
 
@@ -98,16 +109,16 @@ export default function EventRegisterPage() {
     }
   }, [event, searchParams]);
 
+  if (status === "loading") {
+    return <RegisterSkeleton />;
+  }
+
   if (!event) {
     return (
       <NotFoundState
         icon={Compass}
-        title={status === "loading" ? "Loading event…" : "Event not found"}
-        description={
-          status === "loading"
-            ? "Fetching this event."
-            : "This event may not exist, or it couldn't be loaded."
-        }
+        title="Event not found"
+        description="This event may not exist, or it couldn't be loaded."
         actionHref="/events"
         actionLabel="Browse Events"
       />
@@ -125,6 +136,27 @@ export default function EventRegisterPage() {
       />
     );
   }
+
+  const breadcrumbRow = (
+    <div className="flex items-center justify-between gap-3">
+      <Breadcrumb
+        items={[
+          { label: "Events", href: "/events" },
+          { label: event.type, href: "/events" },
+          { label: event.title, href: `/events/${event.id}` },
+          { label: "Register" },
+        ]}
+      />
+      <Button
+        variant="secondary"
+        size="sm"
+        onClick={() => router.back()}
+        className="shrink-0"
+      >
+        <Icon icon={ArrowLeft} size="sm" /> Back
+      </Button>
+    </div>
+  );
 
   const selected: RegistrationCategory =
     category === "PARTICIPANT"
@@ -268,7 +300,8 @@ export default function EventRegisterPage() {
       { value: "PARTICIPANT", data: event.participantRegistration },
     ];
     return (
-      <div className="mx-auto max-w-lg space-y-4">
+      <div className="mx-auto max-w-xl space-y-4">
+        {breadcrumbRow}
         <div>
           <h1 className="text-large text-text-primary font-bold">
             How would you like to join?
@@ -284,7 +317,18 @@ export default function EventRegisterPage() {
               layout="horizontal"
               title={data.label}
               subtitle={data.description || undefined}
-              meta={data.priceLabel}
+              metaItems={[
+                { icon: Tag, label: data.priceLabel, tone: "success" as const },
+                data.spotsLeft !== undefined
+                  ? {
+                      icon: Ticket,
+                      label: `${data.spotsLeft} left`,
+                      tone: "warning" as const,
+                    }
+                  : undefined,
+              ].filter(
+                (item): item is NonNullable<typeof item> => item !== undefined,
+              )}
               selected={category === value}
               onSelect={() => setCategory(value)}
             />
@@ -302,7 +346,8 @@ export default function EventRegisterPage() {
   }
 
   return (
-    <div className="mx-auto max-w-4xl space-y-4">
+    <div className="mx-auto max-w-5xl space-y-4">
+      {breadcrumbRow}
       <div>
         <h1 className="text-large text-text-primary font-bold">
           Register for {event.title}
@@ -335,55 +380,63 @@ export default function EventRegisterPage() {
               ) : (
                 <>
                   <div className="grid gap-4 sm:grid-cols-2">
-                    <div className="space-y-1">
-                      <Label htmlFor="first-name">First Name</Label>
+                    <FormField label="First Name" htmlFor="first-name">
                       <Input
                         id="first-name"
+                        icon={User}
                         value={firstName}
                         onChange={(e) => setFirstName(e.target.value)}
                         placeholder="First name"
                       />
-                    </div>
-                    <div className="space-y-1">
-                      <Label htmlFor="last-name">Last Name</Label>
+                    </FormField>
+                    <FormField label="Last Name" htmlFor="last-name">
                       <Input
                         id="last-name"
+                        icon={User}
                         value={lastName}
                         onChange={(e) => setLastName(e.target.value)}
                         placeholder="Last name"
                       />
-                    </div>
+                    </FormField>
                   </div>
                   <div className="grid gap-4 sm:grid-cols-2">
-                    <div className="space-y-1">
-                      <Label htmlFor="email">Email Address</Label>
+                    <FormField label="Email Address" htmlFor="email">
                       <Input
                         id="email"
                         type="email"
+                        icon={Mail}
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         placeholder="you@example.com"
                       />
-                    </div>
-                    <div className="space-y-1">
-                      <Label htmlFor="phone">Phone Number</Label>
+                    </FormField>
+                    <FormField label="Phone Number" htmlFor="phone">
                       <Input
                         id="phone"
                         type="tel"
+                        icon={Phone}
                         value={phone}
                         onChange={(e) => setPhone(e.target.value)}
                         placeholder="9876543210"
                       />
-                    </div>
+                    </FormField>
                   </div>
                 </>
               )}
               {maxQuantity !== 1 && (
-                <div className="space-y-1">
-                  <Label htmlFor="quantity">Number of Tickets</Label>
+                <FormField
+                  label="Number of Tickets"
+                  htmlFor="quantity"
+                  hint={
+                    Number.isFinite(maxQuantity)
+                      ? `Up to ${maxQuantity} available.`
+                      : undefined
+                  }
+                >
                   <Input
                     id="quantity"
                     type="number"
+                    icon={Ticket}
                     min={1}
                     max={Number.isFinite(maxQuantity) ? maxQuantity : undefined}
                     value={quantityInput}
@@ -394,12 +447,7 @@ export default function EventRegisterPage() {
                       )
                     }
                   />
-                  {Number.isFinite(maxQuantity) && (
-                    <p className="text-small text-text-secondary">
-                      Up to {maxQuantity} available.
-                    </p>
-                  )}
-                </div>
+                </FormField>
               )}
               {!session && (
                 <p className="text-small text-text-secondary">
