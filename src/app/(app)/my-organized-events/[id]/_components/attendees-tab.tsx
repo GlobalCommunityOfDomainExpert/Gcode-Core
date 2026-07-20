@@ -66,6 +66,7 @@ export function AttendeesTab({
     useState<AttendeesCategoryFilterValue>("all");
   const [page, setPage] = useState(1);
   const [viewingAttendee, setViewingAttendee] = useState<Attendee | null>(null);
+  const submissionDeadlineIso = event.participantRegistration.registrationDeadlineIso;
 
   const counts = useMemo(
     () => ({
@@ -74,15 +75,19 @@ export function AttendeesTab({
       free: attendees.filter((a) => a.ticketType === "Free").length,
       attended: attendees.filter((a) => a.status === "attended").length,
       missed: attendees.filter((a) => a.status === "missed").length,
-      submitted: attendees.filter((a) => audioSubmissionStatus(a) === "submitted")
-        .length,
-      pending: attendees.filter((a) => audioSubmissionStatus(a) === "pending")
-        .length,
+      submitted: attendees.filter(
+        (a) =>
+          audioSubmissionStatus(a, submissionDeadlineIso) === "submitted",
+      ).length,
+      pending: attendees.filter(
+        (a) => audioSubmissionStatus(a, submissionDeadlineIso) === "pending",
+      ).length,
       disqualified: attendees.filter(
-        (a) => audioSubmissionStatus(a) === "disqualified",
+        (a) =>
+          audioSubmissionStatus(a, submissionDeadlineIso) === "disqualified",
       ).length,
     }),
-    [attendees],
+    [attendees, submissionDeadlineIso],
   );
 
   const categoryCounts = useMemo(
@@ -104,7 +109,7 @@ export function AttendeesTab({
         (filter === "submitted" ||
           filter === "pending" ||
           filter === "disqualified") &&
-        audioSubmissionStatus(attendee) !== filter
+        audioSubmissionStatus(attendee, submissionDeadlineIso) !== filter
       )
         return false;
       if (categoryFilter !== "all" && attendee.category !== categoryFilter)
@@ -115,7 +120,7 @@ export function AttendeesTab({
       }
       return true;
     });
-  }, [attendees, filter, categoryFilter, query]);
+  }, [attendees, filter, categoryFilter, query, submissionDeadlineIso]);
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
   const currentPage = Math.min(page, totalPages);
@@ -218,7 +223,7 @@ export function AttendeesTab({
       key: "submission",
       header: "Submission",
       render: (row) => {
-        const submission = audioSubmissionStatus(row);
+        const submission = audioSubmissionStatus(row, submissionDeadlineIso);
         if (!submission) {
           return <span className="text-text-secondary">—</span>;
         }
@@ -409,10 +414,14 @@ export function AttendeesTab({
               <span className="text-text-secondary">Status:</span>{" "}
               {attendanceStatusLabel[viewingAttendee.status]}
             </p>
-            {audioSubmissionStatus(viewingAttendee) && (
+            {audioSubmissionStatus(viewingAttendee, submissionDeadlineIso) && (
               <p>
                 <span className="text-text-secondary">Submission:</span>{" "}
-                {submissionStatusLabel[audioSubmissionStatus(viewingAttendee)!]}
+                {
+                  submissionStatusLabel[
+                    audioSubmissionStatus(viewingAttendee, submissionDeadlineIso)!
+                  ]
+                }
                 {viewingAttendee.audioSubmissionUrl && (
                   <>
                     {" · "}
