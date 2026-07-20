@@ -1,12 +1,7 @@
 import { useState } from "react";
-import { Button, ButtonLink, Progress, Switch } from "@/components/atoms";
+import { Progress, Switch } from "@/components/atoms";
 import { StatCard } from "@/components/molecules";
-import {
-  ATTENDEES_CSV_HEADERS,
-  Attendee,
-  attendeesCsvRows,
-} from "@/lib/attendees";
-import { downloadCsv } from "@/lib/csv";
+import { Attendee } from "@/lib/attendees";
 import { Event } from "@/lib/event";
 import { updateEvent } from "@/lib/api/events";
 import { RegistrationTrendChart } from "./registration-trend-chart";
@@ -14,28 +9,44 @@ import { RegistrationTrendChart } from "./registration-trend-chart";
 export interface OverviewTabProps {
   event: Event;
   attendees: Attendee[];
-  onNavigateToCommunication: () => void;
   // Called after the runtime open/close toggle below writes successfully,
   // so the parent re-fetches and this tab re-renders with the new state.
   onEventChanged: () => void | Promise<void>;
 }
 
-function daysLeft(event: Event): number | null {
-  const parsed = new Date(event.date);
-  if (Number.isNaN(parsed.getTime())) return null;
+// Days until this category's own registration deadline — falls back to the
+// event's start date when the organizer hasn't set one.
+function daysUntilClose(
+  deadlineIso: string | null | undefined,
+  fallbackDateStr: string,
+): number | null {
+  const target = new Date(deadlineIso || fallbackDateStr);
+  if (Number.isNaN(target.getTime())) return null;
   const today = new Date();
   today.setHours(0, 0, 0, 0);
-  parsed.setHours(0, 0, 0, 0);
+  target.setHours(0, 0, 0, 0);
   return Math.max(
     0,
-    Math.round((parsed.getTime() - today.getTime()) / 86_400_000),
+    Math.round((target.getTime() - today.getTime()) / 86_400_000),
   );
+}
+
+function formatDateTime(iso: string | null | undefined): string | null {
+  if (!iso) return null;
+  const parsed = new Date(iso);
+  if (Number.isNaN(parsed.getTime())) return null;
+  return parsed.toLocaleString("en-IN", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+  });
 }
 
 export function OverviewTab({
   event,
   attendees,
-  onNavigateToCommunication,
   onEventChanged,
 }: OverviewTabProps) {
   const [togglingCategory, setTogglingCategory] = useState<
@@ -65,23 +76,34 @@ export function OverviewTab({
 
   const oneWeekAgo = new Date();
   oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
-  const registeredThisWeek = attendees.filter(
-    (attendee) => new Date(attendee.registeredAt) >= oneWeekAgo,
-  ).length;
 
+  const attendeeRegistration = event.attendeeRegistration;
+  const attendeeRegisteredThisWeek = attendees.filter(
+    (attendee) =>
+      attendee.category === "Attendee" &&
+      new Date(attendee.registeredAt) >= oneWeekAgo,
+  ).length;
   const paidAttendeeCount = attendees.filter(
     (attendee) =>
-      attendee.ticketType === "Paid" && attendee.status !== "cancelled",
+      attendee.category === "Attendee" &&
+      attendee.ticketType === "Paid" &&
+      attendee.status !== "cancelled",
   ).length;
   const revenue = event.priceAmount ? event.priceAmount * paidAttendeeCount : 0;
-
   const capacityPercent = event.capacity
     ? Math.min(100, Math.round((event.registeredCount / event.capacity) * 100))
     : null;
-
-  const remainingDays = daysLeft(event);
+  const remainingDays = daysUntilClose(
+    attendeeRegistration.registrationDeadlineIso,
+    event.date,
+  );
 
   const participantRegistration = event.participantRegistration;
+  const participantRegisteredThisWeek = attendees.filter(
+    (attendee) =>
+      attendee.category === "Participant" &&
+      new Date(attendee.registeredAt) >= oneWeekAgo,
+  ).length;
   const paidParticipantCount = attendees.filter(
     (attendee) =>
       attendee.category === "Participant" &&
@@ -91,6 +113,20 @@ export function OverviewTab({
   const participantRevenue = participantRegistration.price
     ? participantRegistration.price * paidParticipantCount
     : 0;
+  const participantCapacityPercent = participantRegistration.capacity
+    ? Math.min(
+        100,
+        Math.round(
+          (participantRegistration.registeredCount /
+            participantRegistration.capacity) *
+            100,
+        ),
+      )
+    : null;
+  const participantRemainingDays = daysUntilClose(
+    participantRegistration.registrationDeadlineIso,
+    event.date,
+  );
   // Show the Participant stat block once it has ever had activity, even if
   // the organizer has since closed it — closing shouldn't hide history.
   const showParticipantStats =
@@ -99,72 +135,131 @@ export function OverviewTab({
 
   return (
     <div className="space-y-6">
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <StatCard
-          label="Registered"
-          value={event.registeredCount.toLocaleString()}
-          sub={event.capacity ? `${event.capacity} capacity` : undefined}
-          trend={
-            registeredThisWeek > 0
-              ? { value: `+${registeredThisWeek} this week`, tone: "success" }
-              : undefined
-          }
-        />
-        <StatCard
-          label="Revenue"
-          value={event.priceAmount ? `₹${revenue.toLocaleString()}` : "₹0"}
-          sub={
-            event.priceAmount
-              ? `${paidAttendeeCount} paid tickets`
-              : "Free event"
-          }
-        />
-        <div className="border-border-light bg-surface-light rounded-md border p-4 transition-shadow hover:shadow-md">
-          <p className="text-small text-text-secondary font-medium tracking-wide uppercase">
-            Capacity
-          </p>
-          <span className="text-heading text-text-primary mt-1 block font-extrabold">
-            {capacityPercent !== null ? `${capacityPercent}%` : "Unlimited"}
-          </span>
-          {capacityPercent !== null && (
-            <Progress
-              value={capacityPercent}
-              className="mt-2"
-              label="Capacity filled"
-            />
-          )}
+      <div>
+        <p className="text-small text-text-secondary mb-1 flex items-center gap-2 font-bold tracking-widest uppercase">
+          {attendeeRegistration.label}{" "}
+          <span className="bg-border-light h-px flex-1" />
+        </p>
+        <p className="text-small text-text-secondary mb-3">
+          Registration opened{" "}
+          {formatDateTime(attendeeRegistration.registrationOpensIso) ??
+            "immediately"}
+        </p>
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <StatCard
+            label="Registered"
+            value={event.registeredCount.toLocaleString()}
+            sub={event.capacity ? `${event.capacity} capacity` : undefined}
+            trend={
+              attendeeRegisteredThisWeek > 0
+                ? {
+                    value: `+${attendeeRegisteredThisWeek} this week`,
+                    tone: "success",
+                  }
+                : undefined
+            }
+          />
+          <StatCard
+            label="Revenue"
+            value={event.priceAmount ? `₹${revenue.toLocaleString()}` : "₹0"}
+            sub={
+              event.priceAmount
+                ? `${paidAttendeeCount} paid tickets`
+                : "Free event"
+            }
+          />
+          <div className="border-border-light bg-surface-light rounded-md border p-4 transition-shadow hover:shadow-md">
+            <p className="text-small text-text-secondary font-medium tracking-wide uppercase">
+              Capacity
+            </p>
+            <span className="text-heading text-text-primary mt-1 block font-extrabold">
+              {capacityPercent !== null ? `${capacityPercent}%` : "Unlimited"}
+            </span>
+            {capacityPercent !== null && (
+              <Progress
+                value={capacityPercent}
+                className="mt-2"
+                label="Capacity filled"
+              />
+            )}
+          </div>
+          <StatCard
+            label="Days Left"
+            value={remainingDays !== null ? String(remainingDays) : "—"}
+            sub={`Closes ${attendeeRegistration.registrationCloses}`}
+          />
         </div>
-        <StatCard
-          label="Days Left"
-          value={remainingDays !== null ? String(remainingDays) : "—"}
-          sub={`Closes ${event.attendeeRegistration.registrationCloses}`}
-        />
       </div>
 
       {showParticipantStats && (
-        <div className="grid gap-4 sm:grid-cols-2">
-          <StatCard
-            label={`${participantRegistration.label} Registered`}
-            value={participantRegistration.registeredCount.toLocaleString()}
-            sub={
-              participantRegistration.capacity
-                ? `${participantRegistration.capacity} capacity`
-                : "Unlimited capacity"
-            }
-          />
-          <StatCard
-            label={`${participantRegistration.label} Revenue`}
-            value={
-              participantRegistration.price
-                ? `₹${participantRevenue.toLocaleString()}`
-                : "₹0"
-            }
-            sub={
-              participantRegistration.price
-                ? `${paidParticipantCount} paid`
-                : "Free pass"
-            }
-          />
+        <div>
+          <p className="text-small text-text-secondary mb-1 flex items-center gap-2 font-bold tracking-widest uppercase">
+            {participantRegistration.label}{" "}
+            <span className="bg-border-light h-px flex-1" />
+          </p>
+          <p className="text-small text-text-secondary mb-3">
+            Registration opened{" "}
+            {formatDateTime(participantRegistration.registrationOpensIso) ??
+              "immediately"}
+          </p>
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            <StatCard
+              label="Registered"
+              value={participantRegistration.registeredCount.toLocaleString()}
+              sub={
+                participantRegistration.capacity
+                  ? `${participantRegistration.capacity} capacity`
+                  : "Unlimited capacity"
+              }
+              trend={
+                participantRegisteredThisWeek > 0
+                  ? {
+                      value: `+${participantRegisteredThisWeek} this week`,
+                      tone: "success",
+                    }
+                  : undefined
+              }
+            />
+            <StatCard
+              label="Revenue"
+              value={
+                participantRegistration.price
+                  ? `₹${participantRevenue.toLocaleString()}`
+                  : "₹0"
+              }
+              sub={
+                participantRegistration.price
+                  ? `${paidParticipantCount} paid`
+                  : "Free pass"
+              }
+            />
+            <div className="border-border-light bg-surface-light rounded-md border p-4 transition-shadow hover:shadow-md">
+              <p className="text-small text-text-secondary font-medium tracking-wide uppercase">
+                Capacity
+              </p>
+              <span className="text-heading text-text-primary mt-1 block font-extrabold">
+                {participantCapacityPercent !== null
+                  ? `${participantCapacityPercent}%`
+                  : "Unlimited"}
+              </span>
+              {participantCapacityPercent !== null && (
+                <Progress
+                  value={participantCapacityPercent}
+                  className="mt-2"
+                  label="Capacity filled"
+                />
+              )}
+            </div>
+            <StatCard
+              label="Days Left"
+              value={
+                participantRemainingDays !== null
+                  ? String(participantRemainingDays)
+                  : "—"
+              }
+              sub={`Closes ${participantRegistration.registrationCloses}`}
+            />
+          </div>
         </div>
       )}
 
@@ -197,48 +292,6 @@ export function OverviewTab({
       </div>
 
       <RegistrationTrendChart attendees={attendees} />
-
-      <div>
-        <p className="text-small text-text-secondary mb-3 flex items-center gap-2 font-bold tracking-widest uppercase">
-          Quick Actions <span className="bg-border-light h-px flex-1" />
-        </p>
-        <div className="flex flex-wrap gap-3">
-          <Button
-            variant="primary"
-            size="sm"
-            onClick={onNavigateToCommunication}
-          >
-            📢 Send Announcement
-          </Button>
-          <Button
-            variant="secondary"
-            size="sm"
-            onClick={() =>
-              downloadCsv(
-                `${event.id}-attendees.csv`,
-                ATTENDEES_CSV_HEADERS,
-                attendeesCsvRows(attendees),
-              )
-            }
-          >
-            ⬇ Export CSV
-          </Button>
-          <ButtonLink
-            href={`/my-organized-events/${event.id}/edit`}
-            variant="secondary"
-            size="sm"
-          >
-            ✏ Edit Event
-          </ButtonLink>
-          <ButtonLink
-            href={`/events/${event.id}`}
-            variant="secondary"
-            size="sm"
-          >
-            ↗ View Public Page
-          </ButtonLink>
-        </div>
-      </div>
     </div>
   );
 }
