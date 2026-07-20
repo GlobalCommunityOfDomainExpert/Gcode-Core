@@ -1,10 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useParams, useSearchParams } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import QRCode from "qrcode";
 import {
   AlertTriangle,
+  ArrowLeft,
   ArrowRight,
   Calendar,
   Check,
@@ -14,19 +15,22 @@ import {
 import {
   Badge,
   BookingRef,
+  Button,
   ButtonLink,
   Icon,
   QrPlaceholder,
   SectionLabel,
 } from "@/components/atoms";
-import { EventBadgeRow, NotFoundState } from "@/components/molecules";
+import { Breadcrumb, EventBadgeRow, NotFoundState } from "@/components/molecules";
 import { useEvent } from "@/hooks/use-event";
 import { getParticipant } from "@/lib/api/participants";
 import { ParticipantApi } from "@/lib/api/types";
 import { getSession } from "@/lib/auth/session";
+import { RegisteredSkeleton } from "./_components/registered-skeleton";
 
 export default function EventRegisteredPage() {
   const params = useParams<{ id: string }>();
+  const router = useRouter();
   const searchParams = useSearchParams();
   const participantId = searchParams.get("pid");
   const { event, status: eventStatus } = useEvent(params.id);
@@ -74,12 +78,16 @@ export default function EventRegisteredPage() {
     );
   }, [participant]);
 
-  if (!event || participantStatus === "loading") {
+  if (eventStatus === "loading" || participantStatus === "loading") {
+    return <RegisteredSkeleton />;
+  }
+
+  if (!event) {
     return (
       <NotFoundState
         icon={Compass}
-        title="Loading your registration…"
-        description="Fetching your ticket details."
+        title="Event not found"
+        description="This event may not exist, or it couldn't be loaded."
         actionHref="/events"
         actionLabel="Browse Events"
       />
@@ -106,7 +114,26 @@ export default function EventRegisteredPage() {
       : event.attendeeRegistration.label;
 
   return (
-    <div className="mx-auto max-w-2xl space-y-6">
+    <div className="mx-auto max-w-3xl space-y-6">
+      <div className="flex items-center justify-between gap-3">
+        <Breadcrumb
+          items={[
+            { label: "Events", href: "/events" },
+            { label: event.type, href: "/events" },
+            { label: event.title, href: `/events/${event.id}` },
+            { label: "Registered" },
+          ]}
+        />
+        <Button
+          variant="secondary"
+          size="sm"
+          onClick={() => router.back()}
+          className="shrink-0"
+        >
+          <Icon icon={ArrowLeft} size="sm" /> Back
+        </Button>
+      </div>
+
       <div className="border-success/20 bg-success-light flex items-start gap-4 rounded-md border p-6">
         <div className="bg-success flex size-10 shrink-0 items-center justify-center rounded-full text-white">
           <Icon icon={Check} size="md" />
