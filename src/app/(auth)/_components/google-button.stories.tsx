@@ -15,7 +15,9 @@ type Story = StoryObj<typeof meta>;
 
 export const AsButton: Story = {
   play: async ({ canvas, userEvent, args }) => {
-    await userEvent.click(canvas.getByRole("button", { name: /continue with google/i }));
+    await userEvent.click(
+      canvas.getByRole("button", { name: /continue with google/i }),
+    );
     await expect(args.onClick).toHaveBeenCalledTimes(1);
   },
 };

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { Modal } from "@/components/molecules";
 import { AuthCard } from "./auth-card";
 import { AccountDetails, StepAccountDetails } from "./step-account-details";
 import { StepVerifyOtp } from "./step-verify-otp";
@@ -78,26 +79,28 @@ export function SignUpFlow() {
   };
 
   return (
-    <AuthCard {...titles[effectiveStepIndex]}>
-      {effectiveStepIndex === 0 && (
-        <StepAccountDetails onSubmit={handleAccountSubmit} />
-      )}
-      {effectiveStepIndex === 1 && account !== null && (
-        <StepVerifyOtp
-          email={account.email}
-          onVerified={() => setStepIndex(2)}
-        />
-      )}
-      {effectiveStepIndex === 2 && (
-        <StepSelectStakeholder
-          email={account?.email ?? oauthEmail}
-          value={role}
-          onChange={setRole}
-          onComplete={handleComplete}
-          submitting={completing}
-          error={completeError}
-        />
-      )}
-    </AuthCard>
+    <Modal open onClose={() => router.back()} size="lg" bodyClassName="p-0">
+      <AuthCard variant="modal" {...titles[effectiveStepIndex]}>
+        {effectiveStepIndex === 0 && (
+          <StepAccountDetails onSubmit={handleAccountSubmit} />
+        )}
+        {effectiveStepIndex === 1 && account !== null && (
+          <StepVerifyOtp
+            email={account.email}
+            onVerified={() => setStepIndex(2)}
+          />
+        )}
+        {effectiveStepIndex === 2 && (
+          <StepSelectStakeholder
+            email={account?.email ?? oauthEmail}
+            value={role}
+            onChange={setRole}
+            onComplete={handleComplete}
+            submitting={completing}
+            error={completeError}
+          />
+        )}
+      </AuthCard>
+    </Modal>
   );
 }

@@ -37,12 +37,7 @@ export function useEvent(id: string | undefined) {
       const statusCodes = Object.fromEntries(
         statuses.map((s) => [s.id, s.status_code]),
       );
-      const adapted = adaptApiEvent(
-        detail,
-        typeNames,
-        modeNames,
-        statusCodes,
-      );
+      const adapted = adaptApiEvent(detail, typeNames, modeNames, statusCodes);
       // Fall back to timeline span when the event has no explicit end date.
       let duration = adapted.duration;
       if (!duration && timeline.length > 0) {

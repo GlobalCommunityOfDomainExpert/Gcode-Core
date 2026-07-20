@@ -1,19 +1,16 @@
 "use client";
 
-import { ReactNode, useRef, useState } from "react";
+import { ReactNode, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
   CalendarCheck,
   ChevronDown,
-  ChevronRight,
   LayoutDashboard,
-  LogOut,
   LucideIcon,
-  User,
 } from "lucide-react";
-import { Avatar, Icon, Progress } from "@/components/atoms";
-import { useClickOutside } from "@/hooks/use-click-outside";
+import { Icon, Progress } from "@/components/atoms";
+import { ProfileMenu, ProfileMenuUser } from "@/components/molecules";
 
 export interface SidebarLink {
   label: string;
@@ -25,12 +22,7 @@ export interface SidebarLink {
   groupLabel?: string;
 }
 
-export interface SidebarUser {
-  name: string;
-  role: string;
-  avatarInitials: string;
-  avatarSrc?: string;
-}
+export type SidebarUser = ProfileMenuUser;
 
 export interface SidebarProps {
   logo?: ReactNode;
@@ -48,80 +40,6 @@ const defaultLinks: SidebarLink[] = [
   { label: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
   { label: "Bookings", href: "/bookings", icon: CalendarCheck },
 ];
-
-function ProfileMenu({
-  user,
-  onViewProfile,
-  onLogout,
-}: Pick<SidebarProps, "user" | "onViewProfile" | "onLogout">) {
-  const [open, setOpen] = useState(false);
-  const rootRef = useRef<HTMLDivElement>(null);
-
-  useClickOutside(rootRef, open, () => setOpen(false));
-
-  return (
-    <div ref={rootRef} className="relative">
-      {open && (
-        <div
-          role="menu"
-          className="border-border-light bg-surface-light absolute bottom-full left-0 mb-2 w-full min-w-48 rounded-md border py-1 shadow-md"
-        >
-          <button
-            type="button"
-            role="menuitem"
-            onClick={() => {
-              onViewProfile?.();
-              setOpen(false);
-            }}
-            className="text-body text-text-primary hover:bg-bg-light flex w-full items-center gap-2 px-3 py-2 text-left"
-          >
-            <Icon icon={User} size="sm" />
-            View Profile
-          </button>
-          <button
-            type="button"
-            role="menuitem"
-            onClick={() => {
-              onLogout?.();
-              setOpen(false);
-            }}
-            className="text-body text-danger hover:bg-danger-light flex w-full items-center gap-2 px-3 py-2 text-left"
-          >
-            <Icon icon={LogOut} size="sm" />
-            Logout
-          </button>
-        </div>
-      )}
-      <button
-        type="button"
-        onClick={() => setOpen((prev) => !prev)}
-        aria-expanded={open}
-        aria-haspopup="menu"
-        className="hover:bg-bg-light focus-visible:ring-primary flex w-full items-center gap-3 rounded-md p-2 text-left focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
-      >
-        <Avatar
-          alt={user.name}
-          src={user.avatarSrc}
-          initials={user.avatarInitials}
-          size="sm"
-        />
-        <span className="min-w-0 flex-1">
-          <span className="text-small text-text-primary block truncate font-semibold">
-            {user.name}
-          </span>
-          <span className="text-small text-text-secondary block truncate">
-            {user.role}
-          </span>
-        </span>
-        <Icon
-          icon={ChevronRight}
-          size="sm"
-          className={`text-text-secondary shrink-0 transition-transform ${open ? "-rotate-90" : "rotate-90"}`}
-        />
-      </button>
-    </div>
-  );
-}
 
 function SidebarGroup({
   link,
@@ -250,6 +168,7 @@ export function Sidebar({
           user={user}
           onViewProfile={onViewProfile}
           onLogout={onLogout}
+          variant="sidebar"
         />
       </div>
     </>

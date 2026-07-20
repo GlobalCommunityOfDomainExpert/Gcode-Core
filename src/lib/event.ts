@@ -153,6 +153,10 @@ export interface Event {
   attendeeRegistration: RegistrationCategory; // always present, mirrors price/priceAmount/capacity/spotsLeft/registeredCount above; .enabled toggleable by the organizer
   participantRegistration: RegistrationCategory; // always present too — check .enabled, not presence, to see if the organizer has turned it on
   featured?: boolean; // EventListItem.is_featured
+  maxTicketsPerRegistration?: number; // EventDetail.max_tickets_per_registration — organizer cap per single booking, unset = no cap
+  is_featured?: boolean; // EventListItem.is_featured
+  registrationCloses: string; // EventDetail.registration_deadline, falls back to start_date
+  registrationDeadlineIso?: string | null; // EventDetail.registration_deadline, raw ISO for computing "days left"
   duration: string; // derived from start_date/end_date span, or the timeline's own span as fallback
   durationText?: string; // EventDetail.duration_text — organizer's free-text duration (e.g. "3 hours"), used as a display fallback when time is TBD
   teamSize: string; // no backend column — adapter hardcodes ""

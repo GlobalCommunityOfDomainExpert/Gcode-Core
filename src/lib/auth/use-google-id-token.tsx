@@ -32,9 +32,8 @@ export function useGoogleIdToken() {
 
   function requestGoogleIdToken(): Promise<string> {
     return new Promise((resolve, reject) => {
-      const btn = containerRef.current?.querySelector<HTMLElement>(
-        'div[role="button"]',
-      );
+      const btn =
+        containerRef.current?.querySelector<HTMLElement>('div[role="button"]');
       if (!btn) {
         reject(new Error("google_script_not_loaded"));
         return;

@@ -13,10 +13,7 @@ export interface StepVerifyOtpProps {
   onVerified: () => void;
 }
 
-export function StepVerifyOtp({
-  email,
-  onVerified,
-}: StepVerifyOtpProps) {
+export function StepVerifyOtp({ email, onVerified }: StepVerifyOtpProps) {
   const [code, setCode] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [checking, setChecking] = useState(false);
@@ -28,9 +25,7 @@ export function StepVerifyOtp({
       await verifyOtp(email, code, "REGISTRATION");
       onVerified();
     } catch (err) {
-      setError(
-        err instanceof ApiError ? err.message : "Could not verify code",
-      );
+      setError(err instanceof ApiError ? err.message : "Could not verify code");
     } finally {
       setChecking(false);
     }
@@ -49,9 +44,7 @@ export function StepVerifyOtp({
         onChange={setCode}
       />
 
-      {error && (
-        <p className="text-danger text-small text-center">{error}</p>
-      )}
+      {error && <p className="text-danger text-small text-center">{error}</p>}
 
       <Button
         type="button"

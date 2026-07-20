@@ -1,9 +1,5 @@
 export type AttendeeRole =
-  | "Fresher"
-  | "Startup Founder"
-  | "Domain Expert"
-  | "Institution"
-  | "Guest";
+  "Fresher" | "Startup Founder" | "Domain Expert" | "Institution" | "Guest";
 export type AttendanceStatus =
   "registered" | "attended" | "missed" | "cancelled";
 
@@ -35,14 +31,19 @@ export const AUDIO_SUBMISSION_WINDOW_MS = 24 * 60 * 60 * 1000;
 export type SubmissionStatus = "submitted" | "pending" | "disqualified";
 
 // undefined -> not a Participant-category row, submission concept doesn't apply.
+// registrationDeadlineIso is the event's participantRegistration close time —
+// the submission window is 24h after that, not 24h after this attendee's own
+// registeredAt. Falls back to registeredAt if the organizer hasn't set a
+// participant registration deadline.
 export function audioSubmissionStatus(
   attendee: Attendee,
+  registrationDeadlineIso: string | null | undefined,
   now: Date = new Date(),
 ): SubmissionStatus | undefined {
   if (attendee.category !== "Participant") return undefined;
   if (attendee.audioSubmissionUrl) return "submitted";
-  const deadline =
-    new Date(attendee.registeredAt).getTime() + AUDIO_SUBMISSION_WINDOW_MS;
+  const closesAt = registrationDeadlineIso ?? attendee.registeredAt;
+  const deadline = new Date(closesAt).getTime() + AUDIO_SUBMISSION_WINDOW_MS;
   return now.getTime() > deadline ? "disqualified" : "pending";
 }
 
