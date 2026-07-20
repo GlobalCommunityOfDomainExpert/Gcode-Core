@@ -10,7 +10,10 @@ import { clearSession, isAdmin, Session } from "@/lib/auth/session";
 import { initials } from "@/lib/auth/format";
 
 function buildEventsNavLinks(session: Session | null): NavLink[] {
-  const base: NavLink[] = [{ label: "Events", href: "/events" }];
+  const base: NavLink[] = [
+    { label: "Home", href: "https://gcode.in" },
+    { label: "Events", href: "/events" },
+  ];
   if (!session) return base;
   if (isAdmin(session)) {
     return [
