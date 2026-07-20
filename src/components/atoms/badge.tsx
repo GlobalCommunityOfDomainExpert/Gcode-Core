@@ -12,32 +12,29 @@ export interface BadgeProps extends HTMLAttributes<HTMLSpanElement> {
 }
 
 const sizeClasses: Record<BadgeSize, string> = {
-  sm: "h-5 px-1 text-small",
-  md: "h-6 px-2 text-small",
+  sm: "h-5 px-2 text-small",
+  md: "h-6 px-2.5 text-small",
+};
+
+// All three variants render as a solid, fully-saturated fill — no
+// transparent/hollow badge and no washed-out pastel tint. "outline" and
+// "muted" are kept as distinct props (for call-site intent) but share the
+// same vibrant coloring as "solid".
+const solidClasses: Record<BadgeTone, string> = {
+  // The brand red (secondary) sits almost on top of "danger" in hue — a
+  // "neutral" badge in that color reads as an error. Use the brand navy
+  // instead: still vibrant/intentional, no false alarm.
+  neutral: "bg-primary text-white",
+  primary: "bg-primary text-white",
+  success: "bg-success text-white",
+  warning: "bg-warning text-text-primary",
+  danger: "bg-danger text-white",
 };
 
 const toneClasses: Record<BadgeVariant, Record<BadgeTone, string>> = {
-  solid: {
-    neutral: "bg-text-secondary text-white",
-    primary: "bg-primary text-white",
-    success: "bg-success text-white",
-    warning: "bg-warning text-text-primary",
-    danger: "bg-danger text-white",
-  },
-  outline: {
-    neutral: "bg-transparent border border-border-light text-text-secondary",
-    primary: "bg-transparent border border-primary text-primary",
-    success: "bg-transparent border border-success text-success",
-    warning: "bg-transparent border border-warning text-warning",
-    danger: "bg-transparent border border-danger text-danger",
-  },
-  muted: {
-    neutral: "bg-bg-light text-text-secondary",
-    primary: "bg-primary-light text-primary",
-    success: "bg-success-light text-success",
-    warning: "bg-warning-light text-warning",
-    danger: "bg-danger-light text-danger",
-  },
+  solid: solidClasses,
+  outline: solidClasses,
+  muted: solidClasses,
 };
 
 export function Badge({
@@ -50,7 +47,7 @@ export function Badge({
 }: BadgeProps) {
   return (
     <span
-      className={`inline-flex items-center justify-center rounded-sm leading-none font-medium ${toneClasses[variant][tone]} ${sizeClasses[size]} ${className}`}
+      className={`inline-flex items-center justify-center rounded-full leading-none font-medium ${toneClasses[variant][tone]} ${sizeClasses[size]} ${className}`}
       {...props}
     >
       {children}
