@@ -92,8 +92,8 @@ export function Footer() {
   return (
     <footer className="border-border-light bg-surface-light mt-20 border-t">
       <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
-        <div className="flex justify-between gap-8 sm:grid-cols-4">
-          <div className="col-span-2 max-w-xs space-y-3 sm:col-span-1">
+        <div className="flex flex-col gap-8 sm:flex-row sm:justify-between">
+          <div className="max-w-xs space-y-3">
             <Image
               src="/gcode-logo-black.png"
               width={120}
@@ -119,8 +119,7 @@ export function Footer() {
             </div>
           </div>
 
-          <div className="flex gap-16">
-            {" "}
+          <div className="flex flex-wrap gap-8 sm:gap-16">
             <FooterLinkGroup
               title="Explore"
               links={[{ label: "Events", href: "/events" }]}
