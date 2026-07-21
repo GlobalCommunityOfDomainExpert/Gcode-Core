@@ -64,6 +64,10 @@ export interface EventDetail extends EventListItem {
   attendee_description: string | null;
   participant_label: string | null;
   participant_description: string | null;
+  // Contract-only — EVENTS has no RATING_MODE column yet as of 2026-07-21.
+  // Missing/undefined -> "COMPETITIVE", matching the degrade convention
+  // above for attendee_registration_enabled etc.
+  rating_mode?: "COMPETITIVE" | "CASUAL";
 }
 
 export interface ApiListResponse<T> {
@@ -140,6 +144,7 @@ export interface CreateEventPayload {
   attendee_description?: string;
   participant_label?: string;
   participant_description?: string;
+  rating_mode?: "COMPETITIVE" | "CASUAL";
 }
 
 export type UpdateEventPayload = Partial<CreateEventPayload>;

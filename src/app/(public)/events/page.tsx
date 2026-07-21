@@ -28,11 +28,12 @@ import {
   SearchBar,
   Tabs,
 } from "@/components/molecules";
-import { eventTypeTone, priceTone } from "@/lib/event";
+import { eventTypeTone, hasEventEnded, priceTone } from "@/lib/event";
 import { hashSeed } from "@/lib/event-color";
 import { useEvent } from "@/hooks/use-event";
 import { useEvents } from "@/hooks/use-events";
 import { useLookup } from "@/hooks/use-lookup";
+import { useServerNow } from "@/hooks/use-server-now";
 import { getEventTypes } from "@/lib/api/lookups";
 
 // No real attendee-identity data exists for the featured spotlight card — this
@@ -101,6 +102,7 @@ export default function EventsPage() {
   const [featuredPaused, setFeaturedPaused] = useState(false);
   const { events, status } = useEvents();
   const { data: eventTypes } = useLookup(getEventTypes);
+  const now = useServerNow();
 
   const categoryTabs = [
     { value: "all", label: "All" },
@@ -153,6 +155,7 @@ export default function EventsPage() {
 
   const featured = visibleEvents
     .filter((event) => event.is_featured)
+    .filter((event) => !hasEventEnded(event, now))
     .filter(matchesFilters);
 
   useEffect(() => {
@@ -179,6 +182,10 @@ export default function EventsPage() {
       : [];
 
   const filtered = visibleEvents.filter(matchesFilters);
+  const upcomingFiltered = filtered.filter((e) => !hasEventEnded(e, now));
+  const pastFiltered = filtered
+    .filter((e) => hasEventEnded(e, now))
+    .sort((a, b) => (b.endDateIso ?? "").localeCompare(a.endDateIso ?? ""));
 
   const hasActiveFilters =
     activeTab !== "all" || activeFilters.length > 0 || search.trim() !== "";
@@ -423,7 +430,7 @@ export default function EventsPage() {
               </Button>
             }
           />
-        ) : filtered.length === 0 ? (
+        ) : upcomingFiltered.length === 0 ? (
           <EmptyState
             icon={SearchX}
             title="No events match these filters"
@@ -442,7 +449,7 @@ export default function EventsPage() {
           />
         ) : (
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {filtered.map((event) => (
+            {upcomingFiltered.map((event) => (
               <EventCard
                 key={event.id}
                 variant="default"
@@ -474,6 +481,55 @@ export default function EventsPage() {
           </div>
         )}
       </section>
+
+      {pastFiltered.length > 0 && (
+        <section className="flex flex-col gap-6 space-y-3">
+          <div className="flex items-center gap-4">
+            <div className="h-10 w-1 rounded-full bg-gray-400" />
+            <div>
+              <h2 className="text-text-secondary text-base font-bold tracking-widest uppercase">
+                Past Events
+              </h2>
+              <h6 className="text-s text-gray-400">
+                Events that have already ended
+              </h6>
+            </div>
+          </div>
+
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {pastFiltered.map((event) => (
+              <EventCard
+                key={event.id}
+                variant="default"
+                isPast
+                href={`/events/${event.id}`}
+                imageSrc={event.coverImageUrl}
+                colorSeed={event.id}
+                tags={[
+                  { label: event.type, tone: "primary" },
+                  {
+                    label: event.price,
+                    tone: priceTone(event.price),
+                  },
+                ]}
+                title={event.title}
+                date={event.date}
+                location={
+                  event.mode === "In-Person" ? event.location : undefined
+                }
+                eventType={event.type}
+                durationText={event.duration || undefined}
+                spotsLeft={event.spotsLeft}
+                attendeesLabel={
+                  event.registeredCount
+                    ? `${event.registeredCount} going`
+                    : undefined
+                }
+              />
+            ))}
+          </div>
+        </section>
+      )}
     </div>
   );
 }

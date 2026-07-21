@@ -33,7 +33,9 @@ export function getLivePerformer(
   });
 }
 
-// Organizer-only — marks a Participant-category row as currently performing.
+// Organizer-only — brings a Participant-category row "on stage" (sets who's
+// currently performing) without opening the audience rating window. That's
+// a separate, explicit step — see startRatingWindow below.
 export function setLivePerformer(
   eventId: number | string,
   participantId: number | string,
@@ -41,6 +43,17 @@ export function setLivePerformer(
   return apiRequest(`/events/${eventId}/live-performer`, {
     method: "PUT",
     body: { participant_id: participantId },
+  });
+}
+
+// Organizer-only — opens the 60s audience rating window for whoever is
+// currently on stage.
+export function startRatingWindow(
+  eventId: number | string,
+): Promise<LivePerformer> {
+  return apiRequest(`/events/${eventId}/live-performer/start-rating`, {
+    method: "PUT",
+    body: {},
   });
 }
 
@@ -77,6 +90,47 @@ export async function getPerformedParticipants(
 ): Promise<PerformedParticipant[]> {
   const { items } = await apiRequest<{ items: PerformedParticipant[] }>(
     `/events/${eventId}/performed-participants`,
+  );
+  return items;
+}
+
+// Casual mode's fixed emoji set — not configurable per event. Shared by the
+// rate page's tap buttons, the bot simulator, and (implicitly) the
+// GCODE_EVENT_REACTIONS.EMOJI check constraint on the backend.
+export const REACTION_EMOJIS = ["👏", "🔥", "❤️", "😂", "👍"] as const;
+export type ReactionEmoji = (typeof REACTION_EMOJIS)[number];
+
+export interface ReactionItem {
+  id: number;
+  emoji: string;
+}
+
+// Public — unlimited taps, no lock, fire-and-forget from the caller's
+// perspective. `attendeeId` is the tapping attendee's own participant id —
+// same shape as submitRating (rater in the path, performer in the body),
+// event_id resolved server-side from the participant rows, not client-sent.
+export function submitReaction(
+  attendeeId: number | string,
+  performerId: number | string,
+  emoji: string,
+): Promise<{ ok: boolean }> {
+  return apiRequest(`/participants/${attendeeId}/reactions`, {
+    method: "PUT",
+    body: { performer_id: performerId, emoji },
+  });
+}
+
+// Server-side only — called from the reactions SSE stream route, not from
+// any client component. Append-only read: every reaction for this performer
+// with id > sinceId, oldest first.
+export async function listReactionsSince(
+  eventId: number | string,
+  performerId: number | string,
+  sinceId: number,
+): Promise<ReactionItem[]> {
+  const { items } = await apiRequest<{ items: ReactionItem[] }>(
+    `/events/${eventId}/reactions/since`,
+    { query: { performer_id: performerId, since_id: sinceId } },
   );
   return items;
 }

@@ -324,6 +324,12 @@ function resolveStatus(code: string | undefined): EventStatus | undefined {
   return KNOWN_EVENT_STATUSES.find((s) => s === code);
 }
 
+function resolveRatingMode(
+  mode: "COMPETITIVE" | "CASUAL" | undefined,
+): Event["ratingMode"] {
+  return mode === "CASUAL" ? "Casual" : "Competitive";
+}
+
 // All event times are IST (Asia/Kolkata). Wall-clock input is interpreted as
 // IST; display + prefill convert back to IST.
 const IST = "Asia/Kolkata";
@@ -472,6 +478,7 @@ export function adaptApiEvent(
         : undefined,
     attendeeRegistration,
     participantRegistration,
+    ratingMode: resolveRatingMode(detail?.rating_mode),
     featured: event.is_featured === 1,
     maxTicketsPerRegistration:
       detail?.max_tickets_per_registration ?? undefined,
@@ -483,6 +490,7 @@ export function adaptApiEvent(
       : formatDate(event.start_date),
     registrationDeadlineIso: detail?.registration_deadline ?? null,
     duration: formatDuration(event.start_date, event.end_date),
+    endDateIso: event.end_date ?? event.start_date ?? null,
     durationText: detail?.duration_text ?? undefined,
     // No team-size columns yet — default to individual attendance.
     teamSize: "Individual",

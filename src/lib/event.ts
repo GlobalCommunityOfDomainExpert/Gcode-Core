@@ -127,6 +127,17 @@ export function isRegistrationOpen(
   return true;
 }
 
+// `now` is required (no Date.now() default) so callers must supply a
+// trusted, server-anchored clock (see useServerNow) instead of silently
+// falling back to the visiting browser's own — possibly wrong — clock.
+export function hasEventEnded(
+  event: Pick<Event, "endDateIso">,
+  now: Date,
+): boolean {
+  if (!event.endDateIso) return false;
+  return now > new Date(event.endDateIso);
+}
+
 export interface EventOrganizer {
   name: string; // backed by EventDetail.created_by; falls back to "GCODE Team"
   title: string; // no backend column — adapter hardcodes "Organizer"
@@ -158,6 +169,7 @@ export interface Event {
   registrationCloses: string; // EventDetail.registration_deadline, falls back to start_date
   registrationDeadlineIso?: string | null; // EventDetail.registration_deadline, raw ISO for computing "days left"
   duration: string; // derived from start_date/end_date span, or the timeline's own span as fallback
+  endDateIso?: string | null; // EventListItem.end_date, falls back to start_date — raw ISO for hasEventEnded()
   durationText?: string; // EventDetail.duration_text — organizer's free-text duration (e.g. "3 hours"), used as a display fallback when time is TBD
   teamSize: string; // no backend column — adapter hardcodes ""
   certificate: boolean; // no backend column — adapter hardcodes false
@@ -171,4 +183,9 @@ export interface Event {
   coverImageUrl?: string; // EventListItem.cover_image_url
   mediaUrls?: string[]; // EventListItem.banner_image_url, wrapped in array
   participationLink?: string; // EventListItem.participation_link — column exists, not yet mapped in adapter
+  // Contract-only — EVENTS has no RATING_MODE column yet as of 2026-07-21.
+  // Missing/undefined -> "Competitive", same degrade convention as
+  // status/mode above, so every event keeps today's 0-10 rating behavior
+  // until an organizer opts into Casual (unlimited emoji taps).
+  ratingMode: "Competitive" | "Casual";
 }
