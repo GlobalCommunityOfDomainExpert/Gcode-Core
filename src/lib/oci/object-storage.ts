@@ -41,10 +41,21 @@ function objectHost(): string {
   return `https://objectstorage.${requiredEnv("OCI_REGION")}.oraclecloud.com`;
 }
 
+// Recording container varies by browser: Chrome/Android/desktop Safari give
+// WebM/Opus, iOS Safari's MediaRecorder only supports MP4/AAC. Naming every
+// object ".webm" regardless of actual bytes made iOS-recorded audio
+// undownloadable as audio on iPhone (extension/Content-Type conflict trips
+// AVFoundation's strict demuxer selection, even though the bytes are valid).
+function audioExtension(contentType: string): string {
+  if (contentType.includes("mp4") || contentType.includes("m4a")) return "m4a";
+  if (contentType.includes("ogg")) return "ogg";
+  return "webm";
+}
+
 // Same object path per participant on every call — a re-record overwrites
 // the previous upload instead of accumulating orphaned objects.
-function audioObjectName(participantId: string): string {
-  return `participants/${participantId}/audio.webm`;
+function audioObjectName(participantId: string, contentType: string): string {
+  return `participants/${participantId}/audio.${audioExtension(contentType)}`;
 }
 
 // Uploaded server-side (this route, via oci-objectstorage's putObject) —
@@ -57,7 +68,7 @@ export async function uploadAudioObject(
   contentType: string,
 ): Promise<string> {
   const { namespaceName, bucketName } = bucketRef();
-  const objectName = audioObjectName(participantId);
+  const objectName = audioObjectName(participantId, contentType);
 
   await getClient().putObject({
     namespaceName,
@@ -88,7 +99,7 @@ export async function startAudioMultipartUpload(
     namespaceName,
     bucketName,
     createMultipartUploadDetails: {
-      object: audioObjectName(participantId),
+      object: audioObjectName(participantId, contentType),
       contentType,
     },
   });
@@ -100,12 +111,13 @@ export async function uploadAudioPart(
   uploadId: string,
   partNum: number,
   body: Buffer,
+  contentType: string,
 ): Promise<string> {
   const { namespaceName, bucketName } = bucketRef();
   const { eTag } = await getClient().uploadPart({
     namespaceName,
     bucketName,
-    objectName: audioObjectName(participantId),
+    objectName: audioObjectName(participantId, contentType),
     uploadId,
     uploadPartNum: partNum,
     contentLength: body.length,
@@ -118,9 +130,10 @@ export async function commitAudioMultipartUpload(
   participantId: string,
   uploadId: string,
   parts: { partNum: number; etag: string }[],
+  contentType: string,
 ): Promise<string> {
   const { namespaceName, bucketName } = bucketRef();
-  const objectName = audioObjectName(participantId);
+  const objectName = audioObjectName(participantId, contentType);
 
   await getClient().commitMultipartUpload({
     namespaceName,
@@ -136,12 +149,13 @@ export async function commitAudioMultipartUpload(
 export async function abortAudioMultipartUpload(
   participantId: string,
   uploadId: string,
+  contentType: string,
 ): Promise<void> {
   const { namespaceName, bucketName } = bucketRef();
   await getClient().abortMultipartUpload({
     namespaceName,
     bucketName,
-    objectName: audioObjectName(participantId),
+    objectName: audioObjectName(participantId, contentType),
     uploadId,
   });
 }

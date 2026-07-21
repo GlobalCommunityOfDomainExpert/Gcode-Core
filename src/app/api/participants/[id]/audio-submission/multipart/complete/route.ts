@@ -14,7 +14,9 @@ export async function POST(
     );
   }
 
-  const { uploadId, parts } = await request.json().catch(() => ({}));
+  const { uploadId, parts, contentType } = await request
+    .json()
+    .catch(() => ({}));
   if (!uploadId || !Array.isArray(parts) || parts.length === 0) {
     return NextResponse.json(
       { error: "Missing upload metadata" },
@@ -23,7 +25,12 @@ export async function POST(
   }
 
   try {
-    const objectUrl = await commitAudioMultipartUpload(id, uploadId, parts);
+    const objectUrl = await commitAudioMultipartUpload(
+      id,
+      uploadId,
+      parts,
+      contentType || "audio/webm",
+    );
     const result = await submitParticipantAudio(id, objectUrl);
     return NextResponse.json(result);
   } catch (err) {
