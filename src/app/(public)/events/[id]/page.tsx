@@ -27,9 +27,11 @@ import {
   eventTypeTone,
   Event,
   EventTimelineItem,
+  hasEventEnded,
   isRegistrationOpen,
 } from "@/lib/event";
 import { useEvent } from "@/hooks/use-event";
+import { useServerNow } from "@/hooks/use-server-now";
 import { ShareEventCard } from "./_components/share-event-card";
 import { EventHero } from "./_components/event-hero";
 import { EventOverviewCard } from "./_components/event-overview-card";
@@ -53,6 +55,7 @@ export default function EventDetailPage() {
   const params = useParams<{ id: string }>();
   const router = useRouter();
   const { event, status } = useEvent(params.id);
+  const now = useServerNow();
 
   if (status === "loading") {
     return <EventDetailSkeleton />;
@@ -69,6 +72,8 @@ export default function EventDetailPage() {
       />
     );
   }
+
+  const isPast = hasEventEnded(event, now);
 
   // Rendered twice: inline right after the header on mobile (so price/CTA
   // isn't buried below the full details/agenda/eligibility scroll), and in
@@ -233,6 +238,10 @@ export default function EventDetailPage() {
               <Button variant="secondary" className="w-full" disabled>
                 Event Cancelled
               </Button>
+            ) : isPast ? (
+              <Button variant="secondary" className="w-full" disabled>
+                Event Ended
+              </Button>
             ) : registrationClosed ? (
               <Button variant="secondary" className="w-full" disabled>
                 Registration Closed
@@ -289,11 +298,14 @@ export default function EventDetailPage() {
           This event has been cancelled by the organizer.
         </Banner>
       )}
+      {isPast && event.status !== "CANCELLED" && (
+        <Banner tone="info">This event has ended.</Banner>
+      )}
 
       <div className="grid gap-6 lg:grid-cols-[1fr_320px]">
         <div className="space-y-6">
           <div
-            className="relative flex aspect-8/3 items-end overflow-hidden rounded-md p-4"
+            className={`relative flex aspect-8/3 items-end overflow-hidden rounded-md p-4 ${isPast ? "grayscale" : ""}`}
             style={
               event.coverImageUrl
                 ? undefined

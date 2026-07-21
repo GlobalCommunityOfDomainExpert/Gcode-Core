@@ -47,6 +47,8 @@ export interface EventCardProps {
   durationText?: string;
   /** Remaining capacity — shown for competitive/limited-entry formats when eventType is one of those. */
   spotsLeft?: number;
+  /** Grays out the card and swaps the header badge to "Event Ended" — "default" variant only. */
+  isPast?: boolean;
   /** One-line description under the title — "featured" variant only. */
   subtitle?: string;
   /** Paragraph description — "featured" variant only. */
@@ -108,7 +110,7 @@ function EventCardMedia({
       <img
         src={src}
         alt={alt}
-        className="absolute inset-0 h-full w-full object-cover"
+        className="absolute inset-0 h-full w-full object-cover transition-transform duration-200 group-hover:scale-105"
       />
     );
   }
@@ -150,6 +152,7 @@ export function EventCard({
   eventType,
   durationText,
   spotsLeft,
+  isPast = false,
   subtitle,
   description,
   stats,
@@ -290,8 +293,11 @@ export function EventCard({
     );
   }
 
-  const defaultClasses =
-    "border-border-light bg-surface-light flex h-full flex-col overflow-hidden rounded-md border transition-shadow hover:shadow-md focus-visible:ring-primary focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none";
+  const defaultClasses = isPast
+    ? "border-border-light bg-surface-light grayscale flex h-full flex-col overflow-hidden rounded-md border focus-visible:ring-primary focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+    : "border-border-light bg-surface-light group flex h-full flex-col overflow-hidden rounded-md border transition hover:border-border-hover hover:shadow-md focus-visible:ring-primary focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none";
+
+  const effectiveHeaderLabel = isPast ? "Event Ended" : headerLabel;
 
   const defaultContent = (
     <>
@@ -301,10 +307,10 @@ export function EventCard({
           alt={imageAlt ?? title}
           colorSeed={colorSeed}
         />
-        {headerLabel && (
+        {effectiveHeaderLabel && (
           <div className="absolute top-3 left-3">
             <Badge variant="solid" tone="neutral">
-              {headerLabel}
+              {effectiveHeaderLabel}
             </Badge>
           </div>
         )}
@@ -322,7 +328,9 @@ export function EventCard({
             </Badge>
           ))}
         </div>
-        <h4 className="text-large text-text-primary font-semibold">{title}</h4>
+        <h4 className="text-large text-text-primary line-clamp-2 min-h-14 font-semibold transition-colors group-hover:text-primary">
+          {title}
+        </h4>
         <div className="space-y-1">
           <p className="text-small text-text-secondary flex items-center gap-2">
             <Icon icon={Calendar} size="sm" />
