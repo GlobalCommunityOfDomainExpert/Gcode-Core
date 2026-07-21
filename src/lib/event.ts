@@ -183,4 +183,9 @@ export interface Event {
   coverImageUrl?: string; // EventListItem.cover_image_url
   mediaUrls?: string[]; // EventListItem.banner_image_url, wrapped in array
   participationLink?: string; // EventListItem.participation_link — column exists, not yet mapped in adapter
+  // Contract-only — EVENTS has no RATING_MODE column yet as of 2026-07-21.
+  // Missing/undefined -> "Competitive", same degrade convention as
+  // status/mode above, so every event keeps today's 0-10 rating behavior
+  // until an organizer opts into Casual (unlimited emoji taps).
+  ratingMode: "Competitive" | "Casual";
 }

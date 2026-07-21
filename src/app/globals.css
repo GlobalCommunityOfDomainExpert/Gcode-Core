@@ -117,3 +117,24 @@ body {
   color: var(--foreground);
   font-family: var(--font-sans), Arial, Helvetica, sans-serif;
 }
+
+/* Casual-mode scoreboard reactions — rise-and-fade for tapped/simulated emoji. */
+@keyframes float-emoji-rise {
+  0% {
+    transform: translateY(0) rotate(var(--rotate, 0deg));
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-70vh) rotate(var(--rotate, 0deg));
+    opacity: 0;
+  }
+}
+
+.float-emoji {
+  animation-name: float-emoji-rise;
+  animation-timing-function: ease-out;
+  animation-fill-mode: forwards;
+}

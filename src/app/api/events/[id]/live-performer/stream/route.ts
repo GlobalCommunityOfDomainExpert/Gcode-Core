@@ -22,6 +22,7 @@ export async function GET(
       let lastParticipantId: number | null | undefined = undefined;
       let lastAlreadyRated: boolean | undefined = undefined;
       let lastRatingCount: number | undefined = undefined;
+      let lastWindowClosesAt: string | null | undefined = undefined;
       let lastHeartbeat = Date.now();
 
       request.signal.addEventListener("abort", () => {
@@ -38,11 +39,13 @@ export async function GET(
           if (
             state.participant_id !== lastParticipantId ||
             state.already_rated !== lastAlreadyRated ||
-            state.rating_count !== lastRatingCount
+            state.rating_count !== lastRatingCount ||
+            state.window_closes_at !== lastWindowClosesAt
           ) {
             lastParticipantId = state.participant_id;
             lastAlreadyRated = state.already_rated;
             lastRatingCount = state.rating_count;
+            lastWindowClosesAt = state.window_closes_at;
             send(state);
             lastHeartbeat = Date.now();
           } else if (Date.now() - lastHeartbeat > HEARTBEAT_MS) {

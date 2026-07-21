@@ -7,7 +7,13 @@ import { Button, Card, Icon } from "@/components/atoms";
 import { Banner, NotFoundState } from "@/components/molecules";
 import { useEvent } from "@/hooks/use-event";
 import { getParticipant } from "@/lib/api/participants";
-import { getLivePerformer, LivePerformer, submitRating } from "@/lib/api/ratings";
+import {
+  getLivePerformer,
+  LivePerformer,
+  REACTION_EMOJIS,
+  submitRating,
+  submitReaction,
+} from "@/lib/api/ratings";
 import { ApiError } from "@/lib/api/client";
 import { ParticipantApi } from "@/lib/api/types";
 
@@ -113,7 +119,18 @@ export default function RateEventPage() {
   const secondsLeft = windowClosesAtMs
     ? Math.max(0, Math.ceil((windowClosesAtMs - now) / 1000))
     : 0;
-  const windowClosed = live?.participant_id ? secondsLeft <= 0 : false;
+  // On stage but the organizer hasn't hit Start Rating yet — distinct from
+  // windowClosed below, which only applies once a window has actually opened
+  // and expired. Without this split, a performer who's merely on stage reads
+  // as "rating window closed", which is wrong — it never opened.
+  const ratingNotStarted = !!live?.participant_id && !live?.window_closes_at;
+  // Casual never expires — once started, reactions stay open until a new
+  // performer is selected. Only Competitive's 2-minute window actually closes.
+  const windowClosed =
+    event.ratingMode === "Competitive" &&
+    !!live?.participant_id &&
+    !!live?.window_closes_at &&
+    secondsLeft <= 0;
 
   async function handleSubmit() {
     if (!live?.participant_id) return;
@@ -140,8 +157,9 @@ export default function RateEventPage() {
           Live Rating — {event.title}
         </h1>
         <p className="text-small text-text-secondary">
-          Rate each performance from 0–10 as it happens. Once submitted, a
-          rating is locked in.
+          {event.ratingMode === "Casual"
+            ? "Tap an emoji to react as it happens — tap as many times as you like."
+            : "Rate each performance from 0–10 as it happens. Once submitted, a rating is locked in."}
         </p>
       </div>
 
@@ -167,7 +185,14 @@ export default function RateEventPage() {
 
           {error && <Banner tone="danger">{error}</Banner>}
 
-          {windowClosed ? (
+          {ratingNotStarted ? (
+            <div className="border-border-light bg-surface-light flex items-center gap-3 rounded-md border p-4">
+              <Icon icon={Mic} size="md" className="text-text-secondary shrink-0" />
+              <p className="text-body text-text-secondary">
+                On stage now — rating opens as soon as the organizer starts it.
+              </p>
+            </div>
+          ) : windowClosed ? (
             <div className="border-border-light bg-surface-light flex items-center gap-3 rounded-md border p-4">
               <Icon
                 icon={live.already_rated ? Check : AlertTriangle}
@@ -183,6 +208,32 @@ export default function RateEventPage() {
                   ? "Rating locked in for this performance."
                   : "Rating window closed — this performance can no longer be rated."}
               </p>
+            </div>
+          ) : event.ratingMode === "Casual" ? (
+            <div className="space-y-3">
+              <p className="text-small text-warning font-semibold">
+                Reactions are live — tap as many times as you like
+              </p>
+              <div className="flex justify-center gap-3">
+                {REACTION_EMOJIS.map((emoji) => (
+                  <button
+                    key={emoji}
+                    type="button"
+                    className="text-3xl transition-transform active:scale-90"
+                    onClick={() => {
+                      if (live.participant_id) {
+                        void submitReaction(
+                          attendeeId!,
+                          live.participant_id,
+                          emoji,
+                        );
+                      }
+                    }}
+                  >
+                    {emoji}
+                  </button>
+                ))}
+              </div>
             </div>
           ) : live.already_rated ? (
             <div className="border-border-light bg-surface-light flex items-center gap-3 rounded-md border p-4">
