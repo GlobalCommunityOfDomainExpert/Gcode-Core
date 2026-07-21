@@ -482,6 +482,7 @@ export function adaptApiEvent(
       : formatDate(event.start_date),
     registrationDeadlineIso: detail?.registration_deadline ?? null,
     duration: formatDuration(event.start_date, event.end_date),
+    endDateIso: event.end_date ?? event.start_date ?? null,
     durationText: detail?.duration_text ?? undefined,
     // No team-size columns yet — default to individual attendance.
     teamSize: "Individual",
