@@ -10,12 +10,18 @@ const paddingClass: Record<CardPadding, string> = {
 
 export interface CardProps extends HTMLAttributes<HTMLDivElement> {
   padding?: CardPadding;
+  isDark?: boolean;
 }
 
-export function Card({ padding = "sm", className = "", ...props }: CardProps) {
+export function Card({
+  padding = "sm",
+  className = "",
+  isDark,
+  ...props
+}: CardProps) {
   return (
     <div
-      className={`border-border-light bg-surface-light rounded-md border ${paddingClass[padding]} ${className}`}
+      className={`border-border-light ${!isDark ? "bg-surface-light" : "bg-black"} rounded-md border ${paddingClass[padding]} ${className}`}
       {...props}
     />
   );

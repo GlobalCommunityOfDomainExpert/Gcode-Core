@@ -471,7 +471,7 @@ export default function EventRegisterPage() {
                 id="agree-terms"
                 checked={agreedToTerms}
                 onChange={(e) => setAgreedToTerms(e.target.checked)}
-                label="I agree to the Code of Conduct and understand that failure to adhere to the rules may result in disqualification."
+                label="I understand that my personal information will be used only for the administration of this event & will be governed under the DPDP act compliances of gcode.in"
               />
             </Card>
           </div>

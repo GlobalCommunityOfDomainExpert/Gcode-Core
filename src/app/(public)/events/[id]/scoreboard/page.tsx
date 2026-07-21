@@ -1,13 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useParams } from "next/navigation";
 import { Compass, Mic } from "lucide-react";
 import { Card, Icon, Progress } from "@/components/atoms";
 import { NotFoundState } from "@/components/molecules";
 import { useEvent } from "@/hooks/use-event";
 import { LivePerformer } from "@/lib/api/ratings";
-
+import Image from "next/image";
 interface FloatingEmoji {
   key: string;
   emoji: string;
@@ -23,6 +23,8 @@ interface ReactionBatch {
   bots: { emoji: string }[];
 }
 
+const MAX_ON_SCREEN_EMOJI = 10;
+
 // Public big-screen display — no attendee identity needed, just shows
 // whoever the organizer has marked as currently performing plus their live
 // score. Same SSE stream as the rate page, just without an attendee_id (so
@@ -33,6 +35,11 @@ export default function ScoreboardPage() {
   const [live, setLive] = useState<LivePerformer | null>(null);
   const [now, setNow] = useState(() => Date.now());
   const [floaters, setFloaters] = useState<FloatingEmoji[]>([]);
+  // Mirrors `floaters` synchronously so the capacity check below can read
+  // the current count without going through a state-updater callback (state
+  // updaters can run more than once and shouldn't schedule side effects like
+  // setTimeout).
+  const floatersCountRef = useRef(0);
 
   useEffect(() => {
     if (!params.id) return;
@@ -65,12 +72,23 @@ export default function ScoreboardPage() {
         left: 5 + Math.random() * 90,
         size: 24 + Math.random() * 24,
         rotate: -20 + Math.random() * 40,
-        duration: 2200 + Math.random() * 1200,
+        duration: 4500 + Math.random() * 2000,
       }));
-      setFloaters((prev) => [...prev, ...spawned]);
-      spawned.forEach((f) => {
+      // Cap simultaneous on-screen emoji at 10 — real and bot reactions
+      // share this same limit. Only admit as many new ones as there's room
+      // for; never evict already-animating floaters to make room, or a big
+      // burst (bots can spike well past 10/tick) yanks mid-flight emoji off
+      // screen almost immediately instead of letting them finish rising.
+      const room = Math.max(0, MAX_ON_SCREEN_EMOJI - floatersCountRef.current);
+      const admitted = spawned.slice(0, room);
+      if (admitted.length === 0) return;
+
+      floatersCountRef.current += admitted.length;
+      setFloaters((prev) => [...prev, ...admitted]);
+      admitted.forEach((f) => {
         setTimeout(() => {
-          setFloaters((prev) => prev.filter((x) => x.key !== f.key));
+          floatersCountRef.current -= 1;
+          setFloaters((cur) => cur.filter((x) => x.key !== f.key));
         }, f.duration + 100);
       });
     };
@@ -105,7 +123,7 @@ export default function ScoreboardPage() {
     : false;
 
   return (
-    <div className="mx-auto flex min-h-[70vh] max-w-2xl flex-col items-center justify-center space-y-8 text-center">
+    <div className="absolute top-0 right-0 bottom-0 left-0 z-1000 mx-auto flex min-h-[70vh] flex-col items-center justify-center space-y-8 bg-black text-center">
       {event.ratingMode === "Casual" && (
         <div className="pointer-events-none fixed inset-0 overflow-hidden">
           {floaters.map((f) => (
@@ -125,24 +143,23 @@ export default function ScoreboardPage() {
         </div>
       )}
 
-      <p className="text-small text-text-secondary font-medium tracking-widest uppercase">
-        {event.title}
-      </p>
-
       {!live?.participant_id ? (
-        <Card padding="md" className="flex flex-col items-center gap-4 px-12 py-10">
+        <Card
+          padding="md"
+          className="flex flex-col items-center gap-4 px-12 py-10"
+        >
           <Icon icon={Mic} size="lg" className="text-text-secondary" />
           <p className="text-heading text-text-secondary">
             Waiting for the next performance…
           </p>
         </Card>
       ) : (
-        <Card padding="md" className="w-full space-y-6 px-12 py-10">
+        <Card padding="md" className="w-full space-y-6 px-12 py-10" isDark>
           <div className="space-y-1">
-            <p className="text-small text-text-secondary font-medium tracking-widest uppercase">
+            <p className="text-5xl font-medium tracking-widest text-white uppercase">
               Now Performing
             </p>
-            <p className="text-display text-text-primary font-extrabold">
+            <p className="text-8xl font-extrabold text-amber-500">
               {live.participant_name}
             </p>
           </div>
@@ -178,7 +195,7 @@ export default function ScoreboardPage() {
           <p className="text-small text-text-secondary">
             {event.ratingMode === "Casual"
               ? windowOpen
-                ? "Reactions live"
+                ? ""
                 : "Waiting for reactions to open…"
               : windowOpen
                 ? `${secondsLeft}s left to rate`
@@ -186,6 +203,13 @@ export default function ScoreboardPage() {
           </p>
         </Card>
       )}
+      <Image
+        src={"/app-logo.png"}
+        width={100}
+        height={20}
+        alt="logo"
+        className="mb-2z fixed top-10 right-30 mt-2 object-contain"
+      />
     </div>
   );
 }
