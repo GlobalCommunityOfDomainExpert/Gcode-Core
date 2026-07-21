@@ -208,7 +208,7 @@ export default function AdditionalInfoPage() {
     // extension instead of hard-rejecting a file the browser mislabeled.
     const looksLikeAudio =
       file.type.startsWith("audio/") ||
-      /\.(mp3|wav|m4a|aac|ogg|oga|webm|flac|caf|amr|3gp|3gpp)$/i.test(
+      /\.(mp3|wav|m4a|mp4|aac|ogg|oga|webm|flac|caf|amr|3gp|3gpp)$/i.test(
         file.name,
       );
     if (!looksLikeAudio) {
@@ -345,7 +345,7 @@ export default function AdditionalInfoPage() {
               <input
                 ref={fileInputRef}
                 type="file"
-                accept="audio/*,.m4a,.caf,.aac,.mp3,.wav,.ogg,.flac"
+                accept=".mp3,.wav,.m4a,.mp4,.aac,.ogg,.oga,.flac,.caf,.amr,.3gp,.3gpp"
                 onChange={handleFileChange}
                 className="hidden"
               />
