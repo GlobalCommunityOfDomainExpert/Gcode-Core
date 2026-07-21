@@ -324,13 +324,14 @@ export default function AdditionalInfoPage() {
           {mode === "record" && (
             <>
               <p className="text-small text-text-secondary">
-                Up to 3 minutes. Record right here in the browser, then submit
+                Up to 6 minutes. Record right here in the browser, then submit
                 before the 24h deadline — after that the entry is disqualified
                 regardless of the recording itself.
               </p>
               <AudioRecorder
                 onRecordingComplete={setAudioBlob}
                 onClear={() => setAudioBlob(null)}
+                maxDurationMs={6 * 60 * 1000}
                 disabled={submitting}
               />
             </>

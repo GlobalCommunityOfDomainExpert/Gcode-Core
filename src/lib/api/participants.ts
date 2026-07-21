@@ -63,14 +63,24 @@ export function submitParticipantAudio(
   });
 }
 
-// Sends the recorded blob to our own Next.js API route, which uploads it to
-// OCI Object Storage server-side and persists the resulting URL — avoids a
-// direct browser-to-OCI PUT, which needs a CORS rule on the bucket that
-// wasn't available to set up.
+// Stays clear of Vercel's ~4.5MB serverless function body cap. Blobs at or
+// under this go through a single POST; bigger ones are split into chunks and
+// sent via OCI's multipart upload API instead, since no individual request
+// body may cross that cap.
+const MULTIPART_THRESHOLD_BYTES = 4 * 1024 * 1024;
+const CHUNK_SIZE_BYTES = 4 * 1024 * 1024;
+
+// Sends the recorded/uploaded blob to our own Next.js API route, which
+// uploads it to OCI Object Storage server-side and persists the resulting
+// URL — avoids a direct browser-to-OCI PUT, which needs a CORS rule the
+// bucket doesn't support.
 export async function uploadParticipantAudio(
   id: number | string,
   blob: Blob,
 ): Promise<{ audio_submission_url: string; audio_submitted_on: string }> {
+  if (blob.size > MULTIPART_THRESHOLD_BYTES) {
+    return uploadParticipantAudioChunked(id, blob);
+  }
   const res = await fetch(`/api/participants/${id}/audio-submission`, {
     method: "POST",
     headers: { "Content-Type": blob.type || "audio/webm" },
@@ -80,4 +90,57 @@ export async function uploadParticipantAudio(
     throw new Error("Couldn't save your submission. Please try again.");
   }
   return res.json();
+}
+
+async function uploadParticipantAudioChunked(
+  id: number | string,
+  blob: Blob,
+): Promise<{ audio_submission_url: string; audio_submitted_on: string }> {
+  const base = `/api/participants/${id}/audio-submission/multipart`;
+  const fail = () =>
+    new Error("Couldn't save your submission. Please try again.");
+
+  const startRes = await fetch(`${base}/start`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ contentType: blob.type || "audio/webm" }),
+  });
+  if (!startRes.ok) throw fail();
+  const { uploadId } = await startRes.json();
+
+  const parts: { partNum: number; etag: string }[] = [];
+  try {
+    let partNum = 1;
+    for (let offset = 0; offset < blob.size; offset += CHUNK_SIZE_BYTES) {
+      const chunk = blob.slice(offset, offset + CHUNK_SIZE_BYTES);
+      const partRes = await fetch(`${base}/part`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/octet-stream",
+          "X-Upload-Id": uploadId,
+          "X-Part-Number": String(partNum),
+        },
+        body: chunk,
+      });
+      if (!partRes.ok) throw fail();
+      const { etag } = await partRes.json();
+      parts.push({ partNum, etag });
+      partNum += 1;
+    }
+  } catch (err) {
+    await fetch(`${base}/abort`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ uploadId }),
+    }).catch(() => {});
+    throw err;
+  }
+
+  const completeRes = await fetch(`${base}/complete`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ uploadId, parts }),
+  });
+  if (!completeRes.ok) throw fail();
+  return completeRes.json();
 }
