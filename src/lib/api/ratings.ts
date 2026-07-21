@@ -97,7 +97,7 @@ export async function getPerformedParticipants(
 // Casual mode's fixed emoji set — not configurable per event. Shared by the
 // rate page's tap buttons, the bot simulator, and (implicitly) the
 // GCODE_EVENT_REACTIONS.EMOJI check constraint on the backend.
-export const REACTION_EMOJIS = ["👏", "🔥", "❤️", "😂", "👍"] as const;
+export const REACTION_EMOJIS = ["👏", "🔥", "❤️", "👌", "👍"] as const;
 export type ReactionEmoji = (typeof REACTION_EMOJIS)[number];
 
 export interface ReactionItem {
