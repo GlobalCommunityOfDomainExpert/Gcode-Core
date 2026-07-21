@@ -21,6 +21,9 @@ export interface Attendee {
   // additional-info submission step.
   audioSubmissionUrl?: string | null;
   audioSubmittedOn?: string | null;
+  // Only ever set for category "Participant" — same additional-info step as
+  // the audio submission above.
+  ageCategory?: "YOUNGSTER" | "ADULT" | "SENIOR" | null;
 }
 
 // Matches additional-info/page.tsx's own 24h window — kept as a separate

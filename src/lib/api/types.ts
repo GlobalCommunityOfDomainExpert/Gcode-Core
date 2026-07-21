@@ -179,14 +179,17 @@ export interface ParticipantApi {
   // Optional — missing/undefined on rows from a backend that hasn't added
   // the column yet; frontend treats that the same as "ATTENDEE".
   category?: "ATTENDEE" | "PARTICIPANT";
-  // Contract-only — not backed by a live column yet (GCODE_EVENT_PARTICIPANTS
-  // has no AUDIO_SUBMISSION_URL/AUDIO_SUBMITTED_ON columns as of 2026-07-16).
   // A link the participant hosts themselves (Google Drive, etc.) rather than
   // a binary upload — avoids adding blob storage for large audio files.
   // Missing/undefined -> "not submitted yet", same degrade convention as
   // `category` above.
   audio_submission_url?: string | null;
   audio_submitted_on?: string | null;
+  // Contract-only — GCODE_EVENT_PARTICIPANTS has no AGE_CATEGORY column yet
+  // as of 2026-07-21. Captured on the additional-info page alongside the
+  // audio submission (Participant-category rows only). Missing/undefined ->
+  // "not answered yet", same degrade convention as `category` above.
+  age_category?: "YOUNGSTER" | "ADULT" | "SENIOR" | null;
 }
 
 // Mirrors ORDS POST /events/:id/razorpay-order binds ->

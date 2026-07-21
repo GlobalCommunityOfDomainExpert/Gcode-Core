@@ -19,6 +19,7 @@ import {
   Icon,
   Input,
   Label,
+  Radio,
   SectionLabel,
 } from "@/components/atoms";
 import {
@@ -30,7 +31,9 @@ import {
 } from "@/components/molecules";
 import { useEvent } from "@/hooks/use-event";
 import {
+  AgeCategory,
   getParticipant,
+  submitParticipantAgeCategory,
   submitParticipantAudio,
   uploadParticipantAudio,
 } from "@/lib/api/participants";
@@ -48,6 +51,12 @@ const SUBMISSION_MODE_OPTIONS: { value: SubmissionMode; label: string }[] = [
 ];
 
 const MAX_UPLOAD_BYTES = 20 * 1024 * 1024;
+
+const AGE_CATEGORY_OPTIONS: { value: AgeCategory; label: string }[] = [
+  { value: "YOUNGSTER", label: "Youngster (below 18)" },
+  { value: "ADULT", label: "Adult (18–60)" },
+  { value: "SENIOR", label: "Senior Citizen (60 and above)" },
+];
 
 function formatCountdown(ms: number): string {
   const totalMinutes = Math.max(0, Math.floor(ms / 60000));
@@ -115,6 +124,9 @@ export default function AdditionalInfoPage() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [error, setError] = useState("");
   const [submittedUrl, setSubmittedUrl] = useState<string | null>(null);
+  const [ageCategory, setAgeCategory] = useState<AgeCategory | null>(null);
+  const [ageCategorySaving, setAgeCategorySaving] = useState(false);
+  const [ageCategoryError, setAgeCategoryError] = useState("");
   // Re-renders every 30s so the countdown/disqualification state stays live
   // without the participant having to refresh the page.
   const [now, setNow] = useState(() => new Date());
@@ -132,6 +144,7 @@ export default function AdditionalInfoPage() {
         }
         setParticipant(row);
         setSubmittedUrl(row.audio_submission_url ?? null);
+        setAgeCategory(row.age_category ?? null);
         setParticipantStatus("ready");
       } catch {
         if (!cancelled) setParticipantStatus("error");
@@ -223,6 +236,25 @@ export default function AdditionalInfoPage() {
     setAudioBlob(file);
   }
 
+  async function handleAgeCategoryChange(value: AgeCategory) {
+    const previous = ageCategory;
+    setAgeCategory(value);
+    setAgeCategorySaving(true);
+    setAgeCategoryError("");
+    try {
+      await submitParticipantAgeCategory(participant!.id, value);
+    } catch (err) {
+      setAgeCategory(previous);
+      setAgeCategoryError(
+        err instanceof ApiError || err instanceof Error
+          ? err.message
+          : "Couldn't save your answer. Please try again.",
+      );
+    } finally {
+      setAgeCategorySaving(false);
+    }
+  }
+
   function handleModeChange(value: SubmissionMode) {
     setMode(value);
     setAudioBlob(null);
@@ -311,6 +343,25 @@ export default function AdditionalInfoPage() {
       )}
 
       {error && <Banner tone="danger">{error}</Banner>}
+
+      <Card padding="md" className="space-y-3">
+        <SectionLabel>Age Category</SectionLabel>
+        {ageCategoryError && (
+          <Banner tone="danger">{ageCategoryError}</Banner>
+        )}
+        <div className="flex flex-wrap gap-4">
+          {AGE_CATEGORY_OPTIONS.map((option) => (
+            <Radio
+              key={option.value}
+              name="age-category"
+              label={option.label}
+              checked={ageCategory === option.value}
+              disabled={ageCategorySaving}
+              onChange={() => handleAgeCategoryChange(option.value)}
+            />
+          ))}
+        </div>
+      </Card>
 
       {!isPastDeadline && (
         <Card padding="md" className="space-y-4">

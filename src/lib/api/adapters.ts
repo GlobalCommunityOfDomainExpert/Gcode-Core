@@ -105,6 +105,7 @@ export function adaptParticipant(
     category: isParticipant ? "Participant" : "Attendee",
     audioSubmissionUrl: row.audio_submission_url,
     audioSubmittedOn: row.audio_submitted_on,
+    ageCategory: row.age_category,
   };
 }
 
