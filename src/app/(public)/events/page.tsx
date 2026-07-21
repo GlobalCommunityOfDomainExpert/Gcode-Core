@@ -204,13 +204,13 @@ export default function EventsPage() {
 
           <div className="relative mx-auto flex w-full max-w-7xl flex-col gap-6 px-4 pt-24 pb-14 sm:px-6 sm:pt-24 sm:pb-8 lg:px-8">
             <div>
-              <h4 className="text-display font-bold text-white">
+              <h1 className="text-display font-bold text-white">
                 Explore. Learn. Connect.
                 <br />
                 Power Your Growth with
                 <br />
                 <span className="text-secondary">GCODE</span> Events
-              </h4>
+              </h1>
               <p className="text-body mt-1 text-white/70">
                 Hackathons, Ideathons, Expert AMAs, Live Webinars — all in one
                 place.
