@@ -20,7 +20,7 @@ import { API_BASE_URL } from "./client";
 
 // Cover/banner URLs may be stored as an API-relative path (DB-hosted image) or
 // an absolute URL. Resolve relative ones against the API base.
-function resolveImageUrl(url: string | null): string | undefined {
+export function resolveImageUrl(url: string | null): string | undefined {
   if (!url) return undefined;
   return url.startsWith("http") ? url : `${API_BASE_URL}${url}`;
 }
