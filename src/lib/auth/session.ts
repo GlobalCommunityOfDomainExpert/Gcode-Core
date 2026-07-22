@@ -2,7 +2,7 @@ const TOKEN_KEY = "gcode_token";
 
 export interface Session {
   token: string;
-  userId: number;
+  userId: string;
   roleName: string;
   fullName: string;
   // No `email` JWT claim exists on the live backend yet — undefined until
@@ -29,7 +29,7 @@ export function getSession(): Session | null {
     }
     return {
       token,
-      userId: Number(payload.sub),
+      userId: String(payload.sub),
       roleName: payload.role ?? "NONE",
       fullName: payload.full_name ?? "",
       email: payload.email || undefined,

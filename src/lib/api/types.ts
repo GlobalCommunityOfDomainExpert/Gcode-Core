@@ -33,7 +33,9 @@ export interface EventDetail extends EventListItem {
   created_on: string;
   updated_by: string | null;
   updated_on: string | null;
-  organizer_id: number | null;
+  // GUID-derived (FK to gcode_users.user_id) — kept as string, see user_id
+  // in CreateParticipantPayload for why.
+  organizer_id: string | null;
   organizer_name: string | null;
   organizer_email: string | null;
   max_tickets_per_registration: number | null;
@@ -130,7 +132,7 @@ export interface CreateEventPayload {
   is_external?: number;
   external_url?: string;
   created_by?: string;
-  organizer_id?: number;
+  organizer_id?: string;
   max_tickets_per_registration?: number;
   participant_max_tickets_per_registration?: number;
   terms?: string;
@@ -161,7 +163,10 @@ export interface CreateParticipantPayload {
   email?: string;
   full_name?: string;
   phone?: string;
-  user_id?: number;
+  // GCODE_USERS.user_id is GUID-derived (to_number(sys_guid(), 32 X's)) — up
+  // to 39 decimal digits, past Number.MAX_SAFE_INTEGER. Must stay a string
+  // end-to-end or JS mangles it on the way out.
+  user_id?: string;
   quantity: number;
   // Optional — server defaults to "ATTENDEE" when omitted, so every event
   // that never enables Participant registration sends an unchanged payload.
@@ -172,7 +177,7 @@ export interface CreateParticipantPayload {
 export interface ParticipantApi {
   id: number;
   event_id: number;
-  user_id: number | null;
+  user_id: string | null;
   user_name: string;
   quantity: number;
   status: string | null;
@@ -207,7 +212,7 @@ export interface CreateRazorpayOrderPayload {
   email?: string;
   full_name?: string;
   phone?: string;
-  user_id?: number;
+  user_id?: string;
   quantity: number;
   category?: "ATTENDEE" | "PARTICIPANT";
 }

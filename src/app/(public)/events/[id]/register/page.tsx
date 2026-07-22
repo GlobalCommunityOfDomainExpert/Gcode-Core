@@ -196,7 +196,7 @@ export default function EventRegisterPage() {
   // Signed-in -> book by user_id, nothing else needed. Guest -> full name +
   // email + phone, same as always.
   function identityPayload():
-    { user_id: number } | { email: string; full_name: string; phone: string } {
+    { user_id: string } | { email: string; full_name: string; phone: string } {
     if (session) return { user_id: session.userId };
     return {
       email: email.trim(),
