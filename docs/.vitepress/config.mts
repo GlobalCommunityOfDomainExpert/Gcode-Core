@@ -21,6 +21,15 @@ export default defineConfig({
           { text: 'Backend Integration', link: '/backend-integration-strategy' },
           { text: 'Oracle ADB Schema', link: '/oracle-adb-schema-gap-prompt' }
         ]
+      },
+      {
+        text: 'Codebase Reference',
+        items: [
+          { text: 'Overview', link: '/architecture-overview' },
+          { text: 'Routing & API', link: '/routing-reference' },
+          { text: 'Components & Design System', link: '/component-reference' },
+          { text: 'Tooling & Config', link: '/tooling-reference' }
+        ]
       }
     ],
     socialLinks: [
