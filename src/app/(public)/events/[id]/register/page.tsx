@@ -39,6 +39,7 @@ import {
   openRazorpayCheckout,
 } from "@/lib/payments/razorpay";
 import { VerifyEmailModal } from "./_components/verify-email-modal";
+import { VerifyPhoneModal } from "./_components/verify-phone-modal";
 import { RegisterSkeleton } from "./_components/register-skeleton";
 
 type Category = "ATTENDEE" | "PARTICIPANT";
@@ -58,6 +59,10 @@ export default function EventRegisterPage() {
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
+  // Opt-in — unchecked by default. Phone verification (and the extra
+  // WhatsApp send later) only kicks in when this is checked; unchecked,
+  // registration behaves exactly as it did before this feature existed.
+  const [receiveWhatsApp, setReceiveWhatsApp] = useState(false);
   // Kept as free text while typing (see clampQuantity) — clamping on every
   // keystroke snaps a cleared/partial field back to "1", making it
   // impossible to type a second digit.
@@ -70,6 +75,12 @@ export default function EventRegisterPage() {
   // the email after verifying forces a re-verify.
   const [verifiedEmail, setVerifiedEmail] = useState<string | null>(null);
   const [showVerifyModal, setShowVerifyModal] = useState(false);
+  // Same tracking pattern as verifiedEmail — cleared implicitly once the
+  // typed phone no longer matches, forcing a re-verify. Phone verification
+  // happens over WhatsApp and is what later lets ticket/submission
+  // notifications go to WhatsApp instead of email.
+  const [verifiedPhone, setVerifiedPhone] = useState<string | null>(null);
+  const [showVerifyPhoneModal, setShowVerifyPhoneModal] = useState(false);
 
   // Step 1 (pass-type select) only shows when BOTH categories are enabled —
   // otherwise skip straight to details with whichever one is enabled
@@ -219,6 +230,11 @@ export default function EventRegisterPage() {
       setShowVerifyModal(true);
       return;
     }
+    if (!session && receiveWhatsApp && phone.trim() !== verifiedPhone) {
+      setError("");
+      setShowVerifyPhoneModal(true);
+      return;
+    }
     proceed();
   }
 
@@ -250,6 +266,14 @@ export default function EventRegisterPage() {
   function handleEmailVerified() {
     setVerifiedEmail(email.trim());
     setShowVerifyModal(false);
+    // Re-run submit() rather than proceed() directly — phone still needs
+    // its own verification check, which submit() gates on next.
+    submit();
+  }
+
+  function handlePhoneVerified() {
+    setVerifiedPhone(phone.trim());
+    setShowVerifyPhoneModal(false);
     proceed();
   }
 
@@ -430,6 +454,12 @@ export default function EventRegisterPage() {
                       />
                     </FormField>
                   </div>
+                  <Checkbox
+                    id="receive-whatsapp"
+                    checked={receiveWhatsApp}
+                    onChange={(e) => setReceiveWhatsApp(e.target.checked)}
+                    label="Also receive updates on WhatsApp"
+                  />
                 </>
               )}
               {maxQuantity !== 1 && (
@@ -501,6 +531,16 @@ export default function EventRegisterPage() {
           fullName={`${firstName.trim()} ${lastName.trim()}`.trim()}
           onClose={() => setShowVerifyModal(false)}
           onVerified={handleEmailVerified}
+        />
+      )}
+
+      {!session && (
+        <VerifyPhoneModal
+          open={showVerifyPhoneModal}
+          email={email.trim()}
+          phone={phone.trim()}
+          onClose={() => setShowVerifyPhoneModal(false)}
+          onVerified={handlePhoneVerified}
         />
       )}
     </div>

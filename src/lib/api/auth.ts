@@ -36,6 +36,31 @@ export function verifyOtp(
   });
 }
 
+// Phone verification over WhatsApp — separate flow from the email OTP
+// above, same gcode_pending_users staging row (keyed by email), same
+// "no session created" guest path. Lives here rather than its own package
+// because send_guest_otp already sets the precedent that AUTH_PKG is the
+// general contact-verification utility, not strictly login-only.
+export function sendPhoneOtp(
+  email: string,
+  phone: string,
+): Promise<{ message: string }> {
+  return apiRequest("/auth/phone-otp", {
+    method: "POST",
+    body: { email, phone },
+  });
+}
+
+export function verifyPhoneOtp(
+  email: string,
+  otpCode: string,
+): Promise<{ message: string }> {
+  return apiRequest("/auth/verify-phone-otp", {
+    method: "POST",
+    body: { email, otp_code: otpCode },
+  });
+}
+
 export function selectStakeholder(
   userId: number,
   email: string,

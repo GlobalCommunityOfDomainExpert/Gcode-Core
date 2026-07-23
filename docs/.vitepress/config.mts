@@ -19,7 +19,8 @@ export default defineConfig({
         text: 'Architecture & Integrations',
         items: [
           { text: 'Backend Integration', link: '/backend-integration-strategy' },
-          { text: 'Oracle ADB Schema', link: '/oracle-adb-schema-gap-prompt' }
+          { text: 'Oracle ADB Schema', link: '/oracle-adb-schema-gap-prompt' },
+          { text: 'Backend PL/SQL Reference', link: '/backend-plsql-reference' }
         ]
       },
       {
