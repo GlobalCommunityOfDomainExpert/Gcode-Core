@@ -5,6 +5,8 @@ export interface SelectableCardMetaItem {
   icon: LucideIcon;
   label: string;
   tone?: "success" | "warning" | "secondary";
+  // Wraps this item in a pill/border instead of the default plain icon+text.
+  bordered?: boolean;
 }
 
 export interface SelectableCardProps {
@@ -37,6 +39,15 @@ const metaToneClasses: Record<
   success: "text-success",
   warning: "text-warning",
   secondary: "text-text-secondary",
+};
+
+const metaBorderToneClasses: Record<
+  NonNullable<SelectableCardMetaItem["tone"]>,
+  string
+> = {
+  success: "border-success",
+  warning: "border-warning",
+  secondary: "border-border-light",
 };
 
 export function SelectableCard({
@@ -109,7 +120,11 @@ export function SelectableCard({
                 {metaItems.map((item, index) => (
                   <span
                     key={index}
-                    className={`text-small inline-flex items-center gap-1 font-semibold ${metaToneClasses[item.tone ?? "success"]}`}
+                    className={`text-small inline-flex items-center gap-1 font-semibold ${metaToneClasses[item.tone ?? "success"]} ${
+                      item.bordered
+                        ? `rounded-full border px-2 py-0.5 ${metaBorderToneClasses[item.tone ?? "success"]}`
+                        : ""
+                    }`}
                   >
                     <Icon icon={item.icon} size="sm" />
                     {item.label}
