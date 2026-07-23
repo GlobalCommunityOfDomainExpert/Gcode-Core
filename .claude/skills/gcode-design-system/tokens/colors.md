@@ -30,6 +30,24 @@ Components must consume these tokens directly. Hardcoded colors are prohibited.
 
 ---
 
+## Ticket (one-off exception)
+
+Approved one-off exception for the event-detail "buy pass" ticket CTA
+(`TicketFrame`, `SelectableCard shape="ticket"`) only. Not a general-purpose
+semantic color — do not reuse elsewhere without explicit approval.
+
+| Token                | Value                 |
+| --------------------- | --------------------- |
+| --color-ticket        | hsl(38,70%,35%)        |
+| --color-ticket-hover   | hsl(38,70%,29%)        |
+| --color-ticket-light   | hsla(38,70%,35%,0.08)  |
+| --color-ticket-blue    | hsl(214,65%,45%)       |
+| --color-ticket-blue-light | hsla(214,65%,45%,0.08) |
+
+Multi-pass ticket cards cycle through light tints (gold/blue/reused red=secondary/reused green=success) for visual variety — see `SelectableCard`'s `tint` prop.
+
+---
+
 # Semantic
 
 ## Success

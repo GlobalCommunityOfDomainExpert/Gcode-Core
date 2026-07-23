@@ -20,6 +20,12 @@ export const Primary: Story = {
 export const Secondary: Story = { args: { variant: "secondary" } };
 export const Danger: Story = { args: { variant: "danger" } };
 
+// One-off exception: gold fill + rounder corners, pairs with TicketFrame /
+// SelectableCard shape="ticket" for the event-detail buy-pass CTA only.
+export const Ticket: Story = {
+  args: { variant: "ticket", shape: "ticket", children: "Book Tickets" },
+};
+
 export const Loading: Story = {
   args: { variant: "primary", loading: true },
   play: async ({ canvas }) => {

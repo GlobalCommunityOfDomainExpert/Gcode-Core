@@ -20,6 +20,17 @@ html {
   --g-color-success: hsl(142, 60%, 40%);
   --g-color-success-light: hsla(142, 60%, 40%, 0.1);
 
+  /* Ticket gold — one-off exception approved for the event-detail ticket CTA
+     (TicketFrame / SelectableCard shape="ticket"), not a general-purpose token. */
+  --g-color-ticket: hsl(38, 70%, 35%);
+  --g-color-ticket-hover: hsl(38, 70%, 29%);
+  --g-color-ticket-light: hsla(38, 70%, 35%, 0.08);
+
+  /* Ticket blue — additional light tint for the multi-pass ticket picker
+     (SelectableCard shape="ticket" tint="blue"), same one-off exception. */
+  --g-color-ticket-blue: hsl(214, 65%, 45%);
+  --g-color-ticket-blue-light: hsla(214, 65%, 45%, 0.08);
+
   /* Warning/Danger values undocumented in tokens/colors.md — placeholder pending design confirmation */
   --g-color-warning: hsl(38, 92%, 50%);
   --g-color-warning-light: hsla(38, 92%, 50%, 0.1);
@@ -73,6 +84,11 @@ html {
   /* Semantic */
   --color-success: var(--g-color-success);
   --color-success-light: var(--g-color-success-light);
+  --color-ticket: var(--g-color-ticket);
+  --color-ticket-hover: var(--g-color-ticket-hover);
+  --color-ticket-light: var(--g-color-ticket-light);
+  --color-ticket-blue: var(--g-color-ticket-blue);
+  --color-ticket-blue-light: var(--g-color-ticket-blue-light);
   --color-warning: var(--g-color-warning);
   --color-warning-light: var(--g-color-warning-light);
   --color-danger: var(--g-color-danger);

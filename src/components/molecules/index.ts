@@ -39,5 +39,6 @@ export * from "./step-indicator";
 export * from "./table";
 export * from "./tabbed-form-shell";
 export * from "./tabs";
+export * from "./ticket-frame";
 export * from "./timeline";
 export * from "./toggle-group";

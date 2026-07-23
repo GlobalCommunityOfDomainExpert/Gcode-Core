@@ -10,20 +10,33 @@ export type ButtonVariant =
   | "danger-ghost"
   | "success"
   | "warning"
-  | "accent";
+  | "accent"
+  | "ticket";
 
 export type ButtonSize = "xs" | "sm" | "md" | "lg" | "xl";
+
+// "ticket" pairs with TicketFrame/SelectableCard's ticket shape — a rounder
+// corner than the standard button radius so it nests inside the ticket border.
+export type ButtonShape = "default" | "ticket";
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: ButtonVariant;
   size?: ButtonSize;
+  shape?: ButtonShape;
   loading?: boolean;
 }
 
 const base =
-  "inline-flex items-center justify-center gap-2 rounded-sm font-bold transition-colors " +
+  "inline-flex items-center justify-center gap-2 font-bold transition-colors " +
   "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 " +
   "disabled:opacity-50 disabled:cursor-not-allowed";
+
+const shapeClasses: Record<ButtonShape, string> = {
+  default: "rounded-sm",
+  // Matches the rounded-md card radius used throughout the event detail
+  // page, so the ticket CTA reads as part of that card system.
+  ticket: "rounded-md",
+};
 
 const variantClasses: Record<ButtonVariant, string> = {
   primary: "bg-primary text-white hover:bg-primary-hover",
@@ -37,6 +50,7 @@ const variantClasses: Record<ButtonVariant, string> = {
   success: "bg-success text-white hover:bg-success/90",
   warning: "bg-warning text-text-primary hover:bg-warning/90",
   accent: "bg-secondary text-white hover:bg-secondary-hover",
+  ticket: "bg-ticket text-white hover:bg-ticket-hover",
 };
 
 const sizeClasses: Record<ButtonSize, string> = {
@@ -51,8 +65,9 @@ export function buttonClasses(
   variant: ButtonVariant = "primary",
   size: ButtonSize = "md",
   className = "",
+  shape: ButtonShape = "default",
 ) {
-  return `${base} ${variantClasses[variant]} ${sizeClasses[size]} ${className}`;
+  return `${base} ${shapeClasses[shape]} ${variantClasses[variant]} ${sizeClasses[size]} ${className}`;
 }
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
@@ -60,6 +75,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     {
       variant = "primary",
       size = "md",
+      shape = "default",
       loading = false,
       disabled,
       className = "",
@@ -73,7 +89,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         ref={ref}
         disabled={disabled || loading}
         aria-busy={loading || undefined}
-        className={buttonClasses(variant, size, className)}
+        className={buttonClasses(variant, size, className, shape)}
         {...props}
       >
         {loading && <Spinner size="sm" className="text-current" />}

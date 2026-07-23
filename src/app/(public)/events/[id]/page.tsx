@@ -20,6 +20,7 @@ import {
   EventBadgeRow,
   NotFoundState,
   SelectableCard,
+  TicketFrame,
 } from "@/components/molecules";
 import { Timeline } from "@/components/molecules";
 import { getEventColor } from "@/lib/event-color";
@@ -144,6 +145,8 @@ export default function EventDetailPage() {
         const firstOpenCategory = enabledPasses.find(
           ({ data }) => windowStatus(data).state === "open",
         )?.category;
+        // Cycled per pass card so multiple options are visually distinct.
+        const ticketTints = ["blue", "red", "green", "gold"] as const;
 
         return (
           <>
@@ -165,7 +168,7 @@ export default function EventDetailPage() {
                   How would you like to join?
                 </p>
                 <div className="space-y-3">
-                  {enabledPasses.map(({ category, data }) => {
+                  {enabledPasses.map(({ category, data }, index) => {
                     const status = windowStatus(data);
                     const notOpenYet = status.state === "not-open-yet";
                     const closed = status.state === "closed";
@@ -173,6 +176,8 @@ export default function EventDetailPage() {
                       <SelectableCard
                         key={category}
                         layout="horizontal"
+                        shape="ticket"
+                        tint={ticketTints[index % ticketTints.length]}
                         icon={categoryIcon[category]}
                         title={data.label}
                         subtitle={data.description || undefined}
@@ -253,13 +258,16 @@ export default function EventDetailPage() {
                   : "Registration Closed"}
               </Button>
             ) : singlePass ? (
-              <ButtonLink
-                href={`/events/${event.id}/register`}
-                variant="primary"
-                className="w-full"
-              >
-                Book Tickets
-              </ButtonLink>
+              <TicketFrame className="w-full">
+                <ButtonLink
+                  href={`/events/${event.id}/register`}
+                  variant="ticket"
+                  shape="ticket"
+                  className="w-full"
+                >
+                  Book Tickets
+                </ButtonLink>
+              </TicketFrame>
             ) : null}
             {singlePass?.capacity && (
               <p className="text-small text-text-secondary text-center">

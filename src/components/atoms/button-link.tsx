@@ -1,6 +1,6 @@
 import Link, { LinkProps } from "next/link";
 import { AnchorHTMLAttributes, forwardRef } from "react";
-import { ButtonSize, ButtonVariant, buttonClasses } from "./button";
+import { ButtonShape, ButtonSize, ButtonVariant, buttonClasses } from "./button";
 
 export interface ButtonLinkProps
   extends
@@ -8,17 +8,25 @@ export interface ButtonLinkProps
     Omit<AnchorHTMLAttributes<HTMLAnchorElement>, keyof LinkProps> {
   variant?: ButtonVariant;
   size?: ButtonSize;
+  shape?: ButtonShape;
 }
 
 export const ButtonLink = forwardRef<HTMLAnchorElement, ButtonLinkProps>(
   (
-    { variant = "primary", size = "md", className = "", children, ...props },
+    {
+      variant = "primary",
+      size = "md",
+      shape = "default",
+      className = "",
+      children,
+      ...props
+    },
     ref,
   ) => {
     return (
       <Link
         ref={ref}
-        className={buttonClasses(variant, size, className)}
+        className={buttonClasses(variant, size, className, shape)}
         {...props}
       >
         {children}

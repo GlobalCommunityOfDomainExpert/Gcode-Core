@@ -36,6 +36,8 @@ Warning
 
 Accent
 
+Ticket (one-off exception — pairs with the `ticket` shape / `TicketFrame`; scoped to the event-detail buy-pass CTA, see tokens/colors.md)
+
 ---
 
 ## Sizes

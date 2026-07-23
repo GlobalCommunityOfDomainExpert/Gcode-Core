@@ -55,3 +55,38 @@ export const PassPicker: Story = {
     </div>
   ),
 };
+
+// Opt-in ticket look for the event-detail pass picker: light tinted border,
+// edge notches, and a perforation divider with price/spots moved into the
+// stub. `tint` cycles per card (blue/red/green/gold) so multiple passes read
+// as visually distinct options.
+export const PassPickerTicket: Story = {
+  render: () => (
+    <div className="max-w-sm space-y-3">
+      <SelectableCard
+        layout="horizontal"
+        shape="ticket"
+        tint="blue"
+        icon={User}
+        title="Participants"
+        subtitle="Nominate yourself for the karaoke singing contest."
+        selected
+        meta="₹199 · closes in 1d"
+        onSelect={fn()}
+      />
+      <SelectableCard
+        layout="horizontal"
+        shape="ticket"
+        tint="red"
+        icon={Users}
+        title="Audience"
+        subtitle="Watch the live show and cheer on the performers."
+        disabled
+        statusLabel="opens in 7d"
+        lockMessage="Audience registration unlocks in 7 days"
+        meta="Free · 100 left"
+        onSelect={fn()}
+      />
+    </div>
+  ),
+};
