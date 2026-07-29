@@ -93,6 +93,7 @@ const whyJoinItems = [
 ] as const;
 
 const FEATURED_ROTATE_MS = 6000;
+const PAST_EVENTS_PAGE_SIZE = 6;
 
 export default function EventsPage() {
   const [activeTab, setActiveTab] = useState("all");
@@ -100,6 +101,7 @@ export default function EventsPage() {
   const [search, setSearch] = useState("");
   const [featuredIndex, setFeaturedIndex] = useState(0);
   const [featuredPaused, setFeaturedPaused] = useState(false);
+  const [showAllPast, setShowAllPast] = useState(false);
   const { events, status } = useEvents();
   const { data: eventTypes } = useLookup(getEventTypes);
   const now = useServerNow();
@@ -108,6 +110,15 @@ export default function EventsPage() {
     { value: "all", label: "All" },
     ...eventTypes.map((type) => ({ value: type.name, label: type.name })),
   ];
+
+  // Switching categories should read from the top, not leave the visitor
+  // stranded mid-scroll in whatever list they were looking at before.
+  function handleTabChange(value: string) {
+    setActiveTab(value);
+    document
+      .getElementById("app-scroll-region")
+      ?.scrollTo({ top: 0, behavior: "smooth" });
+  }
 
   function toggleFilter(filter: string) {
     setActiveFilters((prev) =>
@@ -186,6 +197,9 @@ export default function EventsPage() {
   const pastFiltered = filtered
     .filter((e) => hasEventEnded(e, now))
     .sort((a, b) => (b.endDateIso ?? "").localeCompare(a.endDateIso ?? ""));
+  const visiblePast = showAllPast
+    ? pastFiltered
+    : pastFiltered.slice(0, PAST_EVENTS_PAGE_SIZE);
 
   const hasActiveFilters =
     activeTab !== "all" || activeFilters.length > 0 || search.trim() !== "";
@@ -197,7 +211,7 @@ export default function EventsPage() {
   }
 
   return (
-    <div className="flex flex-col gap-3 space-y-8">
+    <div className="flex flex-col">
       <div className="relative flex flex-col">
         <div className="relative left-1/2 flex min-h-100 w-screen -translate-x-1/2 items-center overflow-hidden bg-black lg:min-h-125">
           <Image
@@ -232,12 +246,14 @@ export default function EventsPage() {
             />
           </div>
         </div>
+      </div>
 
-        <div className="border-border-light bg-surface-light relative -top-4 space-y-4 rounded-md border p-4 sm:-top-6 lg:-top-10">
+      <div className="flex flex-col gap-3 space-y-8">
+        <div className="border-border-light bg-surface-light sticky top-24 z-10 -mt-4 space-y-4 rounded-md border p-4 shadow-sm transition-shadow duration-300 sm:-mt-6 lg:-mt-10">
           <Tabs
             items={categoryTabs}
             value={activeTab}
-            onChange={setActiveTab}
+            onChange={handleTabChange}
           />
           <div className="flex flex-wrap gap-2">
             {filterChips.map((chip) => {
@@ -264,9 +280,8 @@ export default function EventsPage() {
             })}
           </div>
         </div>
-      </div>
 
-      {/* <section className="bg-secondary-light overflow-hidden rounded-lg p-6 sm:p-8">
+        {/* <section className="bg-secondary-light overflow-hidden rounded-lg p-6 sm:p-8">
         <h3 className="text-large text-text-primary font-bold">
           Why join GCODE Events?
         </h3>
@@ -287,249 +302,261 @@ export default function EventsPage() {
         </div>
       </section> */}
 
-      {featured.length > 0 &&
-        activeFeaturedEvent &&
-        (() => {
-          const event = activeFeaturedEvent;
-          return (
-            <section className="flex flex-col gap-6 space-y-3">
-              <div className="flex items-center justify-between gap-4">
-                <div className="flex items-center gap-4">
-                  <div className="h-10 w-1 rounded-full bg-blue-500" />
-                  <div>
-                    <h2 className="text-text-secondary text-base font-bold tracking-widest uppercase">
-                      Featured Events
-                    </h2>
-                    <h6 className="text-s text-gray-400">
-                      Explore events that intrest you
-                    </h6>
+        {featured.length > 0 &&
+          activeFeaturedEvent &&
+          (() => {
+            const event = activeFeaturedEvent;
+            return (
+              <section className="flex flex-col gap-6 space-y-3">
+                <div className="flex items-center justify-between gap-4">
+                  <div className="flex items-center gap-4">
+                    <div className="h-10 w-1 rounded-full bg-blue-500" />
+                    <div>
+                      <h2 className="text-text-secondary text-base font-bold tracking-widest uppercase">
+                        Featured Events
+                      </h2>
+                      <h6 className="text-s text-gray-400">
+                        Explore events that intrest you
+                      </h6>
+                    </div>
                   </div>
-                </div>
-                {featured.length > 1 && (
-                  <div className="flex items-center gap-1.5">
-                    <button
-                      type="button"
-                      onClick={() =>
-                        setFeaturedIndex(
-                          (activeFeaturedIndex - 1 + featured.length) %
-                            featured.length,
-                        )
-                      }
-                      aria-label="Previous featured event"
-                      className="border-border-light bg-surface-light text-text-secondary hover:text-text-primary focus-visible:ring-primary flex size-8 items-center justify-center rounded-full border shadow-sm focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
-                    >
-                      <Icon icon={ChevronLeft} size="sm" />
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() =>
-                        setFeaturedIndex(
-                          (activeFeaturedIndex + 1) % featured.length,
-                        )
-                      }
-                      aria-label="Next featured event"
-                      className="border-border-light bg-surface-light text-text-secondary hover:text-text-primary focus-visible:ring-primary flex size-8 items-center justify-center rounded-full border shadow-sm focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
-                    >
-                      <Icon icon={ChevronRight} size="sm" />
-                    </button>
-                  </div>
-                )}
-              </div>
-
-              <div
-                onMouseEnter={() => setFeaturedPaused(true)}
-                onMouseLeave={() => setFeaturedPaused(false)}
-              >
-                <EventCard
-                  key={event.id}
-                  variant="featured"
-                  href={`/events/${event.id}`}
-                  imageSrc={event.coverImageUrl}
-                  colorSeed={event.id}
-                  tags={[
-                    { label: event.type, tone: eventTypeTone(event.type) },
-                    { label: event.mode, tone: "neutral" },
-                  ]}
-                  price={event.price}
-                  priceTone={priceTone(event.price)}
-                  title={event.title}
-                  date={`${event.date} · ${event.time}`}
-                  subtitle={featuredDescriptionLines[0]}
-                  attendees={buildAttendeeAvatars(
-                    event.id,
-                    Math.min(event.registeredCount, 4),
-                  )}
-                  attendeesLabel={
-                    event.registeredCount > 3
-                      ? `+${event.registeredCount} registered`
-                      : undefined
-                  }
-                  stats={[
-                    {
-                      icon: Calendar,
-                      primary: event.date,
-                      secondary:
-                        event.durationText || event.duration || "Event",
-                    },
-                  ]}
-                />
-
-                {featured.length > 1 && (
-                  <div className="mt-3 flex items-center justify-center gap-1.5">
-                    {featured.map((f, index) => (
+                  {featured.length > 1 && (
+                    <div className="flex items-center gap-1.5">
                       <button
-                        key={f.id}
                         type="button"
-                        onClick={() => setFeaturedIndex(index)}
-                        aria-label={`Go to featured event ${index + 1}`}
-                        aria-current={index === activeFeaturedIndex}
-                        className={`size-1.5 rounded-full transition-colors ${
-                          index === activeFeaturedIndex
-                            ? "bg-primary"
-                            : "bg-border-hover"
-                        }`}
-                      />
-                    ))}
-                  </div>
-                )}
-              </div>
-            </section>
-          );
-        })()}
+                        onClick={() =>
+                          setFeaturedIndex(
+                            (activeFeaturedIndex - 1 + featured.length) %
+                              featured.length,
+                          )
+                        }
+                        aria-label="Previous featured event"
+                        className="border-border-light bg-surface-light text-text-secondary hover:text-text-primary focus-visible:ring-primary flex size-8 items-center justify-center rounded-full border shadow-sm focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+                      >
+                        <Icon icon={ChevronLeft} size="sm" />
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setFeaturedIndex(
+                            (activeFeaturedIndex + 1) % featured.length,
+                          )
+                        }
+                        aria-label="Next featured event"
+                        className="border-border-light bg-surface-light text-text-secondary hover:text-text-primary focus-visible:ring-primary flex size-8 items-center justify-center rounded-full border shadow-sm focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+                      >
+                        <Icon icon={ChevronRight} size="sm" />
+                      </button>
+                    </div>
+                  )}
+                </div>
 
-      <section className="flex flex-col gap-6 space-y-3">
-        <div className="flex items-center gap-4">
-          <div className="h-10 w-1 rounded-full bg-red-500" />
-          <div>
-            <h2 className="text-text-secondary text-base font-bold tracking-widest uppercase">
-              Upcoming Events
-            </h2>
-            <h6 className="text-s text-gray-400">
-              Explore events that intrest you
-            </h6>
-          </div>
-        </div>
+                <div
+                  onMouseEnter={() => setFeaturedPaused(true)}
+                  onMouseLeave={() => setFeaturedPaused(false)}
+                >
+                  <EventCard
+                    key={event.id}
+                    variant="featured"
+                    href={`/events/${event.id}`}
+                    imageSrc={event.coverImageUrl}
+                    colorSeed={event.id}
+                    tags={[
+                      { label: event.type, tone: eventTypeTone(event.type) },
+                      { label: event.mode, tone: "neutral" },
+                    ]}
+                    price={event.price}
+                    priceTone={priceTone(event.price)}
+                    title={event.title}
+                    date={`${event.date} · ${event.time}`}
+                    subtitle={featuredDescriptionLines[0]}
+                    attendees={buildAttendeeAvatars(
+                      event.id,
+                      Math.min(event.registeredCount, 4),
+                    )}
+                    attendeesLabel={
+                      event.registeredCount > 3
+                        ? `+${event.registeredCount} registered`
+                        : undefined
+                    }
+                    stats={[
+                      {
+                        icon: Calendar,
+                        primary: event.date,
+                        secondary:
+                          event.durationText || event.duration || "Event",
+                      },
+                    ]}
+                  />
 
-        {status === "loading" ? (
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {Array.from({ length: 6 }).map((_, index) => (
-              <EventCardSkeleton key={index} />
-            ))}
-          </div>
-        ) : status === "error" ? (
-          <EmptyState
-            icon={CalendarX}
-            title="Couldn't load events"
-            description="Something went wrong on our end. Refresh the page to try again."
-            action={
-              <Button
-                variant="secondary"
-                onClick={() => window.location.reload()}
-              >
-                Refresh
-              </Button>
-            }
-          />
-        ) : upcomingFiltered.length === 0 ? (
-          <EmptyState
-            icon={SearchX}
-            title="No events match these filters"
-            description={
-              hasActiveFilters
-                ? "Try a different category, clear a filter, or search for something else."
-                : "There's nothing here yet — check back soon."
-            }
-            action={
-              hasActiveFilters ? (
-                <Button variant="secondary" onClick={clearAllFilters}>
-                  Clear all filters
-                </Button>
-              ) : undefined
-            }
-          />
-        ) : (
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {upcomingFiltered.map((event) => (
-              <EventCard
-                key={event.id}
-                variant="default"
-                href={`/events/${event.id}`}
-                imageSrc={event.coverImageUrl}
-                colorSeed={event.id}
-                tags={[
-                  { label: event.type, tone: "primary" },
-                  {
-                    label: event.price,
-                    tone: priceTone(event.price),
-                  },
-                ]}
-                title={event.title}
-                date={event.date}
-                location={
-                  event.mode === "In-Person" ? event.location : undefined
-                }
-                eventType={event.type}
-                durationText={event.duration || undefined}
-                spotsLeft={event.spotsLeft}
-                attendeesLabel={
-                  event.registeredCount
-                    ? `${event.registeredCount} going`
-                    : undefined
-                }
-              />
-            ))}
-          </div>
-        )}
-      </section>
+                  {featured.length > 1 && (
+                    <div className="mt-3 flex items-center justify-center gap-1.5">
+                      {featured.map((f, index) => (
+                        <button
+                          key={f.id}
+                          type="button"
+                          onClick={() => setFeaturedIndex(index)}
+                          aria-label={`Go to featured event ${index + 1}`}
+                          aria-current={index === activeFeaturedIndex}
+                          className={`size-1.5 rounded-full transition-colors ${
+                            index === activeFeaturedIndex
+                              ? "bg-primary"
+                              : "bg-border-hover"
+                          }`}
+                        />
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </section>
+            );
+          })()}
 
-      {pastFiltered.length > 0 && (
         <section className="flex flex-col gap-6 space-y-3">
           <div className="flex items-center gap-4">
-            <div className="h-10 w-1 rounded-full bg-gray-400" />
+            <div className="h-10 w-1 rounded-full bg-red-500" />
             <div>
               <h2 className="text-text-secondary text-base font-bold tracking-widest uppercase">
-                Past Events
+                Upcoming Events
               </h2>
               <h6 className="text-s text-gray-400">
-                Events that have already ended
+                Explore events that intrest you
               </h6>
             </div>
           </div>
 
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {pastFiltered.map((event) => (
-              <EventCard
-                key={event.id}
-                variant="default"
-                isPast
-                href={`/events/${event.id}`}
-                imageSrc={event.coverImageUrl}
-                colorSeed={event.id}
-                tags={[
-                  { label: event.type, tone: "primary" },
-                  {
-                    label: event.price,
-                    tone: priceTone(event.price),
-                  },
-                ]}
-                title={event.title}
-                date={event.date}
-                location={
-                  event.mode === "In-Person" ? event.location : undefined
-                }
-                eventType={event.type}
-                durationText={event.duration || undefined}
-                spotsLeft={event.spotsLeft}
-                attendeesLabel={
-                  event.registeredCount
-                    ? `${event.registeredCount} going`
-                    : undefined
-                }
-              />
-            ))}
-          </div>
+          {status === "loading" ? (
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {Array.from({ length: 6 }).map((_, index) => (
+                <EventCardSkeleton key={index} />
+              ))}
+            </div>
+          ) : status === "error" ? (
+            <EmptyState
+              icon={CalendarX}
+              title="Couldn't load events"
+              description="Something went wrong on our end. Refresh the page to try again."
+              action={
+                <Button
+                  variant="secondary"
+                  onClick={() => window.location.reload()}
+                >
+                  Refresh
+                </Button>
+              }
+            />
+          ) : upcomingFiltered.length === 0 ? (
+            <EmptyState
+              icon={SearchX}
+              title="No events match these filters"
+              description={
+                hasActiveFilters
+                  ? "Try a different category, clear a filter, or search for something else."
+                  : "There's nothing here yet — check back soon."
+              }
+              action={
+                hasActiveFilters ? (
+                  <Button variant="secondary" onClick={clearAllFilters}>
+                    Clear all filters
+                  </Button>
+                ) : undefined
+              }
+            />
+          ) : (
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {upcomingFiltered.map((event) => (
+                <EventCard
+                  key={event.id}
+                  variant="default"
+                  href={`/events/${event.id}`}
+                  imageSrc={event.coverImageUrl}
+                  colorSeed={event.id}
+                  tags={[
+                    { label: event.type, tone: "primary" },
+                    {
+                      label: event.price,
+                      tone: priceTone(event.price),
+                    },
+                  ]}
+                  title={event.title}
+                  date={event.date}
+                  location={
+                    event.mode === "In-Person" ? event.location : undefined
+                  }
+                  eventType={event.type}
+                  durationText={event.duration || undefined}
+                  spotsLeft={event.spotsLeft}
+                  attendeesLabel={
+                    event.registeredCount
+                      ? `${event.registeredCount} going`
+                      : undefined
+                  }
+                />
+              ))}
+            </div>
+          )}
         </section>
-      )}
+
+        {pastFiltered.length > 0 && (
+          <section className="flex flex-col gap-6 space-y-3">
+            <div className="flex items-center gap-4">
+              <div className="h-10 w-1 rounded-full bg-gray-400" />
+              <div>
+                <h2 className="text-text-secondary text-base font-bold tracking-widest uppercase">
+                  Past Events
+                </h2>
+                <h6 className="text-s text-gray-400">
+                  Events that have already ended
+                </h6>
+              </div>
+            </div>
+
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {visiblePast.map((event) => (
+                <EventCard
+                  key={event.id}
+                  variant="default"
+                  isPast
+                  href={`/events/${event.id}`}
+                  imageSrc={event.coverImageUrl}
+                  colorSeed={event.id}
+                  tags={[
+                    { label: event.type, tone: "primary" },
+                    {
+                      label: event.price,
+                      tone: priceTone(event.price),
+                    },
+                  ]}
+                  title={event.title}
+                  date={event.date}
+                  location={
+                    event.mode === "In-Person" ? event.location : undefined
+                  }
+                  eventType={event.type}
+                  durationText={event.duration || undefined}
+                  spotsLeft={event.spotsLeft}
+                  attendeesLabel={
+                    event.registeredCount
+                      ? `${event.registeredCount} going`
+                      : undefined
+                  }
+                />
+              ))}
+            </div>
+
+            {!showAllPast && pastFiltered.length > PAST_EVENTS_PAGE_SIZE && (
+              <div className="flex justify-center">
+                <Button
+                  variant="secondary"
+                  onClick={() => setShowAllPast(true)}
+                >
+                  View More
+                </Button>
+              </div>
+            )}
+          </section>
+        )}
+      </div>
     </div>
   );
 }
