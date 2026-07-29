@@ -38,7 +38,7 @@ Next.js (this repo)  --HTTP-->  ORDS (Oracle REST Data Services)  -->  PL/SQL pa
 | `requestPasswordReset()` | `POST /auth/forgot-password` | `AUTH_PKG.request_password_reset` | `GCODE_EMAIL_API.send_reset_email` |
 | *(no frontend caller found in this snapshot)* | — | — | `GCODE_EMAIL_API.send_rating_invite_email` — likely triggered from a ratings-related package not included in what was pasted; note the gap rather than guess |
 
-These first two rows (plus the payment-webhook path, which is the same code) are the send points the WhatsApp work touches. **Design — fully deployed as of this snapshot** (see the plan file for the original diff/reasoning): email stays unconditional at both points; a `GCODE_WHATSAPP_API.send_ticket_confirmation`/`send_submission_received` call has been added *alongside* it in `gcode_event_participants_api`, firing only when the participant's `gcode_users.is_phone_verified = 'Y'` — an opt-in checkbox on the registration form is what triggers phone verification in the first place. WhatsApp is always additive, never a replacement for email. Phone OTP itself is `AUTH_PKG.send_phone_otp`/`verify_phone_otp` — same package as the existing email OTP, not a separate one (a reversed decision from an earlier iteration of this doc — see the plan file for why). **Only remaining piece: the two ORDS endpoints** (`/auth/phone-otp`, `/auth/verify-phone-otp`) binding to those new `AUTH_PKG` procedures — not yet created.
+These first two rows (plus the payment-webhook path, which is the same code) are the send points the WhatsApp work touches. **Design — fully deployed as of this snapshot** (see the plan file for the original diff/reasoning): email stays unconditional at both points. `submit_audio` fires `GCODE_WHATSAPP_API.send_submission_received` *alongside* email, gated on `gcode_users.is_phone_verified = 'Y'`. `create_participant`'s WhatsApp send is now **Participant-category only** — it fires a thank-you message via `send_event_update` under its own `participant_registration_thanks` template, with the event's banner as the header image via a cached media id (`GCODE_WHATSAPP_API.get_or_upload_event_media` — uploaded once per event, reused across every Participant's registration, not re-uploaded per send; confirmation/public-event links and forward-to-friends blurb are still a later addition), gated on `is_phone_verified = 'Y' AND category = 'PARTICIPANT'`. The "Also receive updates on WhatsApp" opt-in checkbox that triggers phone verification is itself now only rendered on the frontend's Participant registration path — an Attendee registration never sees it, so `is_phone_verified` never becomes `'Y'` there and the WhatsApp branch simply never fires for Attendees. WhatsApp is always additive, never a replacement for email. Phone OTP itself is `AUTH_PKG.send_phone_otp`/`verify_phone_otp` — same package as the existing email OTP, not a separate one (a reversed decision from an earlier iteration of this doc — see the plan file for why). **Only remaining piece: the two ORDS endpoints** (`/auth/phone-otp`, `/auth/verify-phone-otp`) binding to those new `AUTH_PKG` procedures — not yet created.
 
 ## GCODE_EMAIL_API
 
@@ -647,21 +647,45 @@ END GCODE_EMAIL_API;
 
 Outbound WhatsApp, via Meta's Cloud API. Mirrors `GCODE_EMAIL_API`'s shape — one `send_*` procedure per message type — but the transport is `APEX_WEB_SERVICE.MAKE_REST_REQUEST` (same pattern `GCODE_PAYMENTS_API` uses for Razorpay) POSTing to `graph.facebook.com/v20.0/{PHONE_NUMBER_ID}/messages`, not `APEX_MAIL`. `get_secret` pulls `WHATSAPP_ACCESS_TOKEN`/`WHATSAPP_PHONE_NUMBER_ID` from `GCODE_APP_SECRETS`, the same secrets table Razorpay's credentials live in.
 
-Every send is a WhatsApp **template message** — free-form business-initiated text isn't allowed outside a live 24h customer-service session, so every message type needs its own template pre-approved in Meta Business Manager before it can send: `phone_verification_otp` (Authentication category), `event_ticket` / `submission_received` / `event_update` (Utility category).
+Every send is a WhatsApp **template message** — free-form business-initiated text isn't allowed outside a live 24h customer-service session, so every message type needs its own template pre-approved in Meta Business Manager before it can send: `phone_verification_otp` (Authentication category), `event_ticket` / `submission_received` / `event_update` / `participant_registration_thanks` (Utility category). `event_update` and `participant_registration_thanks` share the same shape (full name + free-text message + optional banner) via `send_event_update`'s overridable `p_template_name`, but are two separate Meta templates — `event_update` reserved for the still-unbuilt organizer-broadcast feature, `participant_registration_thanks` used today by `create_participant`.
 
 The JSON request body is built with `APEX_JSON` (`open_object`/`write`/`open_array`/`close_*`, then `get_clob_output`) rather than the `JSON_OBJECT`/`JSON_ARRAY` SQL functions `GCODE_PAYMENTS_API` uses elsewhere — a deliberate choice for this package, not an inconsistency to fix; nested conditional structure (optional header, optional button, a variable-length body-params loop) is more readable built imperatively than as one large nested `JSON_OBJECT(...)` expression.
+
+Header images are always sent by media `id`, never by `link` — WhatsApp's `link` header param is unreliable for dynamic, extension-less URLs (QR codes, banners). `send_template` resolves whichever header source it's given (a pre-resolved id, a caller-supplied blob, or a URL it fetches itself) to a media id via `upload_media` before building the request — a pre-resolved id always wins, so a cached banner never triggers a redundant upload.
 
 | Procedure | Purpose |
 | --- | --- |
 | `get_secret` | Internal — reads `GCODE_APP_SECRETS` by name, identical pattern to `GCODE_PAYMENTS_API.get_secret` |
 | `build_body_params` | Internal — `APEX_T_VARCHAR2` → the `[{"type":"text","text":...}, ...]` array every template body needs |
-| `send_template` | Internal — generic Utility-template sender: optional image header (`p_header_image_url`, fetched by Meta from a public link — no pre-upload needed), body params, optional single URL-button param. `send_ticket_confirmation`/`send_submission_received`/`send_event_update` all funnel through this |
+| `fetch_blob_from_url` | Internal — GETs an arbitrary public URL's bytes (used for the QR image) |
+| `upload_media` | Internal — hand-builds a multipart/form-data body (`DBMS_LOB`, boundary markers) and POSTs to `/{PHONE_NUMBER_ID}/media`, returning the resulting media id. No caching of its own — every call uploads fresh; caching, where it happens, lives one level up in `get_or_upload_event_media` |
+| `get_or_upload_event_media` | Public — returns a cached WhatsApp media id for an event's `cover_image`, uploading once via `upload_media` and caching the result on `events.whatsapp_media_id` so every Participant registration for the same event reuses it instead of re-uploading. See "Event banner media caching" below |
+| `send_template` | Internal — generic Utility-template sender: optional header resolved to a media id — `p_header_image_id` (already resolved, e.g. from `get_or_upload_event_media`) takes priority, else `p_header_blob`+`p_header_mime_type` if the caller has bytes, else `p_header_image_url` fetched via `fetch_blob_from_url` — body params, optional single URL-button param. `send_ticket_confirmation`/`send_submission_received`/`send_event_update` all funnel through this |
 | `send_otp` | Public, standalone — Authentication-category templates have a Meta-fixed layout (code + expiry footer + copy-code button, no header, no free body text) different enough from the Utility shape that it doesn't share `send_template` |
-| `send_ticket_confirmation` | QR sent as the header image — reuses the same `api.qrserver.com` link `GCODE_EMAIL_API.send_confirmation_email` already builds, so no new QR-generation logic; body mirrors the email's order-summary card; one URL button to the ticket page |
+| `send_ticket_confirmation` | QR sent as the header image — reuses the same `api.qrserver.com` link `GCODE_EMAIL_API.send_confirmation_email` already builds (fetched + uploaded fresh each send, since every QR is unique per booking — nothing to cache); body mirrors the email's order-summary card; one URL button to the ticket page |
 | `send_submission_received` | Body-only, no header/button |
-| `send_event_update` | Body-only — for the organizer-broadcast feature, still deferred on the frontend/ORDS side |
+| `send_event_update` | Body (`p_full_name`, `p_message`) plus a header image via either `p_banner_media_id` (cached, priority) or `p_banner_blob`/`p_banner_mime_type` (uploaded fresh); `p_template_name` overridable (defaults `'event_update'`, the organizer-broadcast template, still deferred on the frontend/ORDS side) — `create_participant` calls it with `p_template_name => 'participant_registration_thanks'` and `p_banner_media_id => get_or_upload_event_media(p_event_id)` |
 
-**Not yet wired to any caller as of this snapshot** — `create_participant`/`submit_audio` still only call `GCODE_EMAIL_API`. See the plan file for the exact diff that adds the `GCODE_WHATSAPP_API.send_ticket_confirmation`/`send_submission_received` calls alongside (not instead of) the existing email sends, gated on `gcode_users.is_phone_verified`.
+**Event banner media caching** — `events.whatsapp_media_id VARCHAR2(100)` (nullable) caches the Meta media id for the event's current `cover_image` blob:
+```sql
+ALTER TABLE events ADD whatsapp_media_id VARCHAR2(100);
+
+-- Note: `UPDATE OF cover_image` isn't allowed in the trigger DDL itself for
+-- a LOB column (ORA-25006) — the column check has to happen inside the
+-- trigger body via UPDATING('COVER_IMAGE') instead.
+CREATE OR REPLACE TRIGGER trg_events_clear_wa_media
+BEFORE UPDATE ON events
+FOR EACH ROW
+BEGIN
+  IF UPDATING('COVER_IMAGE') THEN
+    :new.whatsapp_media_id := NULL;
+  END IF;
+END;
+/
+```
+The trigger clears the cache at the DB level whenever `cover_image` is touched by an `UPDATE` (regardless of which layer performs it — nothing in the documented `gcode_events_api` writes `cover_image`/`cover_image_mime` today, only `cover_image_url`, a separate column, so this blob is populated by some path outside this doc, most likely a native APEX page), so `get_or_upload_event_media` never reuses a stale id after the organizer swaps the banner.
+
+**Wired to `gcode_event_participants_api.create_participant` as of this snapshot** — Participant-category registrations with a verified phone get a thank-you message via `send_event_update` (under the `participant_registration_thanks` template, not `event_update`), with the event's banner as the header image via the cached `get_or_upload_event_media(p_event_id)` id. `submit_audio` calls `send_submission_received`, same as before. See the plan file for the exact diff/reasoning.
 
 <details>
 <summary>Full source</summary>
@@ -718,6 +742,139 @@ create or replace package body "GCODE_WHATSAPP_API" as
 
   END build_body_params;
 
+  ------------------------------------------------------------------------------
+  -- Fetches an arbitrary public URL's bytes (used for QR images generated via
+  -- api.qrserver.com — WhatsApp's `link` header param is unreliable for these
+  -- dynamic, extension-less URLs, so we pull the bytes ourselves and upload
+  -- them as media instead).
+  ------------------------------------------------------------------------------
+  FUNCTION fetch_blob_from_url(
+      p_url IN VARCHAR2
+  ) RETURN BLOB IS
+      v_blob BLOB;
+  BEGIN
+      APEX_WEB_SERVICE.g_request_headers.DELETE;
+      v_blob := APEX_WEB_SERVICE.make_rest_request_b(
+          p_url         => p_url,
+          p_http_method => 'GET'
+      );
+
+      IF APEX_WEB_SERVICE.g_status_code NOT IN (200, 201) THEN
+          RAISE_APPLICATION_ERROR(
+              -20012,
+              'Fetching image from ' || p_url || ' failed with status ' || APEX_WEB_SERVICE.g_status_code
+          );
+      END IF;
+
+      RETURN v_blob;
+  END fetch_blob_from_url;
+
+  ------------------------------------------------------------------------------
+  -- Uploads media bytes to WhatsApp (POST /{phone_number_id}/media) and
+  -- returns the resulting media_id, per Meta's recommended flow — using a
+  -- media_id in the template header is far more reliable than a `link`,
+  -- especially for dynamically generated images (QR codes, banners) that
+  -- don't have a stable extension/content-type at the URL level.
+  ------------------------------------------------------------------------------
+  FUNCTION upload_media(
+      p_blob      IN BLOB,
+      p_mime_type IN VARCHAR2,
+      p_filename  IN VARCHAR2
+  ) RETURN VARCHAR2 IS
+      v_boundary VARCHAR2(60) := 'GCODEWA' || TO_CHAR(SYSTIMESTAMP, 'FF6');
+      v_body     BLOB;
+      v_resp     CLOB;
+      v_url      VARCHAR2(500);
+      v_media_id VARCHAR2(200);
+
+      PROCEDURE append_text(p_text IN VARCHAR2) IS
+          v_raw RAW(32767);
+      BEGIN
+          v_raw := UTL_RAW.CAST_TO_RAW(p_text);
+          DBMS_LOB.writeappend(v_body, UTL_RAW.LENGTH(v_raw), v_raw);
+      END append_text;
+  BEGIN
+      DBMS_LOB.createtemporary(v_body, TRUE);
+
+      append_text('--' || v_boundary || CHR(13) || CHR(10));
+      append_text('Content-Disposition: form-data; name="messaging_product"' || CHR(13) || CHR(10) || CHR(13) || CHR(10));
+      append_text('whatsapp' || CHR(13) || CHR(10));
+
+      append_text('--' || v_boundary || CHR(13) || CHR(10));
+      append_text('Content-Disposition: form-data; name="type"' || CHR(13) || CHR(10) || CHR(13) || CHR(10));
+      append_text(p_mime_type || CHR(13) || CHR(10));
+
+      append_text('--' || v_boundary || CHR(13) || CHR(10));
+      append_text('Content-Disposition: form-data; name="file"; filename="' || p_filename || '"' || CHR(13) || CHR(10));
+      append_text('Content-Type: ' || p_mime_type || CHR(13) || CHR(10) || CHR(13) || CHR(10));
+      DBMS_LOB.append(v_body, p_blob);
+      append_text(CHR(13) || CHR(10) || '--' || v_boundary || '--' || CHR(13) || CHR(10));
+
+      v_url := 'https://graph.facebook.com/v20.0/' || get_secret('WHATSAPP_PHONE_NUMBER_ID') || '/media';
+
+      APEX_WEB_SERVICE.g_request_headers.DELETE;
+      APEX_WEB_SERVICE.g_request_headers(1).name  := 'Authorization';
+      APEX_WEB_SERVICE.g_request_headers(1).value := 'Bearer ' || get_secret('WHATSAPP_ACCESS_TOKEN');
+      APEX_WEB_SERVICE.g_request_headers(2).name  := 'Content-Type';
+      APEX_WEB_SERVICE.g_request_headers(2).value := 'multipart/form-data; boundary=' || v_boundary;
+
+      v_resp := APEX_WEB_SERVICE.make_rest_request(
+          p_url         => v_url,
+          p_http_method => 'POST',
+          p_body_blob   => v_body
+      );
+
+      DBMS_LOB.freetemporary(v_body);
+
+      IF APEX_WEB_SERVICE.g_status_code NOT IN (200, 201) THEN
+          RAISE_APPLICATION_ERROR(-20011, 'WhatsApp media upload failed: ' || v_resp);
+      END IF;
+
+      APEX_JSON.parse(v_resp);
+      v_media_id := APEX_JSON.get_varchar2('id');
+
+      IF v_media_id IS NULL THEN
+          RAISE_APPLICATION_ERROR(-20011, 'WhatsApp media upload returned no id: ' || v_resp);
+      END IF;
+
+      RETURN v_media_id;
+  END upload_media;
+
+  ------------------------------------------------------------------------------
+  -- Returns a cached WhatsApp media id for an event's COVER_IMAGE, uploading
+  -- it once via upload_media and caching the result on
+  -- events.whatsapp_media_id so repeat sends for the same event (every
+  -- Participant registration) never re-upload the same bytes. Cache is
+  -- cleared by trg_events_clear_wa_media whenever cover_image is updated,
+  -- wherever that write comes from — see the schema note below.
+  ------------------------------------------------------------------------------
+  FUNCTION get_or_upload_event_media(
+      p_event_id IN NUMBER
+  ) RETURN VARCHAR2 IS
+      v_media_id events.whatsapp_media_id%TYPE;
+      v_blob     events.cover_image%TYPE;
+      v_mime     events.cover_image_mime%TYPE;
+  BEGIN
+      SELECT whatsapp_media_id, cover_image, cover_image_mime
+        INTO v_media_id, v_blob, v_mime
+        FROM events
+       WHERE id = p_event_id;
+
+      IF v_media_id IS NOT NULL THEN
+          RETURN v_media_id;
+      END IF;
+
+      IF v_blob IS NULL THEN
+          RETURN NULL;
+      END IF;
+
+      v_media_id := upload_media(v_blob, v_mime, 'banner.jpg');
+
+      UPDATE events SET whatsapp_media_id = v_media_id WHERE id = p_event_id;
+
+      RETURN v_media_id;
+  END get_or_upload_event_media;
+
 ------------------------------------------------------------------------------
 -- Generic Utility Template Sender
 ------------------------------------------------------------------------------
@@ -725,15 +882,34 @@ PROCEDURE send_template(
     p_phone             IN VARCHAR2,
     p_template_name     IN VARCHAR2,
     p_body_values       IN APEX_T_VARCHAR2,
-    p_header_image_url  IN VARCHAR2 DEFAULT NULL,
+    p_header_image_url  IN VARCHAR2 DEFAULT NULL, -- QR-style URL, fetched + uploaded (not sent as `link`)
+    p_header_blob       IN BLOB     DEFAULT NULL, -- caller already has the bytes (e.g. events.cover_image)
+    p_header_mime_type  IN VARCHAR2 DEFAULT NULL, -- required when p_header_blob is given
+    p_header_image_id   IN VARCHAR2 DEFAULT NULL, -- already-uploaded media id (e.g. from get_or_upload_event_media) — skips upload entirely
     p_button_url_param  IN VARCHAR2 DEFAULT NULL
 ) IS
-    v_url      VARCHAR2(500);
-    v_req_body CLOB;
-    v_resp     CLOB;
+    v_url         VARCHAR2(500);
+    v_req_body    CLOB;
+    v_resp        CLOB;
+    v_media_id    VARCHAR2(200);
+    v_header_blob BLOB;
 BEGIN
     IF p_phone IS NULL THEN
         RETURN;
+    END IF;
+
+    --------------------------------------------------------------------------
+    -- Resolve header image (if any) to a WhatsApp media_id up front —
+    -- a pre-resolved id always wins, so a cached banner id never triggers a
+    -- redundant upload.
+    --------------------------------------------------------------------------
+    IF p_header_image_id IS NOT NULL THEN
+        v_media_id := p_header_image_id;
+    ELSIF p_header_blob IS NOT NULL THEN
+        v_media_id := upload_media(p_header_blob, p_header_mime_type, 'banner.jpg');
+    ELSIF p_header_image_url IS NOT NULL THEN
+        v_header_blob := fetch_blob_from_url(p_header_image_url);
+        v_media_id    := upload_media(v_header_blob, 'image/png', 'qr.png');
     END IF;
 
     --------------------------------------------------------------------------
@@ -764,9 +940,9 @@ BEGIN
     APEX_JSON.open_array('components');
 
     --------------------------------------------------------------------------
-    -- Optional Header
+    -- Optional Header (by media_id, not link)
     --------------------------------------------------------------------------
-    IF p_header_image_url IS NOT NULL THEN
+    IF v_media_id IS NOT NULL THEN
 
         APEX_JSON.open_object;
         APEX_JSON.write('type', 'header');
@@ -777,7 +953,7 @@ BEGIN
             APEX_JSON.write('type', 'image');
 
             APEX_JSON.open_object('image');
-            APEX_JSON.write('link', p_header_image_url);
+            APEX_JSON.write('id', v_media_id);
             APEX_JSON.close_object;
 
             APEX_JSON.close_object;
@@ -943,7 +1119,7 @@ END send_template;
       p_phone            => p_phone,
       p_template_name    => 'event_ticket',
       p_body_values      => APEX_T_VARCHAR2(p_full_name, p_event_title, p_when_date, p_booking_ref),
-      p_header_image_url => p_qr_url,
+      p_header_image_url => p_qr_url, -- fetched + uploaded to a media_id inside send_template
       p_button_url_param => p_booking_ref -- matches whatever dynamic URL suffix the button template uses
     );
   END send_ticket_confirmation;
@@ -961,16 +1137,34 @@ END send_template;
     );
   END send_submission_received;
 
+  -- p_template_name defaults to the organizer-broadcast template
+  -- ('event_update') but callers with their own approved Meta template of
+  -- the same shape (full_name + message + optional banner) can override it
+  -- — e.g. create_participant passes 'participant_registration_thanks' so
+  -- the participant thank-you stays on its own template, independent of
+  -- whatever the (still unbuilt) broadcast feature later sends under
+  -- 'event_update'.
+  -- p_banner_media_id (cached, e.g. from get_or_upload_event_media) takes
+  -- priority over p_banner_blob (uploaded fresh every call) — pass one or
+  -- the other, not both. create_participant uses the cached id; a one-off
+  -- organizer broadcast with no cache to reuse would pass the raw blob.
   PROCEDURE send_event_update(
-    p_phone     IN VARCHAR2,
-    p_full_name IN VARCHAR2,
-    p_message   IN VARCHAR2
+    p_phone            IN VARCHAR2,
+    p_full_name        IN VARCHAR2,
+    p_message          IN VARCHAR2,
+    p_banner_blob      IN BLOB     DEFAULT NULL, -- e.g. SELECT cover_image, cover_image_mime FROM events
+    p_banner_mime_type IN VARCHAR2 DEFAULT NULL,
+    p_banner_media_id  IN VARCHAR2 DEFAULT NULL,
+    p_template_name    IN VARCHAR2 DEFAULT 'event_update'
   ) IS
   BEGIN
     send_template(
-      p_phone         => p_phone,
-      p_template_name => 'event_update',
-      p_body_values   => APEX_T_VARCHAR2(p_full_name, p_message)
+      p_phone            => p_phone,
+      p_template_name    => p_template_name,
+      p_body_values      => APEX_T_VARCHAR2(p_full_name, p_message),
+      p_header_blob      => p_banner_blob,
+      p_header_mime_type => p_banner_mime_type,
+      p_header_image_id  => p_banner_media_id
     );
   END send_event_update;
 
@@ -1331,7 +1525,7 @@ The core registration package — WhatsApp is now wired in here, deployed (this 
    - No `p_user_id`, no existing user → require a verified row in `gcode_pending_users` (i.e. the guest OTP flow must have run first — this is the "Email not verified" `-20003` error), pull that row's `is_phone_verified` too, then `INSERT INTO gcode_users` (carrying it over) and delete the pending row.
 5. Insert the `GCODE_EVENT_PARTICIPANTS` row, `COMMIT`.
 6. Fire `GCODE_EMAIL_API.send_confirmation_email` — unconditional, in its own exception-swallowing block.
-7. **If `is_phone_verified = 'Y'` and a phone is on file:** build a QR URL and ticket URL (same `api.qrserver.com` / `events.gcode.in/.../registered` shapes `GCODE_EMAIL_API.send_confirmation_email` uses internally, duplicated here since that logic is private to the email package) and fire `GCODE_WHATSAPP_API.send_ticket_confirmation` — also unconditional-once-triggered, own exception-swallowing block. **Additive, not a replacement** — step 6 always runs regardless.
+7. **If `is_phone_verified = 'Y'`, a phone is on file, and `category = 'PARTICIPANT'`:** fire `GCODE_WHATSAPP_API.send_event_update` (under the `participant_registration_thanks` template, via its `p_template_name` override — kept separate from the `event_update` broadcast template) with a thank-you message plus the event's banner as the header image, resolved via `GCODE_WHATSAPP_API.get_or_upload_event_media(p_event_id)` — cached on `events.whatsapp_media_id` after the first upload, so every subsequent Participant registration for this event reuses the same media id instead of re-uploading `cover_image` — confirmation/public-event links and a forward-to-friends blurb are still a later addition — own exception-swallowing block. **Additive, not a replacement** — step 6 always runs regardless. Attendee-category registrations never reach this branch at all, since the frontend only offers the WhatsApp opt-in on the Participant path.
 
 **`submit_audio`** — Participant-category audio submission. Deadline is `NVL(event.participant_registration_deadline, participant.applied_on) + 24 hours`, but **only gates the first submission** (a participant who submitted once can keep replacing the URL past the deadline — the code comment calls this out explicitly, matching the frontend's `isDisqualified` rule in `src/lib/attendees.ts`). On success: updates the row, commits, looks up the user's `email, phone, is_phone_verified`, fires `GCODE_EMAIL_API.send_submission_received_email` unconditionally, then — same additive pattern as `create_participant` — fires `GCODE_WHATSAPP_API.send_submission_received` if phone is verified.
 
@@ -1344,7 +1538,7 @@ The core registration package — WhatsApp is now wired in here, deployed (this 
 | `list_by_event` / `get_participant` | Attendee listing/detail — joins `gcode_users` (email, phone) and `gcode_roles` (role_name); this is what `adaptParticipant()` in `src/lib/api/adapters.ts` maps into the frontend `Attendee` type |
 | `list_by_user` | "My registrations" — joins `events` for the attendee-facing ticket list |
 
-**`is_phone_verified` only ever gets set `'Y'` via `AUTH_PKG.verify_phone_otp`** (planned — see the `AUTH_PKG` section), which the frontend only calls if the participant checked the "Also receive updates on WhatsApp" opt-in checkbox during registration. Until that's deployed, `is_phone_verified` stays `'N'` for everyone and the WhatsApp branches below are dead code that never fires — email-only behavior is unchanged from before this feature.
+**`is_phone_verified` only ever gets set `'Y'` via `AUTH_PKG.verify_phone_otp`** (planned — see the `AUTH_PKG` section), which the frontend only calls if the guest checked the "Also receive updates on WhatsApp" opt-in checkbox during registration — and that checkbox is now only rendered on the Participant registration path, never Attendee. Until the two `AUTH_PKG` ORDS endpoints are deployed, `is_phone_verified` stays `'N'` for everyone and the WhatsApp branch below is dead code that never fires — email-only behavior is unchanged from before this feature.
 
 <details>
 <summary>Full source</summary>
@@ -1388,9 +1582,6 @@ create or replace PACKAGE BODY gcode_event_participants_api AS
     v_effective_reg_deadline  events.registration_deadline%TYPE;
     v_title                   events.title%TYPE;
     v_start_date              events.start_date%TYPE;
-    v_when_date                VARCHAR2(100);
-    v_qr_url                   VARCHAR2(500);
-    v_ticket_url                VARCHAR2(500);
     v_booked                  NUMBER;
     v_verified                NUMBER;
   BEGIN
@@ -1527,21 +1718,18 @@ create or replace PACKAGE BODY gcode_event_participants_api AS
         NULL;
     END;
 
-    IF v_is_phone_verified = 'Y' AND v_phone IS NOT NULL THEN
-      v_when_date := CASE WHEN v_start_date IS NOT NULL THEN TO_CHAR(v_start_date, 'DD Mon YYYY') ELSE 'TBA' END;
-      v_qr_url := 'https://api.qrserver.com/v1/create-qr-code/?size=220x220&data='
-                  || APEX_UTIL.URL_ENCODE('GCODE-PARTICIPANT-' || p_id);
-      v_ticket_url := 'https://events.gcode.in/events/' || p_event_id || '/registered?pid=' || p_id;
-
+    -- WhatsApp thank-you is Participant-only — the frontend's opt-in
+    -- checkbox is only ever shown on that path, so is_phone_verified should
+    -- never be 'Y' for an Attendee, but the category check is kept explicit
+    -- here rather than relying on that alone.
+    IF v_is_phone_verified = 'Y' AND v_phone IS NOT NULL AND v_category = 'PARTICIPANT' THEN
       BEGIN
-        GCODE_WHATSAPP_API.send_ticket_confirmation(
-          p_phone       => v_phone,
-          p_full_name   => v_resolved_full_name,
-          p_event_title => v_title,
-          p_when_date   => v_when_date,
-          p_booking_ref => 'GCODE-P' || p_id,
-          p_qr_url      => v_qr_url,
-          p_ticket_url  => v_ticket_url
+        GCODE_WHATSAPP_API.send_event_update(
+          p_phone           => v_phone,
+          p_full_name       => v_resolved_full_name,
+          p_message         => 'Thanks for registering as a Participant for ' || v_title || '! We''re excited to have you.',
+          p_banner_media_id => GCODE_WHATSAPP_API.get_or_upload_event_media(p_event_id),
+          p_template_name   => 'participant_registration_thanks'
         );
       EXCEPTION
         WHEN OTHERS THEN NULL;

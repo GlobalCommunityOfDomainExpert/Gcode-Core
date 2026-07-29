@@ -96,6 +96,16 @@ export default function EventRegisterPage() {
   const [category, setCategory] = useState<Category>("ATTENDEE");
   const initializedStep = useRef(false);
 
+  // WhatsApp is Participant-only — if the guest switches away from that
+  // category (e.g. back to the pass-picker, then Attendee) after checking
+  // the box, drop the stale opt-in rather than leaving it gating submit()
+  // with the checkbox no longer even visible.
+  useEffect(() => {
+    if (category !== "PARTICIPANT") {
+      setReceiveWhatsApp(false);
+    }
+  }, [category]);
+
   useEffect(() => {
     if (event && !initializedStep.current) {
       initializedStep.current = true;
@@ -230,7 +240,12 @@ export default function EventRegisterPage() {
       setShowVerifyModal(true);
       return;
     }
-    if (!session && receiveWhatsApp && phone.trim() !== verifiedPhone) {
+    if (
+      !session &&
+      category === "PARTICIPANT" &&
+      receiveWhatsApp &&
+      phone.trim() !== verifiedPhone
+    ) {
       setError("");
       setShowVerifyPhoneModal(true);
       return;
@@ -454,12 +469,14 @@ export default function EventRegisterPage() {
                       />
                     </FormField>
                   </div>
-                  <Checkbox
-                    id="receive-whatsapp"
-                    checked={receiveWhatsApp}
-                    onChange={(e) => setReceiveWhatsApp(e.target.checked)}
-                    label="Also receive updates on WhatsApp"
-                  />
+                  {category === "PARTICIPANT" && (
+                    <Checkbox
+                      id="receive-whatsapp"
+                      checked={receiveWhatsApp}
+                      onChange={(e) => setReceiveWhatsApp(e.target.checked)}
+                      label="Also receive updates on WhatsApp"
+                    />
+                  )}
                 </>
               )}
               {maxQuantity !== 1 && (
