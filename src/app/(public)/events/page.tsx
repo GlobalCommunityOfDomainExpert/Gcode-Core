@@ -93,7 +93,8 @@ const whyJoinItems = [
 ] as const;
 
 const FEATURED_ROTATE_MS = 6000;
-const PAST_EVENTS_PAGE_SIZE = 6;
+const PAST_EVENTS_INITIAL_COUNT = 6;
+const PAST_EVENTS_LOAD_MORE_COUNT = 9;
 
 export default function EventsPage() {
   const [activeTab, setActiveTab] = useState("all");
@@ -101,7 +102,9 @@ export default function EventsPage() {
   const [search, setSearch] = useState("");
   const [featuredIndex, setFeaturedIndex] = useState(0);
   const [featuredPaused, setFeaturedPaused] = useState(false);
-  const [showAllPast, setShowAllPast] = useState(false);
+  const [pastVisibleCount, setPastVisibleCount] = useState(
+    PAST_EVENTS_INITIAL_COUNT,
+  );
   const { events, status } = useEvents();
   const { data: eventTypes } = useLookup(getEventTypes);
   const now = useServerNow();
@@ -115,6 +118,7 @@ export default function EventsPage() {
   // stranded mid-scroll in whatever list they were looking at before.
   function handleTabChange(value: string) {
     setActiveTab(value);
+    setPastVisibleCount(PAST_EVENTS_INITIAL_COUNT);
     document
       .getElementById("app-scroll-region")
       ?.scrollTo({ top: 0, behavior: "smooth" });
@@ -197,9 +201,7 @@ export default function EventsPage() {
   const pastFiltered = filtered
     .filter((e) => hasEventEnded(e, now))
     .sort((a, b) => (b.endDateIso ?? "").localeCompare(a.endDateIso ?? ""));
-  const visiblePast = showAllPast
-    ? pastFiltered
-    : pastFiltered.slice(0, PAST_EVENTS_PAGE_SIZE);
+  const visiblePast = pastFiltered.slice(0, pastVisibleCount);
 
   const hasActiveFilters =
     activeTab !== "all" || activeFilters.length > 0 || search.trim() !== "";
@@ -544,11 +546,15 @@ export default function EventsPage() {
               ))}
             </div>
 
-            {!showAllPast && pastFiltered.length > PAST_EVENTS_PAGE_SIZE && (
+            {pastVisibleCount < pastFiltered.length && (
               <div className="flex justify-center">
                 <Button
                   variant="secondary"
-                  onClick={() => setShowAllPast(true)}
+                  onClick={() =>
+                    setPastVisibleCount(
+                      (prev) => prev + PAST_EVENTS_LOAD_MORE_COUNT,
+                    )
+                  }
                 >
                   View More
                 </Button>
