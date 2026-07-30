@@ -12,4 +12,7 @@ hero:
     - theme: alt
       text: Component Library
       link: http://localhost:6006
+    - theme: alt
+      text: Codebase Reference
+      link: /architecture-overview
 ---
