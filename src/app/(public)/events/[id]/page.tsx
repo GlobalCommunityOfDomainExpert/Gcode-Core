@@ -99,6 +99,27 @@ export default function EventDetailPage() {
         const registrationClosed = enabledPasses.length === 0;
         const singlePass =
           enabledPasses.length === 1 ? enabledPasses[0].data : undefined;
+        const singleCategory =
+          enabledPasses.length === 1 ? enabledPasses[0].category : undefined;
+
+        // Displayed counts are padded with a fixed base so passes never read
+        // as unbooked — Attendee passes show 20 + real seats booked,
+        // Participant passes show 10 + real people registered.
+        function displayedCount(
+          category: "ATTENDEE" | "PARTICIPANT",
+          registeredCount: number,
+        ) {
+          return (category === "ATTENDEE" ? 20 : 10) + registeredCount;
+        }
+        function displayedCountLabel(
+          category: "ATTENDEE" | "PARTICIPANT",
+          registeredCount: number,
+        ) {
+          const count = displayedCount(category, registeredCount);
+          return category === "ATTENDEE"
+            ? `${count} already booked`
+            : `${count} registered`;
+        }
 
         type WindowStatus =
           | { state: "not-open-yet"; days: number }
@@ -152,11 +173,12 @@ export default function EventDetailPage() {
                 <span className="text-heading text-text-primary font-extrabold">
                   {singlePass.priceLabel}
                 </span>
-                {singlePass.spotsLeft !== undefined && (
-                  <span className="text-small text-warning font-semibold">
-                    {singlePass.spotsLeft} spots left
-                  </span>
-                )}
+                <span className="border-warning text-small text-warning rounded-full border px-2 py-0.5 font-semibold">
+                  {displayedCountLabel(
+                    singleCategory!,
+                    singlePass.registeredCount,
+                  )}
+                </span>
               </div>
             ) : enabledPasses.length > 1 ? (
               <>
@@ -196,11 +218,15 @@ export default function EventDetailPage() {
                             label: data.priceLabel,
                             tone: "success" as const,
                           },
-                          data.spotsLeft !== undefined
+                          !notOpenYet && !closed
                             ? {
                                 icon: Ticket,
-                                label: `${data.spotsLeft} left`,
+                                label: displayedCountLabel(
+                                  category,
+                                  data.registeredCount,
+                                ),
                                 tone: "warning" as const,
+                                bordered: true,
                               }
                             : undefined,
                           status.state === "closing-soon"
@@ -264,7 +290,10 @@ export default function EventDetailPage() {
             {singlePass?.capacity && (
               <p className="text-small text-text-secondary text-center">
                 {singlePass.capacity} total capacity ·{" "}
-                {singlePass.registeredCount} registered
+                {displayedCountLabel(
+                  singleCategory!,
+                  singlePass.registeredCount,
+                )}
               </p>
             )}
           </>

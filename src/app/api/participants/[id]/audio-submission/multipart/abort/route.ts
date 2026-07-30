@@ -6,7 +6,7 @@ export async function POST(
   { params }: { params: Promise<{ id: string }> },
 ) {
   const { id } = await params;
-  const { uploadId } = await request.json().catch(() => ({}));
+  const { uploadId, contentType } = await request.json().catch(() => ({}));
   if (!id || !uploadId) {
     return NextResponse.json(
       { error: "Missing upload metadata" },
@@ -15,7 +15,7 @@ export async function POST(
   }
 
   try {
-    await abortAudioMultipartUpload(id, uploadId);
+    await abortAudioMultipartUpload(id, uploadId, contentType || "audio/webm");
   } catch (err) {
     // Best-effort cleanup — the client already failed and is surfacing its
     // own error; a stray incomplete multipart upload isn't worth retrying.

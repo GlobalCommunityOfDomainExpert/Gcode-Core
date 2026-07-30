@@ -63,6 +63,20 @@ export function submitParticipantAudio(
   });
 }
 
+export type AgeCategory = "YOUNGSTER" | "ADULT" | "SENIOR";
+
+// Contract-only — see the ParticipantApi.age_category comment in types.ts.
+// Mirrors submitParticipantAudio's PUT shape/error convention.
+export function submitParticipantAgeCategory(
+  id: number | string,
+  ageCategory: AgeCategory,
+): Promise<{ age_category: AgeCategory }> {
+  return apiRequest(`/participants/${id}/age-category`, {
+    method: "PUT",
+    body: { age_category: ageCategory },
+  });
+}
+
 // Stays clear of Vercel's ~4.5MB serverless function body cap. Blobs at or
 // under this go through a single POST; bigger ones are split into chunks and
 // sent via OCI's multipart upload API instead, since no individual request
@@ -99,11 +113,12 @@ async function uploadParticipantAudioChunked(
   const base = `/api/participants/${id}/audio-submission/multipart`;
   const fail = () =>
     new Error("Couldn't save your submission. Please try again.");
+  const contentType = blob.type || "audio/webm";
 
   const startRes = await fetch(`${base}/start`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ contentType: blob.type || "audio/webm" }),
+    body: JSON.stringify({ contentType }),
   });
   if (!startRes.ok) throw fail();
   const { uploadId } = await startRes.json();
@@ -119,6 +134,7 @@ async function uploadParticipantAudioChunked(
           "Content-Type": "application/octet-stream",
           "X-Upload-Id": uploadId,
           "X-Part-Number": String(partNum),
+          "X-Audio-Content-Type": contentType,
         },
         body: chunk,
       });
@@ -131,7 +147,7 @@ async function uploadParticipantAudioChunked(
     await fetch(`${base}/abort`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ uploadId }),
+      body: JSON.stringify({ uploadId, contentType }),
     }).catch(() => {});
     throw err;
   }
@@ -139,7 +155,7 @@ async function uploadParticipantAudioChunked(
   const completeRes = await fetch(`${base}/complete`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ uploadId, parts }),
+    body: JSON.stringify({ uploadId, parts, contentType }),
   });
   if (!completeRes.ok) throw fail();
   return completeRes.json();

@@ -8,6 +8,7 @@ export async function POST(
   const { id } = await params;
   const uploadId = request.headers.get("x-upload-id");
   const partNum = Number(request.headers.get("x-part-number"));
+  const contentType = request.headers.get("x-audio-content-type") || "audio/webm";
   if (!id || !uploadId || !partNum) {
     return NextResponse.json(
       { error: "Missing upload metadata" },
@@ -21,7 +22,7 @@ export async function POST(
   }
 
   try {
-    const etag = await uploadAudioPart(id, uploadId, partNum, body);
+    const etag = await uploadAudioPart(id, uploadId, partNum, body, contentType);
     return NextResponse.json({ etag });
   } catch (err) {
     console.error("[audio-submission/multipart/part]", err);

@@ -133,6 +133,26 @@ export function OverviewTab({
     participantRegistration.enabled ||
     participantRegistration.registeredCount > 0;
 
+  // Age category is only ever captured on the additional-info page, gated to
+  // Participant-category rows — Attendee rows never have it.
+  const participants = attendees.filter(
+    (attendee) => attendee.category === "Participant",
+  );
+  const ageBreakdown: { label: string; value: number }[] = [
+    {
+      label: "Youngster (below 18)",
+      value: participants.filter((p) => p.ageCategory === "YOUNGSTER").length,
+    },
+    {
+      label: "Adult (18–60)",
+      value: participants.filter((p) => p.ageCategory === "ADULT").length,
+    },
+    {
+      label: "Senior Citizen (60 and above)",
+      value: participants.filter((p) => p.ageCategory === "SENIOR").length,
+    },
+  ];
+
   return (
     <div className="space-y-6">
       <div>
@@ -259,6 +279,18 @@ export function OverviewTab({
               }
               sub={`Closes ${participantRegistration.registrationCloses}`}
             />
+          </div>
+          <p className="text-small text-text-secondary mt-4 mb-1 font-medium">
+            Age Breakdown
+          </p>
+          <div className="grid gap-4 sm:grid-cols-3">
+            {ageBreakdown.map((bracket) => (
+              <StatCard
+                key={bracket.label}
+                label={bracket.label}
+                value={bracket.value.toLocaleString()}
+              />
+            ))}
           </div>
         </div>
       )}
