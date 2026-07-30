@@ -1,5 +1,7 @@
 import { BadgeTone } from "@/components/atoms";
 import { AttendanceStatus, SubmissionStatus } from "@/lib/attendees";
+import { RoundDecision } from "@/lib/rounds";
+import { EventPanelist } from "@/lib/event";
 
 export const attendanceStatusTone: Record<AttendanceStatus, BadgeTone> = {
   registered: "primary",
@@ -30,4 +32,26 @@ export const submissionStatusLabel: Record<SubmissionStatus, string> = {
   submitted: "Submitted",
   pending: "Pending",
   disqualified: "Disqualified",
+};
+
+export const roundDecisionTone: Record<RoundDecision["status"], BadgeTone> = {
+  SHORTLISTED: "success",
+  REJECTED: "danger",
+};
+
+export const roundDecisionLabel: Record<RoundDecision["status"], string> = {
+  SHORTLISTED: "Shortlisted",
+  REJECTED: "Rejected",
+};
+
+export const panelistStatusTone: Record<EventPanelist["status"], BadgeTone> = {
+  INVITED: "warning",
+  ACCEPTED: "success",
+  DECLINED: "danger",
+};
+
+export const panelistStatusLabel: Record<EventPanelist["status"], string> = {
+  INVITED: "Invited",
+  ACCEPTED: "Accepted",
+  DECLINED: "Declined",
 };

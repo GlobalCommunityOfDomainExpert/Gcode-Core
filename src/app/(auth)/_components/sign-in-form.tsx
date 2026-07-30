@@ -2,7 +2,7 @@
 
 import { FormEvent, useState } from "react";
 import NextLink from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Button, Divider, Input, PasswordInput } from "@/components/atoms";
 import { FormField } from "@/components/molecules";
 import { GoogleButton } from "./google-button";
@@ -20,9 +20,21 @@ const linkClasses =
 
 export function SignInForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const { hiddenButton, requestGoogleIdToken } = useGoogleIdToken();
+
+  // Where to land after a successful sign-in — e.g. a panelist invite link
+  // sends people here with ?redirect=/panelist-invites/24 so they come back
+  // to accept instead of landing on Home. Only ever a same-app relative
+  // path (starts with a single "/") — never trust this into an absolute or
+  // protocol-relative ("//host/...") URL, that's an open-redirect vector.
+  const redirectParam = searchParams.get("redirect");
+  const redirectTo =
+    redirectParam && redirectParam.startsWith("/") && !redirectParam.startsWith("//")
+      ? redirectParam
+      : "/";
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -35,7 +47,7 @@ export function SignInForm() {
     try {
       const { token } = await signIn(email, await hashPassword(password));
       setSession(token);
-      router.push("/");
+      router.push(redirectTo);
     } catch (err) {
       setError(err instanceof ApiError ? err.message : "Could not sign in");
     } finally {
@@ -51,9 +63,11 @@ export function SignInForm() {
       setSession(token);
       if (role_name === "NONE") {
         const email = encodeURIComponent(decodeGoogleEmail(idToken));
-        router.push(`/sign-up?oauth=1&userId=${user_id}&email=${email}`);
+        router.push(
+          `/sign-up?oauth=1&userId=${user_id}&email=${email}&redirect=${encodeURIComponent(redirectTo)}`,
+        );
       } else {
-        router.push("/");
+        router.push(redirectTo);
       }
     } catch {
       setError("Could not sign in with Google");

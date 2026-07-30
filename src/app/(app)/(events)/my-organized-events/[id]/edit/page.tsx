@@ -5,6 +5,7 @@ import { useParams } from "next/navigation";
 import { PencilOff } from "lucide-react";
 import { NotFoundState } from "@/components/molecules";
 import { getEvent, listEventTimeline } from "@/lib/api/events";
+import { listEventRounds } from "@/lib/api/rounds";
 import { toEventDraft } from "@/lib/api/adapters";
 import { EventWizard } from "@/app/(app)/(events)/my-organized-events/_components/event-wizard";
 import { EventDetailData } from "@/lib/zod/event";
@@ -21,12 +22,13 @@ export default function EditOrganizedEventPage() {
     void (async () => {
       setStatus("loading");
       try {
-        const [detail, timeline] = await Promise.all([
+        const [detail, timeline, rounds] = await Promise.all([
           getEvent(params.id),
           listEventTimeline(params.id),
+          listEventRounds(params.id),
         ]);
         if (cancelled) return;
-        setDraft(toEventDraft(detail, timeline));
+        setDraft(toEventDraft(detail, timeline, rounds));
         setStatus("ready");
       } catch {
         if (!cancelled) setStatus("error");

@@ -50,6 +50,22 @@ export function audioSubmissionStatus(
   return now.getTime() > deadline ? "disqualified" : "pending";
 }
 
+// A submission URL is either something we uploaded to OCI Object Storage
+// ourselves (audio file, upload/record modes) or a participant-hosted
+// external link (Google Drive/YouTube/etc., link mode) — same field either
+// way (see the audioSubmissionUrl comment above). Client-safe check by
+// hostname pattern only, no bucket name/credentials involved — the
+// server-only equivalent (src/lib/oci/object-storage.ts's
+// isOwnAudioObjectUrl) does the real validation before actually fetching
+// anything.
+export function isUploadedAudioUrl(url: string): boolean {
+  try {
+    return new URL(url).hostname.endsWith(".oraclecloud.com");
+  } catch {
+    return false;
+  }
+}
+
 export function attendeesCsvRows(attendees: Attendee[]): string[][] {
   return attendees.map((attendee) => [
     attendee.name,

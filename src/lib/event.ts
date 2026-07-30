@@ -58,6 +58,50 @@ export interface EventSocialLink {
   url: string;
 }
 
+// Backed by GCODE_EVENT_ROUND_RUBRICS — contract-only, same as EventRound
+// below. One scored criterion within a round's judging rubric (e.g.
+// "Creativity" out of 10).
+export interface RubricCriterion {
+  id: string;
+  label: string;
+  maxScore: number;
+}
+
+// Backed by GCODE_EVENT_ROUNDS. An organizer-configured stage within an
+// event (e.g. "Round 1: Audition"), with its own mode.
+export interface EventRound {
+  id: string;
+  name: string;
+  description: string;
+  mode: "Online" | "Offline";
+  rubric: RubricCriterion[];
+  // 0/undefined = auto-shortlist disabled for this round.
+  shortlistCount?: number;
+  startTime?: string | null;
+  endTime?: string | null;
+  sortOrder: number;
+  // Blend weights for this round's live final score (judge rubric average
+  // vs audience rating average) — only meaningful for whichever round
+  // resolves as "the" live round, see resolveLiveRound in lib/rounds.ts.
+  judgeWeight: number;
+  audienceWeight: number;
+}
+
+// Backed by GCODE_EVENT_PANELISTS. Not a global account role — any
+// signed-in user can be invited as a judging panelist for a specific event,
+// same event-scoped-assignment shape as EventRound above. userId is unset
+// until the invitee accepts (they may not have an account yet at invite
+// time).
+export interface EventPanelist {
+  id: string;
+  eventId: string;
+  userId?: string;
+  invitedEmail: string;
+  status: "INVITED" | "ACCEPTED" | "DECLINED";
+  invitedOn: string;
+  respondedOn?: string | null;
+}
+
 // Backed by EVENT_STATUS lookup table — fixed lifecycle, not open-ended.
 export type EventStatus =
   | "DRAFT"
@@ -175,6 +219,7 @@ export interface Event {
   certificate: boolean; // no backend column — adapter hardcodes false
   description: string[]; // EventDetail.description (detail fetch only), wrapped in array
   timeline: EventTimelineItem[]; // EVENT_TIMELINE rows — adapter hardcodes [] for now
+  rounds: EventRound[]; // GCODE_EVENT_ROUNDS rows — contract-only as of 2026-07-25, adapter hardcodes [] until the table exists
   organizer: EventOrganizer; // see EventOrganizer — only .name is backed
   terms: string[]; // EventDetail.terms, split on newline — falls back to DEFAULT_TERMS when blank
   eligibility: string[]; // EventDetail.eligibility, split on newline — falls back to DEFAULT_ELIGIBILITY when blank

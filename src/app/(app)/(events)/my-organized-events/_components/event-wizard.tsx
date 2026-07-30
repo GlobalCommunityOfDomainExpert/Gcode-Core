@@ -13,6 +13,7 @@ import { StepDetails } from "./step-details";
 import { StepRegistration } from "./step-registration";
 import { StepScheduleMode } from "./step-schedule-mode";
 import { StepTimelineLinks } from "./step-timeline-links";
+import { StepRounds } from "./step-rounds";
 import { StepTerms } from "./step-terms";
 import { StepReview } from "@/app/(app)/(events)/my-organized-events/_components/step-review";
 import { EventDetailData, initialEventData } from "@/lib/zod/event";
@@ -26,8 +27,13 @@ import {
   assignCategory,
   removeCategory,
 } from "@/lib/api/events";
+import { replaceEventRounds } from "@/lib/api/rounds";
 import { getStatuses } from "@/lib/api/lookups";
-import { toCreatePayload, toTimelinePayload } from "@/lib/api/adapters";
+import {
+  toCreatePayload,
+  toTimelinePayload,
+  toRoundsPayload,
+} from "@/lib/api/adapters";
 
 const stepLabels = [
   "Type",
@@ -35,6 +41,7 @@ const stepLabels = [
   "Registration & Passes",
   "Schedule & Mode",
   "Timeline & Media",
+  "Rounds",
   "Terms",
   "Review",
 ];
@@ -139,6 +146,9 @@ export function EventWizard({ mode, eventId, initialData }: EventWizardProps) {
     const timeline = toTimelinePayload(data);
     await replaceEventTimeline(id, timeline);
 
+    const rounds = toRoundsPayload(data);
+    await replaceEventRounds(id, rounds);
+
     // Cover image: recover the bytes from the blob: preview URL and upload.
     if (data.coverImageUrl.startsWith("blob:")) {
       const blob = await fetch(data.coverImageUrl).then((r) => r.blob());
@@ -241,7 +251,8 @@ export function EventWizard({ mode, eventId, initialData }: EventWizardProps) {
         {stepIndex === 2 && <StepRegistration data={data} onChange={update} />}
         {stepIndex === 3 && <StepScheduleMode data={data} onChange={update} />}
         {stepIndex === 4 && <StepTimelineLinks data={data} onChange={update} />}
-        {stepIndex === 5 && <StepTerms data={data} onChange={update} />}
+        {stepIndex === 5 && <StepRounds data={data} onChange={update} />}
+        {stepIndex === 6 && <StepTerms data={data} onChange={update} />}
         {isLastStep && <StepReview data={data} />}
       </Card>
 
