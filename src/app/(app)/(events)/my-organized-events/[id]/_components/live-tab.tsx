@@ -4,16 +4,36 @@ import { useEffect, useMemo, useState } from "react";
 import { Badge, Button, ButtonLink, Select } from "@/components/atoms";
 import { Banner, Table, TableColumn, ToggleGroup } from "@/components/molecules";
 import { Attendee } from "@/lib/attendees";
-import { Event } from "@/lib/event";
+import { Event, EventPanelist } from "@/lib/event";
+import {
+  blendedFinalScore,
+  currentRoundStatus,
+  judgeScoreOutOf100,
+  resolveLiveRound,
+  RoundDecision,
+  RoundScore,
+  scoresByJudge,
+} from "@/lib/rounds";
 import { updateEvent } from "@/lib/api/events";
+import { listRoundDecisions, listRoundScores } from "@/lib/api/rounds";
+import { listEventPanelists } from "@/lib/api/panelists";
+import {
+  adaptEventPanelist,
+  adaptRoundDecision,
+  adaptRoundScore,
+} from "@/lib/api/adapters";
 import {
   getLivePerformer,
   getPerformedParticipants,
+  listRoundRatings,
+  RoundRatingSummary,
   sendRatingLinks,
   setLivePerformer,
   startRatingWindow,
 } from "@/lib/api/ratings";
 import { ApiError } from "@/lib/api/client";
+
+const LIVE_JUDGING_POLL_MS = 3000;
 
 export interface LiveTabProps {
   event: Event;
@@ -21,10 +41,47 @@ export interface LiveTabProps {
 }
 
 export function LiveTab({ event, attendees }: LiveTabProps) {
-  const participants = useMemo(
+  const allParticipants = useMemo(
     () => attendees.filter((a) => a.category === "Participant"),
     [attendees],
   );
+
+  // Event-wide decisions (not scoped to one round) — resolveLiveRound needs
+  // the full lock chain across every round to find the current frontier, not
+  // just the round immediately before whichever round used to be hardcoded
+  // as "the" live one.
+  const [decisions, setDecisions] = useState<RoundDecision[]>([]);
+  useEffect(() => {
+    let cancelled = false;
+    void (async () => {
+      try {
+        const items = await listRoundDecisions(event.id);
+        if (!cancelled) setDecisions(items.map(adaptRoundDecision));
+      } catch {
+        // best-effort — falls back to "everyone eligible" below
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [event.id]);
+
+  // "Offline" is synonymous with "live-judged" — the live round is whichever
+  // Offline round is currently the unlocked/active one (see resolveLiveRound
+  // in lib/rounds.ts), not just the last Offline round in the event.
+  const { liveRound, previousRound } = resolveLiveRound(
+    event.rounds,
+    decisions,
+    allParticipants.map((p) => p.id),
+  );
+
+  const participants = previousRound
+    ? allParticipants.filter(
+        (p) =>
+          currentRoundStatus(decisions, p.id, previousRound.id) ===
+          "SHORTLISTED",
+      )
+    : allParticipants;
 
   const [currentId, setCurrentId] = useState<string | null>(null);
   // Whether the on-stage performer's audience rating window is currently
@@ -83,14 +140,115 @@ export function LiveTab({ event, attendees }: LiveTabProps) {
   }
 
   useEffect(() => {
-    void refreshPerformed();
+    let cancelled = false;
+    void (async () => {
+      try {
+        const items = await getPerformedParticipants(event.id);
+        if (!cancelled) {
+          setPerformedIds(new Set(items.map((i) => String(i.participant_id))));
+        }
+      } catch {
+        // best-effort — badge just won't show if this fails
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
   }, [event.id]);
+
+  // Live Judging panel data — panelist scores, live audience average, and
+  // the leaderboard all poll together while a live round exists. Separate
+  // from the currentId effect above (which only runs once on mount) since
+  // this needs to keep refreshing for the blend/leaderboard to feel live.
+  const [panelists, setPanelists] = useState<EventPanelist[]>([]);
+  const [roundScores, setRoundScores] = useState<RoundScore[]>([]);
+  const [roundRatings, setRoundRatings] = useState<RoundRatingSummary[]>([]);
+  const [currentAvgRating, setCurrentAvgRating] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (!liveRound) return;
+    let cancelled = false;
+    async function poll() {
+      try {
+        const [panelistItems, scoreItems, ratingItems, performerState] =
+          await Promise.all([
+            listEventPanelists(event.id),
+            listRoundScores(event.id, liveRound!.id),
+            listRoundRatings(event.id, liveRound!.id),
+            getLivePerformer(event.id),
+          ]);
+        if (cancelled) return;
+        setPanelists(
+          panelistItems.map(adaptEventPanelist).filter((p) => p.status === "ACCEPTED"),
+        );
+        setRoundScores(scoreItems.map(adaptRoundScore));
+        setRoundRatings(ratingItems);
+        setCurrentAvgRating(performerState.avg_rating);
+      } catch {
+        // best-effort — panel just shows stale/empty data until next tick
+      }
+    }
+    void poll();
+    const interval = setInterval(poll, LIVE_JUDGING_POLL_MS);
+    return () => {
+      cancelled = true;
+      clearInterval(interval);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [event.id, liveRound?.id]);
+
+  const currentJudgeScore100 =
+    liveRound && currentId
+      ? judgeScoreOutOf100(liveRound.rubric, roundScores, currentId, liveRound.id)
+      : undefined;
+  const currentAudienceScore100 =
+    ratingMode === "Competitive" ? (currentAvgRating ?? undefined) : undefined;
+  const currentBlended = liveRound
+    ? blendedFinalScore(liveRound, currentJudgeScore100, currentAudienceScore100)
+    : undefined;
+
+  const currentPanelistScores = liveRound
+    ? panelists.map((p) => {
+        const perCriterion = currentId
+          ? (scoresByJudge(roundScores, currentId, liveRound.id)[p.userId ?? ""] ?? {})
+          : {};
+        const values = Object.values(perCriterion);
+        return {
+          panelist: p,
+          total: values.length > 0 ? values.reduce((a, b) => a + b, 0) : undefined,
+        };
+      })
+    : [];
+
+  const leaderboard = liveRound
+    ? Array.from(performedIds)
+        .map((participantId) => {
+          const participant = allParticipants.find((p) => p.id === participantId);
+          const judgeScore100 = judgeScoreOutOf100(
+            liveRound.rubric,
+            roundScores,
+            participantId,
+            liveRound.id,
+          );
+          const audienceScore100 =
+            ratingMode === "Competitive"
+              ? roundRatings.find((r) => String(r.participant_id) === participantId)
+                  ?.avg_rating
+              : undefined;
+          return {
+            participantId,
+            name: participant?.name ?? "Unknown",
+            final: blendedFinalScore(liveRound, judgeScore100, audienceScore100),
+          };
+        })
+        .sort((a, b) => (b.final ?? -1) - (a.final ?? -1))
+    : [];
 
   async function handleSelectPerformer(participantId: string) {
     setSettingId(participantId);
     setError("");
     try {
-      await setLivePerformer(event.id, participantId);
+      await setLivePerformer(event.id, participantId, liveRound?.id);
       setCurrentId(participantId);
       // Bringing someone new on stage closes any rating window still open
       // for the previous performer.
@@ -201,8 +359,8 @@ export function LiveTab({ event, attendees }: LiveTabProps) {
             Live Rating
           </p>
           <p className="text-small text-text-secondary">
-            Mark who's performing now — attendees with a rating link see this
-            update live.
+            Mark who&apos;s performing now — attendees with a rating link see
+            this update live.
           </p>
         </div>
         <div className="flex flex-wrap items-center gap-3">
@@ -233,6 +391,12 @@ export function LiveTab({ event, attendees }: LiveTabProps) {
 
       {error && <Banner tone="danger">{error}</Banner>}
       {notice && <Banner tone="success">{notice}</Banner>}
+      {previousRound && (
+        <Banner tone="info">
+          Only participants Shortlisted in &quot;{previousRound.name}&quot;
+          are eligible to perform in &quot;{liveRound?.name}&quot;.
+        </Banner>
+      )}
 
       <div className="border-border-light bg-surface-light flex flex-wrap items-end gap-3 rounded-md border p-4">
         <div className="min-w-48 flex-1 space-y-1">
@@ -291,10 +455,138 @@ export function LiveTab({ event, attendees }: LiveTabProps) {
         rowKey={(row) => row.id}
         emptyState={
           <p className="text-body text-text-secondary p-6 text-center">
-            No Participant-category registrations yet.
+            {previousRound
+              ? `No one's been Shortlisted from "${previousRound.name}" yet.`
+              : "No Participant-category registrations yet."}
           </p>
         }
       />
+
+      {liveRound && (
+        <div className="space-y-4 border-t border-border-light pt-6">
+          <div>
+            <p className="text-body text-text-primary font-semibold">
+              Live Judging — {liveRound.name}
+            </p>
+            <p className="text-small text-text-secondary">
+              Panelists score the current performer against this round&apos;s
+              rubric in real time. Final score blends judge and audience
+              scores {liveRound.judgeWeight}/{liveRound.audienceWeight}.
+            </p>
+          </div>
+
+          {currentId && (
+            <div className="grid gap-3 sm:grid-cols-3">
+              <div className="border-border-light bg-surface-light rounded-md border p-4">
+                <p className="text-small text-text-secondary uppercase tracking-wide">
+                  Judge Score
+                </p>
+                <p className="text-heading text-text-primary font-bold">
+                  {currentJudgeScore100 !== undefined
+                    ? `${currentJudgeScore100.toFixed(1)} / 100`
+                    : "—"}
+                </p>
+              </div>
+              <div className="border-border-light bg-surface-light rounded-md border p-4">
+                <p className="text-small text-text-secondary uppercase tracking-wide">
+                  Audience Score
+                </p>
+                <p className="text-heading text-text-primary font-bold">
+                  {currentAudienceScore100 !== undefined
+                    ? `${currentAudienceScore100.toFixed(1)} / 100`
+                    : "—"}
+                </p>
+              </div>
+              <div className="border-border-light bg-surface-light rounded-md border p-4">
+                <p className="text-small text-text-secondary uppercase tracking-wide">
+                  Final Score
+                </p>
+                <p className="text-heading text-primary font-bold">
+                  {currentBlended !== undefined
+                    ? `${currentBlended.toFixed(1)} / 100`
+                    : "—"}
+                </p>
+              </div>
+            </div>
+          )}
+
+          {currentId && panelists.length > 0 && (
+            <div className="space-y-2">
+              <p className="text-small text-text-secondary font-medium">
+                Panelist scores for the current performer
+              </p>
+              <Table
+                columns={[
+                  {
+                    key: "panelist",
+                    header: "Panelist",
+                    render: (row: (typeof currentPanelistScores)[number]) => (
+                      <span className="text-text-primary">
+                        {row.panelist.invitedEmail}
+                      </span>
+                    ),
+                  },
+                  {
+                    key: "total",
+                    header: "Score",
+                    render: (row: (typeof currentPanelistScores)[number]) => (
+                      <span className="text-text-primary">
+                        {row.total !== undefined
+                          ? `${row.total} / ${liveRound.rubric.reduce((s, c) => s + c.maxScore, 0)}`
+                          : "Not yet scored"}
+                      </span>
+                    ),
+                  },
+                ]}
+                rows={currentPanelistScores}
+                rowKey={(row) => row.panelist.id}
+              />
+            </div>
+          )}
+
+          <div className="space-y-2">
+            <p className="text-small text-text-secondary font-medium">
+              Live Leaderboard
+            </p>
+            <Table
+              columns={[
+                {
+                  key: "rank",
+                  header: "#",
+                  render: (row: (typeof leaderboard)[number]) => (
+                    <span className="text-text-secondary">
+                      {leaderboard.indexOf(row) + 1}
+                    </span>
+                  ),
+                },
+                {
+                  key: "name",
+                  header: "Participant",
+                  render: (row: (typeof leaderboard)[number]) => (
+                    <span className="text-text-primary">{row.name}</span>
+                  ),
+                },
+                {
+                  key: "final",
+                  header: "Final Score",
+                  render: (row: (typeof leaderboard)[number]) => (
+                    <span className="text-text-primary font-medium">
+                      {row.final !== undefined ? row.final.toFixed(1) : "—"}
+                    </span>
+                  ),
+                },
+              ]}
+              rows={leaderboard}
+              rowKey={(row) => row.participantId}
+              emptyState={
+                <p className="text-body text-text-secondary p-6 text-center">
+                  No one has performed yet.
+                </p>
+              }
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 }

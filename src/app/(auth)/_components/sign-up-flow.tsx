@@ -22,6 +22,14 @@ export function SignUpFlow() {
   const isOauth = searchParams.get("oauth") === "1";
   const oauthUserId = isOauth ? Number(searchParams.get("userId")) : null;
   const oauthEmail = isOauth ? (searchParams.get("email") ?? "") : "";
+  // Same redirect-back convention as SignInForm — carried through from
+  // /sign-in when the Google OAuth branch routes a brand-new user here to
+  // pick a role first.
+  const redirectParam = searchParams.get("redirect");
+  const redirectTo =
+    redirectParam && redirectParam.startsWith("/") && !redirectParam.startsWith("//")
+      ? redirectParam
+      : "/";
 
   const [stepIndex, setStepIndex] = useState<Step>(0);
   const [account, setAccount] = useState<AccountDetails | null>(null);
@@ -56,7 +64,7 @@ export function SignUpFlow() {
         role,
       );
       setSession(token);
-      router.push("/");
+      router.push(redirectTo);
     } catch (err) {
       setCompleteError(
         err instanceof ApiError ? err.message : "Could not complete setup",

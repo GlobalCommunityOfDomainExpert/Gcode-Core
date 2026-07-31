@@ -18,6 +18,8 @@ import { AttendeesTab } from "./_components/attendees-tab";
 import { CommunicationTab } from "./_components/communication-tab";
 import { LiveTab } from "./_components/live-tab";
 import { OverviewTab } from "./_components/overview-tab";
+import { PanelistsTab } from "./_components/panelists-tab";
+import { RoundsTab } from "./_components/rounds-tab";
 
 export default function OrganizedEventDetailPage() {
   const params = useParams<{ id: string }>();
@@ -56,10 +58,21 @@ export default function OrganizedEventDetailPage() {
   const eventId = event.id;
   const isCancelled = event.status === "CANCELLED";
 
+  const showRoundsTab =
+    event.participantRegistration.enabled && event.rounds.length > 0;
+  // Live mode (current-performer + audience rating) only makes sense for an
+  // in-person stage — an Online round is reviewed remotely, there's no
+  // "live performance" to put on a scoreboard for.
+  const showLiveTab = event.rounds.some((r) => r.mode === "Offline");
+
   const tabItems = [
     { value: "overview", label: "Overview" },
     { value: "attendees", label: `Attendees (${attendees.length})` },
-    { value: "live", label: "Live" },
+    ...(showRoundsTab
+      ? [{ value: "rounds", label: `Rounds (${event.rounds.length})` }]
+      : []),
+    ...(showLiveTab ? [{ value: "live", label: "Live" }] : []),
+    { value: "panelists", label: "Panelists" },
     { value: "communication", label: "Communication" },
   ];
 
@@ -192,9 +205,13 @@ export default function OrganizedEventDetailPage() {
                 onNavigateToCommunication={() => setActiveTab("communication")}
               />
             )}
-            {activeTab === "live" && (
+            {activeTab === "rounds" && showRoundsTab && (
+              <RoundsTab event={event} attendees={attendees} />
+            )}
+            {activeTab === "live" && showLiveTab && (
               <LiveTab event={event} attendees={attendees} />
             )}
+            {activeTab === "panelists" && <PanelistsTab eventId={event.id} />}
             {activeTab === "communication" && (
               <CommunicationTab
                 event={event}

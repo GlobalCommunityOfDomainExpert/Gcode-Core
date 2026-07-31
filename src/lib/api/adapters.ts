@@ -3,9 +3,12 @@ import {
   EventStatus,
   Event,
   EventTimelineItem,
+  EventRound,
+  EventPanelist,
   MyTicket,
   RegistrationCategory,
 } from "@/lib/event";
+import { RoundDecision, RoundScore } from "@/lib/rounds";
 import { EventDetailData } from "@/lib/zod/event";
 import { EventTimelineApi } from "./events";
 import { Attendee, AttendeeRole } from "@/lib/attendees";
@@ -15,6 +18,12 @@ import {
   CreateEventPayload,
   ParticipantApi,
   MyParticipationApi,
+  EventRoundApi,
+  EventRoundRubricApi,
+  RoundDecisionApi,
+  RoundScoreApi,
+  EventPanelistApi,
+  PanelistInviteApi,
 } from "./types";
 import { API_BASE_URL } from "./client";
 
@@ -55,6 +64,102 @@ export function adaptTimelineItem(row: EventTimelineApi): EventTimelineItem {
     title: row.title,
     description: row.description ?? "",
     location: row.location ?? undefined,
+  };
+}
+
+// The /events/:id/rounds ORDS handler is a raw SQL Collection Query — its
+// JSON_ARRAYAGG(...RETURNING CLOB) "rubric" column comes back as an escaped
+// JSON *string*, not a nested array, confirmed live against event 81
+// (2026-07-27). Parse defensively rather than assume the shape.
+function parseRubric(rubric: EventRoundApi["rubric"]): EventRoundRubricApi[] {
+  if (Array.isArray(rubric)) return rubric;
+  if (typeof rubric === "string") {
+    try {
+      const parsed = JSON.parse(rubric);
+      return Array.isArray(parsed) ? parsed : [];
+    } catch {
+      return [];
+    }
+  }
+  return [];
+}
+
+// GCODE_EVENT_ROUNDS row -> UI round item.
+export function adaptEventRound(row: EventRoundApi): EventRound {
+  return {
+    id: String(row.id),
+    name: row.name,
+    description: row.description ?? "",
+    mode: resolveRoundMode(row.mode),
+    rubric: parseRubric(row.rubric).map((r) => ({
+      id: String(r.id),
+      label: r.label,
+      maxScore: r.max_score,
+    })),
+    shortlistCount: row.shortlist_count ?? 0,
+    startTime: row.start_time,
+    endTime: row.end_time,
+    sortOrder: row.sort_order,
+    judgeWeight: row.judge_weight ?? 70,
+    audienceWeight: row.audience_weight ?? 30,
+  };
+}
+
+// GCODE_EVENT_ROUND_DECISIONS row -> UI decision item.
+export function adaptRoundDecision(row: RoundDecisionApi): RoundDecision {
+  return {
+    id: String(row.id),
+    roundId: String(row.round_id),
+    participantId: String(row.participant_id),
+    status: row.status,
+    decidedOn: row.decided_on,
+  };
+}
+
+// GCODE_EVENT_ROUND_SCORES row -> UI score item.
+export function adaptRoundScore(row: RoundScoreApi): RoundScore {
+  return {
+    id: String(row.id),
+    roundId: String(row.round_id),
+    participantId: String(row.participant_id),
+    criterionId: String(row.criterion_id),
+    score: row.score,
+    scoredBy: row.scored_by ?? "",
+    scoredOn: row.scored_on,
+  };
+}
+
+// GCODE_EVENT_PANELISTS row -> UI panelist item (organizer's list view).
+export function adaptEventPanelist(row: EventPanelistApi): EventPanelist {
+  return {
+    id: String(row.id),
+    eventId: String(row.event_id),
+    userId: row.user_id != null ? String(row.user_id) : undefined,
+    invitedEmail: row.invited_email,
+    status: row.status,
+    invitedOn: row.invited_on,
+    respondedOn: row.responded_on,
+  };
+}
+
+// Single-invite lookup for the invitee's own accept/decline page.
+export interface PanelistInvite {
+  id: string;
+  eventId: string;
+  eventTitle: string;
+  invitedEmail: string;
+  status: "INVITED" | "ACCEPTED" | "DECLINED";
+  invitedOn: string;
+}
+
+export function adaptPanelistInvite(row: PanelistInviteApi): PanelistInvite {
+  return {
+    id: String(row.id),
+    eventId: String(row.event_id),
+    eventTitle: row.event_title,
+    invitedEmail: row.invited_email,
+    status: row.status,
+    invitedOn: row.invited_on,
   };
 }
 
@@ -202,6 +307,7 @@ function parseJsonArray<T>(raw: string | null): T[] {
 export function toEventDraft(
   detail: EventDetail,
   timeline: EventTimelineApi[] = [],
+  rounds: EventRoundApi[] = [],
 ): EventDetailData {
   return {
     id: detail.id,
@@ -258,6 +364,24 @@ export function toEventDraft(
         location: item.location ?? "",
       };
     }),
+    rounds: rounds.map((row) => {
+      const item = adaptEventRound(row);
+      return {
+        name: item.name,
+        description: item.description,
+        mode: row.mode,
+        rubric: item.rubric.map((c) => ({
+          label: c.label,
+          maxScore: c.maxScore,
+        })),
+        shortlistCount: item.shortlistCount ?? 0,
+        date: item.startTime ? istDate(item.startTime) : "",
+        startTime: item.startTime ? istTime(item.startTime) : "",
+        endTime: item.endTime ? istTime(item.endTime) : "",
+        judgeWeight: item.judgeWeight,
+        audienceWeight: item.audienceWeight,
+      };
+    }),
     certificate: Number(detail.certificate_offered) === 1,
   };
 }
@@ -296,6 +420,51 @@ export function toTimelinePayload(
     });
 }
 
+export interface RoundRubricPayloadItem {
+  label: string;
+  maxScore: number;
+}
+
+export interface RoundPayloadItem {
+  name: string;
+  description: string;
+  mode: "ONLINE" | "OFFLINE";
+  rubric: RoundRubricPayloadItem[];
+  shortlistCount: number;
+  startTime: string | null;
+  endTime: string | null;
+  sortOrder: number;
+  judgeWeight: number;
+  audienceWeight: number;
+}
+
+// Wizard round items -> GCODE_EVENT_ROUNDS rows. Mirrors toTimelinePayload's
+// date+time -> ISO combining and blank-title filtering.
+export function toRoundsPayload(data: EventDetailData): RoundPayloadItem[] {
+  return data.rounds
+    .filter((item) => item.name.trim() !== "")
+    .map((item, index) => {
+      const day = item.date || null;
+      return {
+        name: item.name,
+        description: item.description,
+        mode: item.mode,
+        rubric: item.rubric
+          .filter((c) => c.label.trim() !== "")
+          .map((c) => ({ label: c.label, maxScore: c.maxScore })),
+        shortlistCount: item.shortlistCount,
+        startTime: day ? (toIsoTimestamp(day, item.startTime) ?? null) : null,
+        endTime:
+          item.endTime && day
+            ? (toIsoTimestamp(day, item.endTime) ?? null)
+            : null,
+        sortOrder: index,
+        judgeWeight: item.judgeWeight,
+        audienceWeight: item.audienceWeight,
+      };
+    });
+}
+
 const MODE_NAME_MAP: Record<string, Event["mode"]> = {
   PHYSICAL: "In-Person",
   ONLINE: "Online",
@@ -328,6 +497,10 @@ function resolveRatingMode(
   mode: "COMPETITIVE" | "CASUAL" | undefined,
 ): Event["ratingMode"] {
   return mode === "CASUAL" ? "Casual" : "Competitive";
+}
+
+function resolveRoundMode(mode: "ONLINE" | "OFFLINE" | undefined): EventRound["mode"] {
+  return mode === "ONLINE" ? "Online" : "Offline";
 }
 
 // All event times are IST (Asia/Kolkata). Wall-clock input is interpreted as
@@ -499,6 +672,7 @@ export function adaptApiEvent(
       ? detail.description.split("\n").filter((line) => line.trim() !== "")
       : [],
     timeline: [],
+    rounds: [],
     organizer: {
       name: detail?.organizer_name || detail?.created_by || "GCODE Team",
       title: "Organizer",

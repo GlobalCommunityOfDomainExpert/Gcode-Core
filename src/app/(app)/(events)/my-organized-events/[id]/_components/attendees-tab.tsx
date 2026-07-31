@@ -17,6 +17,7 @@ import {
   Attendee,
   attendeesCsvRows,
   audioSubmissionStatus,
+  isUploadedAudioUrl,
 } from "@/lib/attendees";
 import { downloadCsv } from "@/lib/csv";
 import { Event } from "@/lib/event";
@@ -432,21 +433,30 @@ export function AttendeesTab({
                     )!
                   ]
                 }
-                {viewingAttendee.audioSubmissionUrl && (
-                  <>
-                    {" · "}
-                    <a
-                      href={viewingAttendee.audioSubmissionUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-primary underline"
-                    >
-                      View submission
-                    </a>
-                  </>
-                )}
+                {viewingAttendee.audioSubmissionUrl &&
+                  !isUploadedAudioUrl(viewingAttendee.audioSubmissionUrl) && (
+                    <>
+                      {" · "}
+                      <a
+                        href={viewingAttendee.audioSubmissionUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-primary underline"
+                      >
+                        View submission
+                      </a>
+                    </>
+                  )}
               </p>
             )}
+            {viewingAttendee.audioSubmissionUrl &&
+              isUploadedAudioUrl(viewingAttendee.audioSubmissionUrl) && (
+                <audio
+                  controls
+                  src={`/api/audio-proxy?url=${encodeURIComponent(viewingAttendee.audioSubmissionUrl)}`}
+                  className="mt-2 w-full"
+                />
+              )}
           </div>
         )}
       </Modal>

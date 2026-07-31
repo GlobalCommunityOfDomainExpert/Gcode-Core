@@ -15,6 +15,10 @@ export interface LivePerformer {
   // first rating comes in.
   avg_rating: number | null;
   rating_count: number;
+  // Which round the current performer is live for — null if Live mode was
+  // started before rounds existed, or the backend hasn't been patched for
+  // this yet (contract-first, see ratings-round-id-backend.sql).
+  round_id: number | null;
 }
 
 export interface PerformedParticipant {
@@ -35,14 +39,21 @@ export function getLivePerformer(
 
 // Organizer-only — brings a Participant-category row "on stage" (sets who's
 // currently performing) without opening the audience rating window. That's
-// a separate, explicit step — see startRatingWindow below.
+// a separate, explicit step — see startRatingWindow below. `roundId` tags
+// which round this performance belongs to (the Live tab's "live round") so
+// ratings recorded during it can be attributed correctly — omit it for
+// events with no round-scoped live judging set up yet.
 export function setLivePerformer(
   eventId: number | string,
   participantId: number | string,
+  roundId?: number | string,
 ): Promise<LivePerformer> {
   return apiRequest(`/events/${eventId}/live-performer`, {
     method: "PUT",
-    body: { participant_id: participantId },
+    body: {
+      participant_id: participantId,
+      ...(roundId !== undefined ? { round_id: roundId } : {}),
+    },
   });
 }
 
@@ -92,6 +103,32 @@ export async function getPerformedParticipants(
     `/events/${eventId}/performed-participants`,
   );
   return items;
+}
+
+export interface RoundRatingSummary {
+  participant_id: number;
+  avg_rating: number;
+  rating_count: number;
+}
+
+// Organizer-only — every performed participant's audience rating average
+// for one round (not just the current performer, unlike getLivePerformer
+// above) — drives the live-tab leaderboard's audience-score column.
+// Contract-only — GCODE_RATINGS_API.list_round_ratings doesn't exist yet,
+// same degrade-to-[] convention as listEventRounds in rounds.ts.
+export async function listRoundRatings(
+  eventId: number | string,
+  roundId: number | string,
+): Promise<RoundRatingSummary[]> {
+  try {
+    const { items } = await apiRequest<{ items: RoundRatingSummary[] }>(
+      `/events/${eventId}/round-ratings`,
+      { query: { round_id: roundId } },
+    );
+    return items;
+  } catch {
+    return [];
+  }
 }
 
 // Casual mode's fixed emoji set — not configurable per event. Shared by the

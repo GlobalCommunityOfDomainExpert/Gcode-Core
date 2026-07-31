@@ -1,12 +1,27 @@
 "use client";
 
-import { ReactNode, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { ReactNode, Suspense, useEffect } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "@/hooks/use-session";
 import { getSession } from "@/lib/auth/session";
 
+// useSearchParams() requires a Suspense boundary above it or Next.js can't
+// statically prerender pages under this layout (build fails outright —
+// confirmed against /my-organized-events/new). The gate itself can't wrap
+// its own hook call in Suspense, so it's split into an outer boundary +
+// inner component that actually reads the params.
 export default function AppLayout({ children }: { children: ReactNode }) {
+  return (
+    <Suspense fallback={null}>
+      <AppLayoutGate>{children}</AppLayoutGate>
+    </Suspense>
+  );
+}
+
+function AppLayoutGate({ children }: { children: ReactNode }) {
   const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
   const session = useSession();
 
   useEffect(() => {
@@ -14,10 +29,25 @@ export default function AppLayout({ children }: { children: ReactNode }) {
     // double-effect pass (React Strict Mode) can observe a stale/transient
     // null from the store hook even though the real session is fine, and a
     // false redirect here is far more disruptive than a redundant read.
-    if (!session && !getSession()) {
-      router.replace("/sign-in");
+    // /sign-in and /sign-up are intercepted routes (@modal) — a soft
+    // router.replace to either from here doesn't unmount this layout, it
+    // just overlays the modal while this one stays mounted underneath.
+    // Without this guard the effect re-fires once `pathname` reflects the
+    // new URL, sees "still not signed in," and wraps another ?redirect=
+    // around the one it just built — recursing forever.
+    if (pathname.startsWith("/sign-in") || pathname.startsWith("/sign-up")) {
+      return;
     }
-  }, [session, router]);
+    if (!session && !getSession()) {
+      // Carry the page they were trying to reach through sign-in — e.g. a
+      // panelist invite link — so SignInForm can send them back here
+      // instead of defaulting to Home. Same convention as SignInForm's own
+      // ?redirect= handling.
+      const query = searchParams.toString();
+      const destination = query ? `${pathname}?${query}` : pathname;
+      router.replace(`/sign-in?redirect=${encodeURIComponent(destination)}`);
+    }
+  }, [session, router, pathname, searchParams]);
 
   if (!session) return null;
 
