@@ -5,6 +5,8 @@ import {
   EventTimelineItem,
   EventRound,
   EventPanelist,
+  Coupon,
+  UpiClaim,
   MyTicket,
   RegistrationCategory,
 } from "@/lib/event";
@@ -24,6 +26,8 @@ import {
   RoundScoreApi,
   EventPanelistApi,
   PanelistInviteApi,
+  CouponApi,
+  UpiClaimApi,
 } from "./types";
 import { API_BASE_URL } from "./client";
 
@@ -139,6 +143,41 @@ export function adaptEventPanelist(row: EventPanelistApi): EventPanelist {
     status: row.status,
     invitedOn: row.invited_on,
     respondedOn: row.responded_on,
+  };
+}
+
+// GCODE_COUPONS row -> UI coupon item (organizer's list view).
+export function adaptCoupon(row: CouponApi): Coupon {
+  return {
+    id: String(row.id),
+    eventId: String(row.event_id),
+    code: row.code,
+    discountType: row.discount_type,
+    discountValue: row.discount_value,
+    maxRedemptions: row.max_redemptions ?? undefined,
+    redemptionCount: row.redemption_count,
+    validFrom: row.valid_from ?? undefined,
+    validTo: row.valid_to ?? undefined,
+    isActive: row.is_active === 1,
+    createdOn: row.created_on,
+    computedStatus: row.computed_status,
+  };
+}
+
+// GCODE_UPI_PAYMENT_CLAIMS row -> UI claim item (organizer's review queue).
+export function adaptUpiClaim(row: UpiClaimApi): UpiClaim {
+  return {
+    id: String(row.id),
+    eventId: String(row.event_id),
+    email: row.email,
+    fullName: row.full_name,
+    utr: row.utr,
+    amountClaimed: row.amount_claimed,
+    status: row.status,
+    submittedOn: row.submitted_on,
+    reviewedBy: row.reviewed_by ?? undefined,
+    reviewedOn: row.reviewed_on ?? undefined,
+    participantId: row.participant_id != null ? String(row.participant_id) : undefined,
   };
 }
 

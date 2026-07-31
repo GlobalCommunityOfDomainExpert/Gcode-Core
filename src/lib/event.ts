@@ -102,6 +102,42 @@ export interface EventPanelist {
   respondedOn?: string | null;
 }
 
+// Backed by GCODE_COUPONS (contract-only, see docs/sql/coupons/).
+// Event-scoped discount code, organizer-managed — computedStatus is derived
+// server-side (expired/exhausted/inactive/active) so the UI never has to
+// re-derive it from valid_from/valid_to/redemption_count itself.
+export interface Coupon {
+  id: string;
+  eventId: string;
+  code: string;
+  discountType: "PERCENT" | "FIXED";
+  discountValue: number;
+  maxRedemptions?: number;
+  redemptionCount: number;
+  validFrom?: string;
+  validTo?: string;
+  isActive: boolean;
+  createdOn: string;
+  computedStatus: "ACTIVE" | "INACTIVE" | "EXPIRED" | "SCHEDULED" | "EXHAUSTED";
+}
+
+// Backed by GCODE_UPI_PAYMENT_CLAIMS (contract-only, see docs/sql/coupons/).
+// Self-reported offline UPI QR payment, pending organizer confirmation
+// against their own bank/Razorpay settlement — not a verified payment.
+export interface UpiClaim {
+  id: string;
+  eventId: string;
+  email: string;
+  fullName: string;
+  utr: string;
+  amountClaimed: number;
+  status: "PENDING" | "CONFIRMED" | "REJECTED";
+  submittedOn: string;
+  reviewedBy?: string;
+  reviewedOn?: string;
+  participantId?: string;
+}
+
 // Backed by EVENT_STATUS lookup table — fixed lifecycle, not open-ended.
 export type EventStatus =
   | "DRAFT"
