@@ -31,6 +31,9 @@ import {
 import { useEvent } from "@/hooks/use-event";
 import { registerForEvent } from "@/lib/api/participants";
 import { createRazorpayOrder, verifyRazorpayPayment } from "@/lib/api/payments";
+import { validateCoupon } from "@/lib/api/coupons";
+import { submitUpiClaim } from "@/lib/api/upi-claims";
+import { ValidateCouponResponse } from "@/lib/api/types";
 import { ApiError } from "@/lib/api/client";
 import { getSession } from "@/lib/auth/session";
 import { isRegistrationOpen, RegistrationCategory } from "@/lib/event";
@@ -71,6 +74,18 @@ export default function EventRegisterPage() {
   const [verifiedEmail, setVerifiedEmail] = useState<string | null>(null);
   const [showVerifyModal, setShowVerifyModal] = useState(false);
 
+  const [couponCode, setCouponCode] = useState("");
+  const [appliedCoupon, setAppliedCoupon] =
+    useState<ValidateCouponResponse | null>(null);
+  const [couponError, setCouponError] = useState("");
+  const [applyingCoupon, setApplyingCoupon] = useState(false);
+
+  const [showUpiClaim, setShowUpiClaim] = useState(false);
+  const [utr, setUtr] = useState("");
+  const [upiClaimSubmitting, setUpiClaimSubmitting] = useState(false);
+  const [upiClaimSubmitted, setUpiClaimSubmitted] = useState(false);
+  const [upiClaimError, setUpiClaimError] = useState("");
+
   // Step 1 (pass-type select) only shows when BOTH categories are enabled —
   // otherwise skip straight to details with whichever one is enabled
   // (unchanged from before this feature when Attendee was the only option).
@@ -84,6 +99,15 @@ export default function EventRegisterPage() {
   const [step, setStep] = useState<"select" | "details">("details");
   const [category, setCategory] = useState<Category>("ATTENDEE");
   const initializedStep = useRef(false);
+
+  // What quantity/category appliedCoupon was actually priced for — if either
+  // changes afterward, the discount is stale until re-applied (derived here
+  // rather than reset via an effect, so it never scales a discount that was
+  // only validated for a different total).
+  const [couponValidatedFor, setCouponValidatedFor] = useState<{
+    quantity: number;
+    category: Category;
+  } | null>(null);
 
   useEffect(() => {
     if (event && !initializedStep.current) {
@@ -191,7 +215,78 @@ export default function EventRegisterPage() {
   }
 
   const isPaid = selected.price > 0;
-  const total = selected.price * clampQuantity(Number(quantityInput));
+  const currentQuantity = clampQuantity(Number(quantityInput));
+  const total = selected.price * currentQuantity;
+  // A coupon only counts while it's still priced for the current
+  // quantity/category — changing either after applying makes it stale
+  // rather than silently scaling a discount that was validated elsewhere.
+  const couponIsStale =
+    appliedCoupon !== null &&
+    couponValidatedFor !== null &&
+    (couponValidatedFor.quantity !== currentQuantity ||
+      couponValidatedFor.category !== category);
+  const effectiveCoupon = couponIsStale ? null : appliedCoupon;
+  const displayTotal = effectiveCoupon ? effectiveCoupon.final_amount : total;
+
+  async function handleApplyCoupon() {
+    const trimmed = couponCode.trim();
+    if (!trimmed) return;
+    if (!session && !email.trim()) {
+      setCouponError("Enter your email above first.");
+      return;
+    }
+    setApplyingCoupon(true);
+    setCouponError("");
+    try {
+      const result = await validateCoupon(
+        params.id,
+        trimmed,
+        identityPayload(),
+        category,
+        currentQuantity,
+      );
+      setAppliedCoupon(result);
+      setCouponValidatedFor({ quantity: currentQuantity, category });
+    } catch (err) {
+      setAppliedCoupon(null);
+      setCouponError(
+        err instanceof ApiError ? err.message : "Couldn't apply that coupon.",
+      );
+    } finally {
+      setApplyingCoupon(false);
+    }
+  }
+
+  async function handleSubmitUpiClaim() {
+    const trimmedUtr = utr.trim();
+    if (!trimmedUtr) {
+      setUpiClaimError("Enter the UTR from your UPI app.");
+      return;
+    }
+    const claimEmail = session?.email ?? email.trim();
+    const claimName = session?.fullName ?? `${firstName.trim()} ${lastName.trim()}`.trim();
+    if (!claimEmail || !claimName) {
+      setUpiClaimError("Enter your name and email above first.");
+      return;
+    }
+    setUpiClaimSubmitting(true);
+    setUpiClaimError("");
+    try {
+      await submitUpiClaim(params.id, {
+        email: claimEmail,
+        full_name: claimName,
+        utr: trimmedUtr,
+        amount_claimed: displayTotal,
+      });
+      setUpiClaimSubmitted(true);
+    } catch (err) {
+      setUpiClaimError(
+        err instanceof ApiError ? err.message : "Couldn't submit that claim.",
+      );
+    } finally {
+      setUpiClaimSubmitting(false);
+    }
+  }
 
   // Signed-in -> book by user_id, nothing else needed. Guest -> full name +
   // email + phone, same as always.
@@ -256,12 +351,22 @@ export default function EventRegisterPage() {
   // Order is created (and later verified) server-side, where the Razorpay
   // key secret lives — this only opens Checkout and hands the signed
   // response back for the backend to verify before it creates the ticket.
+  // A coupon that fully covers the price makes the backend skip Razorpay
+  // and register the participant directly (see FreeRegistrationApi) — that
+  // branch is handled here before ever touching Checkout.js.
   async function payWithRazorpay(quantity: number) {
     const order = await createRazorpayOrder(params.id, {
       ...identityPayload(),
       quantity,
       category,
+      coupon_code: effectiveCoupon ? couponCode.trim() : undefined,
     });
+
+    if ("free" in order) {
+      router.push(`/events/${params.id}/registered?pid=${order.participant_id}`);
+      return;
+    }
+
     await loadRazorpayCheckout();
     const prefillName = session ? session.fullName : firstName.trim();
     const prefillEmail = session?.email ?? (email.trim() || undefined);
@@ -476,7 +581,59 @@ export default function EventRegisterPage() {
             </Card>
           </div>
 
-          <div>
+          <div className="space-y-3">
+            {isPaid && (
+              <Card padding="md" className="space-y-2">
+                <FormField label="Coupon code" htmlFor="coupon-code-input">
+                  <div className="flex gap-2">
+                    <Input
+                      id="coupon-code-input"
+                      value={couponCode}
+                      onChange={(e) => setCouponCode(e.target.value.toUpperCase())}
+                      placeholder="SAVE20"
+                      disabled={applyingCoupon || !!effectiveCoupon}
+                    />
+                    {effectiveCoupon ? (
+                      <Button
+                        variant="secondary"
+                        onClick={() => {
+                          setAppliedCoupon(null);
+                          setCouponValidatedFor(null);
+                          setCouponCode("");
+                        }}
+                      >
+                        Remove
+                      </Button>
+                    ) : (
+                      <Button
+                        variant="secondary"
+                        disabled={!couponCode.trim() || applyingCoupon}
+                        onClick={handleApplyCoupon}
+                      >
+                        {applyingCoupon ? "Checking…" : "Apply"}
+                      </Button>
+                    )}
+                  </div>
+                </FormField>
+                {couponError && (
+                  <p className="text-small text-danger">{couponError}</p>
+                )}
+                {couponIsStale && (
+                  <p className="text-small text-warning">
+                    Ticket count changed — re-apply the coupon.
+                  </p>
+                )}
+                {effectiveCoupon && (
+                  <p className="text-small text-success">
+                    Coupon applied —{" "}
+                    {effectiveCoupon.final_amount === 0
+                      ? "your registration is free!"
+                      : `₹${effectiveCoupon.original_amount - effectiveCoupon.final_amount} off`}
+                  </p>
+                )}
+              </Card>
+            )}
+
             <CheckoutSummary
               items={[
                 { label: "Event", value: event.title },
@@ -484,12 +641,80 @@ export default function EventRegisterPage() {
                   label: "Pass Type",
                   value: `${quantityInput}x ${selected.label}`,
                 },
+                ...(effectiveCoupon
+                  ? [
+                      {
+                        label: `Coupon (${couponCode.trim()})`,
+                        value: `-₹${effectiveCoupon.original_amount - effectiveCoupon.final_amount}`,
+                      },
+                    ]
+                  : []),
               ]}
-              total={`₹${total}`}
-              actionLabel={isPaid ? "Pay & Register" : "Complete Registration"}
+              total={`₹${displayTotal}`}
+              actionLabel={
+                isPaid
+                  ? displayTotal === 0
+                    ? "Register for Free"
+                    : "Pay & Register"
+                  : "Complete Registration"
+              }
               onAction={submit}
               processing={submitting}
             />
+
+            {isPaid && (
+              <Card padding="md" className="space-y-2">
+                {upiClaimSubmitted ? (
+                  <Banner tone="success">
+                    Claim submitted — you&apos;ll be registered once the
+                    organizer confirms your payment.
+                  </Banner>
+                ) : showUpiClaim ? (
+                  <div className="space-y-2">
+                    <FormField
+                      label="UPI transaction reference (UTR)"
+                      htmlFor="utr"
+                    >
+                      <Input
+                        id="utr"
+                        value={utr}
+                        onChange={(e) => setUtr(e.target.value)}
+                        placeholder="e.g. 123456789012"
+                        disabled={upiClaimSubmitting}
+                      />
+                    </FormField>
+                    {upiClaimError && (
+                      <p className="text-small text-danger">{upiClaimError}</p>
+                    )}
+                    <div className="flex gap-2">
+                      <Button
+                        variant="primary"
+                        size="sm"
+                        disabled={upiClaimSubmitting}
+                        onClick={handleSubmitUpiClaim}
+                      >
+                        {upiClaimSubmitting ? "Submitting…" : "Submit Claim"}
+                      </Button>
+                      <Button
+                        variant="secondary"
+                        size="sm"
+                        onClick={() => setShowUpiClaim(false)}
+                      >
+                        Cancel
+                      </Button>
+                    </div>
+                  </div>
+                ) : (
+                  <button
+                    type="button"
+                    className="text-small text-text-secondary underline"
+                    onClick={() => setShowUpiClaim(true)}
+                  >
+                    Already paid via UPI QR at the venue?
+                  </button>
+                )}
+              </Card>
+            )}
           </div>
         </div>
       )}

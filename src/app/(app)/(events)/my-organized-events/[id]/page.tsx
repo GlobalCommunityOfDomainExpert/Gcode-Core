@@ -19,6 +19,8 @@ import { CommunicationTab } from "./_components/communication-tab";
 import { LiveTab } from "./_components/live-tab";
 import { OverviewTab } from "./_components/overview-tab";
 import { PanelistsTab } from "./_components/panelists-tab";
+import { CouponsTab } from "./_components/coupons-tab";
+import { UpiClaimsTab } from "./_components/upi-claims-tab";
 import { RoundsTab } from "./_components/rounds-tab";
 
 export default function OrganizedEventDetailPage() {
@@ -73,6 +75,8 @@ export default function OrganizedEventDetailPage() {
       : []),
     ...(showLiveTab ? [{ value: "live", label: "Live" }] : []),
     { value: "panelists", label: "Panelists" },
+    { value: "coupons", label: "Coupons" },
+    { value: "upi-claims", label: "UPI Claims" },
     { value: "communication", label: "Communication" },
   ];
 
@@ -212,6 +216,10 @@ export default function OrganizedEventDetailPage() {
               <LiveTab event={event} attendees={attendees} />
             )}
             {activeTab === "panelists" && <PanelistsTab eventId={event.id} />}
+            {activeTab === "coupons" && <CouponsTab eventId={event.id} />}
+            {activeTab === "upi-claims" && (
+              <UpiClaimsTab eventId={event.id} />
+            )}
             {activeTab === "communication" && (
               <CommunicationTab
                 event={event}
