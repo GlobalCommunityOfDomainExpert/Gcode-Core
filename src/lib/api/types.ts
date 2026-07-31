@@ -202,6 +202,102 @@ export interface ParticipantApi {
   age_category?: "YOUNGSTER" | "ADULT" | "SENIOR" | null;
 }
 
+// Contract-only — GCODE_EVENT_ROUND_RUBRICS doesn't exist yet as of
+// 2026-07-27. One scored criterion within a round's judging rubric, nested
+// under EventRoundApi below — full-replace child of the round, same as the
+// round itself is a full-replace child of the event.
+export interface EventRoundRubricApi {
+  id: number;
+  round_id: number;
+  sort_order: number;
+  label: string;
+  max_score: number;
+}
+
+// One organizer-configured round/stage within an event (e.g. "Round 1:
+// Audition"). Mirrors EVENT_TIMELINE's shape/full-replace convention.
+export interface EventRoundApi {
+  id: number;
+  event_id: number;
+  sort_order: number;
+  name: string;
+  description: string | null;
+  mode: "ONLINE" | "OFFLINE";
+  // The live /events/:id/rounds handler is a raw SQL Collection Query whose
+  // JSON_ARRAYAGG(...) "rubric" column comes back as an escaped JSON
+  // *string*, not a nested array — confirmed live 2026-07-27. Adapters
+  // parse defensively; don't assume the array shape holds elsewhere.
+  rubric: EventRoundRubricApi[] | string;
+  // NULL/0 = auto-shortlist disabled for this round.
+  shortlist_count: number | null;
+  start_time: string | null;
+  end_time: string | null;
+  // Contract-only — GCODE_EVENT_ROUNDS has no JUDGE_WEIGHT/AUDIENCE_WEIGHT
+  // columns yet. Missing/undefined -> 70/30, same degrade convention as
+  // shortlist_count above. Only meaningful for whichever round resolves as
+  // "the" live round (see resolveLiveRound in lib/rounds.ts) — blends the
+  // panelist rubric average with the audience rating average.
+  judge_weight?: number;
+  audience_weight?: number;
+}
+
+// Contract-only — GCODE_EVENT_ROUND_DECISIONS doesn't exist yet as of
+// 2026-07-25. Append-only shortlist/reject history — a participant can have
+// multiple rows for the same round over time; the latest by decided_on wins.
+export interface RoundDecisionApi {
+  id: number;
+  round_id: number;
+  participant_id: number;
+  status: "SHORTLISTED" | "REJECTED";
+  decided_by: string | null;
+  decided_on: string;
+  created_on: string;
+}
+
+// Contract-only — GCODE_EVENT_ROUND_SCORES doesn't exist yet as of
+// 2026-07-27. Append-only per-criterion score history, same convention as
+// RoundDecisionApi above — the latest by scored_on wins per
+// (participant_id, criterion_id) pair.
+export interface RoundScoreApi {
+  id: number;
+  round_id: number;
+  participant_id: number;
+  criterion_id: number;
+  score: number;
+  scored_by: string | null;
+  scored_on: string;
+  created_on: string;
+}
+
+// Contract-only — GCODE_EVENT_PANELISTS. Organizer's list view for one
+// event (GET /events/:id/panelists).
+export interface EventPanelistApi {
+  id: number;
+  event_id: number;
+  // Cast to text server-side — GCODE_USERS.USER_ID can hold values well
+  // past JS's safe-integer range; emitted as a bare JSON number, the
+  // browser silently rounds it, breaking every string comparison against
+  // the JWT's exact userId. See list_panelists' own comment.
+  user_id: string | null;
+  invited_email: string;
+  status: "INVITED" | "ACCEPTED" | "DECLINED";
+  invited_by: string | null;
+  invited_on: string;
+  responded_on: string | null;
+}
+
+// Single-invite lookup (GET /panelists/:id) — joined with the event title
+// since the invitee's accept/decline page only has the panelist id, not the
+// event id, from the link they clicked.
+export interface PanelistInviteApi {
+  id: number;
+  event_id: number;
+  event_title: string;
+  invited_email: string;
+  status: "INVITED" | "ACCEPTED" | "DECLINED";
+  invited_on: string;
+}
+
 // Mirrors ORDS POST /events/:id/razorpay-order binds ->
 // GCODE_PAYMENTS_API.create_order. Amount is computed server-side from
 // ticket_price * quantity — never trust a client-sent amount. email/full_name
@@ -215,6 +311,9 @@ export interface CreateRazorpayOrderPayload {
   user_id?: string;
   quantity: number;
   category?: "ATTENDEE" | "PARTICIPANT";
+  // Optional discount code — validated + priced server-side in
+  // GCODE_COUPONS_API.validate_coupon, never trust a client-computed amount.
+  coupon_code?: string;
 }
 
 // Mirrors GCODE_PAYMENTS_API.create_order's response. key_id is Razorpay's
@@ -227,6 +326,17 @@ export interface RazorpayOrderApi {
   key_id: string;
 }
 
+// A coupon that fully covers the price takes this shape instead of
+// RazorpayOrderApi — the backend skips Razorpay entirely and registers the
+// participant directly (GCODE_COUPONS_API.redeem_free_coupon /
+// GCODE_UPI_CLAIMS_API.confirm_upi_claim), so there's no order to pay for.
+export interface FreeRegistrationApi {
+  free: true;
+  participant_id: number;
+}
+
+export type CreateRazorpayOrderResult = RazorpayOrderApi | FreeRegistrationApi;
+
 // Mirrors ORDS POST /participants/razorpay binds ->
 // GCODE_PAYMENTS_API.verify_and_register. No event_id, email, full_name, or
 // quantity — the backend already has all of that on the GCODE_PAYMENT_ORDERS
@@ -238,6 +348,72 @@ export interface VerifyRazorpayPaymentPayload {
   razorpay_order_id: string;
   razorpay_payment_id: string;
   razorpay_signature: string;
+}
+
+// Contract-only — GCODE_COUPONS doesn't exist on the live backend yet (see
+// docs/sql/coupons/). Organizer's list view for one event
+// (GET /events/:id/coupons), mirrors GCODE_COUPONS_API.list_coupons_for_event.
+export interface CouponApi {
+  id: number;
+  event_id: number;
+  code: string;
+  discount_type: "PERCENT" | "FIXED";
+  discount_value: number;
+  max_redemptions: number | null;
+  redemption_count: number;
+  valid_from: string | null;
+  valid_to: string | null;
+  is_active: number; // 0/1
+  created_on: string;
+  computed_status: "ACTIVE" | "INACTIVE" | "EXPIRED" | "SCHEDULED" | "EXHAUSTED";
+}
+
+export interface CreateCouponPayload {
+  code: string;
+  discount_type: "PERCENT" | "FIXED";
+  discount_value: number;
+  max_redemptions?: number;
+  valid_from?: string;
+  valid_to?: string;
+}
+
+// Mirrors GCODE_COUPONS_API.validate_coupon's OUT params (POST
+// /events/:id/coupons/validate). Called before checkout so the register
+// page can show the discounted total; the same validation re-runs
+// server-side inside create_order/redeem_free_coupon, so this response is
+// informational only, never trusted for the actual charge.
+export interface ValidateCouponResponse {
+  coupon_id: number;
+  discount_type: "PERCENT" | "FIXED";
+  discount_value: number;
+  original_amount: number;
+  final_amount: number;
+}
+
+// Contract-only — GCODE_UPI_PAYMENT_CLAIMS doesn't exist on the live backend
+// yet (see docs/sql/coupons/). No order_id exists for a static/offline UPI
+// QR scan, so this is a self-reported claim an organizer manually confirms
+// against their own bank/Razorpay settlement — not a cryptographic proof of
+// payment. Mirrors GCODE_UPI_CLAIMS_API.list_upi_claims.
+export interface UpiClaimApi {
+  id: number;
+  event_id: number;
+  email: string;
+  full_name: string;
+  utr: string;
+  amount_claimed: number;
+  status: "PENDING" | "CONFIRMED" | "REJECTED";
+  submitted_on: string;
+  reviewed_by: string | null;
+  reviewed_on: string | null;
+  participant_id: number | null;
+}
+
+export interface SubmitUpiClaimPayload {
+  email: string;
+  full_name: string;
+  utr: string;
+  amount_claimed: number;
 }
 
 // Mirrors GCODE_EVENT_PARTICIPANTS_API.list_by_user's refcursor row — the

@@ -14,6 +14,31 @@ const eventSocialLinkSchema = z.object({
   url: z.string(),
 });
 
+const eventRoundRubricCriterionSchema = z.object({
+  label: z.string().default(""),
+  maxScore: z.number().default(10),
+});
+
+const eventRoundItemSchema = z.object({
+  name: z.string().default(""),
+  description: z.string().default(""),
+  mode: z.enum(["ONLINE", "OFFLINE"]).default("OFFLINE"),
+  // Organizer-defined judging criteria — optional, blank = judges just
+  // Shortlist/Reject with no scored breakdown.
+  rubric: z.array(eventRoundRubricCriterionSchema).default([]),
+  // Auto-shortlist top N once every participant has a score for every
+  // rubric criterion — 0 = disabled, decisions stay fully manual.
+  shortlistCount: z.number().default(0),
+  date: z.string().default(""), // yyyy-mm-dd
+  startTime: z.string().default(""),
+  endTime: z.string().default(""),
+  // Live final-score blend weights — only meaningful for whichever round
+  // resolves as "the" live round (last Offline round, see resolveLiveRound
+  // in lib/rounds.ts). Percentages, not enforced to sum to 100 server-side.
+  judgeWeight: z.number().default(70),
+  audienceWeight: z.number().default(30),
+});
+
 export const eventDetailDataSchema = z.object({
   id: z.number().default(0),
   type: z.number().nullable().default(null), // FK -> EVENT_TYPE_ID
@@ -58,6 +83,7 @@ export const eventDetailDataSchema = z.object({
   mediaUrls: z.array(z.string()).default([]), // no backend column yet
   socialLinks: z.array(eventSocialLinkSchema).default([]), // no backend column yet
   timeline: z.array(eventTimelineItemSchema).default([]), // EVENT_TIMELINE rows
+  rounds: z.array(eventRoundItemSchema).default([]), // GCODE_EVENT_ROUNDS rows — contract-only as of 2026-07-25
   certificate: z.boolean().default(false), // no backend column yet
 });
 

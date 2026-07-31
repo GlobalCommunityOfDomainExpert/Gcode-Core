@@ -2,10 +2,12 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { getEvent, listEventTimeline } from "@/lib/api/events";
+import { listEventRounds } from "@/lib/api/rounds";
 import { getEventTypes, getModes, getStatuses } from "@/lib/api/lookups";
 import {
   adaptApiEvent,
   adaptTimelineItem,
+  adaptEventRound,
   formatDuration,
 } from "@/lib/api/adapters";
 import { Event } from "@/lib/event";
@@ -23,13 +25,15 @@ export function useEvent(id: string | undefined) {
     if (!id) return;
     setStatus("loading");
     try {
-      const [detail, timeline, types, modes, statuses] = await Promise.all([
-        getEvent(id),
-        listEventTimeline(id),
-        getEventTypes(),
-        getModes(),
-        getStatuses(),
-      ]);
+      const [detail, timeline, rounds, types, modes, statuses] =
+        await Promise.all([
+          getEvent(id),
+          listEventTimeline(id),
+          listEventRounds(id),
+          getEventTypes(),
+          getModes(),
+          getStatuses(),
+        ]);
       const typeNames = Object.fromEntries(types.map((t) => [t.id, t.name]));
       const modeNames = Object.fromEntries(
         modes.map((m) => [m.id, m.mode_name]),
@@ -57,6 +61,7 @@ export function useEvent(id: string | undefined) {
       setEvent({
         ...adapted,
         timeline: timeline.map(adaptTimelineItem),
+        rounds: rounds.map(adaptEventRound),
         duration,
       });
       setStatus("ready");
