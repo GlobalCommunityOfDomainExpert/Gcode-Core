@@ -83,8 +83,18 @@ export interface EventRound {
   // Blend weights for this round's live final score (judge rubric average
   // vs audience rating average) — only meaningful for whichever round
   // resolves as "the" live round, see resolveLiveRound in lib/rounds.ts.
+  // Only relevant when both scoring toggles below are on for an Offline
+  // round; otherwise blendedFinalScore falls back to whichever single
+  // source is active regardless of the weight values.
   judgeWeight: number;
   audienceWeight: number;
+  // Offline-round-only toggles (Online judge scoring via rubric is always
+  // on, no toggle). judgeScoringEnabled can be true with an empty rubric
+  // only transiently while editing — the wizard enforces at least one
+  // criterion before it can be saved on. Both false = this round has no
+  // scoring mechanism at all; decisions stay fully manual, no rank to go by.
+  judgeScoringEnabled: boolean;
+  audienceScoringEnabled: boolean;
 }
 
 // Backed by GCODE_EVENT_PANELISTS. Not a global account role — any

@@ -13,7 +13,8 @@ export async function GET(
   { params }: { params: Promise<{ id: string }> },
 ) {
   const { id } = await params;
-  const attendeeId = request.nextUrl.searchParams.get("attendee_id") ?? undefined;
+  const attendeeId =
+    request.nextUrl.searchParams.get("attendee_id") ?? undefined;
   const encoder = new TextEncoder();
   let closed = false;
 
@@ -23,6 +24,7 @@ export async function GET(
       let lastAlreadyRated: boolean | undefined = undefined;
       let lastRatingCount: number | undefined = undefined;
       let lastWindowClosesAt: string | null | undefined = undefined;
+      let lastIsIntermission: boolean | undefined = undefined;
       let lastHeartbeat = Date.now();
 
       request.signal.addEventListener("abort", () => {
@@ -40,12 +42,14 @@ export async function GET(
             state.participant_id !== lastParticipantId ||
             state.already_rated !== lastAlreadyRated ||
             state.rating_count !== lastRatingCount ||
-            state.window_closes_at !== lastWindowClosesAt
+            state.window_closes_at !== lastWindowClosesAt ||
+            state.is_intermission !== lastIsIntermission
           ) {
             lastParticipantId = state.participant_id;
             lastAlreadyRated = state.already_rated;
             lastRatingCount = state.rating_count;
             lastWindowClosesAt = state.window_closes_at;
+            lastIsIntermission = state.is_intermission;
             send(state);
             lastHeartbeat = Date.now();
           } else if (Date.now() - lastHeartbeat > HEARTBEAT_MS) {

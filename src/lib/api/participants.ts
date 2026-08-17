@@ -36,6 +36,15 @@ export async function getParticipant(
   return items[0];
 }
 
+// GCODE_EVENT_PARTICIPANTS_API.delete_participant — removes the
+// registration entirely (organizer-initiated, e.g. undoing a wildcard add
+// or dropping a no-show). Round decisions/scores tied to this participant
+// stay in GCODE_EVENT_ROUND_DECISIONS/SCORES (append-only history, not
+// cleaned up here) — this only affects the registration row itself.
+export function removeParticipant(id: number | string): Promise<void> {
+  return apiRequest(`/participants/${id}`, { method: "DELETE" });
+}
+
 // Registrations for the signed-in user, joined to their events. Backend
 // resolves user_id from the token itself (AUTH_PKG.get_verified_user_id) —
 // this just carries the token as a query param, not the user_id.

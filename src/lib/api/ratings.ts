@@ -19,6 +19,13 @@ export interface LivePerformer {
   // started before rounds existed, or the backend hasn't been patched for
   // this yet (contract-first, see ratings-round-id-backend.sql).
   round_id: number | null;
+  // Intermission — the public scoreboard shows only the logo, nothing else
+  // (no performer card, no rating UI, no floating reactions), regardless of
+  // whatever participant_id/round_id happen to still be set underneath.
+  // Independent of participant_id being null/set — starting an intermission
+  // doesn't need to clear who was last on stage, ending it just needs to
+  // reveal the scoreboard again.
+  is_intermission: boolean;
 }
 
 export interface PerformedParticipant {
@@ -54,6 +61,20 @@ export function setLivePerformer(
       participant_id: participantId,
       ...(roundId !== undefined ? { round_id: roundId } : {}),
     },
+  });
+}
+
+// Organizer-only — toggles intermission on/off for the public scoreboard.
+// Shares the same PUT endpoint as setLivePerformer above, just a different
+// body shape — doesn't touch participant_id, so whoever was last on stage
+// is still there underneath once intermission ends.
+export function setIntermission(
+  eventId: number | string,
+  active: boolean,
+): Promise<LivePerformer> {
+  return apiRequest(`/events/${eventId}/live-performer`, {
+    method: "PUT",
+    body: { is_intermission: active ? "Y" : "N" },
   });
 }
 
@@ -113,9 +134,8 @@ export interface RoundRatingSummary {
 
 // Organizer-only — every performed participant's audience rating average
 // for one round (not just the current performer, unlike getLivePerformer
-// above) — drives the live-tab leaderboard's audience-score column.
-// Contract-only — GCODE_RATINGS_API.list_round_ratings doesn't exist yet,
-// same degrade-to-[] convention as listEventRounds in rounds.ts.
+// above) — drives the live-tab leaderboard's audience-score column and the
+// Rounds tab's Live Rating column for Offline rounds.
 export async function listRoundRatings(
   eventId: number | string,
   roundId: number | string,

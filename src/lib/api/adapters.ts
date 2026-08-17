@@ -106,6 +106,8 @@ export function adaptEventRound(row: EventRoundApi): EventRound {
     sortOrder: row.sort_order,
     judgeWeight: row.judge_weight ?? 70,
     audienceWeight: row.audience_weight ?? 30,
+    judgeScoringEnabled: row.judge_scoring_enabled === "Y",
+    audienceScoringEnabled: row.audience_scoring_enabled === "Y",
   };
 }
 
@@ -177,7 +179,8 @@ export function adaptUpiClaim(row: UpiClaimApi): UpiClaim {
     submittedOn: row.submitted_on,
     reviewedBy: row.reviewed_by ?? undefined,
     reviewedOn: row.reviewed_on ?? undefined,
-    participantId: row.participant_id != null ? String(row.participant_id) : undefined,
+    participantId:
+      row.participant_id != null ? String(row.participant_id) : undefined,
   };
 }
 
@@ -277,7 +280,11 @@ export function toCreatePayload(
     event_type_id: data.type,
     mode_of_event_id: data.mode,
     description: data.description || undefined,
-    start_date: toIsoTimestamp(data.date, data.time),
+    // null (not undefined) when blank — an omitted key gets dropped by
+    // JSON.stringify and the PUT handler leaves the existing column alone,
+    // so clearing a previously-set date/time back to "TBD" needs an
+    // explicit null to actually reach the backend.
+    start_date: toIsoTimestamp(data.date, data.time) ?? null,
     registration_start: data.attendeeRegistrationOpens
       ? toIsoTimestamp(data.attendeeRegistrationOpens)
       : undefined,
@@ -406,10 +413,12 @@ export function toEventDraft(
     rounds: rounds.map((row) => {
       const item = adaptEventRound(row);
       return {
+        id: row.id,
         name: item.name,
         description: item.description,
         mode: row.mode,
         rubric: item.rubric.map((c) => ({
+          id: Number(c.id),
           label: c.label,
           maxScore: c.maxScore,
         })),
@@ -419,6 +428,8 @@ export function toEventDraft(
         endTime: item.endTime ? istTime(item.endTime) : "",
         judgeWeight: item.judgeWeight,
         audienceWeight: item.audienceWeight,
+        judgeScoringEnabled: item.judgeScoringEnabled,
+        audienceScoringEnabled: item.audienceScoringEnabled,
       };
     }),
     certificate: Number(detail.certificate_offered) === 1,
@@ -460,11 +471,18 @@ export function toTimelinePayload(
 }
 
 export interface RoundRubricPayloadItem {
+  // Existing GCODE_EVENT_ROUND_RUBRICS.ID, null for a new criterion — lets
+  // the backend UPDATE in place instead of delete+reinsert (see
+  // eventRoundRubricCriterionSchema in lib/zod/event.ts for why).
+  id: number | null;
   label: string;
   maxScore: number;
 }
 
 export interface RoundPayloadItem {
+  // Existing GCODE_EVENT_ROUNDS.ID, null for a new round — same
+  // update-in-place reasoning as the rubric id above.
+  id: number | null;
   name: string;
   description: string;
   mode: "ONLINE" | "OFFLINE";
@@ -475,6 +493,10 @@ export interface RoundPayloadItem {
   sortOrder: number;
   judgeWeight: number;
   audienceWeight: number;
+  // 'Y'/'N' to match the CHAR(1) column convention on the wire — see
+  // EventRoundApi.judge_scoring_enabled in types.ts.
+  judgeScoringEnabled: "Y" | "N";
+  audienceScoringEnabled: "Y" | "N";
 }
 
 // Wizard round items -> GCODE_EVENT_ROUNDS rows. Mirrors toTimelinePayload's
@@ -485,12 +507,13 @@ export function toRoundsPayload(data: EventDetailData): RoundPayloadItem[] {
     .map((item, index) => {
       const day = item.date || null;
       return {
+        id: item.id,
         name: item.name,
         description: item.description,
         mode: item.mode,
         rubric: item.rubric
           .filter((c) => c.label.trim() !== "")
-          .map((c) => ({ label: c.label, maxScore: c.maxScore })),
+          .map((c) => ({ id: c.id, label: c.label, maxScore: c.maxScore })),
         shortlistCount: item.shortlistCount,
         startTime: day ? (toIsoTimestamp(day, item.startTime) ?? null) : null,
         endTime:
@@ -500,6 +523,8 @@ export function toRoundsPayload(data: EventDetailData): RoundPayloadItem[] {
         sortOrder: index,
         judgeWeight: item.judgeWeight,
         audienceWeight: item.audienceWeight,
+        judgeScoringEnabled: item.judgeScoringEnabled ? "Y" : "N",
+        audienceScoringEnabled: item.audienceScoringEnabled ? "Y" : "N",
       };
     });
 }
@@ -538,7 +563,9 @@ function resolveRatingMode(
   return mode === "CASUAL" ? "Casual" : "Competitive";
 }
 
-function resolveRoundMode(mode: "ONLINE" | "OFFLINE" | undefined): EventRound["mode"] {
+function resolveRoundMode(
+  mode: "ONLINE" | "OFFLINE" | undefined,
+): EventRound["mode"] {
   return mode === "ONLINE" ? "Online" : "Offline";
 }
 

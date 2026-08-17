@@ -15,11 +15,14 @@ import { Attendee, isUploadedAudioUrl } from "@/lib/attendees";
 import { Event, EventPanelist } from "@/lib/event";
 import {
   computeAutoShortlist,
+  computeAutoShortlistBlended,
   currentRoundStatus,
   currentRoundScores,
   isRoundDecided,
+  isRoundFullyJudged,
   isRoundFullyScored,
   myRoundScores,
+  rankByBlendedScore,
   rankByTotalScore,
   RoundDecision,
   RoundScore,
@@ -33,6 +36,7 @@ import {
   submitRoundScore,
 } from "@/lib/api/rounds";
 import { listEventPanelists } from "@/lib/api/panelists";
+import { listRoundRatings, RoundRatingSummary } from "@/lib/api/ratings";
 import {
   adaptEventPanelist,
   adaptRoundDecision,
@@ -41,6 +45,8 @@ import {
 import { ApiError } from "@/lib/api/client";
 import { useSession } from "@/hooks/use-session";
 import { roundDecisionLabel, roundDecisionTone } from "./status-maps";
+import { LiveRoundPanel } from "./live-round-panel";
+import { AddParticipantsPanel } from "./add-participants-panel";
 
 export interface RoundsTabProps {
   event: Event;
@@ -48,14 +54,18 @@ export interface RoundsTabProps {
   // "organizer" (default) never scores — every round shows a read-only
   // breakdown (total, rank, who scored what) instead of a Score button.
   // "panelist" can score Online rounds only — Offline rounds are
-  // live-judged exclusively via the Live Judging tab's current-performer
-  // flow, so this table stays read-only for Offline rounds regardless of
-  // viewer.
+  // live-judged exclusively via the Live Rating panel below the table
+  // (organizer-only), so this table stays read-only for Offline rounds
+  // regardless of viewer.
   viewerRole?: "organizer" | "panelist";
   // Locks the table to a single round with no round switcher — the judge
   // page's active-round-only view, so a panelist can't browse rounds beyond
   // whichever one is currently open.
   onlyRoundId?: string;
+  // Refetches the parent page's attendee list — called after a wildcard
+  // participant is added via AddParticipantsPanel so they show up without a
+  // full reload. Organizer-only feature, so panelist callers can omit this.
+  onAttendeesChanged?: () => void;
 }
 
 export function RoundsTab({
@@ -63,6 +73,7 @@ export function RoundsTab({
   attendees,
   viewerRole = "organizer",
   onlyRoundId,
+  onAttendeesChanged,
 }: RoundsTabProps) {
   const session = useSession();
   const participants = useMemo(
@@ -74,6 +85,14 @@ export function RoundsTab({
     event.rounds[0]?.id ?? "",
   );
   const activeRoundId = onlyRoundId ?? internalActiveRoundId;
+  // Organizer-only sub-tabs within the selected round. Reset to
+  // "shortlisting" on every round switch — "live" only exists for Offline
+  // rounds, and switching from an Offline round to an Online one while
+  // sitting on "live" would otherwise land on a sub-tab that no longer
+  // renders anything.
+  const [activeSubTab, setActiveSubTab] = useState<
+    "shortlisting" | "live" | "participants"
+  >("shortlisting");
   // Scoring happens in a modal (one participant, every criterion at once)
   // rather than as inline table columns — a rubric with many criteria would
   // otherwise force the table wider than any reasonable screen.
@@ -97,6 +116,10 @@ export function RoundsTab({
   // "scored by" breakdown labels each judge by invitedEmail, the only
   // identifying field EventPanelist actually has.
   const [panelists, setPanelists] = useState<EventPanelist[]>([]);
+  // Audience rating average per participant for the active round — only
+  // fetched for Offline rounds (Online rounds are judged from the audio
+  // submission column instead, no live rating happens there).
+  const [roundRatings, setRoundRatings] = useState<RoundRatingSummary[]>([]);
 
   async function refreshDecisions() {
     try {
@@ -140,6 +163,22 @@ export function RoundsTab({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [event.id]);
 
+  useEffect(() => {
+    const mode = event.rounds.find((r) => r.id === activeRoundId)?.mode;
+    let cancelled = false;
+    void (async () => {
+      if (mode !== "Offline") {
+        setRoundRatings([]);
+        return;
+      }
+      const items = await listRoundRatings(event.id, activeRoundId);
+      if (!cancelled) setRoundRatings(items);
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [event.id, event.rounds, activeRoundId]);
+
   // Auto-shortlist: once every participant has a score for every rubric
   // criterion in a round configured with a shortlistCount, rank the
   // still-undecided participants and Shortlist/Reject them automatically.
@@ -152,7 +191,15 @@ export function RoundsTab({
   const autoFinalizingRef = useRef<Set<string>>(new Set());
   useEffect(() => {
     const round = event.rounds.find((r) => r.id === activeRoundId);
-    if (!round || round.rubric.length === 0 || !round.shortlistCount) return;
+    // Online only — Offline rounds go through the blended judge+audience
+    // effect below instead, even when they have a rubric.
+    if (
+      !round ||
+      round.mode !== "Online" ||
+      round.rubric.length === 0 ||
+      !round.shortlistCount
+    )
+      return;
     if (autoFinalizingRef.current.has(activeRoundId)) return;
 
     const participantIds = participants.map((p) => p.id);
@@ -210,6 +257,86 @@ export function RoundsTab({
     expectedJudgeIds,
   ]);
 
+  // Offline rounds' judging happens live: panelists score the rubric via
+  // the current-performer flow, the audience rates 0-10 — whichever the
+  // organizer turned on for this specific round in the edit wizard
+  // (judgeScoringEnabled/audienceScoringEnabled). A round can have either
+  // source active, both, or neither — isRoundFullyJudged waits on whichever
+  // ones are actually in play rather than racing two separate decisions off
+  // two separate sources (a rubric-scoring-finishes-first vs
+  // rating-finishes-first split-brain that existed here before). Once every
+  // active source is done for every participant, decide by
+  // blendedFinalScore (judge/audience weighted per the round's own split,
+  // or whichever single source is active alone). Neither active -> always
+  // false inside isRoundFullyJudged, this round never auto-decides, stays
+  // fully manual (handled by the plain BulkActionBar path below instead).
+  const autoFinalizingBlendedRef = useRef<Set<string>>(new Set());
+  useEffect(() => {
+    const round = event.rounds.find((r) => r.id === activeRoundId);
+    if (!round || round.mode !== "Offline" || !round.shortlistCount) return;
+    if (autoFinalizingBlendedRef.current.has(activeRoundId)) return;
+
+    const participantIds = participants.map((p) => p.id);
+    if (
+      !isRoundFullyJudged(
+        round.rubric,
+        participantIds,
+        scores,
+        roundRatings,
+        activeRoundId,
+        expectedJudgeIds,
+        round.judgeScoringEnabled,
+        round.audienceScoringEnabled,
+      )
+    ) {
+      return;
+    }
+
+    const { shortlistIds, rejectIds } = computeAutoShortlistBlended(
+      round,
+      round.rubric,
+      participantIds,
+      scores,
+      roundRatings,
+      decisions,
+      activeRoundId,
+      round.shortlistCount,
+    );
+    if (shortlistIds.length === 0 && rejectIds.length === 0) return;
+
+    autoFinalizingBlendedRef.current.add(activeRoundId);
+    void (async () => {
+      try {
+        await Promise.all([
+          ...shortlistIds.map((id) =>
+            decideRoundStatus(id, activeRoundId, "SHORTLISTED"),
+          ),
+          ...rejectIds.map((id) =>
+            decideRoundStatus(id, activeRoundId, "REJECTED"),
+          ),
+        ]);
+        await refreshDecisions();
+      } catch (err) {
+        setError(
+          err instanceof ApiError || err instanceof Error
+            ? err.message
+            : "Couldn't auto-finalize the shortlist for this round.",
+        );
+      } finally {
+        autoFinalizingBlendedRef.current.delete(activeRoundId);
+      }
+    })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    event.rounds,
+    activeRoundId,
+    participants,
+    scores,
+    roundRatings,
+    decisions,
+    expectedJudgeIds,
+  ]);
+
   // Batches every edited criterion for one participant into one submit —
   // fields just update local drafts on change, nothing hits the server
   // until the modal's Submit button is clicked. Only fields the judge
@@ -224,7 +351,8 @@ export function RoundsTab({
       }))
       .filter(
         ({ draftKey }) =>
-          scoreDrafts[draftKey] !== undefined && scoreDrafts[draftKey].trim() !== "",
+          scoreDrafts[draftKey] !== undefined &&
+          scoreDrafts[draftKey].trim() !== "",
       );
     if (pending.length === 0) {
       setScoringParticipantId(null);
@@ -239,7 +367,12 @@ export function RoundsTab({
             0,
             Math.min(criterion.maxScore, Number(scoreDrafts[draftKey])),
           );
-          return submitRoundScore(participantId, activeRoundId, criterion.id, parsed);
+          return submitRoundScore(
+            participantId,
+            activeRoundId,
+            criterion.id,
+            parsed,
+          );
         }),
       );
       setScoreDrafts((prev) => {
@@ -303,6 +436,16 @@ export function RoundsTab({
     }
   }
 
+  // A wildcard participant's backfilled decisions need to show up
+  // immediately (Shortlisting table, Live Configuration's eligibility
+  // picker) without a full reload — refreshDecisions covers that locally;
+  // onAttendeesChanged is the parent page's own attendee refetch, since
+  // `attendees` itself is a prop RoundsTab doesn't own.
+  async function handleParticipantAdded() {
+    onAttendeesChanged?.();
+    await refreshDecisions();
+  }
+
   function toggleRow(id: string) {
     const next = new Set(selectedIds);
     if (next.has(id)) next.delete(id);
@@ -311,7 +454,9 @@ export function RoundsTab({
   }
 
   function toggleAll(checked: boolean) {
-    setSelectedIds(checked ? new Set(participants.map((p) => p.id)) : new Set());
+    setSelectedIds(
+      checked ? new Set(participants.map((p) => p.id)) : new Set(),
+    );
   }
 
   const activeRound = event.rounds.find((r) => r.id === activeRoundId);
@@ -319,11 +464,31 @@ export function RoundsTab({
   // by computeAutoShortlist — manual per-row/bulk actions are hidden so
   // there's no conflicting "who actually decided this" path.
   const autoModeActive = !!activeRound?.shortlistCount;
+  // Which source(s) this Offline round's auto-decide is actually waiting on
+  // — judge rubric, audience rating, or both — for the info banner below.
+  // Neither toggle on shouldn't normally reach autoModeActive (the edit
+  // wizard disables Auto Shortlist when there's nothing to rank by), but
+  // stays defensive rather than assuming that UI guard always held.
+  const offlineAutoModeSourceLabel = (() => {
+    if (!activeRound) return "";
+    const {
+      judgeScoringEnabled: judgeActive,
+      audienceScoringEnabled: audienceActive,
+    } = activeRound;
+    if (judgeActive && audienceActive)
+      return "scored by judges and rated by the audience";
+    if (judgeActive) return "scored by judges";
+    if (audienceActive) return "rated by the audience";
+    return "decided";
+  })();
 
   // Rounds run in sequence — event.rounds already arrives sorted by
   // sort_order (see the /rounds SQL's ORDER BY), so array index doubles as
   // round order. A round is locked until every participant has a decision
-  // on the one immediately before it.
+  // on the one immediately before it — always, regardless of whether that
+  // previous round has any scoring configured (a round with neither judge
+  // nor audience scoring on still requires the organizer to manually
+  // Shortlist/Reject each participant, it doesn't wave everyone through).
   const participantIds = participants.map((p) => p.id);
   const activeRoundIndex = event.rounds.findIndex(
     (r) => r.id === activeRoundId,
@@ -334,36 +499,101 @@ export function RoundsTab({
     !!previousRound &&
     !isRoundDecided(participantIds, decisions, previousRound.id);
 
+  const ratingsByParticipant = useMemo(
+    () => new Map(roundRatings.map((r) => [String(r.participant_id), r])),
+    [roundRatings],
+  );
+
   const scoringParticipant = participants.find(
     (p) => p.id === scoringParticipantId,
   );
 
   // Admin never scores — every round shows a read-only breakdown instead.
   // Panelists can only score Online rounds through this table; Offline
-  // rounds are live-judged exclusively via the Live Judging tab's
+  // rounds are live-judged exclusively via the Live Rating panel's
   // current-performer flow, so this stays read-only there too regardless of
   // viewer.
   const canScoreActiveRound =
     viewerRole === "panelist" && activeRound?.mode === "Online";
 
-  // Rank is only meaningful once every expected judge has scored every
-  // participant — a partial rank (whoever happens to be scored so far)
-  // would be misleading, not an early preview.
+  // Rank is only meaningful once whichever source(s) actually apply to this
+  // round have finished for every participant — Online: every expected
+  // judge scored everyone; Offline: every active source (judge and/or
+  // audience, see isRoundFullyJudged) is done. A partial rank (whoever
+  // happens to be scored/rated so far) would be misleading, not an early
+  // preview.
   const roundFullyScored =
     !!activeRound &&
-    activeRound.rubric.length > 0 &&
-    isRoundFullyScored(
-      activeRound.rubric,
-      participantIds,
-      scores,
-      activeRoundId,
-      expectedJudgeIds,
-    );
+    (activeRound.mode === "Online"
+      ? activeRound.rubric.length > 0 &&
+        isRoundFullyScored(
+          activeRound.rubric,
+          participantIds,
+          scores,
+          activeRoundId,
+          expectedJudgeIds,
+        )
+      : isRoundFullyJudged(
+          activeRound.rubric,
+          participantIds,
+          scores,
+          roundRatings,
+          activeRoundId,
+          expectedJudgeIds,
+          activeRound.judgeScoringEnabled,
+          activeRound.audienceScoringEnabled,
+        ));
 
   const rankByParticipant =
     activeRound && roundFullyScored
-      ? rankByTotalScore(activeRound.rubric, scores, participantIds, activeRoundId)
+      ? activeRound.mode === "Offline"
+        ? rankByBlendedScore(
+            activeRound,
+            activeRound.rubric,
+            scores,
+            roundRatings,
+            participantIds,
+            activeRoundId,
+          )
+        : rankByTotalScore(
+            activeRound.rubric,
+            scores,
+            participantIds,
+            activeRoundId,
+          )
       : {};
+
+  // Once every participant has a decision on the last round, there's no
+  // "next round" to advance to — the Round Status column below switches
+  // from Shortlisted/Reject tags to a declared final placement instead,
+  // ranked the same way rankByParticipant already ranks mid-round (blended
+  // judge+audience for Offline, rubric total for Online), so the number
+  // shown never changes between "in progress" and "final."
+  const isFinalRound =
+    event.rounds.length > 0 && activeRoundIndex === event.rounds.length - 1;
+  const isFinalRoundDecided =
+    isFinalRound && isRoundDecided(participantIds, decisions, activeRoundId);
+
+  // Whether the rubric Total/Rank/Score column shows at all — Online:
+  // whenever a rubric exists (no toggle there). Offline: only when the
+  // organizer explicitly turned judge scoring on for this round, a saved
+  // rubric with the toggle off stays fully hidden, not just unscoreable.
+  const judgeScoringVisible =
+    !!activeRound &&
+    (activeRound.mode === "Online"
+      ? activeRound.rubric.length > 0
+      : activeRound.judgeScoringEnabled);
+  // A standalone Rank column for the audience-only case (Offline, judge
+  // scoring off, audience scoring on) — judgeScoringVisible's Rank (nested
+  // under the rubric Total/Score column below) never shows there since
+  // there's no rubric column to nest under, but rankByParticipant still has
+  // a real blended (here: audience-only) number worth showing.
+  const audienceOnlyRankVisible =
+    !!activeRound &&
+    activeRound.mode === "Offline" &&
+    !activeRound.judgeScoringEnabled &&
+    activeRound.audienceScoringEnabled;
+  const finalRankByParticipant = isFinalRoundDecided ? rankByParticipant : {};
 
   const columns: TableColumn<Attendee>[] = [
     {
@@ -407,12 +637,54 @@ export function RoundsTab({
           } satisfies TableColumn<Attendee>,
         ]
       : []),
+    // Offline rounds are judged live in-person — the audience 0-10 rating
+    // average from the Live Rating panel's current-performer flow is the
+    // closest thing to a score here, shown alongside (not instead of) the
+    // manual Shortlist/Reject decision below, which still finalizes the
+    // round.
+    ...(activeRound?.mode === "Offline" && activeRound.audienceScoringEnabled
+      ? [
+          {
+            key: "liveRating",
+            header: "Live Rating",
+            render: (row: Attendee) => {
+              const summary = ratingsByParticipant.get(row.id);
+              if (!summary) {
+                return <span className="text-text-secondary">—</span>;
+              }
+              return (
+                <span className="text-text-primary">
+                  {(summary.avg_rating / 10).toFixed(1)} / 10{" "}
+                  <span className="text-text-secondary">
+                    ({summary.rating_count})
+                  </span>
+                </span>
+              );
+            },
+          } satisfies TableColumn<Attendee>,
+        ]
+      : []),
+    // See audienceOnlyRankVisible above — the judge-side Rank column below
+    // only exists nested under the rubric Total column, which an
+    // audience-only round doesn't have at all.
+    ...(audienceOnlyRankVisible && viewerRole === "organizer"
+      ? [
+          {
+            key: "rank",
+            header: "Rank",
+            render: (row: Attendee) => (
+              <span className="text-text-secondary">
+                {rankByParticipant[row.id] ?? "—"}
+              </span>
+            ),
+          } satisfies TableColumn<Attendee>,
+        ]
+      : []),
     // Organizer-defined judging rubric — a running Total plus a button that
     // opens a scoring modal for every criterion at once (inline columns
-    // don't scale once a rubric has more than 2-3 criteria). Rounds with no
-    // rubric configured skip straight to the plain Shortlist/Reject
-    // decision below.
-    ...(activeRound?.rubric.length
+    // don't scale once a rubric has more than 2-3 criteria). See
+    // judgeScoringVisible above for the Online/Offline visibility rule.
+    ...(judgeScoringVisible
       ? [
           {
             key: "total",
@@ -425,17 +697,27 @@ export function RoundsTab({
             render: (row: Attendee) => {
               const value =
                 viewerRole === "organizer"
-                  ? totalRubricScore(activeRound.rubric, scores, row.id, activeRoundId)
+                  ? totalRubricScore(
+                      activeRound!.rubric,
+                      scores,
+                      row.id,
+                      activeRoundId,
+                    )
                   : Object.values(
                       session
-                        ? myRoundScores(scores, row.id, activeRoundId, session.userId)
+                        ? myRoundScores(
+                            scores,
+                            row.id,
+                            activeRoundId,
+                            session.userId,
+                          )
                         : {},
                     ).reduce((sum, v) => sum + v, 0);
               return (
                 <span className="text-text-primary font-medium">
                   {value}
                   {" / "}
-                  {activeRound.rubric.reduce((sum, c) => sum + c.maxScore, 0)}
+                  {activeRound!.rubric.reduce((sum, c) => sum + c.maxScore, 0)}
                 </span>
               );
             },
@@ -472,18 +754,37 @@ export function RoundsTab({
       : []),
     // Round decision status is organizer-only — a judge doesn't need to see
     // (or be swayed by) whether someone's already been Shortlisted/Rejected.
+    // Always shown for the organizer, even with no scoring configured for
+    // this round — Shortlist/Reject is still a required manual decision
+    // there, not a free pass.
     ...(viewerRole === "organizer"
       ? [
           {
             key: "status",
-            header: "Round Status",
+            header: isFinalRoundDecided ? "Final Ranking" : "Round Status",
             render: (row: Attendee) => {
-              const status = currentRoundStatus(decisions, row.id, activeRoundId);
+              const status = currentRoundStatus(
+                decisions,
+                row.id,
+                activeRoundId,
+              );
               if (!status) {
                 return <span className="text-text-secondary">Not decided</span>;
               }
+              if (isFinalRoundDecided) {
+                const rank = finalRankByParticipant[row.id];
+                return (
+                  <Badge variant="muted" tone="primary" size="sm">
+                    {rank !== undefined ? `Rank ${rank}` : "Unranked"}
+                  </Badge>
+                );
+              }
               return (
-                <Badge variant="muted" tone={roundDecisionTone[status]} size="sm">
+                <Badge
+                  variant="muted"
+                  tone={roundDecisionTone[status]}
+                  size="sm"
+                >
                   {roundDecisionLabel[status]}
                 </Badge>
               );
@@ -550,61 +851,129 @@ export function RoundsTab({
           onChange={(value) => {
             setInternalActiveRoundId(value);
             setSelectedIds(new Set());
+            setActiveSubTab("shortlisting");
           }}
         />
       )}
 
       {error && <Banner tone="danger">{error}</Banner>}
 
-      {isActiveRoundLocked ? (
-        <Banner tone="info">
-          Complete &quot;{previousRound?.name}&quot; first — every
-          participant needs a Shortlist/Reject decision there before this
-          round unlocks.
-        </Banner>
-      ) : (
-        <>
-          {autoModeActive ? (
-            <Banner tone="info">
-              Decisions for this round are automatic — once every
-              participant is scored on every criterion, the top{" "}
-              {activeRound?.shortlistCount} by total score are Shortlisted
-              and the rest Rejected.
-            </Banner>
-          ) : (
-            <BulkActionBar
-              selectedCount={selectedIds.size}
-              onClear={() => setSelectedIds(new Set())}
-              actions={[
-                {
-                  label: "Shortlist Selected",
-                  onClick: () => decideSelected("SHORTLISTED"),
-                },
-                {
-                  label: "Reject Selected",
-                  onClick: () => decideSelected("REJECTED"),
-                  variant: "ghost",
-                },
-              ]}
-            />
-          )}
+      {(() => {
+        const lockBanner = (
+          <Banner tone="info">
+            Complete &quot;{previousRound?.name}&quot; first — every participant
+            needs a Shortlist/Reject decision there before this round unlocks.
+          </Banner>
+        );
 
-          <Table
-            columns={columns}
-            rows={participants}
-            rowKey={(row) => row.id}
-            selectable={!autoModeActive}
-            selectedKeys={selectedIds}
-            onToggleRow={toggleRow}
-            onToggleAll={toggleAll}
-            emptyState={
-              <p className="text-body text-text-secondary p-6 text-center">
-                No Participant-category registrations yet.
-              </p>
-            }
-          />
-        </>
-      )}
+        const shortlistingBody = (
+          <>
+            {activeRound?.mode === "Offline" &&
+            !activeRound.judgeScoringEnabled &&
+            !activeRound.audienceScoringEnabled ? (
+              <Banner tone="info">
+                No scoring configured for this round — Shortlist/Reject each
+                participant manually below.
+              </Banner>
+            ) : autoModeActive ? (
+              <Banner tone="info">
+                Decisions for this round are automatic — once every participant
+                is{" "}
+                {activeRound?.mode === "Offline"
+                  ? offlineAutoModeSourceLabel
+                  : "scored on every criterion"}
+                , the top {activeRound?.shortlistCount} by{" "}
+                {activeRound?.mode === "Offline"
+                  ? "blended judge + audience score"
+                  : "total score"}{" "}
+                are Shortlisted and the rest Rejected.
+              </Banner>
+            ) : (
+              <BulkActionBar
+                selectedCount={selectedIds.size}
+                onClear={() => setSelectedIds(new Set())}
+                actions={[
+                  {
+                    label: "Shortlist Selected",
+                    onClick: () => decideSelected("SHORTLISTED"),
+                  },
+                  {
+                    label: "Reject Selected",
+                    onClick: () => decideSelected("REJECTED"),
+                    variant: "ghost",
+                  },
+                ]}
+              />
+            )}
+
+            <Table
+              columns={columns}
+              rows={participants}
+              rowKey={(row) => row.id}
+              selectable={!autoModeActive}
+              selectedKeys={selectedIds}
+              onToggleRow={toggleRow}
+              onToggleAll={toggleAll}
+              emptyState={
+                <p className="text-body text-text-secondary p-6 text-center">
+                  No Participant-category registrations yet.
+                </p>
+              }
+            />
+          </>
+        );
+
+        // Panelists never see sub-tabs or Add Participants — same plain
+        // lock-banner-or-table view as always.
+        if (viewerRole !== "organizer") {
+          return isActiveRoundLocked ? lockBanner : shortlistingBody;
+        }
+
+        const subTabItems = [
+          { value: "shortlisting", label: "Shortlisting" },
+          ...(activeRound?.mode === "Offline"
+            ? [{ value: "live", label: "Live Configuration" }]
+            : []),
+          { value: "participants", label: "Add Participants" },
+        ];
+
+        return (
+          <>
+            <Tabs
+              items={subTabItems}
+              value={activeSubTab}
+              onChange={(value) =>
+                setActiveSubTab(value as typeof activeSubTab)
+              }
+            />
+
+            {activeSubTab === "shortlisting" &&
+              (isActiveRoundLocked ? lockBanner : shortlistingBody)}
+
+            {activeSubTab === "live" &&
+              activeRound?.mode === "Offline" &&
+              (isActiveRoundLocked ? (
+                lockBanner
+              ) : (
+                <LiveRoundPanel
+                  event={event}
+                  participants={participants}
+                  round={activeRound}
+                  previousRound={previousRound}
+                  decisions={decisions}
+                />
+              ))}
+
+            {activeSubTab === "participants" && (
+              <AddParticipantsPanel
+                event={event}
+                priorRounds={event.rounds.slice(0, activeRoundIndex)}
+                onAdded={handleParticipantAdded}
+              />
+            )}
+          </>
+        );
+      })()}
 
       <Modal
         open={!!scoringParticipant}
@@ -637,123 +1006,135 @@ export function RoundsTab({
           ) : undefined
         }
       >
-        {activeRound && scoringParticipant && !canScoreActiveRound && viewerRole === "panelist" && (
-          // Defensive fallback — the judge/[id] page never actually routes
-          // a panelist to RoundsTab for an Offline round (that's live-judged
-          // via the Live Judging tab instead), but if it ever did, a judge
-          // must not see the cross-judge breakdown below either way.
-          <p className="text-body text-text-secondary">
-            This round is judged live — see the Live Judging tab.
-          </p>
-        )}
-        {activeRound && scoringParticipant && !canScoreActiveRound && viewerRole === "organizer" && (
-          <div className="space-y-4">
-            {activeRound.rubric.length === 0 ? (
-              <p className="text-body text-text-secondary">
-                This round has no scoring rubric.
-              </p>
-            ) : (
-              <>
-                {(() => {
-                  const blended = currentRoundScores(
-                    scores,
-                    scoringParticipant.id,
-                    activeRoundId,
-                  );
-                  return activeRound.rubric.map((criterion) => (
-                    <div
-                      key={criterion.id}
-                      className="flex items-center justify-between"
-                    >
-                      <span className="text-body text-text-secondary">
-                        {criterion.label}
-                      </span>
-                      <span className="text-body text-text-primary font-medium">
-                        {blended[criterion.id] !== undefined
-                          ? blended[criterion.id]
-                          : "—"}{" "}
-                        / {criterion.maxScore}
-                      </span>
-                    </div>
-                  ));
-                })()}
-                <p className="text-body text-text-primary border-border-light border-t pt-3 font-medium">
-                  Total:{" "}
-                  {totalRubricScore(
-                    activeRound.rubric,
-                    scores,
-                    scoringParticipant.id,
-                    activeRoundId,
-                  )}{" "}
-                  / {activeRound.rubric.reduce((sum, c) => sum + c.maxScore, 0)}
-                  {" · "}Rank{" "}
-                  {roundFullyScored
-                    ? rankByParticipant[scoringParticipant.id]
-                    : "pending — not every panelist has judged yet"}
+        {activeRound &&
+          scoringParticipant &&
+          !canScoreActiveRound &&
+          viewerRole === "panelist" && (
+            // Defensive fallback — the judge/[id] page never actually routes
+            // a panelist to RoundsTab for an Offline round (that's live-judged
+            // via LiveJudgeTab instead), but if it ever did, a judge must not
+            // see the cross-judge breakdown below either way.
+            <p className="text-body text-text-secondary">
+              This round is judged live — see the Live Judging screen.
+            </p>
+          )}
+        {activeRound &&
+          scoringParticipant &&
+          !canScoreActiveRound &&
+          viewerRole === "organizer" && (
+            <div className="space-y-4">
+              {activeRound.rubric.length === 0 ? (
+                <p className="text-body text-text-secondary">
+                  This round has no scoring rubric.
                 </p>
-                <div className="border-border-light space-y-2 border-t pt-3">
-                  <p className="text-small text-text-secondary font-medium">
-                    Scored by
+              ) : (
+                <>
+                  {(() => {
+                    const blended = currentRoundScores(
+                      scores,
+                      scoringParticipant.id,
+                      activeRoundId,
+                    );
+                    return activeRound.rubric.map((criterion) => (
+                      <div
+                        key={criterion.id}
+                        className="flex items-center justify-between"
+                      >
+                        <span className="text-body text-text-secondary">
+                          {criterion.label}
+                        </span>
+                        <span className="text-body text-text-primary font-medium">
+                          {blended[criterion.id] !== undefined
+                            ? blended[criterion.id]
+                            : "—"}{" "}
+                          / {criterion.maxScore}
+                        </span>
+                      </div>
+                    ));
+                  })()}
+                  <p className="text-body text-text-primary border-border-light border-t pt-3 font-medium">
+                    Total:{" "}
+                    {totalRubricScore(
+                      activeRound.rubric,
+                      scores,
+                      scoringParticipant.id,
+                      activeRoundId,
+                    )}{" "}
+                    /{" "}
+                    {activeRound.rubric.reduce((sum, c) => sum + c.maxScore, 0)}
+                    {" · "}Rank{" "}
+                    {roundFullyScored
+                      ? rankByParticipant[scoringParticipant.id]
+                      : "pending — not every panelist has judged yet"}
                   </p>
-                  {panelists.length === 0 && (
-                    <p className="text-small text-text-secondary">
-                      No accepted panelists yet.
+                  <div className="border-border-light space-y-2 border-t pt-3">
+                    <p className="text-small text-text-secondary font-medium">
+                      Scored by
                     </p>
-                  )}
-                  {panelists.map((panelist) => {
-                    const mine = panelist.userId
-                      ? scoresByJudge(
-                          scores,
-                          scoringParticipant.id,
-                          activeRoundId,
-                        )[panelist.userId]
-                      : undefined;
-                    return (
-                      <div key={panelist.id} className="space-y-1">
-                        <p className="text-small text-text-secondary">
-                          {panelist.invitedEmail}
-                        </p>
-                        {mine ? (
-                          <div className="space-y-0.5 pl-2">
-                            {activeRound.rubric.map((criterion) => (
-                              <div
-                                key={criterion.id}
-                                className="flex items-center justify-between text-small"
-                              >
+                    {panelists.length === 0 && (
+                      <p className="text-small text-text-secondary">
+                        No accepted panelists yet.
+                      </p>
+                    )}
+                    {panelists.map((panelist) => {
+                      const mine = panelist.userId
+                        ? scoresByJudge(
+                            scores,
+                            scoringParticipant.id,
+                            activeRoundId,
+                          )[panelist.userId]
+                        : undefined;
+                      return (
+                        <div key={panelist.id} className="space-y-1">
+                          <p className="text-small text-text-secondary">
+                            {panelist.invitedEmail}
+                          </p>
+                          {mine ? (
+                            <div className="space-y-0.5 pl-2">
+                              {activeRound.rubric.map((criterion) => (
+                                <div
+                                  key={criterion.id}
+                                  className="text-small flex items-center justify-between"
+                                >
+                                  <span className="text-text-secondary">
+                                    {criterion.label}
+                                  </span>
+                                  <span className="text-text-primary">
+                                    {mine[criterion.id] ?? "—"} /{" "}
+                                    {criterion.maxScore}
+                                  </span>
+                                </div>
+                              ))}
+                              <div className="border-border-light text-small flex items-center justify-between border-t pt-1 font-medium">
                                 <span className="text-text-secondary">
-                                  {criterion.label}
+                                  Total
                                 </span>
                                 <span className="text-text-primary">
-                                  {mine[criterion.id] ?? "—"} /{" "}
-                                  {criterion.maxScore}
+                                  {Object.values(mine).reduce(
+                                    (sum, v) => sum + v,
+                                    0,
+                                  )}{" "}
+                                  /{" "}
+                                  {activeRound.rubric.reduce(
+                                    (sum, c) => sum + c.maxScore,
+                                    0,
+                                  )}
                                 </span>
                               </div>
-                            ))}
-                            <div className="border-border-light flex items-center justify-between border-t pt-1 text-small font-medium">
-                              <span className="text-text-secondary">Total</span>
-                              <span className="text-text-primary">
-                                {Object.values(mine).reduce((sum, v) => sum + v, 0)}{" "}
-                                /{" "}
-                                {activeRound.rubric.reduce(
-                                  (sum, c) => sum + c.maxScore,
-                                  0,
-                                )}
-                              </span>
                             </div>
-                          </div>
-                        ) : (
-                          <p className="text-small text-text-secondary pl-2">
-                            Not yet scored
-                          </p>
-                        )}
-                      </div>
-                    );
-                  })}
-                </div>
-              </>
-            )}
-          </div>
-        )}
+                          ) : (
+                            <p className="text-small text-text-secondary pl-2">
+                              Not yet scored
+                            </p>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                </>
+              )}
+            </div>
+          )}
         {activeRound && scoringParticipant && canScoreActiveRound && (
           <div className="space-y-4">
             {activeRound.rubric.map((criterion) => {
@@ -799,7 +1180,12 @@ export function RoundsTab({
               Your Total:{" "}
               {Object.values(
                 session
-                  ? myRoundScores(scores, scoringParticipant.id, activeRoundId, session.userId)
+                  ? myRoundScores(
+                      scores,
+                      scoringParticipant.id,
+                      activeRoundId,
+                      session.userId,
+                    )
                   : {},
               ).reduce((sum, v) => sum + v, 0)}{" "}
               / {activeRound.rubric.reduce((sum, c) => sum + c.maxScore, 0)}

@@ -23,7 +23,7 @@ interface ReactionBatch {
   bots: { emoji: string }[];
 }
 
-const MAX_ON_SCREEN_EMOJI = 10;
+const MAX_ON_SCREEN_EMOJI = 15;
 
 // Public big-screen display — no attendee identity needed, just shows
 // whoever the organizer has marked as currently performing plus their live
@@ -104,6 +104,24 @@ export default function ScoreboardPage() {
         actionHref="/events"
         actionLabel="Browse Events"
       />
+    );
+  }
+
+  // Intermission — organizer-triggered break. Shows only the logo, nothing
+  // else at all (no performer card, no rating UI, no floating reactions),
+  // regardless of whatever performer/round state is still set underneath —
+  // that state just resumes once intermission ends.
+  if (live?.is_intermission) {
+    return (
+      <div className="fixed inset-0 z-1000 flex items-center justify-center bg-black">
+        <Image
+          src={"/app-logo.png"}
+          width={400}
+          height={173}
+          alt="logo"
+          className="object-contain"
+        />
+      </div>
     );
   }
 
@@ -192,23 +210,21 @@ export default function ScoreboardPage() {
             </div>
           )}
 
-          <p className="text-small text-text-secondary">
-            {event.ratingMode === "Casual"
-              ? windowOpen
-                ? ""
-                : "Waiting for reactions to open…"
-              : windowOpen
+          {event.ratingMode !== "Casual" && (
+            <p className="text-small text-text-secondary">
+              {windowOpen
                 ? `${secondsLeft}s left to rate`
                 : "Rating window closed"}
-          </p>
+            </p>
+          )}
         </Card>
       )}
       <Image
         src={"/app-logo.png"}
-        width={100}
-        height={20}
+        width={200}
+        height={87}
         alt="logo"
-        className="mb-2z fixed top-10 right-30 mt-2 object-contain"
+        className="absolute top-50 left-1/2 -translate-x-1/2 object-contain"
       />
     </div>
   );

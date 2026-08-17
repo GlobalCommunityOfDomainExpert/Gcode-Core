@@ -21,7 +21,17 @@ export function useAttendees(
     if (!eventId) return;
     try {
       const rows = await listParticipants(eventId);
-      setAttendees(rows.map((row) => adaptParticipant(row, prices)));
+      // list_by_event returns every row regardless of ACTIVE/STATUS —
+      // a soft-removed participant (delete_participant sets ACTIVE='N',
+      // STATUS='CANCELLED' rather than hard-deleting, to keep score/
+      // decision/payment history intact for tracking) stays queryable at
+      // the DB level but shouldn't show up in the organizer's working
+      // list here.
+      setAttendees(
+        rows
+          .filter((row) => row.active === "Y")
+          .map((row) => adaptParticipant(row, prices)),
+      );
       setStatus("ready");
     } catch {
       setStatus("error");
