@@ -284,7 +284,9 @@ export default function EventDetailPage() {
                 variant="primary"
                 className="w-full"
               >
-                Book Tickets
+                {singleCategory === "PARTICIPANT"
+                  ? "Register Now"
+                  : "Book Tickets"}
               </ButtonLink>
             ) : null}
             {singlePass?.capacity && (

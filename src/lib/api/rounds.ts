@@ -28,21 +28,20 @@ export async function listEventRounds(
   }
 }
 
-// No-op until the backend endpoint exists — same degrade convention as
-// listEventRounds above. The wizard should still let organizers fill in
-// rounds locally without the save flow blowing up on every event.
-export async function replaceEventRounds(
+// Full-replace child collection — mirrors replaceEventTimeline/replaceEventMedia
+// in events.ts, including NOT swallowing errors: a round save can genuinely
+// fail (e.g. a round with existing scores/decisions/rubric rows can't be
+// deleted underneath them — see [[rounds_backend_status]]), and the wizard's
+// own try/catch around persistChildCollections is what should surface that
+// to the organizer, not a silent no-op here.
+export function replaceEventRounds(
   eventId: number | string,
   items: RoundPayloadItem[],
 ): Promise<unknown> {
-  try {
-    return await apiRequest(`/events/${eventId}/rounds`, {
-      method: "POST",
-      body: items,
-    });
-  } catch {
-    return undefined;
-  }
+  return apiRequest(`/events/${eventId}/rounds`, {
+    method: "POST",
+    body: items,
+  });
 }
 
 // Contract-only — see RoundDecisionApi comment in types.ts. Mirrors
@@ -52,15 +51,26 @@ export async function replaceEventRounds(
 // header never reaches ORDS's PL/SQL CGI environment here, and the real
 // create_participant handler trusts a client-supplied user id the same
 // way), so there's no point pretending otherwise on this endpoint either.
+// notify=false is for backfilling a wildcard participant's history through
+// rounds they never actually competed in (see AddParticipantsPanel) — the
+// backend's shortlist-congratulations email would otherwise fire once per
+// backfilled round. Real judge/organizer decisions never pass this, so they
+// keep emailing exactly as before.
 export function decideRoundStatus(
   participantId: number | string,
   roundId: number | string,
   status: "SHORTLISTED" | "REJECTED",
+  notify: boolean = true,
 ): Promise<RoundDecisionApi> {
   const decidedBy = getSession()?.userId ?? "";
   return apiRequest(`/participants/${participantId}/round-status`, {
     method: "PUT",
-    body: { round_id: roundId, status, decided_by: decidedBy },
+    body: {
+      round_id: roundId,
+      status,
+      decided_by: decidedBy,
+      notify: notify ? "Y" : "N",
+    },
   });
 }
 

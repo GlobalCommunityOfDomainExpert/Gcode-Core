@@ -16,7 +16,6 @@ import { useEvent } from "@/hooks/use-event";
 import { useAttendees } from "@/hooks/use-attendees";
 import { AttendeesTab } from "./_components/attendees-tab";
 import { CommunicationTab } from "./_components/communication-tab";
-import { LiveTab } from "./_components/live-tab";
 import { OverviewTab } from "./_components/overview-tab";
 import { PanelistsTab } from "./_components/panelists-tab";
 import { CouponsTab } from "./_components/coupons-tab";
@@ -30,7 +29,7 @@ export default function OrganizedEventDetailPage() {
     status: eventStatus,
     refresh: refreshEvent,
   } = useEvent(params.id);
-  const { attendees } = useAttendees(params.id, {
+  const { attendees, refresh: refreshAttendees } = useAttendees(params.id, {
     attendee: event?.attendeeRegistration.price ?? 0,
     participant: event?.participantRegistration?.price ?? 0,
   });
@@ -60,12 +59,13 @@ export default function OrganizedEventDetailPage() {
   const eventId = event.id;
   const isCancelled = event.status === "CANCELLED";
 
+  // Closing the Participant pass (registration toggle off) shouldn't hide
+  // an already-registered cohort's rounds — an organizer still needs to run
+  // judging for people who signed up before the toggle closed.
+  const hasParticipants = attendees.some((a) => a.category === "Participant");
   const showRoundsTab =
-    event.participantRegistration.enabled && event.rounds.length > 0;
-  // Live mode (current-performer + audience rating) only makes sense for an
-  // in-person stage — an Online round is reviewed remotely, there's no
-  // "live performance" to put on a scoreboard for.
-  const showLiveTab = event.rounds.some((r) => r.mode === "Offline");
+    (event.participantRegistration.enabled || hasParticipants) &&
+    event.rounds.length > 0;
 
   const tabItems = [
     { value: "overview", label: "Overview" },
@@ -73,7 +73,6 @@ export default function OrganizedEventDetailPage() {
     ...(showRoundsTab
       ? [{ value: "rounds", label: `Rounds (${event.rounds.length})` }]
       : []),
-    ...(showLiveTab ? [{ value: "live", label: "Live" }] : []),
     { value: "panelists", label: "Panelists" },
     { value: "coupons", label: "Coupons" },
     { value: "upi-claims", label: "UPI Claims" },
@@ -207,19 +206,19 @@ export default function OrganizedEventDetailPage() {
                 selectedIds={selectedAttendeeIds}
                 onSelectedIdsChange={setSelectedAttendeeIds}
                 onNavigateToCommunication={() => setActiveTab("communication")}
+                onAttendeesChanged={refreshAttendees}
               />
             )}
             {activeTab === "rounds" && showRoundsTab && (
-              <RoundsTab event={event} attendees={attendees} />
-            )}
-            {activeTab === "live" && showLiveTab && (
-              <LiveTab event={event} attendees={attendees} />
+              <RoundsTab
+                event={event}
+                attendees={attendees}
+                onAttendeesChanged={refreshAttendees}
+              />
             )}
             {activeTab === "panelists" && <PanelistsTab eventId={event.id} />}
             {activeTab === "coupons" && <CouponsTab eventId={event.id} />}
-            {activeTab === "upi-claims" && (
-              <UpiClaimsTab eventId={event.id} />
-            )}
+            {activeTab === "upi-claims" && <UpiClaimsTab eventId={event.id} />}
             {activeTab === "communication" && (
               <CommunicationTab
                 event={event}
