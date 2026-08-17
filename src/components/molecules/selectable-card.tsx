@@ -63,11 +63,10 @@ export function SelectableCard({
   statusLabel,
   lockMessage,
 }: SelectableCardProps) {
-  const borderClasses = disabled
-    ? "border-border-light bg-bg-light opacity-60 cursor-not-allowed"
-    : "border-border-light bg-surface-light hover:border-border-hover cursor-pointer";
-
   if (layout === "horizontal") {
+    const borderClasses = disabled
+      ? "border-border-light bg-bg-light opacity-60 cursor-not-allowed"
+      : "border-border-light bg-surface-light hover:border-border-hover cursor-pointer";
     const indicator = disabled ? (
       <span className="border-border-light text-text-secondary flex size-6 shrink-0 items-center justify-center rounded-full border">
         <Icon icon={Lock} size="sm" />
@@ -135,13 +134,17 @@ export function SelectableCard({
     );
   }
 
+  const verticalBorderClasses = selected
+    ? "border-primary bg-primary-light cursor-pointer"
+    : "border-border-light bg-surface-light hover:border-border-hover cursor-pointer";
+
   return (
     <button
       type="button"
       role="radio"
       aria-checked={selected}
       onClick={onSelect}
-      className={`focus-visible:ring-primary flex flex-col items-center gap-2 rounded-md border-2 p-6 text-center transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none ${borderClasses}`}
+      className={`focus-visible:ring-primary flex flex-col items-center gap-2 rounded-md border-2 p-6 text-center transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none ${verticalBorderClasses}`}
     >
       {icon && (
         <Icon
