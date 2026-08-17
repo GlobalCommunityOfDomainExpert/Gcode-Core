@@ -13,7 +13,7 @@ import {
   Tag,
   Ticket,
 } from "lucide-react";
-import { Button, ButtonLink, Icon, SectionLabel } from "@/components/atoms";
+import { Button, Icon, SectionLabel } from "@/components/atoms";
 import {
   Banner,
   Breadcrumb,
@@ -28,7 +28,6 @@ import {
   Event,
   EventTimelineItem,
   hasEventEnded,
-  isRegistrationOpen,
 } from "@/lib/event";
 import { useEvent } from "@/hooks/use-event";
 import { useServerNow } from "@/hooks/use-server-now";
@@ -152,15 +151,6 @@ export default function EventDetailPage() {
           return undefined;
         }
 
-        function windowStatusMessage(status: WindowStatus): string | undefined {
-          if (status.state === "not-open-yet")
-            return `Registration opens in ${status.days} day${status.days === 1 ? "" : "s"}`;
-          if (status.state === "closed") return "Registration closed";
-          if (status.state === "closing-soon")
-            return `Registration closes in ${status.days} day${status.days === 1 ? "" : "s"}`;
-          return undefined;
-        }
-
         const categoryIcon = { PARTICIPANT: User, ATTENDEE: Users } as const;
         const firstOpenCategory = enabledPasses.find(
           ({ data }) => windowStatus(data).state === "open",
@@ -168,24 +158,14 @@ export default function EventDetailPage() {
 
         return (
           <>
-            {singlePass ? (
-              <div className="flex items-center justify-between">
-                <span className="text-heading text-text-primary font-extrabold">
-                  {singlePass.priceLabel}
-                </span>
-                <span className="border-warning text-small text-warning rounded-full border px-2 py-0.5 font-semibold">
-                  {displayedCountLabel(
-                    singleCategory!,
-                    singlePass.registeredCount,
-                  )}
-                </span>
-              </div>
-            ) : enabledPasses.length > 1 ? (
+            {enabledPasses.length > 0 && (
               <>
-                <p className="text-body text-text-primary flex items-center gap-2 font-semibold">
-                  <Icon icon={Sparkles} size="sm" className="text-primary" />
-                  How would you like to join?
-                </p>
+                {enabledPasses.length > 1 && (
+                  <p className="text-body text-text-primary flex items-center gap-2 font-semibold">
+                    <Icon icon={Sparkles} size="sm" className="text-primary" />
+                    How would you like to join?
+                  </p>
+                )}
                 <div className="space-y-3">
                   {enabledPasses.map(({ category, data }) => {
                     const status = windowStatus(data);
@@ -250,16 +230,7 @@ export default function EventDetailPage() {
                   })}
                 </div>
               </>
-            ) : null}
-
-            {singlePass &&
-              (() => {
-                const message = windowStatusMessage(windowStatus(singlePass));
-                if (!message) return null;
-                return (
-                  <p className="text-small text-text-secondary">{message}</p>
-                );
-              })()}
+            )}
             {event.status === "CANCELLED" ? (
               <Button variant="secondary" className="w-full" disabled>
                 Event Cancelled
@@ -272,22 +243,6 @@ export default function EventDetailPage() {
               <Button variant="secondary" className="w-full" disabled>
                 Registration Closed
               </Button>
-            ) : singlePass && !isRegistrationOpen(singlePass) ? (
-              <Button variant="secondary" className="w-full" disabled>
-                {windowStatus(singlePass).state === "not-open-yet"
-                  ? "Registration Not Yet Open"
-                  : "Registration Closed"}
-              </Button>
-            ) : singlePass ? (
-              <ButtonLink
-                href={`/events/${event.id}/register`}
-                variant="primary"
-                className="w-full"
-              >
-                {singleCategory === "PARTICIPANT"
-                  ? "Register Now"
-                  : "Book Tickets"}
-              </ButtonLink>
             ) : null}
             {singlePass?.capacity && (
               <p className="text-small text-text-secondary text-center">

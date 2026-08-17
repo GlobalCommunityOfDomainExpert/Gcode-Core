@@ -65,28 +65,14 @@ export function SelectableCard({
 }: SelectableCardProps) {
   const borderClasses = disabled
     ? "border-border-light bg-bg-light opacity-60 cursor-not-allowed"
-    : selected
-      ? "border-primary bg-primary-light cursor-pointer"
-      : "border-border-light bg-surface-light hover:border-border-hover cursor-pointer";
+    : "border-border-light bg-surface-light hover:border-border-hover cursor-pointer";
 
   if (layout === "horizontal") {
-    const indicator = (
-      <span
-        className={`flex size-6 shrink-0 items-center justify-center rounded-full border ${
-          disabled
-            ? "border-border-light text-text-secondary"
-            : selected
-              ? "border-primary"
-              : "border-border-light"
-        }`}
-      >
-        {disabled ? (
-          <Icon icon={Lock} size="sm" />
-        ) : (
-          selected && <span className="bg-primary size-2.5 rounded-full" />
-        )}
+    const indicator = disabled ? (
+      <span className="border-border-light text-text-secondary flex size-6 shrink-0 items-center justify-center rounded-full border">
+        <Icon icon={Lock} size="sm" />
       </span>
-    );
+    ) : null;
 
     return (
       <button
