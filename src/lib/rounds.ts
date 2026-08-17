@@ -75,7 +75,11 @@ export function currentRoundScores(
   roundId: string,
 ): Record<string, number> {
   const byCriterion = new Map<string, number[]>();
-  for (const score of latestPerCriterionAndJudge(scores, participantId, roundId)) {
+  for (const score of latestPerCriterionAndJudge(
+    scores,
+    participantId,
+    roundId,
+  )) {
     const values = byCriterion.get(score.criterionId) ?? [];
     values.push(score.score);
     byCriterion.set(score.criterionId, values);
@@ -100,9 +104,11 @@ export function myRoundScores(
   roundId: string,
   judgeId: string,
 ): Record<string, number> {
-  const mine = latestPerCriterionAndJudge(scores, participantId, roundId).filter(
-    (s) => s.scoredBy === judgeId,
-  );
+  const mine = latestPerCriterionAndJudge(
+    scores,
+    participantId,
+    roundId,
+  ).filter((s) => s.scoredBy === judgeId);
   return Object.fromEntries(mine.map((s) => [s.criterionId, s.score]));
 }
 
@@ -115,7 +121,11 @@ export function scoresByJudge(
   roundId: string,
 ): Record<string, Record<string, number>> {
   const byJudge: Record<string, Record<string, number>> = {};
-  for (const score of latestPerCriterionAndJudge(scores, participantId, roundId)) {
+  for (const score of latestPerCriterionAndJudge(
+    scores,
+    participantId,
+    roundId,
+  )) {
     byJudge[score.scoredBy] ??= {};
     byJudge[score.scoredBy][score.criterionId] = score.score;
   }
@@ -222,10 +232,14 @@ export function judgeScoreOutOf100(
 ): number | undefined {
   const maxTotal = rubric.reduce((sum, c) => sum + c.maxScore, 0);
   if (maxTotal === 0) return undefined;
-  if (Object.keys(currentRoundScores(scores, participantId, roundId)).length === 0) {
+  if (
+    Object.keys(currentRoundScores(scores, participantId, roundId)).length === 0
+  ) {
     return undefined;
   }
-  return (totalRubricScore(rubric, scores, participantId, roundId) / maxTotal) * 100;
+  return (
+    (totalRubricScore(rubric, scores, participantId, roundId) / maxTotal) * 100
+  );
 }
 
 // The live final score for one performer — judge average blended with
@@ -245,7 +259,8 @@ export function blendedFinalScore(
   if (audienceScore100 === undefined) return judgeScore100;
   const totalWeight = round.judgeWeight + round.audienceWeight || 1;
   return (
-    (round.judgeWeight * judgeScore100 + round.audienceWeight * audienceScore100) /
+    (round.judgeWeight * judgeScore100 +
+      round.audienceWeight * audienceScore100) /
     totalWeight
   );
 }
@@ -261,7 +276,8 @@ export function resolveActiveRound(
   participantIds: string[],
 ): EventRound | undefined {
   for (let i = 0; i < rounds.length; i++) {
-    const unlocked = i === 0 || isRoundDecided(participantIds, decisions, rounds[i - 1].id);
+    const unlocked =
+      i === 0 || isRoundDecided(participantIds, decisions, rounds[i - 1].id);
     if (!unlocked) break;
     if (!isRoundDecided(participantIds, decisions, rounds[i].id)) {
       return rounds[i];
@@ -289,8 +305,11 @@ export function resolveLiveRound(
     activeRound?.mode === "Offline"
       ? activeRound
       : [...rounds].reverse().find((r) => r.mode === "Offline");
-  const liveRoundIndex = liveRound ? rounds.findIndex((r) => r.id === liveRound.id) : -1;
-  const previousRound = liveRoundIndex > 0 ? rounds[liveRoundIndex - 1] : undefined;
+  const liveRoundIndex = liveRound
+    ? rounds.findIndex((r) => r.id === liveRound.id)
+    : -1;
+  const previousRound =
+    liveRoundIndex > 0 ? rounds[liveRoundIndex - 1] : undefined;
   return { liveRound, previousRound };
 }
 
@@ -310,4 +329,129 @@ export function rankByTotalScore(
     return diff !== 0 ? diff : a.localeCompare(b);
   });
   return Object.fromEntries(ranked.map((id, index) => [id, index + 1]));
+}
+
+// Offline rounds' judge/audience scoring are both explicit per-round toggles
+// (judgeScoringEnabled/audienceScoringEnabled — see GCODE_EVENT_ROUNDS),
+// independent of whether a rubric happens to be saved: an organizer can
+// define rubric criteria and then flip judge scoring off without losing
+// them. Online rounds have no toggle at all — judge scoring via rubric is
+// unconditional there, callers should just check mode === "Online" directly
+// rather than calling this. These mirror isRoundFullyScored/
+// computeAutoShortlist/rankByTotalScore above but for the audience side.
+export function isRoundFullyRated(
+  participantIds: string[],
+  ratings: { participant_id: number; rating_count: number }[],
+): boolean {
+  if (participantIds.length === 0) return false;
+  const rated = new Set(
+    ratings
+      .filter((r) => r.rating_count > 0)
+      .map((r) => String(r.participant_id)),
+  );
+  return participantIds.every((id) => rated.has(id));
+}
+
+// An Offline round can be judged by panelists (live, via the
+// current-performer flow), by the audience (live 0-10 rating), or both —
+// whichever the organizer turned on for this round in the edit wizard. True
+// once every *active* source has finished for every participant. A source
+// that isn't active for this round doesn't block on it -- waiting on a
+// rating that will never arrive would leave the round stuck forever.
+// Neither active at all -> always false, there's nothing to auto-decide on
+// (that round stays fully manual, no rank to go by).
+export function isRoundFullyJudged(
+  rubric: { id: string }[],
+  participantIds: string[],
+  scores: RoundScore[],
+  ratings: { participant_id: number; rating_count: number }[],
+  roundId: string,
+  expectedJudgeIds: string[],
+  judgeActive: boolean,
+  audienceActive: boolean,
+): boolean {
+  if (!judgeActive && !audienceActive) return false;
+  if (
+    judgeActive &&
+    !isRoundFullyScored(
+      rubric,
+      participantIds,
+      scores,
+      roundId,
+      expectedJudgeIds,
+    )
+  ) {
+    return false;
+  }
+  if (audienceActive && !isRoundFullyRated(participantIds, ratings)) {
+    return false;
+  }
+  return true;
+}
+
+// Ranks every participant by blendedFinalScore (judge rubric + audience
+// rating per the round's own weight split — falls back to whichever single
+// source is actually in play, same as the live panel's leaderboard). Ties
+// (including "nobody's scored this participant from either source yet",
+// treated as the lowest rank) broken by participant id, same convention as
+// every other rank/shortlist helper here.
+export function rankByBlendedScore(
+  round: { judgeWeight: number; audienceWeight: number },
+  rubric: { id: string; maxScore: number }[],
+  scores: RoundScore[],
+  ratings: { participant_id: number; avg_rating: number }[],
+  participantIds: string[],
+  roundId: string,
+): Record<string, number> {
+  const ratingByParticipant = new Map(
+    ratings.map((r) => [String(r.participant_id), r.avg_rating]),
+  );
+  const scoreFor = (participantId: string) =>
+    blendedFinalScore(
+      round,
+      judgeScoreOutOf100(rubric, scores, participantId, roundId),
+      ratingByParticipant.get(participantId),
+    ) ?? -1;
+  const ranked = [...participantIds].sort((a, b) => {
+    const diff = scoreFor(b) - scoreFor(a);
+    return diff !== 0 ? diff : a.localeCompare(b);
+  });
+  return Object.fromEntries(ranked.map((id, index) => [id, index + 1]));
+}
+
+// Same undecided-only/deterministic-tiebreak shape as computeAutoShortlist
+// above, but ranks by blendedFinalScore instead of rubric total alone — the
+// Offline-round auto-decide path, fired only once isRoundFullyJudged says
+// every active source (judge, audience, or both) has finished.
+export function computeAutoShortlistBlended(
+  round: { judgeWeight: number; audienceWeight: number },
+  rubric: { id: string; maxScore: number }[],
+  participantIds: string[],
+  scores: RoundScore[],
+  ratings: { participant_id: number; avg_rating: number }[],
+  decisions: RoundDecision[],
+  roundId: string,
+  shortlistCount: number,
+): { shortlistIds: string[]; rejectIds: string[] } {
+  const ratingByParticipant = new Map(
+    ratings.map((r) => [String(r.participant_id), r.avg_rating]),
+  );
+  const scoreFor = (participantId: string) =>
+    blendedFinalScore(
+      round,
+      judgeScoreOutOf100(rubric, scores, participantId, roundId),
+      ratingByParticipant.get(participantId),
+    ) ?? -1;
+  const undecided = participantIds.filter(
+    (participantId) =>
+      currentRoundStatus(decisions, participantId, roundId) === undefined,
+  );
+  const ranked = [...undecided].sort((a, b) => {
+    const diff = scoreFor(b) - scoreFor(a);
+    return diff !== 0 ? diff : a.localeCompare(b);
+  });
+  return {
+    shortlistIds: ranked.slice(0, shortlistCount),
+    rejectIds: ranked.slice(shortlistCount),
+  };
 }

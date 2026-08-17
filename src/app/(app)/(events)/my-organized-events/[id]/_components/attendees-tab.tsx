@@ -1,8 +1,9 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { Badge, Blurred } from "@/components/atoms";
+import { Badge, Blurred, RemoveIconButton } from "@/components/atoms";
 import {
+  Banner,
   BulkActionBar,
   Chip,
   Modal,
@@ -21,6 +22,8 @@ import {
 } from "@/lib/attendees";
 import { downloadCsv } from "@/lib/csv";
 import { Event } from "@/lib/event";
+import { removeParticipant } from "@/lib/api/participants";
+import { ApiError } from "@/lib/api/client";
 import {
   attendanceStatusLabel,
   attendanceStatusTone,
@@ -30,14 +33,7 @@ import {
 } from "./status-maps";
 
 export type AttendeesFilterValue =
-  | "all"
-  | "paid"
-  | "free"
-  | "attended"
-  | "missed"
-  | "submitted"
-  | "pending"
-  | "disqualified";
+  "all" | "paid" | "free" | "attended" | "missed" | "submitted" | "pending";
 export type AttendeesCategoryFilterValue = "all" | "Attendee" | "Participant";
 
 export interface AttendeesTabProps {
@@ -46,6 +42,9 @@ export interface AttendeesTabProps {
   selectedIds: Set<string>;
   onSelectedIdsChange: (ids: Set<string>) => void;
   onNavigateToCommunication: () => void;
+  // Refetches the attendee list after a remove — same callback the parent
+  // page already threads into RoundsTab.
+  onAttendeesChanged: () => void;
 }
 
 const PAGE_SIZE = 8;
@@ -60,6 +59,7 @@ export function AttendeesTab({
   selectedIds,
   onSelectedIdsChange,
   onNavigateToCommunication,
+  onAttendeesChanged,
 }: AttendeesTabProps) {
   const [query, setQuery] = useState("");
   const [filter, setFilter] = useState<AttendeesFilterValue>("all");
@@ -67,8 +67,42 @@ export function AttendeesTab({
     useState<AttendeesCategoryFilterValue>("all");
   const [page, setPage] = useState(1);
   const [viewingAttendee, setViewingAttendee] = useState<Attendee | null>(null);
+  const [removingIds, setRemovingIds] = useState<Set<string>>(new Set());
+  const [error, setError] = useState("");
   const submissionDeadlineIso =
     event.participantRegistration.registrationDeadlineIso;
+
+  async function handleRemove(ids: string[]) {
+    if (ids.length === 0) return;
+    const label =
+      ids.length === 1
+        ? (attendees.find((a) => a.id === ids[0])?.name ?? "this attendee")
+        : `${ids.length} attendees`;
+    if (
+      !window.confirm(
+        `Remove ${label}? This cancels their registration — it can't be undone from here.`,
+      )
+    ) {
+      return;
+    }
+    setRemovingIds(new Set(ids));
+    setError("");
+    try {
+      await Promise.all(ids.map((id) => removeParticipant(id)));
+      const next = new Set(selectedIds);
+      ids.forEach((id) => next.delete(id));
+      onSelectedIdsChange(next);
+      onAttendeesChanged();
+    } catch (err) {
+      setError(
+        err instanceof ApiError || err instanceof Error
+          ? err.message
+          : "Couldn't remove one or more attendees.",
+      );
+    } finally {
+      setRemovingIds(new Set());
+    }
+  }
 
   const counts = useMemo(
     () => ({
@@ -82,10 +116,6 @@ export function AttendeesTab({
       ).length,
       pending: attendees.filter(
         (a) => audioSubmissionStatus(a, submissionDeadlineIso) === "pending",
-      ).length,
-      disqualified: attendees.filter(
-        (a) =>
-          audioSubmissionStatus(a, submissionDeadlineIso) === "disqualified",
       ).length,
     }),
     [attendees, submissionDeadlineIso],
@@ -107,9 +137,7 @@ export function AttendeesTab({
       if (filter === "attended" && attendee.status !== "attended") return false;
       if (filter === "missed" && attendee.status !== "missed") return false;
       if (
-        (filter === "submitted" ||
-          filter === "pending" ||
-          filter === "disqualified") &&
+        (filter === "submitted" || filter === "pending") &&
         audioSubmissionStatus(attendee, submissionDeadlineIso) !== filter
       )
         return false;
@@ -239,10 +267,32 @@ export function AttendeesTab({
         );
       },
     },
+    {
+      key: "remove",
+      header: "",
+      // Table's row-click-to-open-modal doesn't stop propagation for
+      // ordinary column cells (only the selection checkbox does) — this
+      // span does it here so clicking Remove doesn't also pop the detail
+      // modal open underneath the confirm dialog.
+      render: (row) => (
+        <span
+          onClick={(e) => e.stopPropagation()}
+          className={
+            removingIds.has(row.id) ? "pointer-events-none opacity-50" : ""
+          }
+        >
+          <RemoveIconButton
+            onClick={() => handleRemove([row.id])}
+            ariaLabel={`Remove ${row.name}`}
+          />
+        </span>
+      ),
+    },
   ];
 
   return (
     <div className="space-y-4">
+      {error && <Banner tone="danger">{error}</Banner>}
       <Tabs
         items={[
           { value: "all", label: `All (${categoryCounts.all})` },
@@ -312,12 +362,6 @@ export function AttendeesTab({
           >
             Pending Submission ({counts.pending})
           </Chip>
-          <Chip
-            selected={filter === "disqualified"}
-            onClick={() => changeFilter("disqualified")}
-          >
-            Disqualified ({counts.disqualified})
-          </Chip>
         </div>
         <button
           type="button"
@@ -344,6 +388,11 @@ export function AttendeesTab({
                 `${event.id}-selected-attendees.csv`,
                 selectedAttendees,
               ),
+            variant: "ghost",
+          },
+          {
+            label: "Remove Selected",
+            onClick: () => handleRemove(Array.from(selectedIds)),
             variant: "ghost",
           },
         ]}

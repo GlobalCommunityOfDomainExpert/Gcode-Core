@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { Button, Card, Icon } from "@/components/atoms";
-import { Modal, Step, StepIndicator } from "@/components/molecules";
+import { Banner, Modal, Step, StepIndicator } from "@/components/molecules";
 import { useWizardStore } from "@/lib/store/wizard-store";
 import { useLookup } from "@/hooks/use-lookup";
 
@@ -28,6 +28,7 @@ import {
   removeCategory,
 } from "@/lib/api/events";
 import { replaceEventRounds } from "@/lib/api/rounds";
+import { ApiError } from "@/lib/api/client";
 import { getStatuses } from "@/lib/api/lookups";
 import {
   toCreatePayload,
@@ -71,6 +72,7 @@ export function EventWizard({ mode, eventId, initialData }: EventWizardProps) {
     "draft" | "publish" | null
   >(null);
   const [showCancelConfirm, setShowCancelConfirm] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   useEffect(() => {
     resetWizard(mode === "edit" ? initialData : undefined);
@@ -163,6 +165,7 @@ export function EventWizard({ mode, eventId, initialData }: EventWizardProps) {
     if (!data.type) return;
     setPendingAction(action);
     setSubmitting(true);
+    setSubmitError(null);
     try {
       const { id } = await createEvent({
         ...toCreatePayload(data),
@@ -174,6 +177,11 @@ export function EventWizard({ mode, eventId, initialData }: EventWizardProps) {
       router.push(`/my-organized-events/${id}`);
     } catch (error) {
       console.error("Failed to create event", error);
+      setSubmitError(
+        error instanceof ApiError || error instanceof Error
+          ? error.message
+          : "Couldn't create this event. Try again.",
+      );
       setSubmitting(false);
       setPendingAction(null);
     }
@@ -186,6 +194,7 @@ export function EventWizard({ mode, eventId, initialData }: EventWizardProps) {
     if (!data.type || !eventId) return;
     setPendingAction(action);
     setSubmitting(true);
+    setSubmitError(null);
     try {
       await updateEvent(eventId, {
         ...toCreatePayload(data),
@@ -196,6 +205,11 @@ export function EventWizard({ mode, eventId, initialData }: EventWizardProps) {
       router.push(`/my-organized-events/${eventId}`);
     } catch (error) {
       console.error("Failed to update event", error);
+      setSubmitError(
+        error instanceof ApiError || error instanceof Error
+          ? error.message
+          : "Couldn't save changes to this event. Try again.",
+      );
       setSubmitting(false);
       setPendingAction(null);
     }
@@ -255,6 +269,8 @@ export function EventWizard({ mode, eventId, initialData }: EventWizardProps) {
         {stepIndex === 6 && <StepTerms data={data} onChange={update} />}
         {isLastStep && <StepReview data={data} />}
       </Card>
+
+      {submitError && <Banner tone="danger">{submitError}</Banner>}
 
       <div className="flex items-center justify-between gap-3">
         <Button

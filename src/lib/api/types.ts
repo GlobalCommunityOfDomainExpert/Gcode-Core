@@ -114,7 +114,7 @@ export interface CreateEventPayload {
   status_id?: number;
   summary?: string;
   description?: string;
-  start_date?: string; // ISO 8601
+  start_date?: string | null; // ISO 8601 — explicit null clears a previously-set date/time on PUT, omitted key leaves it unchanged
   end_date?: string;
   registration_start?: string;
   registration_deadline?: string;
@@ -171,6 +171,18 @@ export interface CreateParticipantPayload {
   // Optional — server defaults to "ATTENDEE" when omitted, so every event
   // that never enables Participant registration sends an unchanged payload.
   category?: "ATTENDEE" | "PARTICIPANT";
+  // 'Y' bypasses the registration_start/registration_deadline window check
+  // server-side (create_participant's p_skip_window_check) — capacity is
+  // still enforced regardless. Only the organizer's wildcard-add flow
+  // (AddParticipantsPanel) sets this; public registration never does, so
+  // omitting it (server default 'N') keeps that path's behavior unchanged.
+  skip_window_check?: "Y" | "N";
+  // 'Y' bypasses the requirement that a brand-new guest email already went
+  // through OTP verification (gcode_pending_users.is_verified='Y') before
+  // create_participant will create their gcode_users row — the actual gate
+  // that blocks a wildcard add for someone who never signed up at all.
+  // Same organizer-only convention as skip_window_check above.
+  skip_email_verification?: "Y" | "N";
 }
 
 // Mirrors GCODE_EVENT_PARTICIPANTS_API.list_by_event's refcursor row.
@@ -232,13 +244,17 @@ export interface EventRoundApi {
   shortlist_count: number | null;
   start_time: string | null;
   end_time: string | null;
-  // Contract-only — GCODE_EVENT_ROUNDS has no JUDGE_WEIGHT/AUDIENCE_WEIGHT
-  // columns yet. Missing/undefined -> 70/30, same degrade convention as
-  // shortlist_count above. Only meaningful for whichever round resolves as
-  // "the" live round (see resolveLiveRound in lib/rounds.ts) — blends the
-  // panelist rubric average with the audience rating average.
+  // Only meaningful for whichever round resolves as "the" live round (see
+  // resolveLiveRound in lib/rounds.ts) — blends the panelist rubric average
+  // with the audience rating average. Missing/undefined -> 70/30.
   judge_weight?: number;
   audience_weight?: number;
+  // 'Y'/'N' — Offline-round-only toggles (see EventRound in lib/event.ts
+  // for the full explanation). Missing/undefined -> 'N', same degrade
+  // convention as the other optional columns above (covers rows from before
+  // this migration ran).
+  judge_scoring_enabled?: "Y" | "N";
+  audience_scoring_enabled?: "Y" | "N";
 }
 
 // Contract-only — GCODE_EVENT_ROUND_DECISIONS doesn't exist yet as of
@@ -365,7 +381,8 @@ export interface CouponApi {
   valid_to: string | null;
   is_active: number; // 0/1
   created_on: string;
-  computed_status: "ACTIVE" | "INACTIVE" | "EXPIRED" | "SCHEDULED" | "EXHAUSTED";
+  computed_status:
+    "ACTIVE" | "INACTIVE" | "EXPIRED" | "SCHEDULED" | "EXHAUSTED";
 }
 
 export interface CreateCouponPayload {

@@ -15,11 +15,19 @@ const eventSocialLinkSchema = z.object({
 });
 
 const eventRoundRubricCriterionSchema = z.object({
+  // Existing GCODE_EVENT_ROUND_RUBRICS.ID, null for a criterion added in
+  // this edit session — lets the backend UPDATE in place instead of
+  // delete+reinsert, since GCODE_EVENT_ROUND_SCORES.CRITERION_ID FKs to it
+  // with NO ACTION and a delete would break once any score references it.
+  id: z.number().nullable().default(null),
   label: z.string().default(""),
   maxScore: z.number().default(10),
 });
 
 const eventRoundItemSchema = z.object({
+  // Existing GCODE_EVENT_ROUNDS.ID, null for a round added in this edit
+  // session — same in-place-update reasoning as the criterion id above.
+  id: z.number().nullable().default(null),
   name: z.string().default(""),
   description: z.string().default(""),
   mode: z.enum(["ONLINE", "OFFLINE"]).default("OFFLINE"),
@@ -32,11 +40,18 @@ const eventRoundItemSchema = z.object({
   date: z.string().default(""), // yyyy-mm-dd
   startTime: z.string().default(""),
   endTime: z.string().default(""),
-  // Live final-score blend weights — only meaningful for whichever round
-  // resolves as "the" live round (last Offline round, see resolveLiveRound
-  // in lib/rounds.ts). Percentages, not enforced to sum to 100 server-side.
+  // Live final-score blend weights — only meaningful when both toggles below
+  // are on. The step-rounds UI keeps these two summed to 100 by construction
+  // (editing one sets the other to 100 - value), not enforced server-side.
   judgeWeight: z.number().default(70),
   audienceWeight: z.number().default(30),
+  // Offline-round-only toggles (Online judge scoring via rubric is always
+  // on, no toggle needed there). judgeScoringEnabled=true requires at least
+  // one rubric criterion — enforced by the step-rounds UI before it lets the
+  // wizard proceed, not by this schema. Both false = no scoring mechanism
+  // for this round at all; Shortlist/Reject stays fully manual.
+  judgeScoringEnabled: z.boolean().default(false),
+  audienceScoringEnabled: z.boolean().default(false),
 });
 
 export const eventDetailDataSchema = z.object({
