@@ -101,23 +101,13 @@ export default function EventDetailPage() {
         const singleCategory =
           enabledPasses.length === 1 ? enabledPasses[0].category : undefined;
 
-        // Displayed counts are padded with a fixed base so passes never read
-        // as unbooked — Attendee passes show 20 + real seats booked,
-        // Participant passes show 10 + real people registered.
-        function displayedCount(
-          category: "ATTENDEE" | "PARTICIPANT",
-          registeredCount: number,
-        ) {
-          return (category === "ATTENDEE" ? 20 : 10) + registeredCount;
-        }
         function displayedCountLabel(
           category: "ATTENDEE" | "PARTICIPANT",
           registeredCount: number,
         ) {
-          const count = displayedCount(category, registeredCount);
           return category === "ATTENDEE"
-            ? `${count} already booked`
-            : `${count} registered`;
+            ? `${registeredCount} already booked`
+            : `${registeredCount} registered`;
         }
 
         type WindowStatus =
